@@ -1,0 +1,19 @@
+{
+  "Name": "Ironfeather",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Winged",
+      "Description": "Gain flying at the start of their turn. Lose flying if shoved, stunned, dazed, or staggered."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Feather Spray",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "Characters in a close blast 1 area take fray damage twice as an area effect and must save or become vulnerable."
+    }
+  ]
+}

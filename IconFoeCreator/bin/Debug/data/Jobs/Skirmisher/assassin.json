@@ -1,0 +1,58 @@
+{
+  "Name": "Assassin",
+  "Inherits": "Skirmisher",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally."
+    },
+    {
+      "Name": "Extended Dash",
+      "Description": "Can dash as 1 action."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
+    },
+    {
+      "Name": "Prowl",
+      "Description": "Gains stealth at the start of their turn."
+    },
+    {
+      "Name": "Finishing Blow",
+      "Description": "Boost damage if character is bloody."
+    },
+    {
+      "Name": "Nimble",
+      "Description": "Has evasion unless suffering from a status."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Bolt",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack 4", "+1 boon" ],
+      "Hit": "Deal light magic damage."
+    },
+    {
+      "Name": "Stab",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "+1 boon" ],
+      "Hit": "Deal light physical damage. Boost damage and gains pierce if the target has no allies adjacent."
+    },
+    {
+      "Name": "Deumbra",
+      "ActionCost": 1,
+      "Tags": [ "repeatable 2" ],
+      "Description": "Teleport 2."
+    },
+    {
+      "Name": "Lunge",
+      "ActionCost": 2,
+      "Tags": [ "melee attack", "recharge 6" ],
+      "Description": "May dash 4 before attack.",
+      "Hit": "Deal heavy physical damage. Trigger finishing blow if character is blinded or has no adjacent allies."
+    }
+  ]
+}

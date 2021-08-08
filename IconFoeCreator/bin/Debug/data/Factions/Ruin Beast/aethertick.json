@@ -1,0 +1,31 @@
+{
+  "Name": "Aethertick",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Aether-fatted",
+      "Description": "Permanently slow. Rewards 1 dust after the fight if characters fought at least one Aether tick."
+    },
+    {
+      "Name": "Rune Skin",
+      "Description": "Resistant to magic damage when not bloody."
+    },
+    {
+      "Name": "Frail",
+      "Description": "All physical damage against this foe is Godly."
+    },
+    {
+      "Name": "Disperse Aether",
+      "Description": "Increase all vigor granted by +1 if the tick has any amount of vigor."
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Absorb Aether",
+      "Count": 1,
+      "Tags": [ "1/round" ],
+      "Description": "When a magic attack is used in range 3, gain vigor 1."
+    }
+  ]
+}

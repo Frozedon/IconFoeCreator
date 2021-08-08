@@ -1,0 +1,22 @@
+{
+  "Name": "Natal",
+  "Inherits": "Mob",
+  "Type": "Job",
+  "Speed": 3,
+  "Run": 1,
+  "Dash": 1,
+  "Attack": [ 0, 0, 0 ],
+  "Traits": [
+    {
+      "Name": "Summon",
+      "Description": "Natals disappear when reduced to 0 hp and don't cause engagement."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Void Vomit",
+      "ActionCost": 2,
+      "Description": "Deal 1 piercing damage as an effect to a character in range 3."
+    }
+  ]
+}

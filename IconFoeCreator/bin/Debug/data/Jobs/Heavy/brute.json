@@ -1,0 +1,65 @@
+{
+  "Name": "Brute",
+  "Inherits": "Heavy",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Toughness",
+      "Description": "Start combat with 1 vigor."
+    },
+    {
+      "Name": "Slow",
+      "Description": "Go after all other characters. If multiple characters take slow turns, it takes the same order as regular turns (ally/enemy/ally)."
+    },
+    {
+      "Name": "Vigilance",
+      "Description": "Foes can’t dash in your engagement and can’t move through your space."
+    },
+    {
+      "Name": "Poise",
+      "Description": "Sturdy when bloody."
+    },
+    {
+      "Name": "Tenacious",
+      "Description": "+25% hp.",
+      "AddHP": 0.25
+    },
+    {
+      "Name": "Poor Armor",
+      "Description": "Max armor is 0.",
+      "MaxArmor": 0
+    },
+    {
+      "Name": "Large",
+      "Description": "Increase size to 2."
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Guardian",
+      "Count": 1,
+      "Description": "When an ally you can see in range 3 is targeted by an attack, you can dash up to 2 spaces towards that ally, ignoring vigilance. Then, if you’re adjacent, you can change the target of the attack to you."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Sweep",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "arc 3", "repeatable 2" ],
+      "Hit": "Deal light damage and inflict daze. If a character is already dazed, they must physical save or also be stunned.",
+      "AreaEffect": "Deal fray damage."
+    },
+    {
+      "Name": "Shove",
+      "ActionCost": 1,
+      "Description": "Adjacent foe is shoved 1, and must save or be shoved 1 again.",
+      "Collide": "They become dazed."
+    },
+    {
+      "Name": "Wallop",
+      "ActionCost": 2,
+      "Tags": [ "true strike", "recharge 4+" ],
+      "Description": "An adjacent foe makes a save or takes heavy damage and becomes winded and are shoved 2. On a a successful save, they take light damage and are shoved 1."
+    }
+  ]
+}

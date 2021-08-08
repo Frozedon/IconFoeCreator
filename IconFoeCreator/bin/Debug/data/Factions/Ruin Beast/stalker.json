@@ -1,0 +1,23 @@
+{
+  "Name": "Stalker",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Ambush",
+      "Description": "Attacks that break stealth gain true strike and deal boosted damage."
+    },
+    {
+      "Name": "Chameleonic",
+      "Description": "When ending its turn adjacent to cover, gains stealth"
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Decoy",
+      "Count": 1,
+      "Tags": [ "recharge 6" ],
+      "Description": "When hit by an attack, turns that hit into a miss and teleports 3 spaces to an unoccupied space it can see, which is its ‘real’ location."
+    }
+  ]
+}

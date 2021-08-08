@@ -1,0 +1,78 @@
+{
+  "Name": "Archon",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Health": [ 6, 7, 8 ],
+  "HPMultiplier": 8,
+  "Speed": 4,
+  "Run": 2,
+  "Dash": 4,
+  "Defense": 6,
+  "Armor": [ 2, 3, 4 ],
+  "Attack": [ 0, 2, 4 ],
+  "Fray Damage": [ 2, 3, 4 ],
+  "LightDamage": 3,
+  "HeavyDamage": 7,
+  "CriticalDamage": 10,
+  "LightDamageDie": "1d6",
+  "HeavyDamageDie": "2d6",
+  "CriticalDamageDie": "3d6",
+  "DamageType": "Physical",
+  "Traits": [
+    {
+      "Name": "Defiance",
+      "Description": "Prevents hit points from being reduced past 1 hp. When this triggers, remove this effect."
+    },
+    {
+      "Name": "Vigilance",
+      "Description": "Foes can’t dash in your engagement and can’t move through your space."
+    },
+    {
+      "Name": "Strength",
+      "Description": "All attacks have shove 1."
+    },
+    {
+      "Name": "Poise",
+      "Description": "Sturdy when bloody."
+    },
+    {
+      "Name": "Rage",
+      "Description": "Under 25% hp, gains unstoppable."
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Guardian",
+      "Count": 1,
+      "Description": "When an ally you can see in range 3 is targeted by an attack, you can dash up to 2 spaces towards that ally. Then, if you’re adjacent, you can change the target of the attack to you."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Head Crack",
+      "ActionCost": 1,
+      "Tags": [ "repeatable 2" ],
+      "Description": "Deal fray physical damage to an adjacent foe. They must save or be dazed. If a foe is already dazed, increase damage to light."
+    },
+    {
+      "Name": "Great Fortify",
+      "ActionCost": 1,
+      "Tags": [ "stance" ],
+      "Description": "Reduce max speed to 0, but gain cover and sturdy, and apply to all allies while adjacent. Ends at the end of their next turn."
+    },
+    {
+      "Name": "Great Bash",
+      "ActionCost": 1,
+      "Description": "Dash forward up to 3 spaces, then an adjacent foe must save or take light physical damage and be shoved 3 spaces.",
+      "Collide": "Foe is winded."
+    },
+    {
+      "Name": "Blackheart",
+      "ActionCost": 1,
+      "Tags": [ "melee attack" ],
+      "Hit": "Deal heavy physical damage.",
+      "Miss": "Deal light physical damage.",
+      "Effect": "Gains +1 boon and true strike if character is stunned, dazed, or winded."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "Name": "Stone Lizard",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Dire Hide",
+      "Description": "Resistant to physical damage while not bloody."
+    },
+    {
+      "Name": "Heavy Armor",
+      "Description": "Immune to pierce when not bloody. Cannot dash or run.",
+      "NoRun": true,
+      "NoDash": true
+    },
+    {
+      "Name": "Rolling Boulder",
+      "Description": "Gains character phasing, and when moving through foes for the first time in a round, they are shoved 1 to the side and take fray damage."
+    },
+    {
+      "Name": "Flank",
+      "Description": "Loses all armor if 2 or more foes are adjacent."
+    }
+  ]
+}

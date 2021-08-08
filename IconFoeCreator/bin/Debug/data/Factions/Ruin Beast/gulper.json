@@ -1,0 +1,23 @@
+{
+  "Name": "Gulper",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Slippery",
+      "Description": "Gains evasion when bloody."
+    },
+    {
+      "Name": "Venomous",
+      "Description": "Inflict poisoned on any adjacent character that damages them."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Slime Lob",
+      "ActionCost": 1,
+      "Tags": [ "recharge 6" ],
+      "Description": "The Gulper creates a blast 1 area of difficult terrain. Characters in the area when it’s created must save or become winded. The area lasts for the rest of combat, or until the Gulper uses this ability again."
+    }
+  ]
+}

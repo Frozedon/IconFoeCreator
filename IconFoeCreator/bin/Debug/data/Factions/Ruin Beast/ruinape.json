@@ -1,0 +1,23 @@
+{
+  "Name": "Ruin Ape",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Small",
+      "Description": "+1 curse on all saves. Shoves shove +1 against this character."
+    },
+    {
+      "Name": "Latch",
+      "Description": "Starts combat sharing the same space as another ally the same size or larger (can be targeted separately), reducing the ape’s speed to 0 but moving when its mount moves, and gains cover while latched on. Knocked off if shoved, dazed, winded, staggered, or stunned. Can latch on to a new allied character in range 3 with 1 action, teleporting to its space."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Spur",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "The character the Ruin Ape is latched on to dashes 4 in a direction of the Ape’s choice and can make an attack that takes 1 action or less as an interrupt."
+    }
+  ]
+}

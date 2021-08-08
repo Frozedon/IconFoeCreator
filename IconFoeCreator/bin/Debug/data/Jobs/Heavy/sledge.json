@@ -1,0 +1,41 @@
+{
+  "Name": "Sledge",
+  "Inherits": "Heavy",
+  "Type": "Job",
+  "AddArmor": 1,
+  "Traits": [
+    {
+      "Name": "Improved Armor",
+      "Description": "+1 armor.",
+      "AddArmor": 1
+    },
+    {
+      "Name": "Flank",
+      "Description": "Loses all armor if 2 or more foes are adjacent."
+    },
+    {
+      "Name": "Poise",
+      "Description": "Sturdy when bloody."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Wind Up",
+      "ActionCost": 2,
+      "Description": "Next Slam costs 1 action and gains +1 boon. Lose this effect if they move."
+    },
+    {
+      "Name": "Bash",
+      "ActionCost": 1,
+      "Description": "An adjacent foe is shoved 1 and must save or become winded.",
+      "Collide": "Foe fails the save."
+    },
+    {
+      "Name": "Slam",
+      "ActionCost": 2,
+      "Tags": [ "melee attack", "+1 curse" ],
+      "Description": "Pierce.",
+      "Hit": "Deal heavy damage and character must save or become vulerable."
+    }
+  ]
+}

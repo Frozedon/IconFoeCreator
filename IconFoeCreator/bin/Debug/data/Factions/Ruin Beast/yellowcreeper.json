@@ -1,0 +1,23 @@
+{
+  "Name": "Yellow Creeper",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Actions": [
+    {
+      "Name": "Spore",
+      "ActionCost": 1,
+      "Description": "The Creeper puts down two intangible summons in free spaces in range 3. Characters that pass through these spaces gain spore infestation for the rest of combat. While they have a spore infestation, they are staggered and gain regeneration 1 if bloody. Spore infestations can be Cleansed (even from foes)."
+    },
+    {
+      "Name": "Spore Detonate",
+      "ActionCost": 2,
+      "Tags": [ "recharge 6" ],
+      "Description": "A character with a spore infestation explodes, dealing heavy damage in a blast 1 area as an area effect. Characters within the area can save to reduce damage to light damage. The host fails this save. The spore infestation on the targeted character then ends."
+    },
+    {
+      "Name": "Puppet",
+      "Tags": [ "1/turn" ],
+      "Description": "A staggered character (foe or ally) in range 5 is shoved 3 spaces in a direction of the creeper’s choosing."
+    }
+  ]
+}

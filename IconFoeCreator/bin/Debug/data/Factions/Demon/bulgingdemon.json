@@ -1,0 +1,28 @@
+{
+  "Name": "Bulging Demon",
+  "Inherits": "Demon",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Regenerator",
+      "Description": "Reduce hp by 50%.",
+      "AddHP": -0.5
+    },
+    {
+      "Name": "Large",
+      "Description": "Increase size to 2."
+    },
+    {
+      "Name": "Disgorge",
+      "Description": "When vigor is broken, summon a natal in range 2."
+    },
+    {
+      "Name": "Last Revenge",
+      "Description": "When reduce to 0 HP, explodes in a blast 1 area effect. Non-demons in the area are blighted. Summon 2 Natals in the area."
+    },
+    {
+      "Name": "Venomous",
+      "Description": " Inflict poisoned on any attacker if struck by a melee attack."
+    }
+  ]
+}

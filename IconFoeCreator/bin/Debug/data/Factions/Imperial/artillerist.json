@@ -1,0 +1,19 @@
+{
+  "Name": "Artillerist",
+  "Inherits": "Imperial",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Firing Drills",
+      "Description": "The ranged attacks of allies in range 3 ignore cover."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Spotter",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "Mark a character in range 8 and line of sight. That character becomes Vulnerable (ongoing) to ranged attacks while marked and cannot gain stealth. A character can repeat the save at the end of their turn to end this effect."
+    }
+  ]
+}

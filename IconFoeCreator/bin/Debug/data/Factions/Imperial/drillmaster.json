@@ -1,0 +1,18 @@
+{
+  "Name": "Drillmaster",
+  "Inherits": "Imperial",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Tactics Aura",
+      "Description": "Staggered, dazed, winded, or stunned enemies in range 3 take +2 damage."
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Discipline",
+      "Count": 1,
+      "Description": "When an ally in the tactics aura misses with an attack, the Drillmaster can use this interrupt to cause them to re-roll the attack with +1 boon, taking the second result as the final result."
+    }
+  ]
+}

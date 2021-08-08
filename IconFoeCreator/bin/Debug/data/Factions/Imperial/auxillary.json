@@ -1,0 +1,22 @@
+{
+  "Name": "Auxilary",
+  "Inherits": "Mob",
+  "Type": "Job",
+  "Speed": 3,
+  "Run": 1,
+  "Dash": 2,
+  "Defense": 8,
+  "Attack": [ 1, 2, 3 ],
+  "LightDamage": 2,
+  "HeavyDamage": 2,
+  "CriticalDamage": 2,
+  "DamageType": "Either",
+  "Actions": [
+    {
+      "Name": "Firelance",
+      "ActionCost": 2,
+      "Tags": [ "superheavy ranged attack 4" ],
+      "Hit": "Deal 1 damage. Increase to full damage if in the command aura of an imperial officer."
+    }
+  ]
+}

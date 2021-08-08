@@ -1,0 +1,23 @@
+{
+  "Name": "Needler",
+  "Inherits": "Mob",
+  "Type": "Job",
+  "Speed": 3,
+  "Run": 2,
+  "Dash": 3,
+  "Defense": 6,
+  "Attack": [ 1, 1, 1 ],
+  "Armor": [ 0, 0, 0 ],
+  "LightDamage": 0,
+  "HeavyDamage": 0,
+  "CriticalDamage": 0,
+  "DamageType": "Either",
+  "Actions": [
+    {
+      "Name": "Piercing Shot",
+      "ActionCost": 2,
+      "Tags": [ "ranged attack 4" ],
+      "Description": "Deal 1 piercing damage as an effect. If an ally is adjacent to the target, make an attack, dealing piercing damage on hit."
+    }
+  ]
+}

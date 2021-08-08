@@ -1,0 +1,18 @@
+{
+  "Name": "Relict",
+  "FactionBlight": "Electrified",
+  "Traits": [
+    {
+      "Name": "Defiant Spark",
+      "Description": "All Relict have Defiance."
+    },
+    {
+      "Name": "Monsters",
+      "Description": "Relict do not flee or negotiate."
+    },
+    {
+      "Name": "Shuffle",
+      "Description": "Relict can move 1 space forward at the start of their turn. When they do this, they can also move any relicts that are contiguously connected to them via adjacency. When shuffle activates for mobs, it activates for all five simultaneously."
+    }
+  ]
+}

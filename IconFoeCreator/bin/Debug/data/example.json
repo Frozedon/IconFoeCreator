@@ -1,0 +1,56 @@
+{
+  "Name": "", // Name of this statblock
+  "Inherits": "", // Name of statblock you want to inherit traits from
+  "Type": "", // "Job" or "Faction"
+  "Health": [ 0, 0, 0 ], // Separated by chapter
+  "Speed": 0,
+  "Run": 0,
+  "Dash": 0,
+  "Defense": 0,
+  "Armor": [ 0, 0, 0 ],
+  "Attack": [ 0, 0, 0 ],
+  "FrayDamage": [ 0, 0, 0 ],
+  "LightDamage": 0,
+  "HeavyDamage": 0,
+  "CriticalDamage": 0,
+  "LightDamageDie": "",
+  "HeavyDamageDie": "",
+  "CriticalDamageDie": "",
+  "DamageType": "",
+  "FactionBlight": "",
+  "Traits": [
+    {
+      "Name": "",
+      "Tags": [ "" ], // Anything that should be in paranthesis
+      "Description": "",
+      "AddHP": 0.0,
+      "AddArmor": 0,
+      "MaxArmor": 0,
+      "NoRun": false,
+      "NoDash": false
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "",
+      "Count": 0,
+      "Tags": [ "" ], // Anything that should be in paranthesis after "Interrupt #"
+      "Description": ""
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "",
+      "ActionCost": 0,
+      "Tags": [ "" ], // Anything that should be in paranthesis after "action #"
+      "Description": "",
+      "Hit": "",
+      "CriticalHit": "",
+      "Miss": "",
+      "AreaEffect": "",
+      "Effect": "",
+      "Collide": "",
+      "Blightboost": ""
+    }
+  ]
+}

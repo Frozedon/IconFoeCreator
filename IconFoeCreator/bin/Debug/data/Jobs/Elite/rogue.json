@@ -1,0 +1,69 @@
+{
+  "Name": "Rogue",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Health": [ 4, 5, 6 ],
+  "HPMultiplier": 6,
+  "Speed": 5,
+  "Run": 3,
+  "Dash": 5,
+  "Defense": 9,
+  "Armor": [ 0, 0, 0 ],
+  "Attack": [ 2, 4, 6 ],
+  "Fray Damage": [ 2, 3, 4 ],
+  "LightDamage": 3,
+  "HeavyDamage": 7,
+  "CriticalDamage": 10,
+  "LightDamageDie": "1d6",
+  "HeavyDamageDie": "2d6",
+  "CriticalDamageDie": "3d6",
+  "DamageType": "Both",
+  "Traits": [
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally."
+    },
+    {
+      "Name": "Prowl",
+      "Description": "Gains stealth at the start of their turn."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
+    },
+    {
+      "Name": "Finishing Blow",
+      "Description": "Boost damage if character is bloody."
+    },
+    {
+      "Name": "Evasion",
+      "Description": "Permanent evasion."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Wicked Slice",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "+1 boon", "multiattack 2" ],
+      "Hit": "Deal light physical damage.",
+      "Effect": "Boost damage vs blind characters."
+    },
+    {
+      "Name": "Vile",
+      "ActionCost": 1,
+      "Description": "A foe in range 5 must save or become blind and blighted."
+    },
+    {
+      "Name": "Danse Macabre",
+      "ActionCost": 2,
+      "Tags": [ "recharge 5+" ],
+      "Description": "Target a close blast 2 area. Teleport three times. May deal light damage as an area effect to an adjacent foe each time. Must choose a different hostile character each time unless every character has been hit at least once."
+    },
+    {
+      "Name": "Deumbra",
+      "ActionCost": 1,
+      "Tags": [ "repeatable 2" ],
+      "Description": "Teleport 2."
+    }
+  ]
+}

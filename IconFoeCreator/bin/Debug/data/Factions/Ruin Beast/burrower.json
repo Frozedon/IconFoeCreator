@@ -1,0 +1,19 @@
+{
+  "Name": "Burrower",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Digging Claws",
+      "Description": "Attacks gain pierce if a character has no adjacent allies."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Burrow",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "Mark a character in range 8. At the start of the beast’s next turn, if that character is still marked, it teleports to a space adjacent to that character, dealing light damage. If the character is flying, they take no damage. If the character is alone, they take heavy piercing damage instead and must save or become vulnerable."
+    }
+  ]
+}

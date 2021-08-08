@@ -1,0 +1,27 @@
+{
+  "Name": "Prowling Demon",
+  "Inherits": "Demon",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Defiance",
+      "Description": "Prevents hit points from being reduced past 1 hp. When this triggers, remove this effect."
+    },
+    {
+      "Name": "Prowl",
+      "Description": "Gains stealth at the start of their turn."
+    },
+    {
+      "Name": "Phase Slip",
+      "Description": "After being damaged for the first time in a turn (any turn), become intangible until the start of the following turn."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Void Shift",
+      "ActionCost": 2,
+      "Tags": [ "recharge 6" ],
+      "Description": "Teleport to a visible space."
+    }
+  ]
+}

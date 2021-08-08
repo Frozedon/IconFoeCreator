@@ -1,0 +1,20 @@
+{
+  "Name": "Butcher",
+  "Inherits": "Lowlander",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Relentless Hacking",
+      "Tags": [ "1/round" ],
+      "Description": "When the butcher hits a foe with an attack, they mark that foe. This mark cannot be cleared, and stacks indefinitely. For each stack of this mark, the butcher deals boosted damage to that character. All stacks of this mark mark immediately end on one character if the butcher hits and marks a different character with an attack."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Round Slash",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "All characters adjacent to the butcher must save or become vulnerable."
+    }
+  ]
+}

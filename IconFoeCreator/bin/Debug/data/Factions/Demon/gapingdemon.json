@@ -1,0 +1,27 @@
+{
+  "Name": "Gaping Demon",
+  "Inherits": "Demon",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Increases size to 2."
+    },
+    {
+      "Name": "Feast",
+      "Description": " Devour only costs 1 action for this Demon, and it can dash 1 before using it."
+    },
+    {
+      "Name": "Engorge",
+      "Description": "Increase size by 1 and gains +1 action for the rest of combat if it feasted."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Swallow Whole",
+      "ActionCost": 2,
+      "Tags": [ "recharge 5+" ],
+      "Description": "A adjacent character must save or be swallowed. While swallowed, they share their space with the Mouth Demon, they are intangible and untargetable to characters other than the Mouth Demon, their max speed is 0, they can only use actions that target the Mouth Demon,. At the start of each of their turns, they take light godly damage, and at the end of their turn they can save against this effect. Saving against this effect places them in a free adjacent space. It also ends if the Demon is defeated."
+    }
+  ]
+}

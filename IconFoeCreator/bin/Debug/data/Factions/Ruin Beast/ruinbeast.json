@@ -1,0 +1,22 @@
+{
+  "Name": "Ruin Beast",
+  "FactionBlight": "Poisoned",
+  "Traits": [
+    {
+      "Name": "Monsters",
+      "Description": "Beasts do not flee or negotiate."
+    },
+    {
+      "Name": "Ferocity",
+      "Description": "On the first round of combat, beasts double their speed."
+    },
+    {
+      "Name": "Flank",
+      "Description": "While two or more beasts are adjacent to a character hostile to them, that character takes +2 damage from their attacks."
+    },
+    {
+      "Name": "Feral",
+      "Description": "Always have hatred of the character that damaged them last, or the closest character (can choose either)."
+    }
+  ]
+}

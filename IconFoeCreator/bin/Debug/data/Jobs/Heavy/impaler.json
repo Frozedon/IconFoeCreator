@@ -1,0 +1,28 @@
+{
+  "Name": "Impaler",
+  "Inherits": "Heavy",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Toughness",
+      "Description": "Start combat with 1 vigor."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Pike",
+      "ActionCost": 2,
+      "Tags": [ "melee attack" ],
+      "Hit": "Deal heavy damage and shove 1.",
+      "Miss": "Deal fray damage."
+    },
+    {
+      "Name": "Impale",
+      "ActionCost": 2,
+      "Tags": [ "melee attack", "true strike", "recharge 5+" ],
+      "Hit": "Deal light damage and shove 3. The impaler chases after the target, following it.",
+      "Miss": "Deal light damage.",
+      "Collide": "Foe is also dazed and immobilized."
+    }
+  ]
+}

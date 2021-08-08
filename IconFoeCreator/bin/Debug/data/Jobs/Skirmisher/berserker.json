@@ -1,0 +1,53 @@
+{
+  "Name": "Berserker",
+  "Inherits": "Skirmisher",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally."
+    },
+    {
+      "Name": "Extended Dash",
+      "Description": "Can dash as 1 action."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
+    },
+    {
+      "Name": "Finishing Blow",
+      "Description": "Boost damage if character is bloodied."
+    },
+    {
+      "Name": "Nimble",
+      "Description": "Has evasion unless suffering from a status."
+    },
+    {
+      "Name": "Revenge",
+      "Description": "Has counter when bloody."
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Vengeful Slash",
+      "Count": 1,
+      "Description": "When damaged for the first time a round, Berserker deals light damage as an effect to a random adjacent character (for or ally)."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Furious Slash",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "repeatable 2" ],
+      "Hit": "Deal light damage.",
+      "CriticalHit": "Character must save or become vulnerable."
+    },
+    {
+      "Name": "Charge",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "Dash 4, then deal light physical damage as an effect to an adjacent character."
+    }
+  ]
+}

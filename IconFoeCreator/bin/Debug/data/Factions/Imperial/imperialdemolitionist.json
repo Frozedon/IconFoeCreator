@@ -1,0 +1,24 @@
+{
+  "Name": "Imperial Demolitionist",
+  "Inherits": "Imperial",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Receive Orders",
+      "Description": "When this unit starts its turn in range of a command aura, it recharges all its abilities."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Arkentech Mine",
+      "ActionCost": 1,
+      "Tags": [ "recharge 6" ],
+      "Description": "The Demolitionist places an intangible size 1 summon in a space in range 3. If any character moves or is shoved more than 1 space over or adjacent to the mine, it explodes for heavy damage in a blast 1 area effect and inflicts burning."
+    },
+    {
+      "Name": "Detonate Mines",
+      "ActionCost": 2,
+      "Description": "All mines laid by the demolitionist explode as if triggered."
+    }
+  ]
+}

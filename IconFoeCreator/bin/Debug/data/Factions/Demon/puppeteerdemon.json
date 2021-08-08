@@ -1,0 +1,25 @@
+{
+  "Name": "Puppeteer Demon",
+  "Inherits": "Demon",
+  "Type": "Faction",
+  "Actions": [
+    {
+      "Name": "White Strings",
+      "ActionCost": 1,
+      "Tags": [ "close blast 2" ],
+      "Description": "All demons and allied summons in the area can dash 2 spaces as an effect. All foes in the area are shoved 1."
+    },
+    {
+      "Name": "Black Strings",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "A character in range 5 must save. On a failed save, they teleport up to 3 spaces to the nearest ally and deal light damage to them as an effect."
+    },
+    {
+      "Name": "Detonate Natal ",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "A natal in range 3 is destroyed, and explodes for a blast 1 explosion area effect. Characters in range must save or take light godly damage."
+    }
+  ]
+}

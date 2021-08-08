@@ -1,0 +1,18 @@
+{
+  "Name": "Shank",
+  "Inherits": "Scavenger",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Backstab",
+      "Description": "When a shank makes an attack against a character adjacent to one of their allies, their attacks gain true strike or pierce (they can choose)."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Sucker Punch",
+      "ActionCost": 1,
+      "Description": "An adjacent character must save or become winded. They drop 1 valuables, plus any valuables they were carrying."
+    }
+  ]
+}

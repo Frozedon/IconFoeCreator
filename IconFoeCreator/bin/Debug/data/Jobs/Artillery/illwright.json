@@ -1,0 +1,49 @@
+{
+  "Name": "Illwright",
+  "Inherits": "Artillery",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Overdrive 4",
+      "Description": "Deals boosted damage if the current round is 4 or higher."
+    },
+    {
+      "Name": "Slow",
+      "Description": "Go after all other characters. If multiple characters take slow turns, it takes the same order as regular turns (ally/enemy/ally)."
+    },
+    {
+      "Name": "Aetherwall",
+      "Description": "Cover from ranged attacks further away than range 2."
+    },
+    {
+      "Name": "Resonance",
+      "Description": "Attacks deal boosted damage if they hit 3 or more targets."
+    },
+    {
+      "Name": "Power Overwhelming",
+      "Description": "If overdrive has triggered, gain flying and vigor 1."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Blast",
+      "ActionCost": 2,
+      "Tags": [ "ranged attack 8", "blast 1" ],
+      "Hit": "Deal heavy damage and inflict blight.",
+      "Miss": "Deal light damage.",
+      "Area Effect": "Deal light damage.",
+      "Blightboost": "Increase to blast 2."
+    },
+    {
+      "Name": "Flash",
+      "ActionCost": 1,
+      "Description": "A character in range 8 must save or take fray damage and be blighted."
+    },
+    {
+      "Name": "Aethersup",
+      "ActionCost": 1,
+      "Tags": [ "1/round" ],
+      "Description": "Tick down Overdrive counter by 1."
+    }
+  ]
+}

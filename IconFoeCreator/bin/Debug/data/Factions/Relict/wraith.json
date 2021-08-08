@@ -1,0 +1,23 @@
+{
+  "Name": "Wraith",
+  "Inherits": "Relict",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Immortal Rage",
+      "Description": "When defeated, instead become Intangible for one round. At the end of that round, evaporate from the battlefield."
+    },
+    {
+      "Name": "Ethereal",
+      "Description": "Flying, phasing, and intangible unless there’s a foe in range 2. Reduce hp by 50%.",
+      "AddHP": -0.5
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Slip",
+      "ActionCount": 1,
+      "Description": "Teleport 3."
+    }
+  ]
+}

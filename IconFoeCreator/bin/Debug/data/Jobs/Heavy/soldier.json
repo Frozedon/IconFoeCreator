@@ -1,0 +1,42 @@
+{
+  "Name": "Soldier",
+  "Inherits": "Heavy",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Toughness",
+      "Description": "Start combat with 1 vigor."
+    },
+    {
+      "Name": "Rank and File",
+      "Description": "Gain true strike and +1 boon on attacks if adjacent to an ally."
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Guardian",
+      "Description": "When an ally you can see in range 3 is targeted by an attack, you can dash up to 2 spaces towards that ally, ignoring vigilance. Then, if you’re adjacent, you can change the target of the attack to you."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Slash",
+      "ActionCost": 1,
+      "Tags": [ "melee attack" ],
+      "Hit": "Deal light damage.",
+      "Miss": "Deal fray damage."
+    },
+    {
+      "Name": "Bash",
+      "ActionCost": 1,
+      "Description": "An adjacent foe is shoved 1 and must save or become winded.",
+      "Collide": "Foe fails the save."
+    },
+    {
+      "Name": "Fortify",
+      "ActionCost": 1,
+      "Tags": [ "stance" ],
+      "Description": "Count as in cover and grant cover to adjacent allied characters, but cannot dash or run. End if shoved, dazed, staggered, or stunned."
+    }
+  ]
+}

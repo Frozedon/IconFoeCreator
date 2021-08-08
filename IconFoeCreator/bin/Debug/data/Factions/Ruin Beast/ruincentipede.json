@@ -1,0 +1,19 @@
+{
+  "Name": "Ruin Centipede",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Acid Splash",
+      "Description": "Attacks deal piercing fray damage on hit or miss to all foes in range 2 of the target as an area effect."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Toxic Spines",
+      "ActionCost": 1,
+      "Tags": [ "recharge 6" ],
+      "Description": "A character in range 5 must save or become poisoned and instantly lose all vigor."
+    }
+  ]
+}

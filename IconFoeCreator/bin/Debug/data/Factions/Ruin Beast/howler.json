@@ -1,0 +1,24 @@
+{
+  "Name": "Howler",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Rage",
+      "Description": "Gains unstoppable at 25% or lower."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Howl",
+      "ActionCost": 2,
+      "Tags": [ "recharge 6" ],
+      "Description": "All non-howler characters in a blast 1 must physical save or be stunned."
+    },
+    {
+      "Name": "Sonic Screech",
+      "ActionCost": 1,
+      "Description": "A character in range 3 must magical save or become dazed. If already dazed, shove 2 and deal light magic damage."
+    }
+  ]
+}

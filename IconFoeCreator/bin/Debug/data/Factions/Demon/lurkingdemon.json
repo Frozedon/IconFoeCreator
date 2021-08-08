@@ -1,0 +1,18 @@
+{
+  "Name": "Lurking Demon",
+  "Inherits": "Demon",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Chameleonic",
+      "Description": "When ending its turn adjacent to cover, gains stealth."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Void Rift",
+      "ActionCost": 1,
+      "Description": "Create a line 3 area of difficult terrain in range 5. This area lasts until the end of combat or until the demon uses this ability again. Demons can use it for cover and ignore its difficult terrain."
+    }
+  ]
+}

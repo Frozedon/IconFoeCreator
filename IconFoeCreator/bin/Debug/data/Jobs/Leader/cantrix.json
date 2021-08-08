@@ -1,0 +1,44 @@
+{
+  "Name": "Cantrix",
+  "Inherits": "Leader",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Shelter",
+      "Description": "Adjacent allies get +1 accuracy on saves."
+    },
+    {
+      "Name": "Aetherwall",
+      "Description": "Cover from ranged attacks outside range 3."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Autocure",
+      "Tags": [ "1/turn" ],
+      "Description": "May grant vigor 1 to a bloodied ally in range 3."
+    },
+    {
+      "Name": "Chant of Investure",
+      "ActionCost": 1,
+      "Tags": [ "stance", "recharge 4+" ],
+      "Description": "An ally in range 8 is marked by the Cantrix and gains resistance to all damage, sturdy, and +1 boon on all attacks and saves while in range 8 of the Cantrix. While in this stance, the Cantrix reduces their speed to 0. It ends if the Cantrix is shoved, winded, stunned, dazed, or staggered, or if it takes this action again."
+    },
+    {
+      "Name": "Slumber",
+      "ActionCost": 1,
+      "Description": "A character in range 8 of the Cantrix must save or become pacified. If already pacified, the character is also slow."
+    },
+    {
+      "Name": "Dissonance",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "A character in range 8 of the cantrix must save or be shoved 1 and drop all stances."
+    },
+    {
+      "Name": "Escape",
+      "ActionCost": 1,
+      "Description": "The Cantrix swaps place with its marked ally."
+    }
+  ]
+}

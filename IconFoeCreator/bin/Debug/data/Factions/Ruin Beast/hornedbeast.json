@@ -1,0 +1,23 @@
+{
+  "Name": "Horned Beast",
+  "Inherits": "Ruin Beast",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Increase size to 2."
+    },
+    {
+      "Name": "Strength",
+      "Description": "All attacks gain shove 1."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Gore",
+      "ActionCost": 2,
+      "Tags": [ "recharge 4+" ],
+      "Description": "The Horned Beast dashes up to 5 spaces. An adjacent character must then save or take light damage and be shoved for each space the beast moved, or half on a successful save."
+    }
+  ]
+}

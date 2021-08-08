@@ -1,0 +1,10 @@
+{
+  "Name": "Mob",
+  "Health": [ 0, 0, 0 ],
+  "Traits": [
+    {
+      "Name": "Mob",
+      "Description": "This character doesn't trigger slay effects."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "Name": "Imperial Officer",
+  "Inherits": "Imperial",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Poise",
+      "Description": "Sturdy when bloodied."
+    },
+    {
+      "Name": "Arkentech Power Armor",
+      "Description": "Start combat with Vigor 1. Immune to blights, difficult, and dangerous terrain."
+    },
+    {
+      "Name": "Command Aura",
+      "Description": "Allies in range 3 of the Imperial officer have +1 boon on attacks. Other Imperial units may gain bonuses while in any Command Aura (this trait, or a trait with the same name)."
+    }
+  ]
+}

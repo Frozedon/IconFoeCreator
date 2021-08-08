@@ -1,0 +1,19 @@
+{
+  "Name": "Screaming Demon",
+  "Inherits": "Demon",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Increase size to 2."
+    },
+    {
+      "Name": "Terror",
+      "Description": "Non-demon characters that attempt to move into an adjacent space to the demon for the first time on their turn or star their turn there must pass a save or treat spaces adjacent to the Demon as impassable terrain. If they start their turn there and fail a save, they are shoved 1."
+    },
+    {
+      "Name": "Shrieking",
+      "Description": "When the Screaming Demon attacks, characters in range 2 of it must save or lose any stances they are holding."
+    }
+  ]
+}

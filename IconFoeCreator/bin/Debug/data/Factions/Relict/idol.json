@@ -1,0 +1,31 @@
+{
+  "Name": "Idol",
+  "Inherits": "Relict",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Increase size to 2."
+    },
+    {
+      "Name": "Combat Subroutine",
+      "Description": "Has hatred of the closest foe."
+    },
+    {
+      "Name": "Dire Hide",
+      "Description": "Resistant to physical damage when not bloody."
+    },
+    {
+      "Name": "Imbued Strength",
+      "Description": "All melee damage is boosted and gains shove 1."
+    },
+    {
+      "Name": "Shambling",
+      "Description": "Permanently staggered, slow, and winded."
+    },
+    {
+      "Name": "Heavy",
+      "Description": "Immune to shove."
+    }
+  ]
+}

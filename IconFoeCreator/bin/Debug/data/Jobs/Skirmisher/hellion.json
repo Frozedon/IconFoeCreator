@@ -1,0 +1,46 @@
+{
+  "Name": "Hellion",
+  "Inherits": "Skirmisher",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally."
+    },
+    {
+      "Name": "Extended Dash",
+      "Description": "Can dash as 1 action."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
+    },
+    {
+      "Name": "Finishing Blow",
+      "Description": "Boost damage if character is bloodied."
+    },
+    {
+      "Name": "Winged",
+      "Description": "Gains flying at start of their turn. Loses flying if dazed, winded, staggered, or stunned."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Stab",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "+1 boon" ],
+      "Hit": "Deal light physical damage. Boost damage and gains pierce if the target has no allies adjacent."
+    },
+    {
+      "Name": "Swoop",
+      "ActionCost": 1,
+      "Tags": [ "recharge 6" ],
+      "Description": "End turn and leave the battlefield. Return to the battlefield in a free space at start of next turn."
+    },
+    {
+      "Name": "Dive",
+      "ActionCost": 1,
+      "Description": "Fly in a line 3 area effect. One character within the area must save or take fray damage, be shoved to the end of the line, and become blinded."
+    }
+  ]
+}

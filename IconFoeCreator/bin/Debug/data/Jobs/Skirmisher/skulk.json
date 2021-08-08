@@ -1,0 +1,49 @@
+{
+  "Name": "Skulk",
+  "Inherits": "Skirmisher",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally."
+    },
+    {
+      "Name": "Extended Dash",
+      "Description": "Can dash as 1 action."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
+    },
+    {
+      "Name": "Prowl",
+      "Description": "Gains stealth at the start of their turn."
+    },
+    {
+      "Name": "Finishing Blow",
+      "Description": "Boost damage if character is bloody."
+    },
+    {
+      "Name": "Slippery",
+      "Description": "Gain evasion when bloody."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Stab",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "+1 boon" ],
+      "Hit": "Deal light physical damage. Boost damage and gains pierce if the target has no allies adjacent."
+    },
+    {
+      "Name": "Cheap Trick",
+      "ActionCost": 1,
+      "Description": "An adjacent foe must physical save or become blinded."
+    },
+    {
+      "Name": "Sprint",
+      "ActionCost": 1,
+      "Description": "Dash 6."
+    }
+  ]
+}

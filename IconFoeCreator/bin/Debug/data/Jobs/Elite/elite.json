@@ -1,0 +1,9 @@
+{
+  "Name": "Elite",
+  "Traits": [
+    {
+      "Name": "Elite",
+      "Description": "Takes 2 turns."
+    }
+  ]
+}

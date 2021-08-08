@@ -1,0 +1,15 @@
+{
+  "Name": "Wight",
+  "Inherits": "Relict",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Networked",
+      "Description": "+1 boon on all attacks if another Relict is adjacent to their target."
+    },
+    {
+      "Name": "Deathblow",
+      "Description": "When defiance triggers, deal piercing magic fray damage to an adjacent character."
+    }
+  ]
+}

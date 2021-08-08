@@ -1,0 +1,81 @@
+{
+  "Name": "Eldenwright",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Health": [ 5, 6, 7 ],
+  "HPMultiplier": 8,
+  "Speed": 3,
+  "Run": 1,
+  "Dash": 1,
+  "Defense": 7,
+  "Armor": [ 0, 0, 0 ],
+  "Attack": [ 2, 4, 6 ],
+  "Fray Damage": [ 3, 4, 5 ],
+  "LightDamage": 3,
+  "HeavyDamage": 7,
+  "CriticalDamage": 10,
+  "LightDamageDie": "1d6",
+  "HeavyDamageDie": "2d6",
+  "CriticalDamageDie": "3d6",
+  "DamageType": "Magic",
+  "Traits": [
+    {
+      "Name": "Overdrive 5",
+      "Description": "Deals boosted damage if the current round is 6 or higher."
+    },
+    {
+      "Name": "Slow",
+      "Description": "Go after all other characters. If multiple characters take slow turns, it takes the same order as regular turns (ally/enemy/ally)."
+    },
+    {
+      "Name": "Aetherwall",
+      "Description": "Cover from ranged attacks further away than range 2."
+    },
+    {
+      "Name": "Resonance",
+      "Description": "Attacks deal boosted damage if they hit 3 or more foes."
+    },
+    {
+      "Name": "Unstable Reality",
+      "Description": "1/any turn. After being damaged by an attack or effect, teleport 1 in any direction."
+    },
+    {
+      "Name": "Power Overwhelming",
+      "Description": "If overdrive has triggered, gain flying and vigor 1."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Annihilate",
+      "ActionCost": 2,
+      "Tags": [ "superheavy ranged attack 10", "blast 1", "+1 boon" ],
+      "Hit": "Deal heavy magic damage and inflict blight.",
+      "Miss": "Deal light magic damage.",
+      "AreaEffect": "Deal light magic damage.",
+      "Blightboost": "Increase to blast 2. After attack resolves, summon a height 1 space of terrain in the area."
+    },
+    {
+      "Name": "Liminal Arrows",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "Mark all foes in line of sight and range 10. At the end of those character’s turns, they take heavy magic damage if marked and not in cover from the Eldenwright, then the mark ends."
+    },
+    {
+      "Name": "Fell Shot",
+      "ActionCost": 1,
+      "Tags": [ "repeatable 2" ],
+      "Description": "Mark 2 unoccupied spaces in range 10. Foes or allies that pass through these spaces take piercing fray magic damage as an area effect. At the start of the eldenwright's turn, any spaces created by this ability disappear."
+    },
+    {
+      "Name": "Great Slip",
+      "ActionCost": 1,
+      "Description": "Teleport 5."
+    },
+    {
+      "Name": "Aethersup",
+      "ActionCost": 1,
+      "Tags": [ "1/round" ],
+      "Description": "Tick down Overdrive counter by 1."
+    }
+  ]
+}

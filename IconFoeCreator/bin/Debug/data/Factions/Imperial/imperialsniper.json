@@ -1,0 +1,23 @@
+{
+  "Name": "Imperial Sniper",
+  "Inherits": "Imperial",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Receive Orders",
+      "Description": "When this unit starts its turn in range of a command aura, it recharges all its abilities."
+    },
+    {
+      "Name": "Brace",
+      "Description": "When adjacent to cover, increase the range of all ranged attacks with a listed range by +3, and increase all line attacks by +3."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Deploy Cover",
+      "ActionCost": 1,
+      "Tags": [ "recharge 6", "2/combat" ],
+      "Description": "The sniper creates a space of height 1 terrain in an adjacent space."
+    }
+  ]
+}

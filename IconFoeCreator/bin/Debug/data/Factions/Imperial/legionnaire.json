@@ -1,0 +1,19 @@
+{
+  "Name": "Legionnaire",
+  "Inherits": "Imperial",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Receive Orders",
+      "Description": "When this unit starts its turn in range of a command aura, it recharges all its abilities."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Rifle",
+      "ActionCost": 2,
+      "Tags": [ "ranged attack 8", "recharge 6" ],
+      "Hit": "Deal piercing light damage and inflict burning."
+    }
+  ]
+}
