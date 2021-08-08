@@ -56,7 +56,7 @@ namespace IconFoeCreator
             this.comboBox_Faction.FormattingEnabled = true;
             this.comboBox_Faction.Location = new System.Drawing.Point(50, 91);
             this.comboBox_Faction.Name = "comboBox_Faction";
-            this.comboBox_Faction.Size = new System.Drawing.Size(253, 45);
+            this.comboBox_Faction.Size = new System.Drawing.Size(394, 45);
             this.comboBox_Faction.TabIndex = 1;
             // 
             // comboBox_Job
@@ -66,7 +66,7 @@ namespace IconFoeCreator
             this.comboBox_Job.FormattingEnabled = true;
             this.comboBox_Job.Location = new System.Drawing.Point(50, 194);
             this.comboBox_Job.Name = "comboBox_Job";
-            this.comboBox_Job.Size = new System.Drawing.Size(253, 45);
+            this.comboBox_Job.Size = new System.Drawing.Size(394, 45);
             this.comboBox_Job.TabIndex = 3;
             // 
             // label_Job
@@ -86,7 +86,7 @@ namespace IconFoeCreator
             this.comboBox_Chapter.FormattingEnabled = true;
             this.comboBox_Chapter.Location = new System.Drawing.Point(50, 304);
             this.comboBox_Chapter.Name = "comboBox_Chapter";
-            this.comboBox_Chapter.Size = new System.Drawing.Size(253, 45);
+            this.comboBox_Chapter.Size = new System.Drawing.Size(77, 45);
             this.comboBox_Chapter.TabIndex = 5;
             // 
             // label_Chapter
@@ -102,10 +102,10 @@ namespace IconFoeCreator
             // richTextBox_Description
             // 
             this.richTextBox_Description.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox_Description.Location = new System.Drawing.Point(340, 51);
+            this.richTextBox_Description.Location = new System.Drawing.Point(490, 51);
             this.richTextBox_Description.Name = "richTextBox_Description";
             this.richTextBox_Description.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox_Description.Size = new System.Drawing.Size(558, 843);
+            this.richTextBox_Description.Size = new System.Drawing.Size(643, 843);
             this.richTextBox_Description.TabIndex = 7;
             this.richTextBox_Description.Text = "";
             // 
@@ -125,7 +125,7 @@ namespace IconFoeCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(922, 919);
+            this.ClientSize = new System.Drawing.Size(1155, 919);
             this.Controls.Add(this.checkBox_Damage);
             this.Controls.Add(this.richTextBox_Description);
             this.Controls.Add(this.comboBox_Chapter);

@@ -1,0 +1,13 @@
+D:\Sandbox\IconFoeCreator\IconFoeCreator\bin\Release\IconFoeCreator.exe.config
+D:\Sandbox\IconFoeCreator\IconFoeCreator\bin\Release\IconFoeCreator.exe
+D:\Sandbox\IconFoeCreator\IconFoeCreator\bin\Release\IconFoeCreator.pdb
+D:\Sandbox\IconFoeCreator\IconFoeCreator\bin\Release\Newtonsoft.Json.dll
+D:\Sandbox\IconFoeCreator\IconFoeCreator\bin\Release\Newtonsoft.Json.xml
+D:\Sandbox\IconFoeCreator\IconFoeCreator\obj\Release\IconFoeCreator.Form1.resources
+D:\Sandbox\IconFoeCreator\IconFoeCreator\obj\Release\IconFoeCreator.Properties.Resources.resources
+D:\Sandbox\IconFoeCreator\IconFoeCreator\obj\Release\IconFoeCreator.csproj.GenerateResource.cache
+D:\Sandbox\IconFoeCreator\IconFoeCreator\obj\Release\IconFoeCreator.csproj.CoreCompileInputs.cache
+D:\Sandbox\IconFoeCreator\IconFoeCreator\obj\Release\IconFoeCreator.csproj.CopyComplete
+D:\Sandbox\IconFoeCreator\IconFoeCreator\obj\Release\IconFoeCreator.exe
+D:\Sandbox\IconFoeCreator\IconFoeCreator\obj\Release\IconFoeCreator.pdb
+D:\Sandbox\IconFoeCreator\IconFoeCreator\obj\Release\IconFoeCreator.csprojAssemblyReference.cache
