@@ -51,7 +51,12 @@ namespace IconFoeCreator
         private void UpdateDescription()
         {
             ChapterItem chapterItem = (ChapterItem)comboBox_Chapter.SelectedItem;
-            richTextBox_Description.Text = DescriptionCreator.CreateDescription((Statistics)comboBox_Faction.SelectedItem, (Statistics)comboBox_Job.SelectedItem, chapterItem.Value, checkBox_Damage.Checked);
+            DescriptionCreator.UpdateDescription(
+                richTextBox_Description,
+                (Statistics)comboBox_Faction.SelectedItem,
+                (Statistics)comboBox_Job.SelectedItem,
+                chapterItem.Value,
+                checkBox_Damage.Checked);
         }
     }
 

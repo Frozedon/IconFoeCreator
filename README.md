@@ -3,6 +3,6 @@
 TODO List
 - [X] Make git
 - [X] Remove duplicate traits
-- [ ] Decorate description with bolds and italics
+- [X] Decorate description with bolds and italics
 - [ ] Finish Faction json files
 - [ ] Sort traits/actions (Possibly dropdown for different methods)
