@@ -37,6 +37,7 @@ namespace IconFoeCreator
             this.label_Chapter = new System.Windows.Forms.Label();
             this.richTextBox_Description = new System.Windows.Forms.RichTextBox();
             this.checkBox_Damage = new System.Windows.Forms.CheckBox();
+            this.button_copyClipboard = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label_Faction
@@ -113,7 +114,7 @@ namespace IconFoeCreator
             // 
             this.checkBox_Damage.AutoSize = true;
             this.checkBox_Damage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Damage.Location = new System.Drawing.Point(50, 840);
+            this.checkBox_Damage.Location = new System.Drawing.Point(50, 780);
             this.checkBox_Damage.Name = "checkBox_Damage";
             this.checkBox_Damage.Size = new System.Drawing.Size(260, 36);
             this.checkBox_Damage.TabIndex = 8;
@@ -121,11 +122,23 @@ namespace IconFoeCreator
             this.checkBox_Damage.UseVisualStyleBackColor = true;
             this.checkBox_Damage.CheckedChanged += new System.EventHandler(this.checkBox_Damage_CheckedChanged);
             // 
+            // button_copyClipboard
+            // 
+            this.button_copyClipboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_copyClipboard.Location = new System.Drawing.Point(50, 841);
+            this.button_copyClipboard.Name = "button_copyClipboard";
+            this.button_copyClipboard.Size = new System.Drawing.Size(260, 53);
+            this.button_copyClipboard.TabIndex = 9;
+            this.button_copyClipboard.Text = "Copy to Clipboard";
+            this.button_copyClipboard.UseVisualStyleBackColor = true;
+            this.button_copyClipboard.Click += new System.EventHandler(this.button_copyClipboard_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1155, 919);
+            this.Controls.Add(this.button_copyClipboard);
             this.Controls.Add(this.checkBox_Damage);
             this.Controls.Add(this.richTextBox_Description);
             this.Controls.Add(this.comboBox_Chapter);
@@ -151,6 +164,7 @@ namespace IconFoeCreator
         private System.Windows.Forms.Label label_Chapter;
         private System.Windows.Forms.RichTextBox richTextBox_Description;
         private System.Windows.Forms.CheckBox checkBox_Damage;
+        private System.Windows.Forms.Button button_copyClipboard;
     }
 }
 

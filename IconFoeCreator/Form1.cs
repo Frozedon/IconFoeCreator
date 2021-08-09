@@ -58,6 +58,11 @@ namespace IconFoeCreator
                 chapterItem.Value,
                 checkBox_Damage.Checked);
         }
+
+        private void button_copyClipboard_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(richTextBox_Description.Text);
+        }
     }
 
     public static class Constants
