@@ -19,7 +19,7 @@ namespace IconFoeCreator
             InitializeComponent();
 
             statBuilder = new StatisticBuilder();
-            statBuilder.BuildTestStatistics();
+            statBuilder.BuildStatistics();
 
             comboBox_Faction.DataSource = statBuilder.Factions;
             comboBox_Faction.SelectedIndexChanged += OnIndexChanged;

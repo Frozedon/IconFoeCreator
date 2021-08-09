@@ -224,7 +224,10 @@ namespace IconFoeCreator
         private string ValueSet;
         public bool IsSet { get; private set; }
 
-        public OptionalString() { }
+        public OptionalString()
+        {
+            ValueSet = String.Empty;
+        }
         public OptionalString(string value)
         {
             ValueSet = value;

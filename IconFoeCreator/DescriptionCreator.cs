@@ -20,7 +20,16 @@ namespace IconFoeCreator
 
             chapter = Math.Max(1, Math.Min(Constants.ChapterCount, chapter));
             int index = chapter - 1;
-            Statistics stats = type.InheritFrom(faction);
+
+            Statistics stats;
+            if (faction != null && faction.Name != null && faction.Name != "...")
+            {
+                stats = type.InheritFrom(faction);
+            }
+            else
+            {
+                stats = type;
+            }
 
             // Traits can add armor, max armor, or alter hit points
             int addArmor = 0;
@@ -49,7 +58,11 @@ namespace IconFoeCreator
             textBox.Clear();
 
             textBox.SelectionFont = boldUnderlineFont;
-            textBox.AppendText(faction.ToString() + " " + type.ToString() + Environment.NewLine);
+            if (faction != null && faction.Name != null && faction.Name != "...")
+            {
+                textBox.AppendText(faction.ToString() + " ");
+            }
+            textBox.AppendText(type.ToString() + Environment.NewLine);
             textBox.SelectionFont = regFont;
 
             textBox.SelectionFont = boldFont;
