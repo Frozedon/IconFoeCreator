@@ -13,3 +13,4 @@ TODO List
 - [ ] Tabs for saving foe combos
 - [ ] Make high level faction types selectable (json change)
 - [ ] Monstrosities
+- [ ] Copy to Clipboard button
