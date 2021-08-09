@@ -4,5 +4,6 @@ TODO List
 - [X] Make git
 - [X] Remove duplicate traits
 - [X] Decorate description with bolds and italics
-- [ ] Finish Faction json files
+- [X] Finish Faction json files
 - [ ] Sort traits/actions (Possibly dropdown for different methods)
+- [ ] Clean up the weird optional class to just use nullable types
