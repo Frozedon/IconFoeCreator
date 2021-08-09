@@ -1,0 +1,18 @@
+{
+  "Name": "Starblood Jotunn",
+  "Inherits": "Jotunn",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Winged",
+      "Description": "Gain flying at the start of their turn. Lose flying if shoved, stunned, dazed, or staggered."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Polaris",
+      "ActionCost": 1,
+      "Description": "Mark a visible space. At the end of each turn past this one (foe or allied), roll a d6. On a 6, a meteor smashes into the space, inflicting light damage and frostbite to all characters within."
+    }
+  ]
+}

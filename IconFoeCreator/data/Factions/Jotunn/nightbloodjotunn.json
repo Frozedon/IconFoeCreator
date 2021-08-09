@@ -1,0 +1,19 @@
+{
+  "Name": "Nightblood Jotunn",
+  "Inherits": "Jotunn",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Soul Freeze",
+      "Description": "+1 boon and deals bonus damage on attacks against frostbitten characters."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Sweep of Night",
+      "ActionCost": 1,
+      "Tags": [ "recharge 6" ],
+      "Description": "The Jotunn sweeps it’s cape, targeting all characters in range 3, then teleports to any free space in range 8. It can then teleport every character it targeted to any space in range 3 of its new location. Foes can save to avoid this effect."
+    }
+  ]
+}

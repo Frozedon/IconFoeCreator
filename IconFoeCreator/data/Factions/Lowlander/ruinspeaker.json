@@ -1,0 +1,19 @@
+{
+  "Name": "Ruin Speaker",
+  "Inherits": "Lowlander",
+  "Type": "Faction",
+  "Actions": [
+    {
+      "Name": "Call Ruin",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "The Ruin Speaker chooses a space in range 6, that becomes known to all characters, and becomes slow (ongoing). At the start of the Ruin speaker’s next turn, a ruin chunk surfaces in that space, a height 2 piece of terrain. Spaces next to this terrain are difficult. Any character occupying the space is pushed up on top of the ruin chunk but is also stunned (no save)."
+    },
+    {
+      "Name": "Welcome",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "The Ruin Speaker re-arms all lowlander traps in range 3, then immediately re-triggers the effects of all lowlander traps in range."
+    }
+  ]
+}

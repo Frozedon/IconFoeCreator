@@ -1,0 +1,19 @@
+{
+  "Name": "Stormblood Jotunn",
+  "Inherits": "Jotunn",
+  "Type": "Faction",
+  "Actions": [
+    {
+      "Name": "Comet",
+      "ActionCost": 1,
+      "Tags": [ "2/combat" ],
+      "Description": "The Jotunn hurls a spare weapon in a line 3 area, where it comes to rest as a height 1 terrain piece. Characters adjacent to the weapon when it lands take fray damage and are shoved 1 space. Spaces adjacent to the weapon are difficult terrain."
+    },
+    {
+      "Name": "Split the Earth",
+      "ActionCost": 1,
+      "Tags": [ "1/combat" ],
+      "Description": "The Jotunn creates a line 3 area that becomes an Edge for the rest of combat. Characters standing in the edge when it’s created must save or fall in."
+    }
+  ]
+}

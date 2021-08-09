@@ -1,0 +1,18 @@
+{
+  "Name": "Apothecary",
+  "Inherits": "Lowlander",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Great Purity",
+      "Description": "Immune to blights. Conveys this immunity to adjacent allies."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Bitter Root",
+      "ActionCost": 1,
+      "Description": "The Apothecary marks a character in range 4. That character must save or become marked, and vulnerable, winded, and poisoned while marked. They fail this save automatically if they are suffering from lowlander toxin. They can repeat it at the end of their turn to clear the mark and all these effects, even if they are suffering from toxin."
+    }
+  ]
+}

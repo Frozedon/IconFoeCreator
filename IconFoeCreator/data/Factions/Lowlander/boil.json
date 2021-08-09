@@ -1,0 +1,19 @@
+{
+  "Name": "Boil",
+  "Inherits": "Lowlander",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Noxious World",
+      "Description": "When overdrive triggers, the entire battlefield becomes dangerous terrain."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Catalyze",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" , "mark" ],
+      "Description": "A character in range 5 must save or become marked by the Viper. While marked, the effect of lowlander toxin on them is tripled and they are slow."
+    }
+  ]
+}

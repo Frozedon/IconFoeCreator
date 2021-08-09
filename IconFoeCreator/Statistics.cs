@@ -35,6 +35,10 @@ namespace IconFoeCreator
 
         public Statistics()
         {
+            Name = String.Empty;
+            Inherits = String.Empty;
+            Inherited = false;
+            Type = String.Empty;
             Health = new OptionalInt[Constants.ChapterCount];
             HPMultiplier = new OptionalInt();
             HPMultiplier.SetDefault(4);

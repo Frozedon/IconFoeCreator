@@ -1,0 +1,24 @@
+{
+  "Name": "Wildblood Jotunn",
+  "Inherits": "Jotunn",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Slow",
+      "Description": "Go after all other characters. If multiple characters take slow turns, it takes the same order as regular turns (ally/enemy/ally)."
+    },
+    {
+      "Name": "Brittle Flesh",
+      "Description": "Starts combat at only 50% hp, with vigor 2."
+    },
+    {
+      "Name": "Adaptive Bark",
+      "Description": "While it has vigor, magic damage becomes godly and become resistant to physical damage. While it has no vigor, physical damage becomes godly and becomes resistant to magic damage."
+    },
+    {
+      "Name": "Growing Season",
+      "Tags": [ "1/round" ],
+      "Description": "When damaged by an ability or action, drops a fruit, an intangible summon in a space in range 2. Self or allies can pass through the space to be cleansed (end all blights, end a mark, or save against all conditions). This destroys the summon. Foes can pass through the space and destroy the fruit, but are poisoned and staggered."
+    }
+  ]
+}
