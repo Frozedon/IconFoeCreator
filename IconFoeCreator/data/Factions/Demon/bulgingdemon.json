@@ -5,7 +5,7 @@
   "Traits": [
     {
       "Name": "Regenerator",
-      "Description": "Reduce hp by 50%.",
+      "Description": "Regeneration 1. Reduce hp by 50%.",
       "AddHP": -0.5
     },
     {

@@ -22,12 +22,14 @@
     {
       "Name": "Tenacious",
       "Description": "+25% hp.",
-      "AddHP": 0.25
+      "AddHP": 0.25,
+      "Setup": true
     },
     {
       "Name": "Poor Armor",
       "Description": "Max armor is 0.",
-      "MaxArmor": 0
+      "MaxArmor": 0,
+      "Setup": true
     },
     {
       "Name": "Large",

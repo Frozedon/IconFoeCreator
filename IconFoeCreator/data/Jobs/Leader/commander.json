@@ -2,7 +2,6 @@
   "Name": "Commander",
   "Inherits": "Leader",
   "Type": "Job",
-  "AddArmor": 1,
   "Traits": [
     {
       "Name": "Shelter",
@@ -11,7 +10,8 @@
     {
       "Name": "Improved Armor",
       "Description": "+1 armor.",
-      "AddArmor": 1
+      "AddArmor": 1,
+      "Setup": true
     },
     {
       "Name": "Command Aura",

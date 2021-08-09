@@ -14,7 +14,8 @@
     {
       "Name": "Improved Armor",
       "Description": "+1 armor.",
-      "AddArmor": 1
+      "AddArmor": 1,
+      "Setup": true
     },
     {
       "Name": "Heavy Armor",

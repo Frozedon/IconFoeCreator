@@ -2,7 +2,6 @@
   "Name": "Alchemist",
   "Inherits": "Artillery",
   "Type": "Job",
-  "AddArmor": 1,
   "Traits": [
     {
       "Name": "Overdrive 3",
@@ -15,7 +14,8 @@
     {
       "Name": "Improved Armor",
       "Description": "+1 armor.",
-      "AddArmor": 1
+      "AddArmor": 1,
+      "Setup": true
     },
     {
       "Name": "Acid Splash",

@@ -5,7 +5,7 @@
   "Traits": [
     {
       "Name": "Ethereal",
-      "Description": "ges of the hole. Ethereal: Flying, phasing, and intangible unless there’s a hostile character in range 2. Reduce hp by 50%.",
+      "Description": "Flying, phasing, and intangible unless there’s a hostile character in range 2. Reduce hp by 50%.",
       "AddHP": -0.5
     },
     {
