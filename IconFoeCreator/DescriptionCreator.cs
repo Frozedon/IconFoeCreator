@@ -39,21 +39,23 @@ namespace IconFoeCreator
             bool noDash = false;
             foreach (Trait trait in stats.Traits)
             {
-                if (trait.AddArmor.IsSet) { addArmor += trait.AddArmor.Value; }
-                if (trait.MaxArmor.IsSet) { maxArmor = Math.Min(maxArmor, trait.MaxArmor.Value); }
-                if (trait.AddHP.IsSet) { addHP += trait.AddHP.Value; }
-                if (trait.NoRun.IsSet) { noRun = trait.NoRun.Value; }
-                if (trait.NoDash.IsSet) { noDash = trait.NoDash.Value; }
+                if (trait.AddArmor.HasValue) { addArmor += trait.AddArmor.Value; }
+                if (trait.MaxArmor.HasValue) { maxArmor = Math.Min(maxArmor, trait.MaxArmor.Value); }
+                if (trait.AddHP.HasValue) { addHP += trait.AddHP.Value; }
+                if (trait.NoRun.HasValue) { noRun = trait.NoRun.Value; }
+                if (trait.NoDash.HasValue) { noDash = trait.NoDash.Value; }
             }
 
-            int health = stats.Health[index].Value;
-            double hitPoints = health * stats.HPMultiplier.Value * (1.0 + addHP);
-            string run = noRun ? "no run" : "run " + stats.Run.Value;
-            string dash = noDash ? "no dash" : "dash " + stats.Dash.Value;
-            int defense = stats.Defense.Value + chapter;
-            int armor = Math.Min(stats.Armor[index].Value + addArmor, maxArmor);
-            int attack = stats.Attack[index].Value;
-            int frayDmg = stats.FrayDamage[index].Value;
+            int health = stats.Health[index].GetValueOrDefault();
+            double hitPoints = health * stats.HPMultiplier.GetValueOrDefault(4) * (1.0 + addHP);
+            hitPoints = Math.Max(hitPoints, 1);
+            int speed = stats.Speed.GetValueOrDefault();
+            string run = noRun ? "no run" : "run " + stats.Run.GetValueOrDefault();
+            string dash = noDash ? "no dash" : "dash " + stats.Dash.GetValueOrDefault();
+            int defense = stats.Defense.GetValueOrDefault() + chapter;
+            int armor = Math.Min(stats.Armor[index].GetValueOrDefault() + addArmor, maxArmor);
+            int attack = stats.Attack[index].GetValueOrDefault();
+            int frayDmg = stats.FrayDamage[index].GetValueOrDefault();
 
             textBox.Clear();
 
@@ -78,7 +80,7 @@ namespace IconFoeCreator
             textBox.SelectionFont = boldFont;
             textBox.AppendText("Speed: ");
             textBox.SelectionFont = regFont;
-            textBox.AppendText(stats.Speed.Value + ", " + run + ", " + dash + Environment.NewLine);
+            textBox.AppendText(speed + ", " + run + ", " + dash + Environment.NewLine);
 
             textBox.SelectionFont = boldFont;
             textBox.AppendText("Defense: ");
@@ -104,25 +106,26 @@ namespace IconFoeCreator
             textBox.AppendText("Damage: ");
             textBox.SelectionFont = regFont;
 
-            if ((useFlatDamage && stats.LightDamage.IsSet) || !stats.LightDamageDie.IsSet) { textBox.AppendText((stats.LightDamage.Value + chapter).ToString()); }
-            else { textBox.AppendText(stats.LightDamageDie.Value + "+" + chapter); }
+            if ((useFlatDamage && stats.LightDamage.HasValue) || stats.LightDamageDie == null) { textBox.AppendText((stats.LightDamage.GetValueOrDefault() + chapter).ToString()); }
+            else { textBox.AppendText(stats.LightDamageDie + "+" + chapter); }
             textBox.AppendText("/");
-            if ((useFlatDamage && stats.HeavyDamage.IsSet) || !stats.HeavyDamageDie.IsSet) { textBox.AppendText((stats.HeavyDamage.Value + chapter).ToString()); }
-            else { textBox.AppendText(stats.HeavyDamageDie.Value + "+" + chapter); }
+            if ((useFlatDamage && stats.HeavyDamage.HasValue) || stats.HeavyDamageDie == null) { textBox.AppendText((stats.HeavyDamage.GetValueOrDefault() + chapter).ToString()); }
+            else { textBox.AppendText(stats.HeavyDamageDie + "+" + chapter); }
             textBox.AppendText("/");
-            if ((useFlatDamage && stats.CriticalDamage.IsSet) || !stats.CriticalDamageDie.IsSet) { textBox.AppendText((stats.CriticalDamage.Value + chapter).ToString()); }
-            else { textBox.AppendText(stats.CriticalDamageDie.Value + "+" + chapter); }
+            if ((useFlatDamage && stats.CriticalDamage.HasValue) || stats.CriticalDamageDie == null) { textBox.AppendText((stats.CriticalDamage.GetValueOrDefault() + chapter).ToString()); }
+            else { textBox.AppendText(stats.CriticalDamageDie + "+" + chapter); }
             textBox.AppendText(Environment.NewLine);
 
             textBox.SelectionFont = boldFont;
             textBox.AppendText("Damage Type: ");
             textBox.SelectionFont = regFont;
-            textBox.AppendText(stats.DamageType.Value + Environment.NewLine);
+            if (stats.DamageType != null) { textBox.AppendText(stats.DamageType); }
+            textBox.AppendText(Environment.NewLine);
 
             textBox.SelectionFont = boldFont;
             textBox.AppendText("Faction Blight: ");
             textBox.SelectionFont = regFont;
-            textBox.AppendText(stats.FactionBlight.Value);
+            if (stats.FactionBlight != null) { textBox.AppendText(stats.FactionBlight); }
 
             if (stats.Traits.Count > 0)
             {
