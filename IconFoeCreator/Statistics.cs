@@ -8,10 +8,11 @@ namespace IconFoeCreator
 {
     public class Statistics
     {
-        public string Name { get; set; }
-        public string Inherits { get; set; }
-        public bool Inherited { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; } // Does not inherit
+        public string Inherits { get; set; } // Does not inherit
+        public bool Inherited { get; set; } // Does not inherit
+        public string Group { get; set; }
+        public string Type { get; set; } // Does not inherit
         public int?[] Health { get; set; }
         public int? HPMultiplier { get; set; }
         public int? Speed { get; set; }
@@ -28,9 +29,9 @@ namespace IconFoeCreator
         public string HeavyDamageDie { get; set; }
         public string CriticalDamageDie { get; set; }
         public string DamageType { get; set; }
-        public List<Trait> Traits { get; set; }
-        public List<Interrupt> Interrupts { get; set; }
-        public List<Action> Actions { get; set; }
+        public List<Trait> Traits { get; set; } // Additive inheritance
+        public List<Interrupt> Interrupts { get; set; } // Additive inheritance
+        public List<Action> Actions { get; set; } // Additive inheritance
         public string FactionBlight { get; set; }
 
         public Statistics()
@@ -56,40 +57,44 @@ namespace IconFoeCreator
         public Statistics InheritFrom(Statistics otherStats)
         {
             Statistics newStats = new Statistics();
+            newStats.Inherited = true;
 
-            if (otherStats.Name != null && otherStats.Name != String.Empty) { newStats.Name = otherStats.Name; } else { newStats.Name = Name; }
-            if (otherStats.Inherits != null && otherStats.Inherits != String.Empty) { newStats.Inherits = otherStats.Inherits; } else { newStats.Inherits = Inherits; }
-            if (otherStats.Type != null && otherStats.Type != String.Empty) { newStats.Type = otherStats.Type; } else { newStats.Type = Type; }
-            if (otherStats.HPMultiplier.HasValue) { newStats.HPMultiplier = otherStats.HPMultiplier; } else { newStats.HPMultiplier = HPMultiplier; }
-            if (otherStats.Speed.HasValue) { newStats.Speed = otherStats.Speed; } else { newStats.Speed = Speed; }
-            if (otherStats.Run.HasValue) { newStats.Run = otherStats.Run; } else { newStats.Run = Run; }
-            if (otherStats.Dash.HasValue) { newStats.Dash = otherStats.Dash; } else { newStats.Dash = Dash; }
-            if (otherStats.Defense.HasValue) { newStats.Defense = otherStats.Defense; } else { newStats.Defense = Defense; }
-            if (otherStats.LightDamage.HasValue) { newStats.LightDamage = otherStats.LightDamage; } else { newStats.LightDamage = LightDamage; }
-            if (otherStats.HeavyDamage.HasValue) { newStats.HeavyDamage = otherStats.HeavyDamage; } else { newStats.HeavyDamage = HeavyDamage; }
-            if (otherStats.CriticalDamage.HasValue) { newStats.CriticalDamage = otherStats.CriticalDamage; } else { newStats.CriticalDamage = CriticalDamage; }
-            if (otherStats.LightDamageDie != null && otherStats.LightDamageDie != String.Empty) { newStats.LightDamageDie = otherStats.LightDamageDie; } else { newStats.LightDamageDie = LightDamageDie; }
-            if (otherStats.HeavyDamageDie != null && otherStats.HeavyDamageDie != String.Empty) { newStats.HeavyDamageDie = otherStats.HeavyDamageDie; } else { newStats.HeavyDamageDie = HeavyDamageDie; }
-            if (otherStats.CriticalDamageDie != null && otherStats.CriticalDamageDie != String.Empty) { newStats.CriticalDamageDie = otherStats.CriticalDamageDie; } else { newStats.CriticalDamageDie = CriticalDamageDie; }
-            if (otherStats.DamageType != null && otherStats.DamageType != String.Empty) { newStats.DamageType = otherStats.DamageType; } else { newStats.DamageType = DamageType; }
-            if (otherStats.FactionBlight != null && otherStats.FactionBlight != String.Empty) { newStats.FactionBlight = otherStats.FactionBlight; } else { newStats.FactionBlight = FactionBlight; }
+            newStats.Name = Name;
+            newStats.Inherits = Inherits;
+            newStats.Type = Type;
+
+            // Inheritted values
+            if (Group != null && Group != String.Empty) { newStats.Group = Group; } else { newStats.Group = otherStats.Group; }
+            if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
+            if (Speed.HasValue) { newStats.Speed = Speed; } else { newStats.Speed = otherStats.Speed; }
+            if (Run.HasValue) { newStats.Run = Run; } else { newStats.Run = otherStats.Run; }
+            if (Dash.HasValue) { newStats.Dash = Dash; } else { newStats.Dash = otherStats.Dash; }
+            if (Defense.HasValue) { newStats.Defense = Defense; } else { newStats.Defense = otherStats.Defense; }
+            if (LightDamage.HasValue) { newStats.LightDamage = LightDamage; } else { newStats.LightDamage = otherStats.LightDamage; }
+            if (HeavyDamage.HasValue) { newStats.HeavyDamage = HeavyDamage; } else { newStats.HeavyDamage = otherStats.HeavyDamage; }
+            if (CriticalDamage.HasValue) { newStats.CriticalDamage = CriticalDamage; } else { newStats.CriticalDamage = otherStats.CriticalDamage; }
+            if (LightDamageDie != null && LightDamageDie != String.Empty) { newStats.LightDamageDie = LightDamageDie; } else { newStats.LightDamageDie = otherStats.LightDamageDie; }
+            if (HeavyDamageDie != null && HeavyDamageDie != String.Empty) { newStats.HeavyDamageDie = HeavyDamageDie; } else { newStats.HeavyDamageDie = otherStats.HeavyDamageDie; }
+            if (CriticalDamageDie != null && CriticalDamageDie != String.Empty) { newStats.CriticalDamageDie = CriticalDamageDie; } else { newStats.CriticalDamageDie = CriticalDamageDie; }
+            if (DamageType != null && DamageType != String.Empty) { newStats.DamageType = DamageType; } else { newStats.DamageType = otherStats.DamageType; }
+            if (FactionBlight != null && FactionBlight != String.Empty) { newStats.FactionBlight = FactionBlight; } else { newStats.FactionBlight = otherStats.FactionBlight; }
 
             // These replace those of a specific size
             for (int i = 0; i < Constants.ChapterCount; ++i)
             {
-                if (otherStats.Health[i].HasValue) { newStats.Health[i] = otherStats.Health[i]; } else { newStats.Health[i] = Health[i]; }
-                if (otherStats.Armor[i].HasValue) { newStats.Armor[i] = otherStats.Armor[i]; } else { newStats.Armor[i] = Armor[i]; }
-                if (otherStats.Attack[i].HasValue) { newStats.Attack[i] = otherStats.Attack[i]; } else { newStats.Attack[i] = Attack[i]; }
-                if (otherStats.FrayDamage[i].HasValue) { newStats.FrayDamage[i] = otherStats.FrayDamage[i]; } else { newStats.FrayDamage[i] = FrayDamage[i]; }
+                if (Health[i].HasValue) { newStats.Health[i] = Health[i]; } else { newStats.Health[i] = otherStats.Health[i]; }
+                if (Armor[i].HasValue) { newStats.Armor[i] = Armor[i]; } else { newStats.Armor[i] = otherStats.Armor[i]; }
+                if (Attack[i].HasValue) { newStats.Attack[i] = Attack[i]; } else { newStats.Attack[i] = otherStats.Attack[i]; }
+                if (FrayDamage[i].HasValue) { newStats.FrayDamage[i] = FrayDamage[i]; } else { newStats.FrayDamage[i] = otherStats.FrayDamage[i]; }
             }
 
             // Additive statistics
-            newStats.Traits.AddRange(Traits);
             newStats.Traits.AddRange(otherStats.Traits);
-            newStats.Interrupts.AddRange(Interrupts);
+            newStats.Traits.AddRange(Traits);
             newStats.Interrupts.AddRange(otherStats.Interrupts);
-            newStats.Actions.AddRange(Actions);
+            newStats.Interrupts.AddRange(Interrupts);
             newStats.Actions.AddRange(otherStats.Actions);
+            newStats.Actions.AddRange(Actions);
 
             // Remove traits with duplicate names
             for (int i = 0; i < newStats.Traits.Count; ++i)
@@ -104,8 +109,6 @@ namespace IconFoeCreator
                     }
                 }
             }
-
-            newStats.Inherited = true;
 
             return newStats;
         }

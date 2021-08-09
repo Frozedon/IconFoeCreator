@@ -1,6 +1,7 @@
 {
   "Name": "", // Name of this statblock
   "Inherits": "", // Name of statblock you want to inherit traits from
+  "Group": "", // The group it should be filtered by
   "Type": "", // "Job" or "Faction"
   "Health": [ 0, 0, 0 ], // Separated by chapter
   "Speed": 0,

@@ -1,5 +1,6 @@
 {
   "Name": "Lowlander",
+  "Group": "Lowlander",
   "FactionBlight": "Poisoned",
   "Traits": [
     {

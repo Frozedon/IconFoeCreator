@@ -32,12 +32,16 @@ namespace IconFoeCreator
             this.label_Faction = new System.Windows.Forms.Label();
             this.comboBox_Faction = new System.Windows.Forms.ComboBox();
             this.comboBox_Job = new System.Windows.Forms.ComboBox();
-            this.label_Job = new System.Windows.Forms.Label();
+            this.label_Class = new System.Windows.Forms.Label();
             this.comboBox_Chapter = new System.Windows.Forms.ComboBox();
             this.label_Chapter = new System.Windows.Forms.Label();
             this.richTextBox_Description = new System.Windows.Forms.RichTextBox();
             this.checkBox_Damage = new System.Windows.Forms.CheckBox();
             this.button_copyClipboard = new System.Windows.Forms.Button();
+            this.comboBox_FactionGroup = new System.Windows.Forms.ComboBox();
+            this.label_FactionTemplates = new System.Windows.Forms.Label();
+            this.comboBox_JobGroup = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label_Faction
@@ -55,7 +59,7 @@ namespace IconFoeCreator
             this.comboBox_Faction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_Faction.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox_Faction.FormattingEnabled = true;
-            this.comboBox_Faction.Location = new System.Drawing.Point(50, 91);
+            this.comboBox_Faction.Location = new System.Drawing.Point(50, 190);
             this.comboBox_Faction.Name = "comboBox_Faction";
             this.comboBox_Faction.Size = new System.Drawing.Size(394, 45);
             this.comboBox_Faction.TabIndex = 1;
@@ -65,27 +69,27 @@ namespace IconFoeCreator
             this.comboBox_Job.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_Job.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox_Job.FormattingEnabled = true;
-            this.comboBox_Job.Location = new System.Drawing.Point(50, 194);
+            this.comboBox_Job.Location = new System.Drawing.Point(50, 401);
             this.comboBox_Job.Name = "comboBox_Job";
             this.comboBox_Job.Size = new System.Drawing.Size(394, 45);
             this.comboBox_Job.TabIndex = 3;
             // 
-            // label_Job
+            // label_Class
             // 
-            this.label_Job.AutoSize = true;
-            this.label_Job.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_Job.Location = new System.Drawing.Point(43, 154);
-            this.label_Job.Name = "label_Job";
-            this.label_Job.Size = new System.Drawing.Size(69, 37);
-            this.label_Job.TabIndex = 2;
-            this.label_Job.Text = "Job";
+            this.label_Class.AutoSize = true;
+            this.label_Class.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_Class.Location = new System.Drawing.Point(43, 264);
+            this.label_Class.Name = "label_Class";
+            this.label_Class.Size = new System.Drawing.Size(97, 37);
+            this.label_Class.TabIndex = 2;
+            this.label_Class.Text = "Class";
             // 
             // comboBox_Chapter
             // 
             this.comboBox_Chapter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_Chapter.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox_Chapter.FormattingEnabled = true;
-            this.comboBox_Chapter.Location = new System.Drawing.Point(50, 304);
+            this.comboBox_Chapter.Location = new System.Drawing.Point(50, 518);
             this.comboBox_Chapter.Name = "comboBox_Chapter";
             this.comboBox_Chapter.Size = new System.Drawing.Size(77, 45);
             this.comboBox_Chapter.TabIndex = 5;
@@ -94,7 +98,7 @@ namespace IconFoeCreator
             // 
             this.label_Chapter.AutoSize = true;
             this.label_Chapter.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_Chapter.Location = new System.Drawing.Point(43, 264);
+            this.label_Chapter.Location = new System.Drawing.Point(43, 478);
             this.label_Chapter.Name = "label_Chapter";
             this.label_Chapter.Size = new System.Drawing.Size(131, 37);
             this.label_Chapter.TabIndex = 4;
@@ -133,18 +137,62 @@ namespace IconFoeCreator
             this.button_copyClipboard.UseVisualStyleBackColor = true;
             this.button_copyClipboard.Click += new System.EventHandler(this.button_copyClipboard_Click);
             // 
+            // comboBox_FactionGroup
+            // 
+            this.comboBox_FactionGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_FactionGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_FactionGroup.FormattingEnabled = true;
+            this.comboBox_FactionGroup.Location = new System.Drawing.Point(50, 91);
+            this.comboBox_FactionGroup.Name = "comboBox_FactionGroup";
+            this.comboBox_FactionGroup.Size = new System.Drawing.Size(394, 45);
+            this.comboBox_FactionGroup.TabIndex = 11;
+            // 
+            // label_FactionTemplates
+            // 
+            this.label_FactionTemplates.AutoSize = true;
+            this.label_FactionTemplates.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_FactionTemplates.Location = new System.Drawing.Point(43, 150);
+            this.label_FactionTemplates.Name = "label_FactionTemplates";
+            this.label_FactionTemplates.Size = new System.Drawing.Size(150, 37);
+            this.label_FactionTemplates.TabIndex = 10;
+            this.label_FactionTemplates.Text = "Template";
+            // 
+            // comboBox_JobGroup
+            // 
+            this.comboBox_JobGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_JobGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_JobGroup.FormattingEnabled = true;
+            this.comboBox_JobGroup.Location = new System.Drawing.Point(50, 304);
+            this.comboBox_JobGroup.Name = "comboBox_JobGroup";
+            this.comboBox_JobGroup.Size = new System.Drawing.Size(394, 45);
+            this.comboBox_JobGroup.TabIndex = 13;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(43, 361);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(69, 37);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Job";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1155, 919);
+            this.Controls.Add(this.comboBox_JobGroup);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.comboBox_FactionGroup);
+            this.Controls.Add(this.label_FactionTemplates);
             this.Controls.Add(this.button_copyClipboard);
             this.Controls.Add(this.checkBox_Damage);
             this.Controls.Add(this.richTextBox_Description);
             this.Controls.Add(this.comboBox_Chapter);
             this.Controls.Add(this.label_Chapter);
             this.Controls.Add(this.comboBox_Job);
-            this.Controls.Add(this.label_Job);
+            this.Controls.Add(this.label_Class);
             this.Controls.Add(this.comboBox_Faction);
             this.Controls.Add(this.label_Faction);
             this.Name = "Form1";
@@ -159,12 +207,16 @@ namespace IconFoeCreator
         private System.Windows.Forms.Label label_Faction;
         private System.Windows.Forms.ComboBox comboBox_Faction;
         private System.Windows.Forms.ComboBox comboBox_Job;
-        private System.Windows.Forms.Label label_Job;
+        private System.Windows.Forms.Label label_Class;
         private System.Windows.Forms.ComboBox comboBox_Chapter;
         private System.Windows.Forms.Label label_Chapter;
         private System.Windows.Forms.RichTextBox richTextBox_Description;
         private System.Windows.Forms.CheckBox checkBox_Damage;
         private System.Windows.Forms.Button button_copyClipboard;
+        private System.Windows.Forms.ComboBox comboBox_FactionGroup;
+        private System.Windows.Forms.Label label_FactionTemplates;
+        private System.Windows.Forms.ComboBox comboBox_JobGroup;
+        private System.Windows.Forms.Label label1;
     }
 }
 

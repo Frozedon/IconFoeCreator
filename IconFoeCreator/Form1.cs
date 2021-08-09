@@ -27,6 +27,12 @@ namespace IconFoeCreator
             comboBox_Job.DataSource = statBuilder.Jobs;
             comboBox_Job.SelectedIndexChanged += OnIndexChanged;
 
+            comboBox_FactionGroup.DataSource = statBuilder.FactionGroups;
+            comboBox_FactionGroup.SelectedIndexChanged += OnFactionGroupChanged;
+
+            comboBox_JobGroup.DataSource = statBuilder.JobGroups;
+            comboBox_JobGroup.SelectedIndexChanged += OnJobGroupChanged;
+
             ChapterItem[] chapters = new ChapterItem[Constants.ChapterCount];
             for (int i = 0; i < Constants.ChapterCount; ++i)
             {
@@ -62,6 +68,44 @@ namespace IconFoeCreator
         private void button_copyClipboard_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(richTextBox_Description.Text);
+        }
+
+        private void OnFactionGroupChanged(object sender, EventArgs e)
+        {
+            string group = comboBox_FactionGroup.SelectedItem.ToString().ToLower();
+            if (group == StatisticBuilder.ANY_GROUP.ToLower())
+            {
+                comboBox_Faction.DataSource = statBuilder.Factions;
+            }
+            else
+            {
+                List<Statistics> filteredFactions = statBuilder.Factions.FindAll(delegate (Statistics stat)
+                {
+                    return stat.Group != null && stat.Group.ToLower() == group;
+                });
+                comboBox_Faction.DataSource = filteredFactions;
+            }
+
+            comboBox_Faction.SelectedIndex = 0;
+        }
+
+        private void OnJobGroupChanged(object sender, EventArgs e)
+        {
+            string group = comboBox_JobGroup.SelectedItem.ToString().ToLower();
+            if (group == StatisticBuilder.ANY_GROUP.ToLower())
+            {
+                comboBox_Job.DataSource = statBuilder.Jobs;
+            }
+            else
+            {
+                List<Statistics> filteredJobs = statBuilder.Jobs.FindAll(delegate (Statistics stat)
+                {
+                    return stat.Group != null && stat.Group.ToLower() == group;
+                });
+                comboBox_Job.DataSource = filteredJobs;
+            }
+
+            comboBox_Job.SelectedIndex = 0;
         }
     }
 

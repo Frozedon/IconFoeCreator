@@ -1,5 +1,6 @@
 {
   "Name": "Mob",
+  "Group": "Mob",
   "Health": [ 0, 0, 0 ],
   "Traits": [
     {

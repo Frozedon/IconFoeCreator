@@ -1,5 +1,6 @@
 {
   "Name": "Leader",
+  "Group": "Leader",
   "Health": [ 5, 6, 7 ],
   "Speed": 4,
   "Run": 2,
