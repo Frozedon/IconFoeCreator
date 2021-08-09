@@ -24,6 +24,7 @@
       "Name": "",
       "Tags": [ "" ], // Anything that should be in paranthesis
       "Description": "",
+      "Setup": false, // This is setup rules and can be hidden
       "AddHP": 0.0,
       "AddArmor": 0,
       "MaxArmor": 0,

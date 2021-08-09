@@ -5,7 +5,8 @@
   "Traits": [
     {
       "Name": "Monsters",
-      "Description": "Beasts do not flee or negotiate."
+      "Description": "Beasts do not flee or negotiate.",
+      "Setup": true
     },
     {
       "Name": "Ferocity",

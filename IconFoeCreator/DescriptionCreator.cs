@@ -10,7 +10,7 @@ namespace IconFoeCreator
 {
     public static class DescriptionCreator
     {
-        public static void UpdateDescription(RichTextBox textBox, Statistics faction, Statistics type, int chapter, bool useFlatDamage)
+        public static void UpdateDescription(RichTextBox textBox, Statistics faction, Statistics type, int chapter, bool useFlatDamage, bool showSetupTraits)
         {
             Font regFont = new Font(textBox.Font, FontStyle.Regular);
             Font boldFont = new Font(textBox.Font, FontStyle.Bold);
@@ -136,29 +136,32 @@ namespace IconFoeCreator
 
                 foreach (Trait trait in stats.Traits)
                 {
-                    textBox.SelectionFont = boldFont;
-                    textBox.AppendText(Environment.NewLine + trait.Name);
-                    
-                    if (trait.Tags.Count > 0)
+                    if (showSetupTraits || !trait.Setup)
                     {
-                        textBox.AppendText(" (");
+                        textBox.SelectionFont = boldFont;
+                        textBox.AppendText(Environment.NewLine + trait.Name);
 
-                        bool first = true;
-                        foreach (string tag in trait.Tags)
+                        if (trait.Tags.Count > 0)
                         {
-                            if (!first) { textBox.AppendText(", "); }
-                            else { first = false; }
+                            textBox.AppendText(" (");
 
-                            textBox.AppendText(tag);
+                            bool first = true;
+                            foreach (string tag in trait.Tags)
+                            {
+                                if (!first) { textBox.AppendText(", "); }
+                                else { first = false; }
+
+                                textBox.AppendText(tag);
+                            }
+
+                            textBox.AppendText(")");
                         }
 
-                        textBox.AppendText(")");
+                        textBox.AppendText(". ");
+                        textBox.SelectionFont = regFont;
+
+                        textBox.AppendText(trait.Description);
                     }
-
-                    textBox.AppendText(". ");
-                    textBox.SelectionFont = regFont;
-
-                    textBox.AppendText(trait.Description);
                 }
             }
 

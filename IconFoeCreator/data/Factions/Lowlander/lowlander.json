@@ -5,7 +5,8 @@
   "Traits": [
     {
       "Name": "Kin",
-      "Description": "Lowlanders are kin, can be bargained with, and will flee or surrender if heavily outnumbered or heavily losing a fight.\n• Motivations: Lowlanders nearly always fight for territory or supplies. Negotiating for them for passage through their territory usually involves doing a favor or payment, and they typically respect fair deals. They prefer to take captives in battle and ransom them back later. They are survivors and won't hesitate to back down from a fight they know they will lose - conversely, they won’t hesitate to exploit weaknesses."
+      "Description": "Lowlanders are kin, can be bargained with, and will flee or surrender if heavily outnumbered or heavily losing a fight.\n• Motivations: Lowlanders nearly always fight for territory or supplies. Negotiating for them for passage through their territory usually involves doing a favor or payment, and they typically respect fair deals. They prefer to take captives in battle and ransom them back later. They are survivors and won't hesitate to back down from a fight they know they will lose - conversely, they won’t hesitate to exploit weaknesses.",
+      "Setup": true
     },
     {
       "Name": "Terrain Expert",

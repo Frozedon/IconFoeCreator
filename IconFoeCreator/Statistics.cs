@@ -124,6 +124,7 @@ namespace IconFoeCreator
         public int? MaxArmor { get; set; }
         public bool? NoRun { get; set; }
         public bool? NoDash { get; set; }
+        public bool Setup { get; set; }
 
         public Trait()
         {

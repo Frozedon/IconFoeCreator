@@ -42,6 +42,7 @@ namespace IconFoeCreator
             this.label_FactionTemplates = new System.Windows.Forms.Label();
             this.comboBox_JobGroup = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkBox_SetupTraits = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label_Faction
@@ -177,11 +178,24 @@ namespace IconFoeCreator
             this.label1.TabIndex = 12;
             this.label1.Text = "Job";
             // 
+            // checkBox_SetupTraits
+            // 
+            this.checkBox_SetupTraits.AutoSize = true;
+            this.checkBox_SetupTraits.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_SetupTraits.Location = new System.Drawing.Point(50, 738);
+            this.checkBox_SetupTraits.Name = "checkBox_SetupTraits";
+            this.checkBox_SetupTraits.Size = new System.Drawing.Size(272, 36);
+            this.checkBox_SetupTraits.TabIndex = 14;
+            this.checkBox_SetupTraits.Text = "Show Setup Traits";
+            this.checkBox_SetupTraits.UseVisualStyleBackColor = true;
+            this.checkBox_SetupTraits.CheckedChanged += new System.EventHandler(this.checkBox_SetupTraits_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1155, 919);
+            this.Controls.Add(this.checkBox_SetupTraits);
             this.Controls.Add(this.comboBox_JobGroup);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox_FactionGroup);
@@ -217,6 +231,7 @@ namespace IconFoeCreator
         private System.Windows.Forms.Label label_FactionTemplates;
         private System.Windows.Forms.ComboBox comboBox_JobGroup;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBox_SetupTraits;
     }
 }
 

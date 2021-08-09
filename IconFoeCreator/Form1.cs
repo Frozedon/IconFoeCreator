@@ -54,6 +54,11 @@ namespace IconFoeCreator
             UpdateDescription();
         }
 
+        private void checkBox_SetupTraits_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateDescription();
+        }
+
         private void UpdateDescription()
         {
             ChapterItem chapterItem = (ChapterItem)comboBox_Chapter.SelectedItem;
@@ -62,7 +67,8 @@ namespace IconFoeCreator
                 (Statistics)comboBox_Faction.SelectedItem,
                 (Statistics)comboBox_Job.SelectedItem,
                 chapterItem.Value,
-                checkBox_Damage.Checked);
+                checkBox_Damage.Checked,
+                checkBox_SetupTraits.Checked);
         }
 
         private void button_copyClipboard_Click(object sender, EventArgs e)

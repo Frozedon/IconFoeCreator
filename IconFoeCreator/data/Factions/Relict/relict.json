@@ -9,7 +9,8 @@
     },
     {
       "Name": "Monsters",
-      "Description": "Relict do not flee or negotiate."
+      "Description": "Relict do not flee or negotiate.",
+      "Setup": true
     },
     {
       "Name": "Shuffle",

@@ -5,11 +5,13 @@
   "Traits": [
     {
       "Name": "Monsters",
-      "Description": "Demons do not flee or negotiate."
+      "Description": "Demons do not flee or negotiate.",
+      "Setup": true
     },
     {
       "Name": "Legion",
-      "Description": "When fighting demons, at the start of combat, place three Natals on the map in unoccupied space somewhere outside of range 2 of players. These don’t count for the total encounter budget."
+      "Description": "When fighting demons, at the start of combat, place three Natals on the map in unoccupied space somewhere outside of range 2 of players. These don’t count for the total encounter budget.",
+      "Setup": true
     },
     {
       "Name": "Banish",
