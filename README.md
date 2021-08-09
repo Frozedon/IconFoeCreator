@@ -9,7 +9,7 @@ TODO List
 - [X] Clean up the weird optional class to just use nullable types
 - [X] Faction dropdown to filter the faction templates
 - [X] Class dropdown to filter the jobs
-- [ ] Checkbox to show team comp/description info like "Kin" and "Monster" (hide by default)
+- [X] Checkbox to show setup info like "Kin" and "Monster" (hide by default)
 - [ ] Tabs for saving foe combos
 - [ ] Make high level faction types selectable (json change)
 - [ ] Monstrosities
