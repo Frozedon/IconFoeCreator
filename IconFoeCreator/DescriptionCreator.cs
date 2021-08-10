@@ -10,13 +10,13 @@ namespace IconFoeCreator
 {
     public static class DescriptionCreator
     {
-        public static void UpdateDescription(RichTextBox textBox, Statistics faction, Statistics type, int chapter, bool useFlatDamage, bool showSetupTraits)
+        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics faction, Statistics type, int chapter, bool useFlatDamage, bool showNonessentialTraits)
         {
-            Font regFont = new Font(textBox.Font, FontStyle.Regular);
-            Font boldFont = new Font(textBox.Font, FontStyle.Bold);
-            Font italicFont = new Font(textBox.Font, FontStyle.Italic);
-            Font underlineFont = new Font(textBox.Font, FontStyle.Underline);
-            Font boldUnderlineFont = new Font(textBox.Font, FontStyle.Bold | FontStyle.Underline);
+            Font regFont = new Font(descTextBox.Font, FontStyle.Regular);
+            Font boldFont = new Font(descTextBox.Font, FontStyle.Bold);
+            Font italicFont = new Font(descTextBox.Font, FontStyle.Italic);
+            Font underlineFont = new Font(descTextBox.Font, FontStyle.Underline);
+            Font boldUnderlineFont = new Font(descTextBox.Font, FontStyle.Bold | FontStyle.Underline);
 
             chapter = Math.Max(1, Math.Min(Constants.ChapterCount, chapter));
             int index = chapter - 1;
@@ -57,240 +57,274 @@ namespace IconFoeCreator
             int attack = stats.Attack[index].GetValueOrDefault();
             int frayDmg = stats.FrayDamage[index].GetValueOrDefault();
 
-            textBox.Clear();
+            descTextBox.Clear();
 
-            textBox.SelectionFont = boldUnderlineFont;
+            descTextBox.SelectionFont = boldUnderlineFont;
             if (faction != null && faction.Name != null && faction.Name != "...")
             {
-                textBox.AppendText(faction.ToString() + " ");
+                descTextBox.AppendText(faction.ToString() + " ");
             }
-            textBox.AppendText(type.ToString() + Environment.NewLine);
-            textBox.SelectionFont = regFont;
+            descTextBox.AppendText(type.ToString() + Environment.NewLine);
+            descTextBox.SelectionFont = regFont;
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Health: ");
-            textBox.SelectionFont = regFont;
-            textBox.AppendText(health + Environment.NewLine);
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Health: ");
+            descTextBox.SelectionFont = regFont;
+            descTextBox.AppendText(health + Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("HP: ");
-            textBox.SelectionFont = regFont;
-            textBox.AppendText((int)hitPoints + Environment.NewLine);
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("HP: ");
+            descTextBox.SelectionFont = regFont;
+            descTextBox.AppendText((int)hitPoints + Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Speed: ");
-            textBox.SelectionFont = regFont;
-            textBox.AppendText(speed + ", " + run + ", " + dash + Environment.NewLine);
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Speed: ");
+            descTextBox.SelectionFont = regFont;
+            descTextBox.AppendText(speed + ", " + run + ", " + dash + Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Defense: ");
-            textBox.SelectionFont = regFont;
-            textBox.AppendText(defense + Environment.NewLine);
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Defense: ");
+            descTextBox.SelectionFont = regFont;
+            descTextBox.AppendText(defense + Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Armor: ");
-            textBox.SelectionFont = regFont;
-            textBox.AppendText(armor + Environment.NewLine);
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Armor: ");
+            descTextBox.SelectionFont = regFont;
+            descTextBox.AppendText(armor + Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Attack: ");
-            textBox.SelectionFont = regFont;
-            textBox.AppendText(attack + Environment.NewLine);
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Attack: ");
+            descTextBox.SelectionFont = regFont;
+            descTextBox.AppendText(attack + Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Fray Damage: ");
-            textBox.SelectionFont = regFont;
-            textBox.AppendText(frayDmg + Environment.NewLine);
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Fray Damage: ");
+            descTextBox.SelectionFont = regFont;
+            descTextBox.AppendText(frayDmg + Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Damage: ");
-            textBox.SelectionFont = regFont;
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Damage: ");
+            descTextBox.SelectionFont = regFont;
 
-            if ((useFlatDamage && stats.LightDamage.HasValue) || stats.LightDamageDie == null) { textBox.AppendText((stats.LightDamage.GetValueOrDefault() + chapter).ToString()); }
-            else { textBox.AppendText(stats.LightDamageDie + "+" + chapter); }
-            textBox.AppendText("/");
-            if ((useFlatDamage && stats.HeavyDamage.HasValue) || stats.HeavyDamageDie == null) { textBox.AppendText((stats.HeavyDamage.GetValueOrDefault() + chapter).ToString()); }
-            else { textBox.AppendText(stats.HeavyDamageDie + "+" + chapter); }
-            textBox.AppendText("/");
-            if ((useFlatDamage && stats.CriticalDamage.HasValue) || stats.CriticalDamageDie == null) { textBox.AppendText((stats.CriticalDamage.GetValueOrDefault() + chapter).ToString()); }
-            else { textBox.AppendText(stats.CriticalDamageDie + "+" + chapter); }
-            textBox.AppendText(Environment.NewLine);
+            if ((useFlatDamage && stats.LightDamage.HasValue) || stats.LightDamageDie == null) { descTextBox.AppendText((stats.LightDamage.GetValueOrDefault() + chapter).ToString()); }
+            else { descTextBox.AppendText(stats.LightDamageDie + "+" + chapter); }
+            descTextBox.AppendText("/");
+            if ((useFlatDamage && stats.HeavyDamage.HasValue) || stats.HeavyDamageDie == null) { descTextBox.AppendText((stats.HeavyDamage.GetValueOrDefault() + chapter).ToString()); }
+            else { descTextBox.AppendText(stats.HeavyDamageDie + "+" + chapter); }
+            descTextBox.AppendText("/");
+            if ((useFlatDamage && stats.CriticalDamage.HasValue) || stats.CriticalDamageDie == null) { descTextBox.AppendText((stats.CriticalDamage.GetValueOrDefault() + chapter).ToString()); }
+            else { descTextBox.AppendText(stats.CriticalDamageDie + "+" + chapter); }
+            descTextBox.AppendText(Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Damage Type: ");
-            textBox.SelectionFont = regFont;
-            if (stats.DamageType != null) { textBox.AppendText(stats.DamageType); }
-            textBox.AppendText(Environment.NewLine);
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Damage Type: ");
+            descTextBox.SelectionFont = regFont;
+            if (stats.DamageType != null) { descTextBox.AppendText(stats.DamageType); }
+            descTextBox.AppendText(Environment.NewLine);
 
-            textBox.SelectionFont = boldFont;
-            textBox.AppendText("Faction Blight: ");
-            textBox.SelectionFont = regFont;
-            if (stats.FactionBlight != null) { textBox.AppendText(stats.FactionBlight); }
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText("Faction Blight: ");
+            descTextBox.SelectionFont = regFont;
+            if (stats.FactionBlight != null) { descTextBox.AppendText(stats.FactionBlight); }
 
             if (stats.Traits.Count > 0)
             {
-                textBox.AppendText(Environment.NewLine + Environment.NewLine);
-                textBox.SelectionFont = underlineFont;
-                textBox.AppendText("Traits");
-                textBox.SelectionFont = regFont;
+                descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
+                descTextBox.SelectionFont = underlineFont;
+                descTextBox.AppendText("Traits");
+                descTextBox.SelectionFont = regFont;
 
                 foreach (Trait trait in stats.Traits)
                 {
-                    if (showSetupTraits || !trait.Setup)
+                    if (showNonessentialTraits || !trait.Nonessential)
                     {
-                        textBox.SelectionFont = boldFont;
-                        textBox.AppendText(Environment.NewLine + trait.Name);
+                        descTextBox.SelectionFont = boldFont;
+                        descTextBox.AppendText(Environment.NewLine + trait.Name);
 
                         if (trait.Tags.Count > 0)
                         {
-                            textBox.AppendText(" (");
+                            descTextBox.AppendText(" (");
 
                             bool first = true;
                             foreach (string tag in trait.Tags)
                             {
-                                if (!first) { textBox.AppendText(", "); }
+                                if (!first) { descTextBox.AppendText(", "); }
                                 else { first = false; }
 
-                                textBox.AppendText(tag);
+                                descTextBox.AppendText(tag);
                             }
 
-                            textBox.AppendText(")");
+                            descTextBox.AppendText(")");
                         }
 
-                        textBox.AppendText(". ");
-                        textBox.SelectionFont = regFont;
+                        descTextBox.AppendText(". ");
+                        descTextBox.SelectionFont = regFont;
 
-                        textBox.AppendText(trait.Description);
+                        descTextBox.AppendText(trait.Description);
                     }
                 }
             }
 
             if (stats.Interrupts.Count > 0)
             {
-                textBox.AppendText(Environment.NewLine + Environment.NewLine);
-                textBox.SelectionFont = underlineFont;
-                textBox.AppendText("Interrupts");
-                textBox.SelectionFont = regFont;
+                descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
+                descTextBox.SelectionFont = underlineFont;
+                descTextBox.AppendText("Interrupts");
+                descTextBox.SelectionFont = regFont;
 
                 foreach (Interrupt interrupt in stats.Interrupts)
                 {
-                    textBox.AppendText(Environment.NewLine);
+                    descTextBox.AppendText(Environment.NewLine);
 
-                    textBox.SelectionFont = boldFont;
-                    textBox.AppendText(interrupt.Name + " (Interrupt");
+                    descTextBox.SelectionFont = boldFont;
+                    descTextBox.AppendText(interrupt.Name + " (Interrupt");
                     
                     if (interrupt.Count > 0)
                     {
-                        textBox.AppendText(" " + interrupt.Count);
+                        descTextBox.AppendText(" " + interrupt.Count);
                     }
 
                     foreach (string tag in interrupt.Tags)
                     {
-                        textBox.AppendText(", " + tag);
+                        descTextBox.AppendText(", " + tag);
                     }
 
-                    textBox.AppendText("): ");
-                    textBox.SelectionFont = regFont;
+                    descTextBox.AppendText("): ");
+                    descTextBox.SelectionFont = regFont;
 
-                    textBox.AppendText(interrupt.Description);
+                    descTextBox.AppendText(interrupt.Description);
                 }
             }
 
             if (stats.Actions.Count > 0)
             {
-                textBox.AppendText(Environment.NewLine + Environment.NewLine);
-                textBox.SelectionFont = underlineFont;
-                textBox.AppendText("Actions");
-                textBox.SelectionFont = regFont;
+                descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
+                descTextBox.SelectionFont = underlineFont;
+                descTextBox.AppendText("Actions");
+                descTextBox.SelectionFont = regFont;
 
                 foreach (Action action in stats.Actions)
                 {
-                    textBox.AppendText(Environment.NewLine);
+                    descTextBox.AppendText(Environment.NewLine);
 
-                    textBox.SelectionFont = boldFont;
-                    textBox.AppendText(action.Name + " (");
+                    descTextBox.SelectionFont = boldFont;
+                    descTextBox.AppendText(action.Name + " (");
 
                     if (action.ActionCost > 0)
                     {
-                        textBox.AppendText(action.ActionCost.ToString());
+                        descTextBox.AppendText(action.ActionCost.ToString());
 
-                        if (action.ActionCost == 1) { textBox.AppendText(" action"); }
-                        else { textBox.AppendText(" actions"); }
+                        if (action.ActionCost == 1) { descTextBox.AppendText(" action"); }
+                        else { descTextBox.AppendText(" actions"); }
                     }
                     else
                     {
-                        textBox.AppendText("Free action");
+                        descTextBox.AppendText("Free action");
                     }
 
                     foreach (string tag in action.Tags)
                     {
-                        textBox.AppendText(", " + tag);
+                        descTextBox.AppendText(", " + tag);
                     }
 
-                    textBox.AppendText("):");
-                    textBox.SelectionFont = regFont;
+                    descTextBox.AppendText("):");
+                    descTextBox.SelectionFont = regFont;
 
                     if (action.Description != null && action.Description != String.Empty)
                     {
-                        textBox.AppendText(" " + action.Description);
+                        descTextBox.AppendText(" " + action.Description);
                     }
 
                     if (action.Hit != null && action.Hit != String.Empty)
                     {
-                        textBox.SelectionFont = italicFont;
-                        textBox.AppendText(" On hit: ");
-                        textBox.SelectionFont = regFont;
-                        textBox.AppendText(action.Hit);
+                        descTextBox.SelectionFont = italicFont;
+                        descTextBox.AppendText(" On hit: ");
+                        descTextBox.SelectionFont = regFont;
+                        descTextBox.AppendText(action.Hit);
                     }
 
                     if (action.CriticalHit != null && action.CriticalHit != String.Empty)
                     {
-                        textBox.SelectionFont = italicFont;
-                        textBox.AppendText(" Critical hit: ");
-                        textBox.SelectionFont = regFont;
-                        textBox.AppendText(action.CriticalHit);
+                        descTextBox.SelectionFont = italicFont;
+                        descTextBox.AppendText(" Critical hit: ");
+                        descTextBox.SelectionFont = regFont;
+                        descTextBox.AppendText(action.CriticalHit);
                     }
 
                     if (action.Miss != null && action.Miss != String.Empty)
                     {
-                        textBox.SelectionFont = italicFont; 
-                        textBox.AppendText(" Miss: ");
-                        textBox.SelectionFont = regFont;
-                        textBox.AppendText(action.Miss);
+                        descTextBox.SelectionFont = italicFont;
+                        descTextBox.AppendText(" Miss: ");
+                        descTextBox.SelectionFont = regFont;
+                        descTextBox.AppendText(action.Miss);
                     }
 
                     if (action.AreaEffect != null && action.AreaEffect != String.Empty)
                     {
-                        textBox.SelectionFont = italicFont;
-                        textBox.AppendText(" Area Effect: ");
-                        textBox.SelectionFont = regFont;
-                        textBox.AppendText(action.AreaEffect);
+                        descTextBox.SelectionFont = italicFont;
+                        descTextBox.AppendText(" Area Effect: ");
+                        descTextBox.SelectionFont = regFont;
+                        descTextBox.AppendText(action.AreaEffect);
                     }
 
                     if (action.Effect != null && action.Effect != String.Empty)
                     {
-                        textBox.SelectionFont = italicFont;
-                        textBox.AppendText(" Effect: ");
-                        textBox.SelectionFont = regFont;
-                        textBox.AppendText(action.Effect);
+                        descTextBox.SelectionFont = italicFont;
+                        descTextBox.AppendText(" Effect: ");
+                        descTextBox.SelectionFont = regFont;
+                        descTextBox.AppendText(action.Effect);
                     }
 
                     if (action.Collide != null && action.Collide != String.Empty)
                     {
-                        textBox.SelectionFont = italicFont;
-                        textBox.AppendText(" Collide: ");
-                        textBox.SelectionFont = regFont;
-                        textBox.AppendText(action.Collide);
+                        descTextBox.SelectionFont = italicFont;
+                        descTextBox.AppendText(" Collide: ");
+                        descTextBox.SelectionFont = regFont;
+                        descTextBox.AppendText(action.Collide);
                     }
 
                     if (action.Blightboost != null && action.Blightboost != String.Empty)
                     {
-                        textBox.SelectionFont = italicFont;
-                        textBox.AppendText(" Blightboost: ");
-                        textBox.SelectionFont = regFont;
-                        textBox.AppendText(action.Blightboost);
+                        descTextBox.SelectionFont = italicFont;
+                        descTextBox.AppendText(" Blightboost: ");
+                        descTextBox.SelectionFont = regFont;
+                        descTextBox.AppendText(action.Blightboost);
                     }
                 }
+            }
+
+            // Setup traits in other textbox
+            setupTextBox.Clear();
+
+            bool firstSetupTrait = true;
+            foreach (Trait trait in stats.SetupTraits)
+            {
+                if (!firstSetupTrait) { setupTextBox.AppendText(Environment.NewLine); }
+                else { firstSetupTrait = false; }
+
+                setupTextBox.SelectionFont = boldFont;
+                setupTextBox.AppendText(trait.Name);
+
+                if (trait.Tags.Count > 0)
+                {
+                    setupTextBox.AppendText(" (");
+
+                    bool first = true;
+                    foreach (string tag in trait.Tags)
+                    {
+                        if (!first) { setupTextBox.AppendText(", "); }
+                        else { first = false; }
+
+                        setupTextBox.AppendText(tag);
+                    }
+
+                    setupTextBox.AppendText(")");
+                }
+
+                setupTextBox.AppendText(". ");
+                setupTextBox.SelectionFont = regFont;
+
+                setupTextBox.AppendText(trait.Description);
             }
         }
     }

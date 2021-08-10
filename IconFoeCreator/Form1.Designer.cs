@@ -37,12 +37,14 @@ namespace IconFoeCreator
             this.label_Chapter = new System.Windows.Forms.Label();
             this.richTextBox_Description = new System.Windows.Forms.RichTextBox();
             this.checkBox_Damage = new System.Windows.Forms.CheckBox();
-            this.button_copyClipboard = new System.Windows.Forms.Button();
+            this.button_copyDescription = new System.Windows.Forms.Button();
             this.comboBox_FactionGroup = new System.Windows.Forms.ComboBox();
             this.label_FactionTemplates = new System.Windows.Forms.Label();
             this.comboBox_JobGroup = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBox_SetupTraits = new System.Windows.Forms.CheckBox();
+            this.checkBox_NonessentialTraits = new System.Windows.Forms.CheckBox();
+            this.richTextBox_SetupRules = new System.Windows.Forms.RichTextBox();
+            this.button_copySetup = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label_Faction
@@ -108,10 +110,11 @@ namespace IconFoeCreator
             // richTextBox_Description
             // 
             this.richTextBox_Description.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox_Description.Location = new System.Drawing.Point(490, 51);
+            this.richTextBox_Description.Location = new System.Drawing.Point(490, 45);
             this.richTextBox_Description.Name = "richTextBox_Description";
+            this.richTextBox_Description.ReadOnly = true;
             this.richTextBox_Description.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox_Description.Size = new System.Drawing.Size(643, 843);
+            this.richTextBox_Description.Size = new System.Drawing.Size(643, 793);
             this.richTextBox_Description.TabIndex = 7;
             this.richTextBox_Description.Text = "";
             // 
@@ -119,7 +122,7 @@ namespace IconFoeCreator
             // 
             this.checkBox_Damage.AutoSize = true;
             this.checkBox_Damage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Damage.Location = new System.Drawing.Point(50, 780);
+            this.checkBox_Damage.Location = new System.Drawing.Point(50, 800);
             this.checkBox_Damage.Name = "checkBox_Damage";
             this.checkBox_Damage.Size = new System.Drawing.Size(260, 36);
             this.checkBox_Damage.TabIndex = 8;
@@ -127,16 +130,16 @@ namespace IconFoeCreator
             this.checkBox_Damage.UseVisualStyleBackColor = true;
             this.checkBox_Damage.CheckedChanged += new System.EventHandler(this.checkBox_Damage_CheckedChanged);
             // 
-            // button_copyClipboard
+            // button_copyDescription
             // 
-            this.button_copyClipboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_copyClipboard.Location = new System.Drawing.Point(50, 841);
-            this.button_copyClipboard.Name = "button_copyClipboard";
-            this.button_copyClipboard.Size = new System.Drawing.Size(260, 53);
-            this.button_copyClipboard.TabIndex = 9;
-            this.button_copyClipboard.Text = "Copy to Clipboard";
-            this.button_copyClipboard.UseVisualStyleBackColor = true;
-            this.button_copyClipboard.Click += new System.EventHandler(this.button_copyClipboard_Click);
+            this.button_copyDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_copyDescription.Location = new System.Drawing.Point(490, 844);
+            this.button_copyDescription.Name = "button_copyDescription";
+            this.button_copyDescription.Size = new System.Drawing.Size(260, 53);
+            this.button_copyDescription.TabIndex = 9;
+            this.button_copyDescription.Text = "Copy to Clipboard";
+            this.button_copyDescription.UseVisualStyleBackColor = true;
+            this.button_copyDescription.Click += new System.EventHandler(this.button_copyDescription_Click);
             // 
             // comboBox_FactionGroup
             // 
@@ -178,29 +181,53 @@ namespace IconFoeCreator
             this.label1.TabIndex = 12;
             this.label1.Text = "Job";
             // 
-            // checkBox_SetupTraits
+            // checkBox_NonessentialTraits
             // 
-            this.checkBox_SetupTraits.AutoSize = true;
-            this.checkBox_SetupTraits.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_SetupTraits.Location = new System.Drawing.Point(50, 738);
-            this.checkBox_SetupTraits.Name = "checkBox_SetupTraits";
-            this.checkBox_SetupTraits.Size = new System.Drawing.Size(272, 36);
-            this.checkBox_SetupTraits.TabIndex = 14;
-            this.checkBox_SetupTraits.Text = "Show Setup Traits";
-            this.checkBox_SetupTraits.UseVisualStyleBackColor = true;
-            this.checkBox_SetupTraits.CheckedChanged += new System.EventHandler(this.checkBox_SetupTraits_CheckedChanged);
+            this.checkBox_NonessentialTraits.AutoSize = true;
+            this.checkBox_NonessentialTraits.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_NonessentialTraits.Location = new System.Drawing.Point(50, 758);
+            this.checkBox_NonessentialTraits.Name = "checkBox_NonessentialTraits";
+            this.checkBox_NonessentialTraits.Size = new System.Drawing.Size(363, 36);
+            this.checkBox_NonessentialTraits.TabIndex = 14;
+            this.checkBox_NonessentialTraits.Text = "Show Nonessential Traits";
+            this.checkBox_NonessentialTraits.UseVisualStyleBackColor = true;
+            this.checkBox_NonessentialTraits.CheckedChanged += new System.EventHandler(this.checkBox_SetupTraits_CheckedChanged);
+            // 
+            // richTextBox_SetupRules
+            // 
+            this.richTextBox_SetupRules.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox_SetupRules.Location = new System.Drawing.Point(1166, 45);
+            this.richTextBox_SetupRules.Name = "richTextBox_SetupRules";
+            this.richTextBox_SetupRules.ReadOnly = true;
+            this.richTextBox_SetupRules.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.richTextBox_SetupRules.Size = new System.Drawing.Size(469, 793);
+            this.richTextBox_SetupRules.TabIndex = 15;
+            this.richTextBox_SetupRules.Text = "";
+            // 
+            // button_copySetup
+            // 
+            this.button_copySetup.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_copySetup.Location = new System.Drawing.Point(1166, 844);
+            this.button_copySetup.Name = "button_copySetup";
+            this.button_copySetup.Size = new System.Drawing.Size(260, 53);
+            this.button_copySetup.TabIndex = 16;
+            this.button_copySetup.Text = "Copy to Clipboard";
+            this.button_copySetup.UseVisualStyleBackColor = true;
+            this.button_copySetup.Click += new System.EventHandler(this.button_copySetup_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1155, 919);
-            this.Controls.Add(this.checkBox_SetupTraits);
+            this.ClientSize = new System.Drawing.Size(1659, 919);
+            this.Controls.Add(this.button_copySetup);
+            this.Controls.Add(this.richTextBox_SetupRules);
+            this.Controls.Add(this.checkBox_NonessentialTraits);
             this.Controls.Add(this.comboBox_JobGroup);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox_FactionGroup);
             this.Controls.Add(this.label_FactionTemplates);
-            this.Controls.Add(this.button_copyClipboard);
+            this.Controls.Add(this.button_copyDescription);
             this.Controls.Add(this.checkBox_Damage);
             this.Controls.Add(this.richTextBox_Description);
             this.Controls.Add(this.comboBox_Chapter);
@@ -226,12 +253,14 @@ namespace IconFoeCreator
         private System.Windows.Forms.Label label_Chapter;
         private System.Windows.Forms.RichTextBox richTextBox_Description;
         private System.Windows.Forms.CheckBox checkBox_Damage;
-        private System.Windows.Forms.Button button_copyClipboard;
+        private System.Windows.Forms.Button button_copyDescription;
         private System.Windows.Forms.ComboBox comboBox_FactionGroup;
         private System.Windows.Forms.Label label_FactionTemplates;
         private System.Windows.Forms.ComboBox comboBox_JobGroup;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox checkBox_SetupTraits;
+        private System.Windows.Forms.CheckBox checkBox_NonessentialTraits;
+        private System.Windows.Forms.RichTextBox richTextBox_SetupRules;
+        private System.Windows.Forms.Button button_copySetup;
     }
 }
 

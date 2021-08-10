@@ -8,13 +8,14 @@
       "Description": "All Relict have Defiance."
     },
     {
-      "Name": "Monsters",
-      "Description": "Relict do not flee or negotiate.",
-      "Setup": true
-    },
-    {
       "Name": "Shuffle",
       "Description": "Relict can move 1 space forward at the start of their turn. When they do this, they can also move any relicts that are contiguously connected to them via adjacency. When shuffle activates for mobs, it activates for all five simultaneously."
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Monsters",
+      "Description": "Relict do not flee or negotiate."
     }
   ]
 }

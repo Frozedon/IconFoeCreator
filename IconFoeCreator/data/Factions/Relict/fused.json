@@ -11,7 +11,7 @@
       "Name": "Tenacious",
       "Description": "+25% hp.",
       "AddHP": 0.25,
-      "Setup": true
+      "Nonessential": true
     },
     {
       "Name": "Deadsoul",

@@ -64,16 +64,22 @@ namespace IconFoeCreator
             ChapterItem chapterItem = (ChapterItem)comboBox_Chapter.SelectedItem;
             DescriptionCreator.UpdateDescription(
                 richTextBox_Description,
+                richTextBox_SetupRules,
                 (Statistics)comboBox_Faction.SelectedItem,
                 (Statistics)comboBox_Job.SelectedItem,
                 chapterItem.Value,
                 checkBox_Damage.Checked,
-                checkBox_SetupTraits.Checked);
+                checkBox_NonessentialTraits.Checked);
         }
 
-        private void button_copyClipboard_Click(object sender, EventArgs e)
+        private void button_copyDescription_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(richTextBox_Description.Text);
+        }
+
+        private void button_copySetup_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(richTextBox_SetupRules.Text);
         }
 
         private void OnFactionGroupChanged(object sender, EventArgs e)

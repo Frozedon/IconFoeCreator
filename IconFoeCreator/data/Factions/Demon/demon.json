@@ -4,18 +4,18 @@
   "FactionBlight": "Any",
   "Traits": [
     {
+      "Name": "Banish",
+      "Description": "A character can disintegrate an adjacent defeated demon as an action, returning it to the void from which it came."
+    }
+  ],
+  "SetupTraits": [
+    {
       "Name": "Monsters",
-      "Description": "Demons do not flee or negotiate.",
-      "Setup": true
+      "Description": "Demons do not flee or negotiate."
     },
     {
       "Name": "Legion",
-      "Description": "When fighting demons, at the start of combat, place three Natals on the map in unoccupied space somewhere outside of range 2 of players. These don’t count for the total encounter budget.",
-      "Setup": true
-    },
-    {
-      "Name": "Banish",
-      "Description": "A character can disintegrate an adjacent defeated demon as an action, returning it to the void from which it came."
+      "Description": "When fighting demons, at the start of combat, place three Natals on the map in unoccupied space somewhere outside of range 2 of players. These don’t count for the total encounter budget."
     }
   ],
   "Actions": [

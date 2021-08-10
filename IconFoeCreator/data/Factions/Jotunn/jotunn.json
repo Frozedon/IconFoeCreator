@@ -4,17 +4,17 @@
   "Group": "Jotunn",
   "HpMultiplier": 8,
   "FactionBlight": "Frostbite",
-  "Traits": [
+  "SetupTraits": [
     {
       "Name": "Kin",
-      "Description": "Ancient Jotunn are kin, can be bargained with, and will flee or surrender if heavily losing a fight\n• Motivations: Jotunn are motivated strongly by their negative emotions (sadness, anger, distrust, ennui, hunger, etc). Appeasing them or appealing to their feelings can soften them and make them open to negotiation.\n• Flee: Jotunn typically don’t flee but value their lives and will surrender if they see no chance of winning a fight.",
-      "Setup": true
+      "Description": "Ancient Jotunn are kin, can be bargained with, and will flee or surrender if heavily losing a fight\n• Motivations: Jotunn are motivated strongly by their negative emotions (sadness, anger, distrust, ennui, hunger, etc). Appeasing them or appealing to their feelings can soften them and make them open to negotiation.\n• Flee: Jotunn typically don’t flee but value their lives and will surrender if they see no chance of winning a fight."
     },
     {
       "Name": "Monsters",
-      "Description": "Newer Jotunn are infected with the Blood Rage. Born of the slaying of the Titans, they are driven only by their pain and rage. Treat them like monsters - they do not flee or negotiate. It might be possible to cure the Rage.",
-      "Setup": true
-    },
+      "Description": "Newer Jotunn are infected with the Blood Rage. Born of the slaying of the Titans, they are driven only by their pain and rage. Treat them like monsters - they do not flee or negotiate. It might be possible to cure the Rage."
+    }
+  ],
+  "Traits": [
     {
       "Name": "Titanblood",
       "Description": "Increase size to 2."

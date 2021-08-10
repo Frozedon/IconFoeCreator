@@ -24,7 +24,19 @@
       "Name": "",
       "Tags": [ "" ], // Anything that should be in paranthesis
       "Description": "",
-      "Setup": false, // This is setup rules and can be hidden
+      "Nonessential": false, // This is setup rules and can be hidden
+      "AddHP": 0.0,
+      "AddArmor": 0,
+      "MaxArmor": 0,
+      "NoRun": false,
+      "NoDash": false
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "",
+      "Tags": [ "" ], // Anything that should be in paranthesis
+      "Description": "",
       "AddHP": 0.0,
       "AddArmor": 0,
       "MaxArmor": 0,

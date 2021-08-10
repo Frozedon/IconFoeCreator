@@ -14,3 +14,4 @@ TODO List
 - [ ] Make high level faction types selectable (json change)
 - [ ] Monstrosities
 - [X] Copy to Clipboard button
+- [X] Separate Setup Rules textbox

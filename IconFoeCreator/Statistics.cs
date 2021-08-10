@@ -30,6 +30,7 @@ namespace IconFoeCreator
         public string CriticalDamageDie { get; set; }
         public string DamageType { get; set; }
         public List<Trait> Traits { get; set; } // Additive inheritance
+        public List<Trait> SetupTraits { get; set; } // Additive inheritance
         public List<Interrupt> Interrupts { get; set; } // Additive inheritance
         public List<Action> Actions { get; set; } // Additive inheritance
         public string FactionBlight { get; set; }
@@ -45,6 +46,7 @@ namespace IconFoeCreator
             Attack = new int?[Constants.ChapterCount];
             FrayDamage = new int?[Constants.ChapterCount];
             Traits = new List<Trait>();
+            SetupTraits = new List<Trait>();
             Interrupts = new List<Interrupt>();
             Actions = new List<Action>();
         }
@@ -75,7 +77,7 @@ namespace IconFoeCreator
             if (CriticalDamage.HasValue) { newStats.CriticalDamage = CriticalDamage; } else { newStats.CriticalDamage = otherStats.CriticalDamage; }
             if (LightDamageDie != null && LightDamageDie != String.Empty) { newStats.LightDamageDie = LightDamageDie; } else { newStats.LightDamageDie = otherStats.LightDamageDie; }
             if (HeavyDamageDie != null && HeavyDamageDie != String.Empty) { newStats.HeavyDamageDie = HeavyDamageDie; } else { newStats.HeavyDamageDie = otherStats.HeavyDamageDie; }
-            if (CriticalDamageDie != null && CriticalDamageDie != String.Empty) { newStats.CriticalDamageDie = CriticalDamageDie; } else { newStats.CriticalDamageDie = CriticalDamageDie; }
+            if (CriticalDamageDie != null && CriticalDamageDie != String.Empty) { newStats.CriticalDamageDie = CriticalDamageDie; } else { newStats.CriticalDamageDie = otherStats.CriticalDamageDie; }
             if (DamageType != null && DamageType != String.Empty) { newStats.DamageType = DamageType; } else { newStats.DamageType = otherStats.DamageType; }
             if (FactionBlight != null && FactionBlight != String.Empty) { newStats.FactionBlight = FactionBlight; } else { newStats.FactionBlight = otherStats.FactionBlight; }
 
@@ -91,6 +93,8 @@ namespace IconFoeCreator
             // Additive statistics
             newStats.Traits.AddRange(otherStats.Traits);
             newStats.Traits.AddRange(Traits);
+            newStats.SetupTraits.AddRange(otherStats.SetupTraits);
+            newStats.SetupTraits.AddRange(SetupTraits);
             newStats.Interrupts.AddRange(otherStats.Interrupts);
             newStats.Interrupts.AddRange(Interrupts);
             newStats.Actions.AddRange(otherStats.Actions);
@@ -124,7 +128,7 @@ namespace IconFoeCreator
         public int? MaxArmor { get; set; }
         public bool? NoRun { get; set; }
         public bool? NoDash { get; set; }
-        public bool Setup { get; set; }
+        public bool Nonessential { get; set; }
 
         public Trait()
         {

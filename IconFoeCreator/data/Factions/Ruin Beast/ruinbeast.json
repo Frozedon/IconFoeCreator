@@ -4,11 +4,6 @@
   "FactionBlight": "Poisoned",
   "Traits": [
     {
-      "Name": "Monsters",
-      "Description": "Beasts do not flee or negotiate.",
-      "Setup": true
-    },
-    {
       "Name": "Ferocity",
       "Description": "On the first round of combat, beasts double their speed."
     },
@@ -19,6 +14,12 @@
     {
       "Name": "Feral",
       "Description": "Always have hatred of the character that damaged them last, or the closest character (can choose either)."
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Monsters",
+      "Description": "Beasts do not flee or negotiate."
     }
   ]
 }

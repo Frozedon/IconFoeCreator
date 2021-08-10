@@ -7,7 +7,7 @@
       "Name": "Improved Armor",
       "Description": "+1 armor.",
       "AddArmor": 1,
-      "Setup": true
+      "Nonessential": true
     },
     {
       "Name": "Flank",
