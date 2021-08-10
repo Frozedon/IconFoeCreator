@@ -11,7 +11,6 @@ TODO List
 - [X] Class dropdown to filter the jobs
 - [X] Checkbox to show setup info like "Kin" and "Monster" (hide by default)
 - [ ] Tabs for saving foe combos
-- [ ] Make high level faction types selectable (json change)
 - [ ] Monstrosities
 - [X] Copy to Clipboard button
 - [X] Separate Setup Rules textbox
