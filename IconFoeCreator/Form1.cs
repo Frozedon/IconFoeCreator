@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -118,6 +120,30 @@ namespace IconFoeCreator
             }
 
             comboBox_Job.SelectedIndex = 0;
+        }
+
+        private void ExportAsJsonClicked(object sender, EventArgs e)
+        {
+            Statistics job = (Statistics)comboBox_Job.SelectedItem;
+            Statistics faction = (Statistics)comboBox_Faction.SelectedItem;
+            Statistics statsToExport = new Statistics();
+
+            if (faction != null && faction.Name != null && faction.Name != "...")
+            {
+                statsToExport = job.InheritFrom(faction);
+            }
+            else
+            {
+                statsToExport = job;
+            }
+
+            if (!Directory.Exists("export"))
+            {
+                Directory.CreateDirectory("export");
+            }
+
+            string text = JsonConvert.SerializeObject(statsToExport);
+            File.WriteAllText($"export/{statsToExport.Name}.json", text);
         }
     }
 
