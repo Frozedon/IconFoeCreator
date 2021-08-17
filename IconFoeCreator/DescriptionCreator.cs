@@ -33,7 +33,7 @@ namespace IconFoeCreator
 
             // Traits can add armor, max armor, or alter hit points
             int addArmor = 0;
-            int maxArmor = Int32.MaxValue;
+            int maxArmor = int.MaxValue;
             double addHP = 0.0;
             bool noRun = false;
             bool noDash = false;
@@ -75,7 +75,12 @@ namespace IconFoeCreator
             descTextBox.SelectionFont = boldFont;
             descTextBox.AppendText("HP: ");
             descTextBox.SelectionFont = regFont;
-            descTextBox.AppendText((int)hitPoints + Environment.NewLine);
+            descTextBox.AppendText(((int)hitPoints).ToString());
+            if (stats.HPMultiplyByPlayers.GetValueOrDefault(false))
+            {
+                descTextBox.AppendText(" x number of players characters");
+            }
+            descTextBox.AppendText(Environment.NewLine);
 
             descTextBox.SelectionFont = boldFont;
             descTextBox.AppendText("Speed: ");
@@ -95,7 +100,7 @@ namespace IconFoeCreator
             descTextBox.SelectionFont = boldFont;
             descTextBox.AppendText("Attack: ");
             descTextBox.SelectionFont = regFont;
-            descTextBox.AppendText(attack + Environment.NewLine);
+            descTextBox.AppendText("+" + attack + Environment.NewLine);
 
             descTextBox.SelectionFont = boldFont;
             descTextBox.AppendText("Fray Damage: ");
@@ -131,176 +136,292 @@ namespace IconFoeCreator
             {
                 descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
                 descTextBox.SelectionFont = underlineFont;
-                descTextBox.AppendText("Traits");
+                descTextBox.AppendText("Traits" + Environment.NewLine);
                 descTextBox.SelectionFont = regFont;
 
-                foreach (Trait trait in stats.Traits)
-                {
-                    if (showNonessentialTraits || !trait.Nonessential)
-                    {
-                        descTextBox.SelectionFont = boldFont;
-                        descTextBox.AppendText(Environment.NewLine + trait.Name);
-
-                        if (trait.Tags.Count > 0)
-                        {
-                            descTextBox.AppendText(" (");
-
-                            bool first = true;
-                            foreach (string tag in trait.Tags)
-                            {
-                                if (!first) { descTextBox.AppendText(", "); }
-                                else { first = false; }
-
-                                descTextBox.AppendText(tag);
-                            }
-
-                            descTextBox.AppendText(")");
-                        }
-
-                        descTextBox.AppendText(". ");
-                        descTextBox.SelectionFont = regFont;
-
-                        descTextBox.AppendText(trait.Description);
-                    }
-                }
+                AddTraits(descTextBox, stats.Traits, showNonessentialTraits, regFont, boldFont, italicFont);
             }
 
             if (stats.Interrupts.Count > 0)
             {
                 descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
                 descTextBox.SelectionFont = underlineFont;
-                descTextBox.AppendText("Interrupts");
+                descTextBox.AppendText("Interrupts" + Environment.NewLine);
                 descTextBox.SelectionFont = regFont;
 
-                foreach (Interrupt interrupt in stats.Interrupts)
-                {
-                    descTextBox.AppendText(Environment.NewLine);
-
-                    descTextBox.SelectionFont = boldFont;
-                    descTextBox.AppendText(interrupt.Name + " (Interrupt");
-                    
-                    if (interrupt.Count > 0)
-                    {
-                        descTextBox.AppendText(" " + interrupt.Count);
-                    }
-
-                    foreach (string tag in interrupt.Tags)
-                    {
-                        descTextBox.AppendText(", " + tag);
-                    }
-
-                    descTextBox.AppendText("): ");
-                    descTextBox.SelectionFont = regFont;
-
-                    descTextBox.AppendText(interrupt.Description);
-                }
+                AddInterrupts(descTextBox, stats.Interrupts, regFont, boldFont);
             }
 
             if (stats.Actions.Count > 0)
             {
                 descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
                 descTextBox.SelectionFont = underlineFont;
-                descTextBox.AppendText("Actions");
+                descTextBox.AppendText("Actions" + Environment.NewLine);
                 descTextBox.SelectionFont = regFont;
 
-                foreach (Action action in stats.Actions)
-                {
-                    descTextBox.AppendText(Environment.NewLine);
+                AddActions(descTextBox, stats.Actions, regFont, boldFont, italicFont);
+            }
 
-                    descTextBox.SelectionFont = boldFont;
-                    descTextBox.AppendText(action.Name + " (");
+            if (stats.BodyParts.Count > 0)
+            {
+                descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
+                descTextBox.SelectionFont = underlineFont;
+                descTextBox.AppendText("Body Parts" + Environment.NewLine);
+                descTextBox.SelectionFont = regFont;
 
-                    if (action.ActionCost > 0)
-                    {
-                        descTextBox.AppendText(action.ActionCost.ToString());
+                AddBodyParts(descTextBox, stats.BodyParts, regFont, boldFont, italicFont);
+            }
 
-                        if (action.ActionCost == 1) { descTextBox.AppendText(" action"); }
-                        else { descTextBox.AppendText(" actions"); }
-                    }
-                    else
-                    {
-                        descTextBox.AppendText("Free action");
-                    }
+            if (stats.Phases.Count > 0)
+            {
+                descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
+                descTextBox.SelectionFont = underlineFont;
+                descTextBox.AppendText("Phases");
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(Environment.NewLine + stats.PhasesDescription);
+                descTextBox.AppendText(Environment.NewLine + Environment.NewLine);
 
-                    foreach (string tag in action.Tags)
-                    {
-                        descTextBox.AppendText(", " + tag);
-                    }
-
-                    descTextBox.AppendText("):");
-                    descTextBox.SelectionFont = regFont;
-
-                    if (action.Description != null && action.Description != String.Empty)
-                    {
-                        descTextBox.AppendText(" " + action.Description);
-                    }
-
-                    if (action.Hit != null && action.Hit != String.Empty)
-                    {
-                        descTextBox.SelectionFont = italicFont;
-                        descTextBox.AppendText(" On hit: ");
-                        descTextBox.SelectionFont = regFont;
-                        descTextBox.AppendText(action.Hit);
-                    }
-
-                    if (action.CriticalHit != null && action.CriticalHit != String.Empty)
-                    {
-                        descTextBox.SelectionFont = italicFont;
-                        descTextBox.AppendText(" Critical hit: ");
-                        descTextBox.SelectionFont = regFont;
-                        descTextBox.AppendText(action.CriticalHit);
-                    }
-
-                    if (action.Miss != null && action.Miss != String.Empty)
-                    {
-                        descTextBox.SelectionFont = italicFont;
-                        descTextBox.AppendText(" Miss: ");
-                        descTextBox.SelectionFont = regFont;
-                        descTextBox.AppendText(action.Miss);
-                    }
-
-                    if (action.AreaEffect != null && action.AreaEffect != String.Empty)
-                    {
-                        descTextBox.SelectionFont = italicFont;
-                        descTextBox.AppendText(" Area Effect: ");
-                        descTextBox.SelectionFont = regFont;
-                        descTextBox.AppendText(action.AreaEffect);
-                    }
-
-                    if (action.Effect != null && action.Effect != String.Empty)
-                    {
-                        descTextBox.SelectionFont = italicFont;
-                        descTextBox.AppendText(" Effect: ");
-                        descTextBox.SelectionFont = regFont;
-                        descTextBox.AppendText(action.Effect);
-                    }
-
-                    if (action.Collide != null && action.Collide != String.Empty)
-                    {
-                        descTextBox.SelectionFont = italicFont;
-                        descTextBox.AppendText(" Collide: ");
-                        descTextBox.SelectionFont = regFont;
-                        descTextBox.AppendText(action.Collide);
-                    }
-
-                    if (action.Blightboost != null && action.Blightboost != String.Empty)
-                    {
-                        descTextBox.SelectionFont = italicFont;
-                        descTextBox.AppendText(" Blightboost: ");
-                        descTextBox.SelectionFont = regFont;
-                        descTextBox.AppendText(action.Blightboost);
-                    }
-                }
+                AddPhases(descTextBox, stats.Phases, regFont, boldFont, italicFont);
             }
 
             // Setup traits in other textbox
             setupTextBox.Clear();
 
-            bool firstSetupTrait = true;
-            foreach (Trait trait in stats.SetupTraits)
+            if (stats.SetupTraits.Count > 0)
             {
-                if (!firstSetupTrait) { setupTextBox.AppendText(Environment.NewLine); }
-                else { firstSetupTrait = false; }
+                AddSetupTraits(setupTextBox, stats.SetupTraits, regFont, boldFont);
+            }
+        }
+
+        public static void AddTraits(RichTextBox descTextBox, List<Trait> traits, bool showNonessentialTraits, Font regFont, Font boldFont, Font italicFont)
+        {
+            bool first = true;
+            foreach (Trait trait in traits)
+            {
+                if (!first) { descTextBox.AppendText(Environment.NewLine); }
+                else { first = false; }
+
+                if (showNonessentialTraits || !trait.Nonessential)
+                {
+                    descTextBox.SelectionFont = boldFont;
+                    descTextBox.AppendText(trait.Name);
+
+                    if (trait.Tags.Count > 0)
+                    {
+                        descTextBox.AppendText(" (");
+
+                        bool firstTag = true;
+                        foreach (string tag in trait.Tags)
+                        {
+                            if (!firstTag) { descTextBox.AppendText(", "); }
+                            else { firstTag = false; }
+
+                            descTextBox.AppendText(tag);
+                        }
+
+                        descTextBox.AppendText(")");
+                    }
+
+                    descTextBox.AppendText(". ");
+                    descTextBox.SelectionFont = regFont;
+
+                    descTextBox.AppendText(trait.Description);
+                }
+            }
+        }
+
+        public static void AddInterrupts(RichTextBox descTextBox, List<Interrupt> interrupts, Font regFont, Font boldFont)
+        {
+            bool first = true;
+            foreach (Interrupt interrupt in interrupts)
+            {
+                if (!first) { descTextBox.AppendText(Environment.NewLine); }
+                else { first = false; }
+
+                descTextBox.SelectionFont = boldFont;
+                descTextBox.AppendText(interrupt.Name + " (Interrupt");
+
+                if (interrupt.Count > 0)
+                {
+                    descTextBox.AppendText(" " + interrupt.Count);
+                }
+
+                foreach (string tag in interrupt.Tags)
+                {
+                    descTextBox.AppendText(", " + tag);
+                }
+
+                descTextBox.AppendText("): ");
+                descTextBox.SelectionFont = regFont;
+
+                descTextBox.AppendText(interrupt.Description);
+            }
+        }
+
+        public static void AddActions(RichTextBox descTextBox, List<Action> actions, Font regFont, Font boldFont, Font italicFont)
+        {
+            bool first = true;
+            foreach (Action action in actions)
+            {
+                if (!first) { descTextBox.AppendText(Environment.NewLine); }
+                else { first = false; }
+
+                AddAction(descTextBox, action, regFont, boldFont, italicFont);
+            }
+        }
+
+        public static void AddAction(RichTextBox descTextBox, Action action, Font regFont, Font boldFont, Font italicFont)
+        {
+            descTextBox.SelectionFont = boldFont;
+            descTextBox.AppendText(action.Name + " (");
+
+            if (action.ActionCost > 0)
+            {
+                descTextBox.AppendText(action.ActionCost.ToString());
+
+                if (action.ActionCost == 1) { descTextBox.AppendText(" action"); }
+                else { descTextBox.AppendText(" actions"); }
+            }
+            else
+            {
+                descTextBox.AppendText("Free action");
+            }
+
+            foreach (string tag in action.Tags)
+            {
+                descTextBox.AppendText(", " + tag);
+            }
+
+            descTextBox.AppendText("):");
+            descTextBox.SelectionFont = regFont;
+
+            if (action.Description != null && action.Description != String.Empty)
+            {
+                descTextBox.AppendText(" " + action.Description);
+            }
+
+            if (action.Hit != null && action.Hit != String.Empty)
+            {
+                descTextBox.SelectionFont = italicFont;
+                descTextBox.AppendText(" On hit: ");
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(action.Hit);
+            }
+
+            if (action.CriticalHit != null && action.CriticalHit != String.Empty)
+            {
+                descTextBox.SelectionFont = italicFont;
+                descTextBox.AppendText(" Critical hit: ");
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(action.CriticalHit);
+            }
+
+            if (action.Miss != null && action.Miss != String.Empty)
+            {
+                descTextBox.SelectionFont = italicFont;
+                descTextBox.AppendText(" Miss: ");
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(action.Miss);
+            }
+
+            if (action.AreaEffect != null && action.AreaEffect != String.Empty)
+            {
+                descTextBox.SelectionFont = italicFont;
+                descTextBox.AppendText(" Area Effect: ");
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(action.AreaEffect);
+            }
+
+            if (action.Effect != null && action.Effect != String.Empty)
+            {
+                descTextBox.SelectionFont = italicFont;
+                descTextBox.AppendText(" Effect: ");
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(action.Effect);
+            }
+
+            if (action.Collide != null && action.Collide != String.Empty)
+            {
+                descTextBox.SelectionFont = italicFont;
+                descTextBox.AppendText(" Collide: ");
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(action.Collide);
+            }
+
+            if (action.Blightboost != null && action.Blightboost != String.Empty)
+            {
+                descTextBox.SelectionFont = italicFont;
+                descTextBox.AppendText(" Blightboost: ");
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(action.Blightboost);
+            }
+
+            foreach (Action comboAction in action.Combos)
+            {
+                descTextBox.AppendText(Environment.NewLine);
+                descTextBox.SelectionFont = boldFont;
+                descTextBox.AppendText("• Combo: ");
+                descTextBox.SelectionFont = regFont;
+                AddAction(descTextBox, comboAction, regFont, boldFont, italicFont);
+            }
+        }
+
+        public static void AddBodyParts(RichTextBox descTextBox, List<BodyPart> bodyParts, Font regFont, Font boldFont, Font italicFont)
+        {
+            bool first = true;
+            foreach (BodyPart bodyPart in bodyParts)
+            {
+                if (!first) { descTextBox.AppendText(Environment.NewLine); }
+                else { first = false; }
+
+                descTextBox.SelectionFont = boldFont;
+                descTextBox.AppendText(bodyPart.Name);
+                descTextBox.AppendText(" (" + bodyPart.HP + " hp)");
+
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(" - " + bodyPart.Description);
+            }
+        }
+
+        public static void AddPhases(RichTextBox descTextBox, List<Phase> phases, Font regFont, Font boldFont, Font italicFont)
+        {
+            for (int i = 0; i < phases.Count; ++i)
+            {
+                Phase phase = phases[i];
+                if (i > 0) { descTextBox.AppendText(Environment.NewLine + Environment.NewLine); }
+
+                descTextBox.SelectionFont = boldFont;
+                descTextBox.AppendText("Phase " + (i + 1) + ": ");
+
+                descTextBox.SelectionFont = regFont;
+                descTextBox.AppendText(phase.Name);
+
+                if (phase.Description != null && phase.Description != String.Empty)
+                {
+                    descTextBox.AppendText(Environment.NewLine + phase.Description);
+                }
+
+                if (phase.Traits.Count > 0)
+                {
+                    descTextBox.AppendText(Environment.NewLine);
+                    AddTraits(descTextBox, phase.Traits, true, regFont, boldFont, italicFont);
+                }
+
+                if (phase.Actions.Count > 0)
+                {
+                    descTextBox.AppendText(Environment.NewLine);
+                    AddActions(descTextBox, phase.Actions, regFont, boldFont, italicFont);
+                }
+            }
+        }
+
+        public static void AddSetupTraits(RichTextBox setupTextBox, List<Trait> traits, Font regFont, Font boldFont)
+        {
+            bool first = true;
+            foreach (Trait trait in traits)
+            {
+                if (!first) { setupTextBox.AppendText(Environment.NewLine); }
+                else { first = false; }
 
                 setupTextBox.SelectionFont = boldFont;
                 setupTextBox.AppendText(trait.Name);
@@ -309,11 +430,11 @@ namespace IconFoeCreator
                 {
                     setupTextBox.AppendText(" (");
 
-                    bool first = true;
+                    bool firstTag = true;
                     foreach (string tag in trait.Tags)
                     {
-                        if (!first) { setupTextBox.AppendText(", "); }
-                        else { first = false; }
+                        if (!firstTag) { setupTextBox.AppendText(", "); }
+                        else { firstTag = false; }
 
                         setupTextBox.AppendText(tag);
                     }

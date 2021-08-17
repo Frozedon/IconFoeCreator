@@ -4,6 +4,8 @@
   "Group": "", // The group it should be filtered by
   "Type": "", // "Job" or "Faction"
   "Health": [ 0, 0, 0 ], // Separated by chapter
+  "HPMultiplier": 4, // Multiplied by Health to determine HP
+  "HPMultiplyByPlayers": false, // Adds note to multiply by players
   "Speed": 0,
   "Run": 0,
   "Dash": 0,
@@ -64,7 +66,17 @@
       "AreaEffect": "",
       "Effect": "",
       "Collide": "",
-      "Blightboost": ""
+      "Blightboost": "",
+      "Combos": [
+        { } // Same variables as "Actions"
+      ]
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "",
+      "HP": 0,
+      "Description": ""
     }
   ]
 }
