@@ -1,0 +1,181 @@
+{
+  "Name": "Nocturnal",
+  "Inherits": "Monstrosity",
+  "Type": "Job",
+  "Health": [ 4, 5, 6 ],
+  "Speed": 4,
+  "Run": 2,
+  "Dash": 4,
+  "Defense": 9,
+  "Armor": [ 0, 0, 0 ],
+  "Attack": [ 2, 4, 6 ],
+  "FrayDamage": [ 2, 3, 4 ],
+  "DamageType": "Either",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Size 2."
+    },
+    {
+      "Name": "Monstrosity",
+      "Description": "Takes 1 turn after every player character turn. If slow, only one of its turns is affected."
+    },
+    {
+      "Name": "Colossus",
+      "Description": "Has phasing for characters and terrain smaller than it and can end turn in those spaces. Ignores engagement from smaller characters. Ignores movement penalties for terrain."
+    },
+    {
+      "Name": "Skrimisher",
+      "Description": "Can move diagonally."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
+    },
+    {
+      "Name": "Finishing Blow",
+      "Description": "Boost damage if character is bloody."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Juggernaut",
+      "Tags": [ "1/round" ],
+      "Description": "At the start of its turn, can save against all statuses and marks and clear all blights as a free action."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Head",
+      "HP": 5,
+      "Description": "Nocturnal always has the Blood Scent trait (phase 3) active."
+    },
+    {
+      "Name": "Back",
+      "HP": 10,
+      "Description": "Nocturnal loses its Clinging Mists trait in phase I. Back spines can be sold for 2 dust if broken."
+    },
+    {
+      "Name": "Wings",
+      "HP": 10,
+      "Description": "Nocturnal loses its ability to fly. Its Rake action becomes a dash instead."
+    }
+  ],
+  "PhasesDescription": "Phase change triggers at the start of each round. The Nocturnal starts in phase II and can shift up or down one phase (so it can’t shift from I to III for example). It must shift phases.",
+  "Phases": [
+    {
+      "Name": "Slasher",
+      "Traits": [
+        {
+          "Name": "Hunter",
+          "Description": "Deals boosted damage to characters with no adjacent allied character or summon."
+        },
+        {
+          "Name": "Clinging Mists",
+          "Description": "The Nocturnal is intangible and not visible on the map unless in range 3 of a foe or summon controlled by a foe."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Rake",
+          "ActionCost": 1,
+          "Tags": [ "repeatable 2" ],
+          "Description": "Fly in a line 4 area effect. Characters along the path take fray damage."
+        },
+        {
+          "Name": "Amygdala",
+          "ActionCost": 1,
+          "Tags": [ "recharge 4+" ],
+          "Description": "A character in range 3 must save or be forced to flee, become Vulnerable, Winded, and shoved 4 in a direction of the Nocturnal’s choice."
+        },
+        {
+          "Name": "The Horror",
+          "ActionCost": 1,
+          "Tags": [ "melee attack", "pierce" ],
+          "Hit": "Deal light damage.",
+          "Miss": "Deal fray damage.",
+          "Effect": "May teleport up to 3 spaces towards target before the attack."
+        }
+      ]
+    },
+    {
+      "Name": "Night Lord",
+      "Traits": [
+        {
+          "Name": "Take to Wing",
+          "Description": "Flying in this phase."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Rake",
+          "ActionCost": 1,
+          "Tags": [ "repeatable 2" ],
+          "Description": "Fly in a line 4 area effect. Characters along the path take fray damage."
+        },
+        {
+          "Name": "Amygdala",
+          "ActionCost": 1,
+          "Tags": [ "recharge 4+" ],
+          "Description": "A character in range 3 must save or be forced to flee, become Vulnerable, Winded, and shoved 4 in a direction of the Nocturnal’s choice."
+        },
+        {
+          "Name": "Great Fell Shot",
+          "ActionCost": 1,
+          "Description": "Mark 2 unoccupied spaces in range 8. Foes or allies that pass through these spaces take piercing magic fray damage as an area effect. Disappear at the start of next round."
+        },
+        {
+          "Name": "Blood Drain",
+          "ActionCost": 2,
+          "Tags": [ "melee attack" ],
+          "Hit": "Deal heavy damage.",
+          "Miss": "Deal light damage.",
+          "Effect": "If made against a character with Vigor, removes all Vigor before applying damage."
+        }
+      ]
+    },
+    {
+      "Name": "Blood Frenzy",
+      "Traits": [
+        {
+          "Name": "Blood Scent",
+          "Description": "Gains Hatred of bloody characters."
+        },
+        {
+          "Name": "Frenzy",
+          "Tags": [ "1/turn" ],
+          "Description": "when hitting with an attack, gains +1 action."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Swat",
+          "ActionCost": 1,
+          "Description": "Adjacent foe must save or be shoved 3 and staggered.",
+          "Collide": "Also Stunned."
+        },
+        {
+          "Name": "Death Grasp",
+          "ActionCost": 1,
+          "Tags": [ "range 4" ],
+          "Description": "A foe in range must save. On a failure, they take light magic damage and are shoved up to 3 spaces towards Nocturnal. On a successful save, shove them 1 space."
+        },
+        {
+          "Name": "Blood Drain",
+          "ActionCost": 1,
+          "Tags": [ "melee attack", "combo" ],
+          "Hit": "Deal heavy damage.",
+          "Miss": "Deal light damage.",
+          "Effect": "If made against a character with Vigor, removes all Vigor before applying damage. Can use Embrace.",
+          "Combos": [
+            {
+              "Name": "Embrace",
+              "ActionCost": 2,
+              "Description": "Adjacent character must save. On a successful save, they are shoved 1 and take light piercing physical damage. On a failed save, they are reduced to half their current hit points, or 1 hp, whichever is higher, and the Nocturnal gains vigor 1."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
