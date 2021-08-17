@@ -10,7 +10,7 @@ namespace IconFoeCreator
 {
     public static class DescriptionCreator
     {
-        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics faction, Statistics type, int chapter, bool useFlatDamage, bool showNonessentialTraits)
+        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics faction, Statistics job, int chapter, bool useFlatDamage, bool showNonessentialTraits)
         {
             Font regFont = new Font(descTextBox.Font, FontStyle.Regular);
             Font boldFont = new Font(descTextBox.Font, FontStyle.Bold);
@@ -22,13 +22,13 @@ namespace IconFoeCreator
             int index = chapter - 1;
 
             Statistics stats;
-            if (faction != null && faction.Name != null && faction.Name != "...")
+            if (Statistics.IsValid(faction))
             {
-                stats = type.InheritFrom(faction);
+                stats = job.InheritFrom(faction);
             }
             else
             {
-                stats = type;
+                stats = job;
             }
 
             // Traits can add armor, max armor, or alter hit points
@@ -60,11 +60,11 @@ namespace IconFoeCreator
             descTextBox.Clear();
 
             descTextBox.SelectionFont = boldUnderlineFont;
-            if (faction != null && faction.Name != null && faction.Name != "...")
+            if (Statistics.IsValid(faction))
             {
                 descTextBox.AppendText(faction.ToString() + " ");
             }
-            descTextBox.AppendText(type.ToString() + Environment.NewLine);
+            descTextBox.AppendText(job.ToString() + Environment.NewLine);
             descTextBox.SelectionFont = regFont;
 
             descTextBox.SelectionFont = boldFont;

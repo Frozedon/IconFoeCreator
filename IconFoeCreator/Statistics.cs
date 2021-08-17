@@ -116,6 +116,11 @@ namespace IconFoeCreator
 
             return newStats;
         }
+
+        public static bool IsValid(Statistics stats)
+        {
+            return stats != null && stats.Name != null && stats.Name != "...";
+        }
     }
 
     public class Trait

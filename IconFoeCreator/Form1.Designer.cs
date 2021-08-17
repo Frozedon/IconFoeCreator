@@ -219,7 +219,7 @@ namespace IconFoeCreator
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(794, 844);
+            this.button1.Location = new System.Drawing.Point(50, 844);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(260, 53);
             this.button1.TabIndex = 17;

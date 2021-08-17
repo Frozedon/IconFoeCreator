@@ -34,11 +34,6 @@ namespace IconFoeCreator
             JobGroups.Clear();
             FactionGroups.Clear();
 
-            // Add defaults
-            Factions.Add(new Statistics() { Name = EMPTY_GROUP });
-            JobGroups.Add(ANY_GROUP);
-            FactionGroups.Add(ANY_GROUP);
-
             List<Statistics> allStats = new List<Statistics>();
 
             // Collect stats from files
@@ -91,9 +86,21 @@ namespace IconFoeCreator
                 }
             }
 
+            // Add defaults
+            Factions.Add(new Statistics() { Name = EMPTY_GROUP });
+            JobGroups.Add(ANY_GROUP);
+            FactionGroups.Add(ANY_GROUP);
+
             // Sort lists
             Jobs.Sort(delegate (Statistics x, Statistics y)
             {
+                return x.Name.CompareTo(y.Name);
+            });
+
+            Factions.Sort(delegate (Statistics x, Statistics y)
+            {
+                if (x.Name == EMPTY_GROUP) { return -1; }
+                if (y.Name == EMPTY_GROUP) { return 1; }
                 return x.Name.CompareTo(y.Name);
             });
 
@@ -102,13 +109,6 @@ namespace IconFoeCreator
                 if (x == ANY_GROUP) { return -1; }
                 if (y == ANY_GROUP) { return 1; }
                 return x.CompareTo(y);
-            });
-
-            Factions.Sort(delegate (Statistics x, Statistics y)
-            {
-                if (x.Name == EMPTY_GROUP) { return -1; }
-                if (y.Name == EMPTY_GROUP) { return 1; }
-                return x.Name.CompareTo(y.Name);
             });
 
             FactionGroups.Sort(delegate (string x, string y)

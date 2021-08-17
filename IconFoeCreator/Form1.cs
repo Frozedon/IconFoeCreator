@@ -126,9 +126,9 @@ namespace IconFoeCreator
         {
             Statistics job = (Statistics)comboBox_Job.SelectedItem;
             Statistics faction = (Statistics)comboBox_Faction.SelectedItem;
-            Statistics statsToExport = new Statistics();
+            Statistics statsToExport;
 
-            if (faction != null && faction.Name != null && faction.Name != "...")
+            if (Statistics.IsValid(faction))
             {
                 statsToExport = job.InheritFrom(faction);
             }
