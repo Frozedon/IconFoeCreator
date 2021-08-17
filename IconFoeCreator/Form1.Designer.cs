@@ -45,6 +45,7 @@ namespace IconFoeCreator
             this.checkBox_NonessentialTraits = new System.Windows.Forms.CheckBox();
             this.richTextBox_SetupRules = new System.Windows.Forms.RichTextBox();
             this.button_copySetup = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label_Faction
@@ -215,11 +216,23 @@ namespace IconFoeCreator
             this.button_copySetup.UseVisualStyleBackColor = true;
             this.button_copySetup.Click += new System.EventHandler(this.button_copySetup_Click);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(794, 844);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(260, 53);
+            this.button1.TabIndex = 17;
+            this.button1.Text = "Export to JSON";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.ExportAsJsonClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1659, 919);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.button_copySetup);
             this.Controls.Add(this.richTextBox_SetupRules);
             this.Controls.Add(this.checkBox_NonessentialTraits);
@@ -261,6 +274,7 @@ namespace IconFoeCreator
         private System.Windows.Forms.CheckBox checkBox_NonessentialTraits;
         private System.Windows.Forms.RichTextBox richTextBox_SetupRules;
         private System.Windows.Forms.Button button_copySetup;
+        private System.Windows.Forms.Button button1;
     }
 }
 
