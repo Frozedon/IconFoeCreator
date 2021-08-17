@@ -13,10 +13,6 @@
   "DamageType": "Physical",
   "Traits": [
     {
-      "Name": "Vigilance",
-      "Description": "Foes can’t dash in your engagement and can’t move through your space."
-    },
-    {
       "Name": "Enormous",
       "Description": "Size 3."
     },
@@ -31,6 +27,10 @@
     {
       "Name": "Monstrous Strength",
       "Description": "All attacks have shove 1. 1/round after attacking a character, create a space of height 1 terrain adjacent to the target."
+    },
+    {
+      "Name": "Vigilance",
+      "Description": "Foes can’t dash in your engagement and can’t move through your space."
     }
   ],
   "Actions": [
