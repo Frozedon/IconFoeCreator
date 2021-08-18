@@ -1,6 +1,7 @@
 {
   "Name": "Relict",
   "Group": "Relict",
+  "Type": "Faction",
   "FactionBlight": "Electrified",
   "Traits": [
     {

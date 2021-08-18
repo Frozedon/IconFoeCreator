@@ -1,6 +1,7 @@
 {
   "Name": "Demon",
   "Group": "Demon",
+  "Type": "Faction",
   "FactionBlight": "Any",
   "Traits": [
     {

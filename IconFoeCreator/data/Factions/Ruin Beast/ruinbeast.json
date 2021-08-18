@@ -1,6 +1,7 @@
 {
   "Name": "Ruin Beast",
   "Group": "Ruin Beast",
+  "Type": "Faction",
   "FactionBlight": "Poisoned",
   "Traits": [
     {

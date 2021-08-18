@@ -2,6 +2,7 @@
   "Name": "Jotunn",
   "Inherits": "Elite",
   "Group": "Jotunn",
+  "Type": "Faction",
   "HpMultiplier": 8,
   "FactionBlight": "Frostbite",
   "SetupTraits": [

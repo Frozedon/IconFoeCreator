@@ -1,6 +1,7 @@
 {
   "Name": "Imperial",
   "Group": "Imperial",
+  "Type": "Faction",
   "FactionBlight": "Burning",
   "SetupTraits": [
     {

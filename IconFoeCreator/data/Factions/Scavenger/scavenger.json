@@ -1,6 +1,7 @@
 {
   "Name": "Scavenger",
   "Group": "Scavenger",
+  "Type": "Faction",
   "FactionBlight": "Any",
   "SetupTraits": [
     {
