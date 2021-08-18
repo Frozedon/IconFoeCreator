@@ -13,7 +13,7 @@ TODO List
 - [ ] Tabs for saving foe combos
 - [X] Monstrosities
 - [X] Add Nocturnal, Brood Lord, and Wyrm JSON
-- [ ] Make Faction super-templates selectable
+- [X] Make Faction super-templates selectable
 - [X] Copy to Clipboard button
 - [X] Separate Setup Rules textbox
 - [X] Make window resizeable
