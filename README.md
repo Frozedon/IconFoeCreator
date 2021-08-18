@@ -16,4 +16,5 @@ TODO List
 - [ ] Make Faction super-templates selectable
 - [X] Copy to Clipboard button
 - [X] Separate Setup Rules textbox
-- [ ] Make window resizeable
+- [X] Make window resizeable
+- [ ] Add window icon
