@@ -12,7 +12,8 @@ TODO List
 - [X] Checkbox to show setup info like "Kin" and "Monster" (hide by default)
 - [ ] Tabs for saving foe combos
 - [X] Monstrosities
-- [ ] Add Nocturnal, Brood Lord, and Wyrm JSON
+- [X] Add Nocturnal, Brood Lord, and Wyrm JSON
 - [ ] Make Faction super-templates selectable
 - [X] Copy to Clipboard button
 - [X] Separate Setup Rules textbox
+- [ ] Make window resizeable
