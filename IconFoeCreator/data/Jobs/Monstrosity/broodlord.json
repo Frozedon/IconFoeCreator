@@ -1,0 +1,156 @@
+{
+  "Name": "Brood Lord",
+  "Inherits": "Monstrosity",
+  "Type": "Job",
+  "Health": [ 5, 6, 7 ],
+  "HPMultiplier": 2,
+  "Speed": 3,
+  "Run": 2,
+  "Dash": 3,
+  "Defense": 7,
+  "Armor": [ 1, 2, 3 ],
+  "Attack": [ 1, 3, 5 ],
+  "FrayDamage": [ 2, 3, 4 ],
+  "DamageType": "Either",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Size 2."
+    },
+    {
+      "Name": "Monstrosity",
+      "Description": "Takes 1 turn after every player character turn. If slow, only one of its turns is affected."
+    },
+    {
+      "Name": "Colossus",
+      "Description": "Has phasing for characters and terrain smaller than it and can end turn in those spaces. Ignores engagement from smaller characters. Ignores movement penalties for terrain."
+    },
+    {
+      "Name": "Legion",
+      "Description": "The Broodlord starts combat with 5 of its unique summons per player character, which can be placed in any space on the battlefield not within range 2 of players."
+    },
+    {
+      "Name": "Shelter",
+      "Description": "Adjacent allies get +1 accuracy on saves."
+    },
+    {
+      "Name": "Brood Minions",
+      "Description": "The Brood Lord creates unique summons with its abilities. It can summon any combination of the following minions, which all have defense 7+chapter and 1 hp by default. They can move 3 spaces when the Brood Lord takes their turn, otherwise cannot take actions by themselves unless specified.\n• Clawing Brood: Foes treat spaces adjacent clawing brood as engagement.\n• Grappler Brood: Characters that start their turn next to an Grappler brood must save or be shoved 2 in a direction of the Brood Lord’s choice.\n• Crusher Brood: 1/1/2 armor. Characters that start their turn adjacent to 1 or more crusher brood must save or become dazed, winded, or staggered (Brood Lord’s choice)."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Autocure",
+      "Tags": [ "1/turn" ],
+      "Description": "May grant vigor 1 to a bloodied ally in range 3."
+    },
+    {
+      "Name": "Juggernaut",
+      "Tags": [ "1/round" ],
+      "Description": "At the start of its turn, can save against all statuses and marks and clear all blights as a free action."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Brood Control",
+      "HP": 15,
+      "Description": "Brood can only move 1 space instead of 3, and brood assault becomes 1 action."
+    },
+    {
+      "Name": "Spines",
+      "HP": 10,
+      "Description": "Shadow spines lose pierce and become line 3."
+    },
+    {
+      "Name": "Possession Gem",
+      "HP": 20,
+      "Description": "Possession costs 2 actions. Characters can sell a possession gem for 4 dust."
+    }
+  ],
+  "PhasesDescription": "The Brood Lord can switch phases at the start of each round. It can be forced to switch phases if it loses all its minions, in which case it happens instantly. It can start in either phase.",
+  "Phases": [
+    {
+      "Name": "Darklurker",
+      "Traits": [
+        {
+          "Name": "Lurk",
+          "Description": "The Brood Lord is intangible in this phase and cannot summon new minions. If all its summons are destroyed, it is immediately forced into phase 2."
+        },
+        {
+          "Name": "Looming Shadow",
+          "Description": "The Brood Lord’s space is difficult terrain for hostile characters and allied characters spend 0 movement to cross spaces in the area."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Brood Assault",
+          "Tags": [ "1/turn" ],
+          "Description": "Up to 2 brood minions make a melee attack, using the brood lord’s attack bonus.",
+          "Hit": "Deal light damage. Gain pierce if two other brood are adjacent to the target."
+        },
+        {
+          "Name": "Shadow Spines",
+          "ActionCost": 1,
+          "Tags": [ "close blast 1" ],
+          "AreaEffect": "Piercing fray damage. Allies are immune."
+        },
+        {
+          "Name": "Great Puppeteer",
+          "ActionCost": 1,
+          "Description": "Up to three allies in range of the Brood Lord can dash 4."
+        },
+        {
+          "Name": "Possess",
+          "ActionCost": 1,
+          "Tags": [ "stance" ],
+          "Description": "An allied character or summon in range 10 of the Brood Lord gains +1 action, +1 boon on attacks and saves, and vigor 1 (using the brood lord’s health). Can only possess one character at once."
+        },
+        {
+          "Name": "Evolve Brood",
+          "ActionCost": 2,
+          "Tags": [ "recharge 4+" ],
+          "Description": "Destroy one brood summon and replace it with an Impaler, Sledge, or Skulk. This new unit has the summon type and only 25% max hp."
+        }
+      ]
+    },
+    {
+      "Name": "Despoiler",
+      "Actions": [
+        {
+          "Name": "Spawn",
+          "ActionCost": 2,
+          "Tags": [ "1/round" ],
+          "Description": "The Brood Lord spawns new unique minions per character in any space on the battlefield that’s not in range 2 of a player character."
+        },
+        {
+          "Name": "Brood Assault",
+          "Tags": [ "1/turn" ],
+          "Description": "Up to 2 brood minions make a melee attack, using the brood lord’s attack bonus.",
+          "Hit": "Deal light damage. Gain pierce if two other brood are adjacent to the target."
+        },
+        {
+          "Name": "Shadow Spines",
+          "ActionCost": 1,
+          "Tags": [ "close blast 1" ],
+          "AreaEffect": "Piercing fray damage. Allies are immune."
+        },
+        {
+          "Name": "Great Puppeteer",
+          "ActionCost": 1,
+          "Description": "Up to three allies in range of the Brood Lord can dash 4."
+        },
+        {
+          "Name": "Possess",
+          "ActionCost": 1,
+          "Tags": [ "stance" ],
+          "Description": "An allied character or summon in range 10 of the Brood Lord gains +1 action, +1 boon on attacks and saves, and vigor 1 (using the brood lord’s health). Can only possess one character at once."
+        },
+        {
+          "Name": "Screaming Spire",
+          "ActionCost": 2,
+          "Description": "The Brood Lord summons a height 1 terrain piece in any free space not adjacent to a player character. Foes in range 2 of the spire take boosted and godly damage from summons, and allied summons have dodge in the same area. Attacks automatically hit the spire, and it is destroyed after taking 10 damage. The Brood Lord can only create one spire at once."
+        }
+      ]
+    }
+  ]
+}
