@@ -198,11 +198,11 @@ namespace IconFoeCreator
             bool first = true;
             foreach (Trait trait in traits)
             {
-                if (!first) { descTextBox.AppendText(Environment.NewLine); }
-                else { first = false; }
-
                 if (showNonessentialTraits || !trait.Nonessential)
                 {
+                    if (!first) { descTextBox.AppendText(Environment.NewLine); }
+                    else { first = false; }
+
                     descTextBox.SelectionFont = boldFont;
                     descTextBox.AppendText(trait.Name);
 
