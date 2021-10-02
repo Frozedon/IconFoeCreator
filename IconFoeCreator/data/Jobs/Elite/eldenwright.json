@@ -21,7 +21,7 @@
   "Traits": [
     {
       "Name": "Overdrive 5",
-      "Description": "Deals boosted damage if the current round is 6 or higher."
+      "Description": "Deals boosted damage if the current round is 5 or higher."
     },
     {
       "Name": "Slow",
