@@ -25,7 +25,7 @@
       "Description": "Has phasing for characters and terrain smaller than it and can end turn in those spaces. Ignores engagement from smaller characters. Ignores movement penalties for terrain."
     },
     {
-      "Name": "Skrimisher",
+      "Name": "Skirmisher",
       "Description": "Can move diagonally."
     },
     {
@@ -34,7 +34,7 @@
     },
     {
       "Name": "Finishing Blow",
-      "Description": "Boost damage if character is bloody."
+      "Description": "Deal bonus damage if character is bloody."
     }
   ],
   "Actions": [

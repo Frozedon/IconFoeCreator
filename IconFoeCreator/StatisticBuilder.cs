@@ -131,12 +131,12 @@ namespace IconFoeCreator
                         string json = r.ReadToEnd();
                         if (json != null && json.Length > 0)
                         {
-                            //Statistics readStat = null;
-                            //try
-                            //{
-                            Statistics readStat = JsonConvert.DeserializeObject<Statistics>(json);
-                            //}
-                            //catch { }
+                            Statistics readStat = null;
+                            try
+                            {
+                                readStat = JsonConvert.DeserializeObject<Statistics>(json);
+                            }
+                            catch { }
 
                             if (readStat != null)
                             {

@@ -4,22 +4,6 @@
   "Type": "Job",
   "Traits": [
     {
-      "Name": "Skirmisher",
-      "Description": "Can move diagonally."
-    },
-    {
-      "Name": "Extended Dash",
-      "Description": "Can dash as 1 action."
-    },
-    {
-      "Name": "Dodge",
-      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
-    },
-    {
-      "Name": "Finishing Blow",
-      "Description": "Boost damage if character is bloodied."
-    },
-    {
       "Name": "Nimble",
       "Description": "Has evasion unless suffering from a status."
     },

@@ -4,24 +4,8 @@
   "Type": "Job",
   "Traits": [
     {
-      "Name": "Skirmisher",
-      "Description": "Can move diagonally."
-    },
-    {
-      "Name": "Extended Dash",
-      "Description": "Can dash as 1 action."
-    },
-    {
-      "Name": "Dodge",
-      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
-    },
-    {
       "Name": "Prowl",
       "Description": "Gains stealth at the start of their turn."
-    },
-    {
-      "Name": "Finishing Blow",
-      "Description": "Boost damage if character is bloody."
     },
     {
       "Name": "Slippery",
