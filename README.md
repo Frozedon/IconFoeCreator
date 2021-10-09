@@ -1,4 +1,8 @@
-﻿This is a tool to be used with the Icon rpg. It contains all the statblocks for all the different foe jobs and factions. With it you can quickly select the two keywords and it will automatically build the completed description of the foe.
+If you want to support me, head over here to send me donations https://ko-fi.com/frozedon
+
+____________
+
+This is a tool to be used with the Icon rpg. It contains all the statblocks for all the different foe jobs and factions. With it you can quickly select the two keywords and it will automatically build the completed description of the foe.
 
 TODO List
 - [X] Make git
