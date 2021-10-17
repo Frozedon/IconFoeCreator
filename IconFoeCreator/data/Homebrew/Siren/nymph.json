@@ -1,0 +1,19 @@
+{
+  "Name": "Nymph Siren",
+  "Inherits": "Siren",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Intoxicating Pheromones",
+      "Description": "Characters hostile to the Nymph starting their turns in an adjacent space must make a save or become pacified."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Dominating Kiss",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "The Nymph can only use this on an adjacent character who is pacified. The pacified status is removed and the character immediately takes a dash directed by the Nymph. If they end the movement adjacent to an ally, they deal light physical damage to the ally as an effect."
+    }
+  ]
+}

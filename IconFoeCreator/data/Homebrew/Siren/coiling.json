@@ -1,0 +1,23 @@
+{
+  "Name": "Coiling Siren",
+  "Inherits": "Siren",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Increase size to 2."
+    },
+    {
+      "Name": "Venomous",
+      "Description": "Inflict poisoned on any adjacent character that damages them."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Constrict",
+      "ActionCost": 1,
+      "Tags": [ "stance" ],
+      "Description": "Adjacent foe must save or have their max speed reduced to 0 and be stunned. The Coiling Siren cannot move while in this stance and it ends if the they are stunned, staggered, winded, dazed, or shoved. It also ends if the foe is moved out of adjacency to the Coiling Siren. A character can also repeat the save at the end of their turn to end this effect."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "Name": "Submachine Ghoul",
+  "Inherits": "Gundead",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Digging Claws",
+      "Description": "Attacks gain pierce if the target has no adjacent allies."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Diseased Bite",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "mark", "recharge 6" ],
+      "Hit": "Deal light physical damage, inflict poisoned, and become marked. If the marked character is poisoned at the start of their turn, they gain the stunned condition. They can pass a save at the end of their turn to clear the mark."
+    }
+  ]
+}

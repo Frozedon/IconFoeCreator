@@ -1,0 +1,22 @@
+{
+  "Name": "Gundead",
+  "Group": "Gundead",
+  "Type": "Faction",
+  "FactionBlight": "Poisoned",
+  "Traits": [
+    {
+      "Name": "Aim For The Head",
+      "Description": "If a character hits a gundead with a critical hit, the attack deals godly damage to it."
+    },
+    {
+      "Name": "Undead Resilience",
+      "Description": "Gundead have resistance to physical damage."
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Monsters",
+      "Description": "Gundead do not flee or negotiate."
+    }
+  ]
+}

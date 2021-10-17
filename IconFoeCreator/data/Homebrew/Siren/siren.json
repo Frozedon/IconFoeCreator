@@ -1,0 +1,22 @@
+{
+  "Name": "Siren",
+  "Group": "Siren",
+  "Type": "Faction",
+  "FactionBlight": "Poisoned",
+  "Traits": [
+    {
+      "Name": "Hampering Toxins",
+      "Description": "When a character is poisoned by a Siren, they also become Dazed."
+    },
+    {
+      "Name": "Disorienting Magic",
+      "Description": "A hostile character who successfully saves while in range 4 of a Siren is slow until the end of the character’s next turn."
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Monsters",
+      "Description": "Sirens do not flee or negotiate."
+    }
+  ]
+}
