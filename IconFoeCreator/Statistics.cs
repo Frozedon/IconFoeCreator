@@ -142,6 +142,9 @@ namespace IconFoeCreator
         public double? AddHP { get; set; }
         public int? AddArmor { get; set; }
         public int? MaxArmor { get; set; }
+        public int? AddSpeed { get; set; }
+        public int? AddRun { get; set; }
+        public int? AddDash { get; set; }
         public bool? NoRun { get; set; }
         public bool? NoDash { get; set; }
         public bool Nonessential { get; set; }

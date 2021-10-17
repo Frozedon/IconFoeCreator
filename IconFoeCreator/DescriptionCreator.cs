@@ -35,6 +35,9 @@ namespace IconFoeCreator
             int addArmor = 0;
             int maxArmor = int.MaxValue;
             double addHP = 0.0;
+            int addSpeed = 0;
+            int addRun = 0;
+            int addDash = 0;
             bool noRun = false;
             bool noDash = false;
             foreach (Trait trait in stats.Traits)
@@ -42,6 +45,9 @@ namespace IconFoeCreator
                 if (trait.AddArmor.HasValue) { addArmor += trait.AddArmor.Value; }
                 if (trait.MaxArmor.HasValue) { maxArmor = Math.Min(maxArmor, trait.MaxArmor.Value); }
                 if (trait.AddHP.HasValue) { addHP += trait.AddHP.Value; }
+                if (trait.AddSpeed.HasValue) { addSpeed += trait.AddSpeed.Value; }
+                if (trait.AddRun.HasValue) { addRun += trait.AddRun.Value; }
+                if (trait.AddDash.HasValue) { addDash += trait.AddDash.Value; }
                 if (trait.NoRun.HasValue) { noRun = trait.NoRun.Value; }
                 if (trait.NoDash.HasValue) { noDash = trait.NoDash.Value; }
             }
@@ -49,9 +55,9 @@ namespace IconFoeCreator
             int health = stats.Health[index].GetValueOrDefault();
             double hitPoints = health * stats.HPMultiplier.GetValueOrDefault(4) * (1.0 + addHP);
             hitPoints = Math.Max(hitPoints, 1);
-            int speed = stats.Speed.GetValueOrDefault();
-            string run = noRun ? "no run" : "run " + stats.Run.GetValueOrDefault();
-            string dash = noDash ? "no dash" : "dash " + stats.Dash.GetValueOrDefault();
+            int speed = stats.Speed.GetValueOrDefault() + addSpeed;
+            string run = noRun ? "no run" : "run " + (stats.Run.GetValueOrDefault() + addRun);
+            string dash = noDash ? "no dash" : "dash " + (stats.Dash.GetValueOrDefault() + addDash);
             int defense = stats.Defense.GetValueOrDefault() + chapter;
             int armor = Math.Min(stats.Armor[index].GetValueOrDefault() + addArmor, maxArmor);
             int attack = stats.Attack[index].GetValueOrDefault();
