@@ -6,22 +6,30 @@ using System.Linq;
 
 namespace IconFoeCreator
 {
+    public class StatisticGroup
+    {
+        public string Name;
+        public bool HasBase = false;
+    }
+
     public class StatisticBuilder
     {
-        public List<string> Factions;
+        public List<StatisticGroup> Factions;
         public List<Statistics> Templates;
-        public List<string> Classes;
+        public List<StatisticGroup> Classes;
         public List<Statistics> Jobs;
 
         private static readonly string DATA_FOLDER_PATH = "data/";
+        private static readonly string BASE_FOLDER_PATH = "base/";
+        private static readonly string HOMEBREW_FOLDER_PATH = "homebrew/";
         public static readonly string EMPTY_GROUP = "...";
         public static readonly string ANY_GROUP = "Any";
 
         public StatisticBuilder()
         {
-            Factions = new List<string>();
+            Factions = new List<StatisticGroup>();
             Templates = new List<Statistics>();
-            Classes = new List<string>();
+            Classes = new List<StatisticGroup>();
             Jobs = new List<Statistics>();
         }
 
@@ -35,9 +43,13 @@ namespace IconFoeCreator
             List<Statistics> allStats = new List<Statistics>();
 
             // Collect stats from files
-            if (Directory.Exists(DATA_FOLDER_PATH))
+            if (Directory.Exists(DATA_FOLDER_PATH + BASE_FOLDER_PATH))
             {
-                ReadJsonFilesInDirectory(DATA_FOLDER_PATH, allStats);
+                ReadJsonFilesInDirectory(DATA_FOLDER_PATH + BASE_FOLDER_PATH, allStats);
+            }
+            if (Directory.Exists(DATA_FOLDER_PATH + HOMEBREW_FOLDER_PATH))
+            {
+                ReadJsonFilesInDirectory(DATA_FOLDER_PATH + HOMEBREW_FOLDER_PATH, allStats, true);
             }
 
             // Handle inheritance
@@ -68,26 +80,42 @@ namespace IconFoeCreator
                 {
                     Jobs.Add(stat);
 
-                    if (stat.Group != null && stat.Group != String.Empty && !Classes.Contains(stat.Group))
+                    if (stat.Group != null && stat.Group != String.Empty)
                     {
-                        Classes.Add(stat.Group);
+                        var group = Classes.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
+                        if (group == null)
+                        {
+                            Classes.Add(new StatisticGroup() { Name = stat.Group, HasBase = !stat.IsHomebrew });
+                        }
+                        else if (!stat.IsHomebrew)
+                        {
+                            group.HasBase = true;
+                        }
                     }
                 }
                 else if (stat.Type == "Faction")
                 {
                     Templates.Add(stat);
 
-                    if (stat.Group != null && stat.Group != String.Empty && !Factions.Contains(stat.Group))
+                    if (stat.Group != null && stat.Group != String.Empty)
                     {
-                        Factions.Add(stat.Group);
+                        var group = Factions.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
+                        if (group == null)
+                        {
+                            Factions.Add(new StatisticGroup() { Name = stat.Group, HasBase = !stat.IsHomebrew });
+                        }
+                        else if (!stat.IsHomebrew)
+                        {
+                            group.HasBase = true;
+                        }
                     }
                 }
             }
 
             // Add defaults
             Templates.Add(new Statistics() { Name = EMPTY_GROUP });
-            Classes.Add(ANY_GROUP);
-            Factions.Add(ANY_GROUP);
+            Classes.Add(new StatisticGroup() { Name = ANY_GROUP, HasBase = true });
+            Factions.Add(new StatisticGroup() { Name = ANY_GROUP, HasBase = true });
 
             // Sort lists
             Jobs.Sort(delegate (Statistics x, Statistics y)
@@ -102,22 +130,22 @@ namespace IconFoeCreator
                 return x.Name.CompareTo(y.Name);
             });
 
-            Classes.Sort(delegate (string x, string y)
+            Classes.Sort(delegate (StatisticGroup x, StatisticGroup y)
             {
-                if (x == ANY_GROUP) { return -1; }
-                if (y == ANY_GROUP) { return 1; }
-                return x.CompareTo(y);
+                if (x.Name == ANY_GROUP) { return -1; }
+                if (y.Name == ANY_GROUP) { return 1; }
+                return x.Name.CompareTo(y.Name);
             });
 
-            Factions.Sort(delegate (string x, string y)
+            Factions.Sort(delegate (StatisticGroup x, StatisticGroup y)
             {
-                if (x == ANY_GROUP) { return -1; }
-                if (y == ANY_GROUP) { return 1; }
-                return x.CompareTo(y);
+                if (x.Name == ANY_GROUP) { return -1; }
+                if (y.Name == ANY_GROUP) { return 1; }
+                return x.Name.CompareTo(y.Name);
             });
         }
 
-        private void ReadJsonFilesInDirectory(string dirPath, List<Statistics> statsOutput)
+        private void ReadJsonFilesInDirectory(string dirPath, List<Statistics> statsOutput, bool isHomebrew = false)
         {
             // Iterate through folder looking for json files
             foreach (string path in Directory.GetFiles(dirPath))
@@ -138,6 +166,7 @@ namespace IconFoeCreator
 
                             if (readStat != null)
                             {
+                                readStat.IsHomebrew = isHomebrew;
                                 statsOutput.Add(readStat);
                             }
                         }
@@ -147,7 +176,7 @@ namespace IconFoeCreator
 
             foreach (string path in Directory.GetDirectories(dirPath))
             {
-                ReadJsonFilesInDirectory(path, statsOutput);
+                ReadJsonFilesInDirectory(path, statsOutput, isHomebrew);
             }
         }
     }

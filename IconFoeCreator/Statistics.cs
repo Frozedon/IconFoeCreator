@@ -36,6 +36,7 @@ namespace IconFoeCreator
         public List<BodyPart> BodyParts { get; set; } // Additive inheritance
         public string PhasesDescription { get; set; }
         public List<Phase> Phases { get; set; }
+        public bool IsHomebrew { get; set; } // To be used and set internally
 
         public Statistics()
         {
@@ -68,6 +69,7 @@ namespace IconFoeCreator
             newStats.Name = Name;
             newStats.Inherits = Inherits;
             newStats.Type = Type;
+            newStats.IsHomebrew = IsHomebrew;
 
             // Inheritted values
             if (Group != null && Group != String.Empty) { newStats.Group = Group; } else { newStats.Group = otherStats.Group; }

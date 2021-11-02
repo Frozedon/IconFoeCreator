@@ -32,20 +32,14 @@ namespace IconFoeCreator
             statBuilder = new StatisticBuilder();
             statBuilder.BuildStatistics();
 
-            Faction_comboBox.ItemsSource = statBuilder.Factions;
-            Faction_comboBox.SelectedIndex = 0;
+            UpdateFactionOptions();
+            UpdateTemplateOptions();
+            UpdateClassOptions();
+            UpdateJobOptions();
+
             Faction_comboBox.SelectionChanged += OnFactionChanged;
-
-            Template_comboBox.ItemsSource = statBuilder.Templates;
-            Template_comboBox.SelectedIndex = 0;
-            Template_comboBox.SelectionChanged += OnIndexChanged;
-
-            Class_comboBox.ItemsSource = statBuilder.Classes;
-            Class_comboBox.SelectedIndex = 0;
             Class_comboBox.SelectionChanged += OnClassChanged;
-
-            Job_comboBox.ItemsSource = statBuilder.Jobs;
-            Job_comboBox.SelectedIndex = 0;
+            Template_comboBox.SelectionChanged += OnIndexChanged;
             Job_comboBox.SelectionChanged += OnIndexChanged;
 
             ChapterItem[] chapters = new ChapterItem[Constants.ChapterCount];
@@ -67,40 +61,12 @@ namespace IconFoeCreator
 
         private void OnFactionChanged(object sender, EventArgs e)
         {
-            string group = Faction_comboBox.SelectedItem.ToString().ToLower();
-            if (group == StatisticBuilder.ANY_GROUP.ToLower())
-            {
-                Template_comboBox.ItemsSource = statBuilder.Factions;
-            }
-            else
-            {
-                List<Statistics> filteredFactions = statBuilder.Templates.FindAll(delegate (Statistics stat)
-                {
-                    return stat.Group != null && stat.Group.ToLower() == group;
-                });
-                Template_comboBox.ItemsSource = filteredFactions;
-            }
-
-            Template_comboBox.SelectedIndex = 0;
+            UpdateTemplateOptions();
         }
 
         private void OnClassChanged(object sender, EventArgs e)
         {
-            string group = Class_comboBox.SelectedItem.ToString().ToLower();
-            if (group == StatisticBuilder.ANY_GROUP.ToLower())
-            {
-                Job_comboBox.ItemsSource = statBuilder.Jobs;
-            }
-            else
-            {
-                List<Statistics> filteredJobs = statBuilder.Jobs.FindAll(delegate (Statistics stat)
-                {
-                    return stat.Group != null && stat.Group.ToLower() == group;
-                });
-                Job_comboBox.ItemsSource = filteredJobs;
-            }
-
-            Job_comboBox.SelectedIndex = 0;
+            UpdateJobOptions();
         }
 
         private void UpdateDescription()
@@ -114,6 +80,86 @@ namespace IconFoeCreator
                 chapterItem.Value,
                 FlatDamage_checkBox.IsChecked.GetValueOrDefault(),
                 NonessentialTraits_checkBox.IsChecked.GetValueOrDefault());
+        }
+
+        private void UpdateFactionOptions()
+        {
+            bool showHomebrew = homebrew_checkBox.IsChecked.GetValueOrDefault();
+            List<StatisticGroup> statGroups = statBuilder.Factions.FindAll(delegate (StatisticGroup stat)
+            {
+                return showHomebrew || stat.HasBase;
+            });
+
+            List<string> statGroupNames = new List<string>();
+            foreach (StatisticGroup stat in statGroups)
+            {
+                statGroupNames.Add(stat.Name);
+            }
+
+            Faction_comboBox.ItemsSource = statGroupNames;
+            Faction_comboBox.SelectedIndex = 0;
+        }
+
+        private void UpdateClassOptions()
+        {
+            bool showHomebrew = homebrew_checkBox.IsChecked.GetValueOrDefault();
+            List<StatisticGroup> statGroups = statBuilder.Classes.FindAll(delegate (StatisticGroup stat)
+            {
+                return showHomebrew || stat.HasBase;
+            });
+
+            List<string> statGroupNames = new List<string>();
+            foreach (StatisticGroup stat in statGroups)
+            {
+                statGroupNames.Add(stat.Name);
+            }
+
+            Class_comboBox.ItemsSource = statGroupNames;
+            Class_comboBox.SelectedIndex = 0;
+        }
+
+        private void UpdateTemplateOptions()
+        {
+            bool showHomebrew = homebrew_checkBox.IsChecked.GetValueOrDefault();
+            string factionGroup = Faction_comboBox.SelectedItem.ToString().ToLower();
+            if (factionGroup == StatisticBuilder.ANY_GROUP.ToLower())
+            {
+                Template_comboBox.ItemsSource = statBuilder.Templates.FindAll(delegate (Statistics stat)
+                {
+                    return showHomebrew || !stat.IsHomebrew;
+                });
+            }
+            else
+            {
+                Template_comboBox.ItemsSource = statBuilder.Templates.FindAll(delegate (Statistics stat)
+                {
+                    return stat.Group != null && stat.Group.ToLower() == factionGroup && (showHomebrew || !stat.IsHomebrew);
+                });
+            }
+
+            Template_comboBox.SelectedIndex = 0;
+        }
+
+        private void UpdateJobOptions()
+        {
+            bool showHomebrew = homebrew_checkBox.IsChecked.GetValueOrDefault();
+            string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
+            if (classGroup == StatisticBuilder.ANY_GROUP.ToLower())
+            {
+                Job_comboBox.ItemsSource = statBuilder.Jobs.FindAll(delegate (Statistics stat)
+                {
+                    return showHomebrew || !stat.IsHomebrew;
+                });
+            }
+            else
+            {
+                Job_comboBox.ItemsSource = statBuilder.Jobs.FindAll(delegate (Statistics stat)
+                {
+                    return stat.Group != null && stat.Group.ToLower() == classGroup && (showHomebrew || !stat.IsHomebrew);
+                });
+            }
+
+            Job_comboBox.SelectedIndex = 0;
         }
 
         private void CopyDescription_button_Click(object sender, RoutedEventArgs e)
@@ -136,6 +182,14 @@ namespace IconFoeCreator
         private void FlatDamage_checkBox_Checked(object sender, RoutedEventArgs e)
         {
             UpdateDescription();
+        }
+
+        private void homebrew_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateFactionOptions();
+            UpdateTemplateOptions();
+            UpdateClassOptions();
+            UpdateJobOptions();
         }
 
         private void ExportJson_button_Click(object sender, RoutedEventArgs e)

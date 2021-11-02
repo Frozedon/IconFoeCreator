@@ -186,6 +186,7 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness(0, 12, 0, 0);
+                paragraph.TextDecorations = TextDecorations.Underline;
                 AddBold(paragraph, "Interrupts");
                 descTextBox.Document.Blocks.Add(paragraph);
 
