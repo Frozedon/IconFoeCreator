@@ -1,3 +1,6 @@
-IconFoeCreator/bin/
-IconFoeCreator/obj/
-.vs/
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/IconFoeCreator/bin
+/IconFoeCreator/obj

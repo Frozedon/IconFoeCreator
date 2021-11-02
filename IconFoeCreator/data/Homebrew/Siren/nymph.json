@@ -5,7 +5,7 @@
   "Traits": [
     {
       "Name": "Intoxicating Pheromones",
-      "Description": "Characters hostile to the Nymph starting their turns in an adjacent space must make a save or become pacified."
+      "Description": "If a hostile character ends their turn adjacent to the Nymph, they must make a save or become pacified."
     }
   ],
   "Actions": [

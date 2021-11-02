@@ -25,9 +25,9 @@
   ],
   "Interrupts": [
     {
-      "Name": "Self-Sacrifice",
+      "Name": "Guardian",
       "Count": 1,
-      "Description": "When a Siren in range 3 is hit by an attack, the Enthralled dashes to be adjacent to that Siren and takes the hit for them."
+      "Description": "When an ally you can see in range 3 is targeted by an attack, you can dash up to 2 spaces towards that ally, ignoring vigilance. Then, if you’re adjacent, you can change the target of the attack to you."
     }
   ]
 }

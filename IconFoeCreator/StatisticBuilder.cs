@@ -1,19 +1,17 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
 
 namespace IconFoeCreator
 {
     public class StatisticBuilder
     {
+        public List<string> Factions;
+        public List<Statistics> Templates;
+        public List<string> Classes;
         public List<Statistics> Jobs;
-        public List<Statistics> Factions;
-        public List<string> JobGroups;
-        public List<string> FactionGroups;
 
         private static readonly string DATA_FOLDER_PATH = "data/";
         public static readonly string EMPTY_GROUP = "...";
@@ -21,18 +19,18 @@ namespace IconFoeCreator
 
         public StatisticBuilder()
         {
+            Factions = new List<string>();
+            Templates = new List<Statistics>();
+            Classes = new List<string>();
             Jobs = new List<Statistics>();
-            Factions = new List<Statistics>();
-            JobGroups = new List<string>();
-            FactionGroups = new List<string>();
         }
 
         public void BuildStatistics()
         {
-            Jobs.Clear();
             Factions.Clear();
-            JobGroups.Clear();
-            FactionGroups.Clear();
+            Templates.Clear();
+            Classes.Clear();
+            Jobs.Clear();
 
             List<Statistics> allStats = new List<Statistics>();
 
@@ -70,26 +68,26 @@ namespace IconFoeCreator
                 {
                     Jobs.Add(stat);
 
-                    if (stat.Group != null && stat.Group != String.Empty && !JobGroups.Contains(stat.Group))
+                    if (stat.Group != null && stat.Group != String.Empty && !Classes.Contains(stat.Group))
                     {
-                        JobGroups.Add(stat.Group);
+                        Classes.Add(stat.Group);
                     }
                 }
                 else if (stat.Type == "Faction")
                 {
-                    Factions.Add(stat);
+                    Templates.Add(stat);
 
-                    if (stat.Group != null && stat.Group != String.Empty && !FactionGroups.Contains(stat.Group))
+                    if (stat.Group != null && stat.Group != String.Empty && !Factions.Contains(stat.Group))
                     {
-                        FactionGroups.Add(stat.Group);
+                        Factions.Add(stat.Group);
                     }
                 }
             }
 
             // Add defaults
-            Factions.Add(new Statistics() { Name = EMPTY_GROUP });
-            JobGroups.Add(ANY_GROUP);
-            FactionGroups.Add(ANY_GROUP);
+            Templates.Add(new Statistics() { Name = EMPTY_GROUP });
+            Classes.Add(ANY_GROUP);
+            Factions.Add(ANY_GROUP);
 
             // Sort lists
             Jobs.Sort(delegate (Statistics x, Statistics y)
@@ -97,21 +95,21 @@ namespace IconFoeCreator
                 return x.Name.CompareTo(y.Name);
             });
 
-            Factions.Sort(delegate (Statistics x, Statistics y)
+            Templates.Sort(delegate (Statistics x, Statistics y)
             {
                 if (x.Name == EMPTY_GROUP) { return -1; }
                 if (y.Name == EMPTY_GROUP) { return 1; }
                 return x.Name.CompareTo(y.Name);
             });
 
-            JobGroups.Sort(delegate (string x, string y)
+            Classes.Sort(delegate (string x, string y)
             {
                 if (x == ANY_GROUP) { return -1; }
                 if (y == ANY_GROUP) { return 1; }
                 return x.CompareTo(y);
             });
 
-            FactionGroups.Sort(delegate (string x, string y)
+            Factions.Sort(delegate (string x, string y)
             {
                 if (x == ANY_GROUP) { return -1; }
                 if (y == ANY_GROUP) { return 1; }

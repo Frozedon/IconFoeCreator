@@ -10,7 +10,7 @@
   "Defense": 6,
   "Armor": [ 2, 3, 4 ],
   "Attack": [ 0, 2, 4 ],
-  "Fray Damage": [ 2, 3, 4 ],
+  "FrayDamage": [ 2, 3, 4 ],
   "LightDamage": 3,
   "HeavyDamage": 7,
   "CriticalDamage": 10,
