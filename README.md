@@ -22,3 +22,5 @@ TODO List
 - [X] Separate Setup Rules textbox
 - [X] Make window resizeable
 - [ ] Add window icon
+- [X] Update to WPF
+- [X] Separate Base and Homebrew Data
