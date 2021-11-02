@@ -263,6 +263,11 @@ namespace IconFoeCreator
 
         public static void AddTraits(RichTextBox textBox, List<Trait> traits, bool showNonessentialTraits)
         {
+            traits.Sort(delegate (Trait x, Trait y)
+            {
+                return x.Name.CompareTo(y.Name);
+            });
+
             foreach (Trait trait in traits)
             {
                 if (showNonessentialTraits || !trait.Nonessential)
@@ -297,6 +302,15 @@ namespace IconFoeCreator
 
         public static void AddInterrupts(RichTextBox textBox, List<Interrupt> interrupts)
         {
+            interrupts.Sort(delegate (Interrupt x, Interrupt y)
+            {
+                if (x.Count == y.Count)
+                {
+                    return x.Name.CompareTo(y.Name);
+                }
+                return x.Count.CompareTo(y.Count);
+            });
+
             foreach (Interrupt interrupt in interrupts)
             {
                 Paragraph paragraph = MakeParagraph();
@@ -322,6 +336,15 @@ namespace IconFoeCreator
 
         public static void AddActions(RichTextBox textBox, List<Action> actions)
         {
+            actions.Sort(delegate (Action x, Action y)
+            {
+                if (x.ActionCost == y.ActionCost)
+                {
+                    return x.Name.CompareTo(y.Name);
+                }
+                return x.ActionCost.CompareTo(y.ActionCost);
+            });
+
             foreach (Action action in actions)
             {
                 AddAction(textBox, action);

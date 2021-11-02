@@ -9,7 +9,7 @@ TODO List
 - [X] Remove duplicate traits
 - [X] Decorate description with bolds and italics
 - [X] Finish Faction json files
-- [ ] Sort traits/actions (Possibly dropdown for different methods)
+- [X] Sort traits/actions
 - [X] Clean up the weird optional class to just use nullable types
 - [X] Faction dropdown to filter the faction templates
 - [X] Class dropdown to filter the jobs
@@ -24,4 +24,3 @@ TODO List
 - [ ] Add window icon
 - [X] Update to WPF
 - [X] Separate Base and Homebrew Data
-- [ ] Sort Actions By action cost
