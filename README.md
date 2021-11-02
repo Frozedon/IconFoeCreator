@@ -24,3 +24,4 @@ TODO List
 - [ ] Add window icon
 - [X] Update to WPF
 - [X] Separate Base and Homebrew Data
+- [ ] Sort Actions By action cost
