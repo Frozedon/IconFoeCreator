@@ -1,0 +1,17 @@
+{
+  "Name": "Dreamweaver Siren",
+  "Inherits": "Siren",
+  "Type": "Faction",
+  "Actions": [
+    {
+      "Name": "Snore",
+      "ActionCost": 1,
+      "Description": "A character in range 3 must save or become winded."
+    },
+    {
+      "Name": "Break Concentration",
+      "ActionCost": 1,
+      "Description": "A character in range 3 must save or lose any stances they are holding."
+    }
+  ]
+}
