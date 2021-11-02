@@ -84,7 +84,7 @@ namespace IconFoeCreator
 
         private void UpdateFactionOptions()
         {
-            bool showHomebrew = homebrew_checkBox.IsChecked.GetValueOrDefault();
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
             List<StatisticGroup> statGroups = statBuilder.Factions.FindAll(delegate (StatisticGroup stat)
             {
                 return showHomebrew || stat.HasBase;
@@ -102,7 +102,7 @@ namespace IconFoeCreator
 
         private void UpdateClassOptions()
         {
-            bool showHomebrew = homebrew_checkBox.IsChecked.GetValueOrDefault();
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
             List<StatisticGroup> statGroups = statBuilder.Classes.FindAll(delegate (StatisticGroup stat)
             {
                 return showHomebrew || stat.HasBase;
@@ -120,7 +120,7 @@ namespace IconFoeCreator
 
         private void UpdateTemplateOptions()
         {
-            bool showHomebrew = homebrew_checkBox.IsChecked.GetValueOrDefault();
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
             string factionGroup = Faction_comboBox.SelectedItem.ToString().ToLower();
             if (factionGroup == StatisticBuilder.ANY_GROUP.ToLower())
             {
@@ -142,7 +142,7 @@ namespace IconFoeCreator
 
         private void UpdateJobOptions()
         {
-            bool showHomebrew = homebrew_checkBox.IsChecked.GetValueOrDefault();
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
             string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
             if (classGroup == StatisticBuilder.ANY_GROUP.ToLower())
             {
@@ -184,7 +184,7 @@ namespace IconFoeCreator
             UpdateDescription();
         }
 
-        private void homebrew_checkBox_Checked(object sender, RoutedEventArgs e)
+        private void Homebrew_checkBox_Checked(object sender, RoutedEventArgs e)
         {
             UpdateFactionOptions();
             UpdateTemplateOptions();

@@ -17,10 +17,10 @@
     <ComboBox x:Name="Job_comboBox" HorizontalAlignment="Left" Margin="10,199,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
     <Label x:Name="Chapter_label" Content="Chapter" HorizontalAlignment="Left" Margin="6,230,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Chapter_comboBox" HorizontalAlignment="Left" Margin="10,257,0,0" VerticalAlignment="Top" Width="57" FontSize="16"/>
-    <CheckBox x:Name="NonessentialTraits_checkBox" Content="Show Nonessential Traits" HorizontalAlignment="Left" Margin="10,0,0,81.667" VerticalAlignment="Bottom" FontSize="14" Checked="NonessentialTraits_checkBox_Checked"/>
-    <CheckBox x:Name="FlatDamage_checkBox" Content="Use Flat Damage" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="FlatDamage_checkBox_Checked"/>
+    <CheckBox x:Name="NonessentialTraits_checkBox" Content="Show Nonessential Traits" HorizontalAlignment="Left" Margin="10,0,0,81.667" VerticalAlignment="Bottom" FontSize="14" Checked="NonessentialTraits_checkBox_Checked" Unchecked="NonessentialTraits_checkBox_Checked"/>
+    <CheckBox x:Name="FlatDamage_checkBox" Content="Use Flat Damage" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="FlatDamage_checkBox_Checked" Unchecked="FlatDamage_checkBox_Checked"/>
+    <CheckBox x:Name="Homebrew_checkBox" Content="Show Homebrew" HorizontalAlignment="Left" Margin="10,0,0,37.667" VerticalAlignment="Bottom" FontSize="14" Checked="Homebrew_checkBox_Checked" Unchecked="Homebrew_checkBox_Checked"/>
     <Button x:Name="ExportJson_button" Content="Export to JSON" HorizontalAlignment="Left" Margin="10,0,0,9.667" VerticalAlignment="Bottom" Width="115" FontSize="14" Click="ExportJson_button_Click"/>
-    <CheckBox x:Name="homebrew_checkBox" Content="Show Homebrew" HorizontalAlignment="Left" Margin="10,0,0,37.667" VerticalAlignment="Bottom" FontSize="14" Checked="homebrew_checkBox_Checked"/>
     <Grid Margin="215,10,10.333,9.667">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="2*" />
