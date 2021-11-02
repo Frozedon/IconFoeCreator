@@ -9,8 +9,9 @@
     },
     {
       "Name": "Ethereal",
-      "Description": "Flying, phasing, and intangible unless there’s a foe in range 2. Reduce hp by 50%.",
-      "AddHP": -0.5
+      "Description": "Flying, phasing, and intangible unless there’s a foe in range 2.",
+      "DescriptionNonessential": "Reduce hp by 50%.",
+      "AddHPPercent": -0.5
     }
   ],
   "Actions": [

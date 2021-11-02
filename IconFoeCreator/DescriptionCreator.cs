@@ -48,7 +48,7 @@ namespace IconFoeCreator
             {
                 if (trait.AddArmor.HasValue) { addArmor += trait.AddArmor.Value; }
                 if (trait.MaxArmor.HasValue) { maxArmor = Math.Min(maxArmor, trait.MaxArmor.Value); }
-                if (trait.AddHP.HasValue) { addHP += trait.AddHP.Value; }
+                if (trait.AddHPPercent.HasValue) { addHP += trait.AddHPPercent.Value; }
                 if (trait.AddSpeed.HasValue) { addSpeed += trait.AddSpeed.Value; }
                 if (trait.AddRun.HasValue) { addRun += trait.AddRun.Value; }
                 if (trait.AddDash.HasValue) { addDash += trait.AddDash.Value; }
@@ -294,6 +294,11 @@ namespace IconFoeCreator
 
                     AddBold(paragraph, ". ");
                     AddNormal(paragraph, trait.Description);
+
+                    if (showNonessentialTraits)
+                    {
+                        AddNormal(paragraph, " " + trait.DescriptionNonessential);
+                    }
 
                     textBox.Document.Blocks.Add(paragraph);
                 }

@@ -139,7 +139,8 @@ namespace IconFoeCreator
         public string Name { get; set; }
         public List<string> Tags { get; set; }
         public string Description { get; set; }
-        public double? AddHP { get; set; }
+        public string DescriptionNonessential { get; set; }
+        public double? AddHPPercent { get; set; }
         public int? AddArmor { get; set; }
         public int? MaxArmor { get; set; }
         public int? AddSpeed { get; set; }

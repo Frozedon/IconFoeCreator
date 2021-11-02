@@ -26,8 +26,9 @@
       "Name": "",
       "Tags": [ "" ], // Anything that should be in paranthesis
       "Description": "",
-      "Nonessential": false, // This is setup rules and can be hidden
-      "AddHP": 0.0,
+      "DescriptionNonessential": "", // This description is handled automatically and can be hidden
+      "Nonessential": false, // This trait is handled automatically and can be hidden
+      "AddHPPercent": 0.0,
       "AddArmor": 0,
       "MaxArmor": 0,
       "NoRun": false,
@@ -39,7 +40,7 @@
       "Name": "",
       "Tags": [ "" ], // Anything that should be in paranthesis
       "Description": "",
-      "AddHP": 0.0,
+      "AddHPPercent": 0.0,
       "AddArmor": 0,
       "MaxArmor": 0,
       "NoRun": false,
