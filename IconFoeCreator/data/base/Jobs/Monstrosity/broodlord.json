@@ -26,16 +26,18 @@
       "Description": "Has phasing for characters and terrain smaller than it and can end turn in those spaces. Ignores engagement from smaller characters. Ignores movement penalties for terrain."
     },
     {
-      "Name": "Legion",
-      "Description": "The Broodlord starts combat with 5 of its unique summons per player character, which can be placed in any space on the battlefield not within range 2 of players."
-    },
-    {
       "Name": "Shelter",
       "Description": "Adjacent allies get +1 accuracy on saves."
     },
     {
       "Name": "Brood Minions",
       "Description": "The Brood Lord creates unique summons with its abilities. It can summon any combination of the following minions, which all have defense 7+chapter and 1 hp by default. They can move 3 spaces when the Brood Lord takes their turn, otherwise cannot take actions by themselves unless specified.\n• Clawing Brood: Foes treat spaces adjacent clawing brood as engagement.\n• Grappler Brood: Characters that start their turn next to an Grappler brood must save or be shoved 2 in a direction of the Brood Lord’s choice.\n• Crusher Brood: 1/1/2 armor. Characters that start their turn adjacent to 1 or more crusher brood must save or become dazed, winded, or staggered (Brood Lord’s choice)."
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Legion",
+      "Description": "The Broodlord starts combat with 5 of its unique summons per player character, which can be placed in any space on the battlefield not within range 2 of players."
     }
   ],
   "Actions": [
