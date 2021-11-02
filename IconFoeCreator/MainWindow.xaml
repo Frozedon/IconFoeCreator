@@ -5,38 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IconFoeCreator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
   <Grid>
     <Label x:Name="Faction_label" Content="Faction" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Faction_comboBox" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="180" FontSize="16"/>
+    <ComboBox x:Name="Faction_comboBox" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
     <Label x:Name="Template_label" Content="Template" HorizontalAlignment="Left" Margin="6,62,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Template_comboBox" HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top" Width="180" FontSize="16"/>
+    <ComboBox x:Name="Template_comboBox" HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
     <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,120,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="180" FontSize="16"/>
+    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
     <Label x:Name="Job_label" Content="Job" HorizontalAlignment="Left" Margin="6,172,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Job_comboBox" HorizontalAlignment="Left" Margin="10,199,0,0" VerticalAlignment="Top" Width="180" FontSize="16"/>
+    <ComboBox x:Name="Job_comboBox" HorizontalAlignment="Left" Margin="10,199,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
     <Label x:Name="Chapter_label" Content="Chapter" HorizontalAlignment="Left" Margin="6,230,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Chapter_comboBox" HorizontalAlignment="Left" Margin="10,257,0,0" VerticalAlignment="Top" Width="57" FontSize="16"/>
     <CheckBox x:Name="NonessentialTraits_checkBox" Content="Show Nonessential Traits" HorizontalAlignment="Left" Margin="10,0,0,81.667" VerticalAlignment="Bottom" FontSize="14" Checked="NonessentialTraits_checkBox_Checked"/>
     <CheckBox x:Name="FlatDamage_checkBox" Content="Use Flat Damage" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="FlatDamage_checkBox_Checked"/>
     <Button x:Name="ExportJson_button" Content="Export to JSON" HorizontalAlignment="Left" Margin="10,0,0,9.667" VerticalAlignment="Bottom" Width="115" FontSize="14" Click="ExportJson_button_Click"/>
-    <RichTextBox x:Name="Description_richTextBox" Margin="195,10,258.333,37.667" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
-      <FlowDocument>
-        <Paragraph>
-          <Run Text="RichTextBox"/>
-        </Paragraph>
-      </FlowDocument>
-    </RichTextBox>
-    <RichTextBox x:Name="Setup_richTextBox" Margin="0,10,10.333,37.667" HorizontalAlignment="Right" Width="243" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
-      <FlowDocument>
-        <Paragraph>
-          <Run Text="RichTextBox"/>
-        </Paragraph>
-      </FlowDocument>
-    </RichTextBox>
-    <Button x:Name="CopyDescription_button" Content="Copy to Clipboard" Margin="195,0,0,9.667" VerticalAlignment="Bottom" FontSize="14" HorizontalAlignment="Left" Width="140" Click="CopyDescription_button_Click"/>
-    <Button x:Name="CopySetup_button" Content="Copy to Clipboard" Margin="0,0,113.333,9.667" VerticalAlignment="Bottom" FontSize="14" HorizontalAlignment="Right" Width="140" Click="CopySetup_button_Click"/>
     <CheckBox x:Name="homebrew_checkBox" Content="Show Homebrew" HorizontalAlignment="Left" Margin="10,0,0,37.667" VerticalAlignment="Bottom" FontSize="14" Checked="homebrew_checkBox_Checked"/>
+    <Grid Margin="215,10,10.333,9.667">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*" />
+        <ColumnDefinition Width="1*" />
+      </Grid.ColumnDefinitions>
+      <RichTextBox x:Name="Description_richTextBox" Margin="0,0,5.667,28" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
+        <FlowDocument>
+          <Paragraph>
+            <Run Text="RichTextBox"/>
+          </Paragraph>
+        </FlowDocument>
+      </RichTextBox>
+      <Button x:Name="CopyDescription_button" Content="Copy to Clipboard" Margin="0,0,0,-0.333" VerticalAlignment="Bottom" FontSize="14" HorizontalAlignment="Left" Width="140" Click="CopyDescription_button_Click"/>
+      <RichTextBox x:Name="Setup_richTextBox" Margin="0,0,0,28" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Grid.Column="1">
+        <FlowDocument>
+          <Paragraph>
+            <Run Text="RichTextBox"/>
+          </Paragraph>
+        </FlowDocument>
+      </RichTextBox>
+      <Button x:Name="CopySetup_button" Content="Copy to Clipboard" Margin="0,0,0,-0.333" VerticalAlignment="Bottom" FontSize="14" Width="140" Click="CopySetup_button_Click" HorizontalAlignment="Left" Grid.Column="1"/>
+    </Grid>
 
   </Grid>
 </Window>
