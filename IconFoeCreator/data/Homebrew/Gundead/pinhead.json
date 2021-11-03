@@ -13,7 +13,7 @@
       "Name": "Place Bomb",
       "ActionCost": 1,
       "Tags": [ "recharge 4+", "end turn" ],
-      "Description": "The Pinhead places a size 1 summon in a space in range 3. At the start of the Pinhead’s next turn or if the bomb takes any damage, the bomb explodes in a blast 1 area effect that deals physical heavy damage and inflicts poisoned."
+      "Description": "The Pinhead places a size 1 summon in a space in range 3 and ends its turn. At the start of the Pinhead’s next turn or if the bomb takes any damage, the bomb explodes in a blast 1 area effect that deals physical heavy damage and inflicts poisoned."
     }
   ]
 }

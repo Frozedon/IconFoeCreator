@@ -1,0 +1,21 @@
+{
+  "Name": "Hollowpoint",
+  "Inherits": "Gundead",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Ethereal",
+      "Description": "Flying, phasing, and intangible unless there’s a foe in range 2.",
+      "DescriptionNonessential": "Reduce hp by 50%.",
+      "AddHPPercent": -0.5
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Horrify",
+      "ActionCost": 1,
+      "Tags": [ "mark", "recharge 5+" ],
+      "Description": "A foe in range 5 must save or become marked. While marked, they cannot willingly move closer to the Hollowpoint and their attacks gain +1 curse if they include the Hollowpoint as  a target. They can repeat this save at the end of their turns to end this effect."
+    }
+  ]
+}

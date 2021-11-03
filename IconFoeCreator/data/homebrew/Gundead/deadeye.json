@@ -1,0 +1,19 @@
+{
+  "Name": "Deadeye",
+  "Inherits": "Gundead",
+  "Type": "Faction",
+  "Traits": [
+    {
+      "Name": "Hidden Nest",
+      "Description": "At the start of combat, do not place Deadeyes on the map. When a Deadeye takes their first turn, they appear anywhere that is at least 4 spaces away from a hostile character and gain stealth."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Marked For Death",
+      "ActionCost": 2,
+      "Tags": [ "mark", "recharge 6+", "end turn" ],
+      "Description": "End turn and a creature in range 6 becomes marked. The deadeye boosts damage against the marked character."
+    }
+  ]
+}
