@@ -40,9 +40,7 @@ namespace IconFoeCreator
             int maxArmor = int.MaxValue;
             double addHP = 0.0;
             int addSpeed = 0;
-            int addRun = 0;
             int addDash = 0;
-            bool noRun = false;
             bool noDash = false;
             foreach (Trait trait in stats.Traits)
             {
@@ -50,22 +48,18 @@ namespace IconFoeCreator
                 if (trait.MaxArmor.HasValue) { maxArmor = Math.Min(maxArmor, trait.MaxArmor.Value); }
                 if (trait.AddHPPercent.HasValue) { addHP += trait.AddHPPercent.Value; }
                 if (trait.AddSpeed.HasValue) { addSpeed += trait.AddSpeed.Value; }
-                if (trait.AddRun.HasValue) { addRun += trait.AddRun.Value; }
                 if (trait.AddDash.HasValue) { addDash += trait.AddDash.Value; }
-                if (trait.NoRun.HasValue) { noRun = trait.NoRun.Value; }
                 if (trait.NoDash.HasValue) { noDash = trait.NoDash.Value; }
             }
 
-            int health = stats.Health[index].GetValueOrDefault();
-            double hitPoints = health * stats.HPMultiplier.GetValueOrDefault(4) * (1.0 + addHP);
+            int vitality = stats.Vitality.GetValueOrDefault();
+            double hitPoints = vitality * stats.HPMultiplier.GetValueOrDefault(4) * (1.0 + addHP);
             hitPoints = Math.Max(hitPoints, 1);
             int speed = stats.Speed.GetValueOrDefault() + addSpeed;
-            string run = noRun ? "no run" : "run " + (stats.Run.GetValueOrDefault() + addRun);
-            string dash = noDash ? "no dash" : "dash " + (stats.Dash.GetValueOrDefault() + addDash);
-            int defense = stats.Defense.GetValueOrDefault() + chapter;
-            int armor = Math.Min(stats.Armor[index].GetValueOrDefault() + addArmor, maxArmor);
-            int attack = stats.Attack[index].GetValueOrDefault();
-            int frayDmg = stats.FrayDamage[index].GetValueOrDefault();
+            string dashText = noDash ? "No Dash" : "Dash " + (stats.Dash.GetValueOrDefault() + addDash);
+            int defense = stats.Defense.GetValueOrDefault();
+            int armor = Math.Min(stats.Armor.GetValueOrDefault() + addArmor, maxArmor);
+            int frayDmg = stats.FrayDamage.GetValueOrDefault();
 
             {
                 Paragraph paragraph = MakeParagraph();
@@ -88,8 +82,8 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new System.Windows.Thickness(0);
-                AddBold(paragraph, "Health: ");
-                AddNormal(paragraph, health.ToString());
+                AddBold(paragraph, "Vitality: ");
+                AddNormal(paragraph, vitality.ToString());
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
@@ -107,7 +101,7 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "Speed: ");
-                AddNormal(paragraph, speed + ", " + run + ", " + dash);
+                AddNormal(paragraph, speed + " (" + dashText + ")");
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
@@ -127,39 +121,20 @@ namespace IconFoeCreator
 
             {
                 Paragraph paragraph = MakeParagraph();
-                AddBold(paragraph, "Attack: ");
-                AddNormal(paragraph, "+" + attack);
-                descTextBox.Document.Blocks.Add(paragraph);
-            }
-
-            {
-                Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "Fray Damage: ");
                 AddNormal(paragraph, frayDmg.ToString());
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
+            if (stats.DamageDie != null && stats.DamageDie != String.Empty)
             {
                 Paragraph paragraph = MakeParagraph();
-                AddBold(paragraph, "Damage: ");
-
-                if ((useFlatDamage && stats.LightDamage.HasValue) || stats.LightDamageDie == null) { AddNormal(paragraph, (stats.LightDamage.GetValueOrDefault() + chapter).ToString()); }
-                else { AddNormal(paragraph, stats.LightDamageDie + "+" + chapter); }
-                AddNormal(paragraph, "/");
-                if ((useFlatDamage && stats.HeavyDamage.HasValue) || stats.HeavyDamageDie == null) { AddNormal(paragraph, (stats.HeavyDamage.GetValueOrDefault() + chapter).ToString()); }
-                else { AddNormal(paragraph, stats.HeavyDamageDie + "+" + chapter); }
-                AddNormal(paragraph, "/");
-                if ((useFlatDamage && stats.CriticalDamage.HasValue) || stats.CriticalDamageDie == null) { AddNormal(paragraph, (stats.CriticalDamage.GetValueOrDefault() + chapter).ToString()); }
-                else { AddNormal(paragraph, stats.CriticalDamageDie + "+" + chapter); }
-
-                descTextBox.Document.Blocks.Add(paragraph);
-            }
-
-            {
-                Paragraph paragraph = MakeParagraph();
-                AddBold(paragraph, "Damage Type: ");
-                if (stats.DamageType != null) { AddNormal(paragraph, stats.DamageType); }
-                else { AddNormal(paragraph, "Either" ); }
+                AddBold(paragraph, "[D]: ");
+                if (Char.ToLower(stats.DamageDie[0]) == 'd')
+                {
+                    AddNormal(paragraph, "1");
+                }
+                AddNormal(paragraph, stats.DamageDie);
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
@@ -397,16 +372,27 @@ namespace IconFoeCreator
                 AddNormal(paragraph, action.Hit);
             }
 
-            if (action.CriticalHit != null && action.CriticalHit != String.Empty)
+            if (action.AutoHit != null && action.AutoHit != String.Empty)
+            {
+                AddItalic(paragraph, " Autohit: ");
+                AddNormal(paragraph, action.AutoHit);
+            }
+
+            if (action.Critical != null && action.Critical != String.Empty)
             {
                 AddItalic(paragraph, " Critical hit: ");
-                AddNormal(paragraph, action.CriticalHit);
+                AddNormal(paragraph, action.Critical);
             }
 
             if (action.Miss != null && action.Miss != String.Empty)
             {
                 AddItalic(paragraph, " Miss: ");
                 AddNormal(paragraph, action.Miss);
+            }
+
+            if (action.PostAttack != null && action.PostAttack != String.Empty)
+            {
+                AddNormal(paragraph, " " + action.PostAttack);
             }
 
             if (action.AreaEffect != null && action.AreaEffect != String.Empty)
@@ -421,6 +407,12 @@ namespace IconFoeCreator
                 AddNormal(paragraph, action.Effect);
             }
 
+            if (action.Mark != null && action.Mark != String.Empty)
+            {
+                AddItalic(paragraph, " Mark: ");
+                AddNormal(paragraph, action.Mark);
+            }
+
             if (action.Collide != null && action.Collide != String.Empty)
             {
                 AddItalic(paragraph, " Collide: ");
@@ -433,11 +425,22 @@ namespace IconFoeCreator
                 AddNormal(paragraph, action.Blightboost);
             }
 
+            if (action.TerrainEffect != null && action.TerrainEffect != String.Empty)
+            {
+                AddItalic(paragraph, " Terrain Effect: ");
+                AddNormal(paragraph, action.TerrainEffect);
+            }
+
             textBox.Document.Blocks.Add(paragraph);
 
             foreach (Action comboAction in action.Combos)
             {
                 AddAction(textBox, comboAction, true);
+            }
+
+            if (action.PostAction != null && action.PostAction != String.Empty)
+            {
+                AddNormal(paragraph, " " + action.PostAction);
             }
         }
 
@@ -446,7 +449,12 @@ namespace IconFoeCreator
             foreach (BodyPart bodyPart in bodyParts)
             {
                 Paragraph paragraph = MakeParagraph();
-                AddBold(paragraph, bodyPart.Name + " (" + bodyPart.HP + " hp)");
+                AddBold(paragraph, bodyPart.Name + " (" + bodyPart.HP + " hp");
+                if (bodyPart.HPMultiplyByPlayers)
+                {
+                    AddBold(paragraph, "/player");
+                }
+                AddBold(paragraph, ")");
                 AddNormal(paragraph, " - " + bodyPart.Description);
                 textBox.Document.Blocks.Add(paragraph);
             }

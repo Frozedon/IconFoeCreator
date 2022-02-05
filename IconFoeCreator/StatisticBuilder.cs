@@ -6,30 +6,22 @@ using System.Linq;
 
 namespace IconFoeCreator
 {
-    public class StatisticGroup
-    {
-        public string Name;
-        public bool HasBase = false;
-    }
-
     public class StatisticBuilder
     {
-        public List<StatisticGroup> Factions;
+        public List<string> Factions;
         public List<Statistics> Templates;
-        public List<StatisticGroup> Classes;
+        public List<string> Classes;
         public List<Statistics> Jobs;
 
         private static readonly string DATA_FOLDER_PATH = "data/";
         private static readonly string BASE_FOLDER_PATH = "base/";
         private static readonly string HOMEBREW_FOLDER_PATH = "homebrew/";
-        public static readonly string EMPTY_GROUP = "...";
-        public static readonly string ANY_GROUP = "Any";
 
         public StatisticBuilder()
         {
-            Factions = new List<StatisticGroup>();
+            Factions = new List<string>();
             Templates = new List<Statistics>();
-            Classes = new List<StatisticGroup>();
+            Classes = new List<string>();
             Jobs = new List<Statistics>();
         }
 
@@ -82,40 +74,27 @@ namespace IconFoeCreator
 
                     if (stat.Group != null && stat.Group != String.Empty)
                     {
-                        var group = Classes.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
+                        var group = Classes.FirstOrDefault(otherGroup => otherGroup == stat.Group);
                         if (group == null)
                         {
-                            Classes.Add(new StatisticGroup() { Name = stat.Group, HasBase = !stat.IsHomebrew });
-                        }
-                        else if (!stat.IsHomebrew)
-                        {
-                            group.HasBase = true;
+                            Classes.Add(stat.Group);
                         }
                     }
                 }
-                else if (stat.Type == "Faction")
+                else if (stat.Type == "Template")
                 {
                     Templates.Add(stat);
 
                     if (stat.Group != null && stat.Group != String.Empty)
                     {
-                        var group = Factions.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
+                        var group = Factions.FirstOrDefault(otherGroup => otherGroup == stat.Group);
                         if (group == null)
                         {
-                            Factions.Add(new StatisticGroup() { Name = stat.Group, HasBase = !stat.IsHomebrew });
-                        }
-                        else if (!stat.IsHomebrew)
-                        {
-                            group.HasBase = true;
+                            Factions.Add(stat.Group);
                         }
                     }
                 }
             }
-
-            // Add defaults
-            Templates.Add(new Statistics() { Name = EMPTY_GROUP });
-            Classes.Add(new StatisticGroup() { Name = ANY_GROUP, HasBase = true });
-            Factions.Add(new StatisticGroup() { Name = ANY_GROUP, HasBase = true });
 
             // Sort lists
             Jobs.Sort(delegate (Statistics x, Statistics y)
@@ -125,23 +104,17 @@ namespace IconFoeCreator
 
             Templates.Sort(delegate (Statistics x, Statistics y)
             {
-                if (x.Name == EMPTY_GROUP) { return -1; }
-                if (y.Name == EMPTY_GROUP) { return 1; }
                 return x.Name.CompareTo(y.Name);
             });
 
-            Classes.Sort(delegate (StatisticGroup x, StatisticGroup y)
+            Classes.Sort(delegate (string x, string y)
             {
-                if (x.Name == ANY_GROUP) { return -1; }
-                if (y.Name == ANY_GROUP) { return 1; }
-                return x.Name.CompareTo(y.Name);
+                return x.CompareTo(y);
             });
 
-            Factions.Sort(delegate (StatisticGroup x, StatisticGroup y)
+            Factions.Sort(delegate (string x, string y)
             {
-                if (x.Name == ANY_GROUP) { return -1; }
-                if (y.Name == ANY_GROUP) { return 1; }
-                return x.Name.CompareTo(y.Name);
+                return x.CompareTo(y);
             });
         }
 
