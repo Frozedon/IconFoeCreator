@@ -95,16 +95,13 @@
           "Name": "Utterances of the Crawling Dead",
           "ActionCost": 0,
           "Tags": [ "start of phase only" ],
-          "Description": "The lich begins incanting, reducing its max speed to 0 this round. It marks out an area 2 spaces around itself, which is visible to all characters. Every other part of the battlefield is filled with shifting darkness. The lich's last turn this round is a slow turn, and it takes the following action:",
-          "Combos": [
-            {
-              "Name": "Soul Annihilation",
-              "ActionsCost": 1,
-              "Tags": [ "end turn" ],
-              "Description": "All spaces outside the area marked by Utterances of the Crawling Dead erupt. Foes inside must save or take 100% of their max hp as piercing damage, or 50% on a successful save. This damage cannot reduce a character past 1 hp."
-            }
-          ],
-          "PostAction": "If overdrive has activated, Utterances of the Crawling Dead does not mark a safe area"
+          "Description": "The lich begins incanting, reducing its max speed to 0 this round. It marks out an area 2 spaces around itself, which is visible to all characters. Every other part of the battlefield is filled with shifting darkness. If overdrive has activated, Utterances of the Crawling Dead does not mark a safe area. The lich's last turn this round is a slow turn, and it takes the Soul Annihilation action."
+        },
+        {
+          "Name": "Soul Annihilation",
+          "ActionCost": 1,
+          "Tags": [ "end turn" ],
+          "Description": "All spaces outside the area marked by Utterances of the Crawling Dead erupt. Foes inside must save or take 100% of their max hp as piercing damage, or 50% on a successful save. This damage cannot reduce a character past 1 hp."
         }
       ]
     }

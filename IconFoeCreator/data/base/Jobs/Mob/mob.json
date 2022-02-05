@@ -2,6 +2,9 @@
   "Name": "Mob",
   "Vitality": 0,
   "HP": 1,
+  "Speed": 4,
+  "Dash": 2,
+  "Defense": 6,
   "Traits": [
     {
       "Name": "Mob",

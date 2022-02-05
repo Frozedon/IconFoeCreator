@@ -74,13 +74,13 @@
           "Combos": [
             {
               "Name": "Roar",
-              "ActionsCost": 1,
+              "ActionCost": 1,
               "Tags": [ "end turn" ],
               "Description": "End turn. Characters in range 3 take physical piercing damage, become winded, and are shoved 1 towards the Demolisher. Can use smash."
             },
             {
               "Name": "Smash",
-              "ActionsCost": 2,
+              "ActionCost": 2,
               "Tags": [ "melee attack", "close blast 1" ],
               "Hit": "4[D], and character is stunned.",
               "Miss": "2[D].",
@@ -134,7 +134,7 @@
           "Combos": [
             {
               "Name": "Smash",
-              "ActionsCost": 2,
+              "ActionCost": 2,
               "Tags": [ "melee attack", "close blast 1" ],
               "Hit": "4[D], and character is stunned.",
               "Miss": "2[D].",

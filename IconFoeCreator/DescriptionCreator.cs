@@ -79,6 +79,7 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
+            if (vitality > 0)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new System.Windows.Thickness(0);
@@ -119,6 +120,7 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
+            if (frayDmg > 0)
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "Fray Damage: ");
@@ -126,7 +128,7 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
-            if (stats.DamageDie != null && stats.DamageDie != String.Empty)
+            if (!String.IsNullOrEmpty(stats.DamageDie))
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "[D]: ");
