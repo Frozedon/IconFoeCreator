@@ -97,6 +97,14 @@ namespace IconFoeCreator
             if (Job_comboBox.SelectedItem != null && LastJobName != Job_comboBox.SelectedItem.ToString())
             {
                 LastJobName = Job_comboBox.SelectedItem.ToString();
+
+                // If has template restriction, change it to that
+                string templateRestriction = ((Statistics)Job_comboBox.SelectedItem).RestrictToTemplate;
+                if (!String.IsNullOrEmpty(templateRestriction))
+                {
+                    ForceChangeTemplateTo(templateRestriction);
+                }
+
                 UpdateDescription();
             }
         }
@@ -333,6 +341,25 @@ namespace IconFoeCreator
             {
                 return !stat.IsHomebrew;
             });
+        }
+
+        private void ForceChangeTemplateTo(string templateName)
+        {
+            if (String.IsNullOrEmpty(templateName))
+            {
+                return;
+            }
+
+            for (int i = 0; i < Template_comboBox.Items.Count; ++i)
+            {
+                Statistics templateStat = (Statistics)Template_comboBox.Items[i];
+                if (templateStat.Name == templateName)
+                {
+                    Template_comboBox.SelectedIndex = i;
+                    break;
+                }
+            }
+
         }
 
         private void CopyDescription_button_Click(object sender, RoutedEventArgs e)

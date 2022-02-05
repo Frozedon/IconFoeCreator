@@ -1,6 +1,7 @@
 {
   "Name": "Kelpie",
   "Inherits": "Elite",
+  "Group": "Ruin Beast",
   "Type": "Job",
   "Chapter": 1,
   "RestrictToTemplate": "Ruin Beast",

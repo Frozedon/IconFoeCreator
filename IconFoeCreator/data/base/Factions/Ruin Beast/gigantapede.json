@@ -1,6 +1,7 @@
 {
   "Name": "Gigantapede",
   "Inherits": "Elite",
+  "Group": "Ruin Beast",
   "Type": "Job",
   "Chapter": 2,
   "RestrictToTemplate": "Ruin Beast",
