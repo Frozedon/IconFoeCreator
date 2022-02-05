@@ -191,6 +191,7 @@ namespace IconFoeCreator
         public string AreaEffect { get; set; }
         public string Effect { get; set; }
         public string Mark { get; set; }
+        public string Stance { get; set; }
         public string Collide { get; set; }
         public string Blightboost { get; set; }
         public string TerrainEffect { get; set; }

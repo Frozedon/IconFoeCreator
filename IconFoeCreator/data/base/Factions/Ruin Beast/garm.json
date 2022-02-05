@@ -1,0 +1,20 @@
+{
+  "Name": "Garm",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
+  "Traits": [
+    {
+      "Name": "Snap",
+      "Description": "Has counter while adjacent to a foe."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Iron Jaw",
+      "ActionCost": 0,
+      "Tags": [ "recharge 4+" ],
+      "Description": "An adjacent foe must save or the Garm dashes 3 spaces in any direction and drags them with it, shoving its target towards it until its adjacent."
+    }
+  ]
+}

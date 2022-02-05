@@ -1,0 +1,21 @@
+{
+  "Name": "Horned Beast",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Increase size to 2."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Gore",
+      "ActionCost": 2,
+      "Tags": [ "recharge 4+" ],
+      "Description": "The Horned Beast dashes up to 5 spaces. An adjacent character takes [D], then must save or be shoved 1 for each space the beast moved.",
+      "Collide": "Character is stunned."
+    }
+  ]
+}

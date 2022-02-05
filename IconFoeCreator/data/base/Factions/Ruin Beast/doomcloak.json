@@ -1,0 +1,25 @@
+{
+  "Name": "Doomcloak",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "Chapter": 2,
+  "RestrictToClass": "Heavy",
+  "Traits": [
+    {
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
+    },
+    {
+      "Name": "Acidic Hide",
+      "Description": "When bloodied, gains counter and adjacent characters cannot benefit from armor or resistance."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Smother",
+      "ActionCost": 1,
+      "Tags": [ "stance", "recharge 6" ],
+      "Stance": "The Doomcloak gains vigor 1, then moves into an adjacent foe's space, sharing it. While in this stance, both this beast and its chosen foe have a max speed of 0 and are winded+. The smothered foe takes [D] piercing damage at the start of their turn, loses all vigor, and cannot gain vigor while being smothered. When the Doomcloak takes at least 1 damage to hp, this stance ends, and it is stunned, moving it into an adjacent space."
+    }
+  ]
+}

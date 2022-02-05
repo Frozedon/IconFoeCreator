@@ -1,0 +1,24 @@
+{
+  "Name": "Bicorn",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "Chapter": 2,
+  "RestrictToClass": "Artillery",
+  "Traits": [
+    {
+      "Name": "Gallop",
+      "Description": "Effect: After making any ranged attack, can dash 3."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Spiral Horn",
+      "ActionCost": 2,
+      "Tags": [ "ranged attack", "line 10", "recharge 6" ],
+      "Hit": "[D] three times.",
+      "Miss": "-.",
+      "AreaEffect": "-.",
+      "Effect": "This attack penetrates terrain, does not require line of sight and ignores cover."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "Name": "Halitoad",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Increase size to 2."
+    },
+    {
+      "Name": "Stench",
+      "Description": "Melee attacks against this beast have +1 curse. Characters starting their turns in an adjacent space are poisoned."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Tongue Lash",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "A foe in range 5 must save or become poisoned and shoved as far as possible towards the Halitoad. If they are already poisoned, they are also winded."
+    }
+  ]
+}

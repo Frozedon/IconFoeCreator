@@ -1,0 +1,68 @@
+{
+  "Name": "Kinfisher",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Chapter": 1,
+  "RestrictToTemplate": "Ruin Beast",
+  "Vitality": 8,
+  "HPMultiplier": 8,
+  "Speed": 1,
+  "Dash": 1,
+  "Defense": 6,
+  "Armor": 3,
+  "FrayDamage": 3,
+  "DamageDie": "d6",
+  "RemoveTraits": [ "Feral" ],
+  "Traits": [
+    {
+      "Name": "Fortify",
+      "Description": "At the end of their turn, gains vigilance 1."
+    },
+    {
+      "Name": "Sturdy",
+      "Description": "Immune to shove, daze, and stun."
+    },
+    {
+      "Name": "Large",
+      "Description": "Size 2."
+    },
+    {
+      "Name": "Fish Out Of Water",
+      "Description": "Speed 1."
+    },
+    {
+      "Name": "Lure",
+      "Description": "At the start of its turn as a free action, the Fisher puts a lure out in a space within range 3 of its location, or relocates its lure to a new space in that range if it's already active. The lure is a size 1 summon with 10 hp. If the lure is defeated, the Fisher is stunned, but can summon a new one on its next turn."
+    },
+    {
+      "Name": "Perfect Camouflage",
+      "Description": "The Fisher is intangible unless there's a character adjacent to its Lure."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Reel In",
+      "ActionCost": 1,
+      "Description": "The fisher moves its lure up to 4 spaces towards it, then shoves all adjacent characters the same amount."
+    },
+    {
+      "Name": "Spit Up",
+      "ActionCost": 1,
+      "Description": "Close blast 1 area effect. Characters take [D], are poisoned, and must save or become winded."
+    },
+    {
+      "Name": "The Maw",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "true strike" ],
+      "Hit": "3[D]+[fray].",
+      "Miss": "[D]+[fray].",
+      "Effect": "If more than one character is adjacent to the Kinfisher, it chooses targets randomly. It cannot target summons."
+    },
+    {
+      "Name": "Dive",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "The Kinfisher submerges into the ground, teleporting 5 spaces, then resurfaces, even to an occupied area. When it resurfaces, characters in its area take fray damage, are placed in the closest adjacent space of its choice, then shoved 2."
+    }
+  ]
+}

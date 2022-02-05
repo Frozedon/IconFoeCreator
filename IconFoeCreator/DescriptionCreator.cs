@@ -363,71 +363,77 @@ namespace IconFoeCreator
 
             AddBold(paragraph, "):");
 
-            if (action.Description != null && action.Description != String.Empty)
+            if (!String.IsNullOrEmpty(action.Description))
             {
                 AddNormal(paragraph, " " + action.Description);
             }
 
-            if (action.Hit != null && action.Hit != String.Empty)
+            if (!String.IsNullOrEmpty(action.Hit))
             {
                 AddItalic(paragraph, " On hit: ");
                 AddNormal(paragraph, action.Hit);
             }
 
-            if (action.AutoHit != null && action.AutoHit != String.Empty)
+            if (!String.IsNullOrEmpty(action.AutoHit))
             {
                 AddItalic(paragraph, " Autohit: ");
                 AddNormal(paragraph, action.AutoHit);
             }
 
-            if (action.Critical != null && action.Critical != String.Empty)
+            if (!String.IsNullOrEmpty(action.Critical))
             {
                 AddItalic(paragraph, " Critical hit: ");
                 AddNormal(paragraph, action.Critical);
             }
 
-            if (action.Miss != null && action.Miss != String.Empty)
+            if (!String.IsNullOrEmpty(action.Miss))
             {
                 AddItalic(paragraph, " Miss: ");
                 AddNormal(paragraph, action.Miss);
             }
 
-            if (action.PostAttack != null && action.PostAttack != String.Empty)
+            if (!String.IsNullOrEmpty(action.PostAttack))
             {
                 AddNormal(paragraph, " " + action.PostAttack);
             }
 
-            if (action.AreaEffect != null && action.AreaEffect != String.Empty)
+            if (!String.IsNullOrEmpty(action.AreaEffect))
             {
                 AddItalic(paragraph, " Area Effect: ");
                 AddNormal(paragraph, action.AreaEffect);
             }
 
-            if (action.Effect != null && action.Effect != String.Empty)
+            if (!String.IsNullOrEmpty(action.Effect))
             {
                 AddItalic(paragraph, " Effect: ");
                 AddNormal(paragraph, action.Effect);
             }
 
-            if (action.Mark != null && action.Mark != String.Empty)
+            if (!String.IsNullOrEmpty(action.Mark))
             {
                 AddItalic(paragraph, " Mark: ");
                 AddNormal(paragraph, action.Mark);
             }
 
-            if (action.Collide != null && action.Collide != String.Empty)
+            if (!String.IsNullOrEmpty(action.Stance))
+            {
+                AddItalic(paragraph, " Stance: ");
+                AddNormal(paragraph, action.Stance);
+            }
+
+            if (!String.IsNullOrEmpty(action.Collide))
             {
                 AddItalic(paragraph, " Collide: ");
                 AddNormal(paragraph, action.Collide);
             }
 
-            if (action.Blightboost != null && action.Blightboost != String.Empty)
+            if (!String.IsNullOrEmpty(action.Blightboost))
             {
                 AddItalic(paragraph, " Blightboost: ");
                 AddNormal(paragraph, action.Blightboost);
             }
 
-            if (action.TerrainEffect != null && action.TerrainEffect != String.Empty)
+            if (!String.IsNullOrEmpty(action.TerrainEffect))
             {
                 AddItalic(paragraph, " Terrain Effect: ");
                 AddNormal(paragraph, action.TerrainEffect);

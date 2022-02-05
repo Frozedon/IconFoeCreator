@@ -1,0 +1,62 @@
+{
+  "Name": "Kelpie",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Chapter": 1,
+  "RestrictToTemplate": "Ruin Beast",
+  "Vitality": 8,
+  "HPMultiplier": 8,
+  "Speed": 4,
+  "Dash": 4,
+  "Defense": 12,
+  "Armor": 0,
+  "FrayDamage": 3,
+  "DamageDie": "d10",
+  "RemoveTraits": [ "Feral" ],
+  "Traits": [
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally and dash action is full speed."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to damage from successful saves, area effects, or missed attacks."
+    },
+    {
+      "Name": "Cursed Deeps",
+      "Description": "When it enters the battlefield, creates four terrain effects, blast 1 areas of cursed deep water. The center space is an edge space, and all other spaces are difficult terrain. None can be placed within range 4 of each other."
+    },
+    {
+      "Name": "Aquatic",
+      "Description": "Can move through its own deep water areas normally, and moving through those spaces costs 0 movement for it."
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Adhere",
+      "Count": 1,
+      "Description": "When hit by a melee attack from an adjacent foe, the kelpie can force that foe to make a save or adhere to its hide. While adhered, the foe cannot move more than 1 space from the kelpie, and when the kelpie moves or teleports, they are moved with it, mirroring its movement and phasing through characters and obstacles. They can save to repeat this effect at the end of their turn."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Savage Fang",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "+1 boon", "multiattack" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray].",
+      "PostAttack": "Increase damage to 2[D] against characters inside its water zones. Increase damage again by + [D] if a character is adhered to the kelpie."
+    },
+    {
+      "Name": "Waterspout",
+      "ActionCost": 1,
+      "Description": "The Kelpie spurts fetid water at a foe in range 6. That foe must save or be blinded and take [D]."
+    },
+    {
+      "Name": "Sink",
+      "ActionCost": 1,
+      "Tags": [ "recharge 6" ],
+      "Description": "The Kelpie disperses into seaweed and water and reappears in any space inside one of its deep water zones, teleporting, then gaining evasion until the start of its next turn."
+    }
+  ]
+}

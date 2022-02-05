@@ -1,0 +1,20 @@
+{
+  "Name": "Gulper",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "RestrictToClass": "Artillery",
+  "Traits": [
+    {
+      "Name": "Slippery",
+      "Description": "Gains evasion when bloodied."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Slime Lob",
+      "ActionCost": 1,
+      "Tags": [ "recharge 6" ],
+      "Description": "The Gulper creates a blast 1 area of difficult terrain. Characters in the area are vulnerable. The area lasts for the rest of combat, or until the Gulper uses this ability again."
+    }
+  ]
+}

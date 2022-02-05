@@ -1,0 +1,14 @@
+{
+  "Name": "Aethertick",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "RestrictToClass": "Leader",
+  "Actions": [
+    {
+      "Name": "Aetherfeed",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "The Aethertick gains vigor 1, then moves into and shares the space of an adjacent character, latching on to it. While latched, the tick moves or teleports when its target does, and that character is pacified+. The tick detaches when it loses its vigor, placing it in a free adjacent space."
+    }
+  ]
+}

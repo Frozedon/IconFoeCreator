@@ -1,0 +1,20 @@
+{
+  "Name": "Howler",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
+  "Traits": [
+    {
+      "Name": "Enrage",
+      "Description": "Gains +1 action when bloodied."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Howl",
+      "ActionCost": 2,
+      "Tags": [ "recharge 6" ],
+      "Description": "All non-howler characters in a close blast 1 area effect must save or take [D] and be stunned."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "Name": "Stone Lizard",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
+  "Traits": [
+    {
+      "Name": "Dire Hide",
+      "Description": "Resistant when not bloody."
+    },
+    {
+      "Name": "Trample",
+      "Description": "Phasing for characters. Characters it passes through for the first time on a turn take 2 damage and are shoved to either side."
+    }
+  ]
+}

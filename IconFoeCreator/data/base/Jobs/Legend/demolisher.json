@@ -25,7 +25,7 @@
       "Name": "Head",
       "HP": 6,
       "HPMultiplyByPlayers": true,
-      "Description": "Demolisher becomes blinded until the end of the next round"
+      "Description": "Demolisher becomes blinded until the end of the next round."
     },
     {
       "Name": "Lash",

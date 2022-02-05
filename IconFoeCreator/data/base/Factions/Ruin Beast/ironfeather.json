@@ -1,0 +1,20 @@
+{
+  "Name": "Ironfeather",
+  "Inherits": "Ruin Beast",
+  "Type": "Template",
+  "RestrictToClass": "Artillery",
+  "Traits": [
+    {
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Feather Spray",
+      "ActionCost": 1,
+      "Tags": [ "recharge 4+" ],
+      "Description": "Characters in a close blast 1 area take fray damage twice as an area effect and must save or become vulnerable."
+    }
+  ]
+}
