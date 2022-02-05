@@ -1,29 +1,21 @@
 {
   "Name": "Fused",
   "Inherits": "Relict",
-  "Type": "Faction",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
   "Traits": [
     {
       "Name": "Large",
-      "Description": "Increase size to 2."
-    },
-    {
-      "Name": "Tenacious",
-      "Description": "+25% hp.",
-      "AddHPPercent": 0.25,
-      "Nonessential": true
-    },
-    {
-      "Name": "Deadsoul",
-      "Description": "Has evasion and dodge vs magic."
+      "Description": "Size 2."
     },
     {
       "Name": "Shambling",
-      "Description": "Permanently staggered, slowed, and winded."
+      "Description": "Cannot dash.",
+      "NoDash": true
     },
     {
       "Name": "Release Passengers",
-      "Description": "When defeated, summon 4 Relict Chaff Mobs in its space."
+      "Description": "When defeated, summon 4 relict wight mobs in its space."
     }
   ]
 }

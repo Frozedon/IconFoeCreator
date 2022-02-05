@@ -7,18 +7,11 @@
   "HPMultiplier": 4, // Multiplied by Health to determine HP
   "HPMultiplyByPlayers": false, // Adds note to multiply by players
   "Speed": 0,
-  "Run": 0,
   "Dash": 0,
   "Defense": 0,
-  "Armor": [ 0, 0, 0 ],
-  "Attack": [ 0, 0, 0 ],
-  "FrayDamage": [ 0, 0, 0 ],
-  "LightDamage": 0,
-  "HeavyDamage": 0,
-  "CriticalDamage": 0,
-  "LightDamageDie": "",
-  "HeavyDamageDie": "",
-  "CriticalDamageDie": "",
+  "Armor": 0,
+  "FrayDamage": 0,
+  "DamageDie": "",
   "DamageType": "",
   "FactionBlight": "",
   "Traits": [
@@ -62,7 +55,7 @@
       "Tags": [ "" ], // Anything that should be in paranthesis after "action #"
       "Description": "",
       "Hit": "",
-      "CriticalHit": "",
+      "Critical": "",
       "Miss": "",
       "AreaEffect": "",
       "Effect": "",

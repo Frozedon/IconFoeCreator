@@ -2,40 +2,25 @@
   "Name": "Sledge",
   "Inherits": "Heavy",
   "Type": "Job",
-  "Traits": [
-    {
-      "Name": "Improved Armor",
-      "Description": "+1 armor.",
-      "AddArmor": 1,
-      "Nonessential": true
-    },
-    {
-      "Name": "Flank",
-      "Description": "Loses all armor if 2 or more foes are adjacent."
-    },
-    {
-      "Name": "Poise",
-      "Description": "Sturdy when bloody."
-    }
-  ],
   "Actions": [
     {
-      "Name": "Wind Up",
-      "ActionCost": 2,
-      "Description": "Next Slam costs 1 action and gains +1 boon. Lose this effect if they move."
-    },
-    {
-      "Name": "Bash",
+      "Name": "Hilt Sweep",
       "ActionCost": 1,
-      "Description": "An adjacent foe is shoved 1 and must save or become winded.",
-      "Collide": "Foe fails the save."
+      "Tags": [ "multiattack", "melee attack" ],
+      "AutoHit": "[fray] damage and shove 1."
     },
     {
-      "Name": "Slam",
+      "Name": "Shoulder Check",
+      "ActionCost": 1,
+      "Description": "Dash 1 and gain vigilance 1. Smite recharges."
+    },
+    {
+      "Name": "Smite",
       "ActionCost": 2,
-      "Tags": [ "melee attack", "+1 curse" ],
-      "Description": "Pierce.",
-      "Hit": "Deal heavy damage and character must save or become vulerable."
+      "Tags": [ "melee attack", "recharge 6" ],
+      "Hit": "3[D] and foe is stunned and shoved 1.",
+      "Miss": "1 damage and foe is dazed.",
+      "Effect": "+1 boon against dazed characters."
     }
   ]
 }

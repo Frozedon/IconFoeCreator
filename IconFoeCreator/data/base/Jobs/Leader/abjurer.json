@@ -1,0 +1,27 @@
+{
+  "Name": "Abjurer",
+  "Inherits": "Leader",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Aura of Shielding",
+      "Description": "The abjurer and adjacent allies have dodge."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Cleansing Bolt",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack", "cross 1", "range 5" ],
+      "Hit": "[D] and foe is pacified.",
+      "Miss": "1 damage.",
+      "Effect": "Allies in the area effect are immune to its damage and can save, ending a mark, status, or blight on a successful save."
+    },
+    {
+      "Name": "Empower Shield",
+      "ActionCost": 1,
+      "Tags": [ "stance" ],
+      "Description": "The abjurer reduces their speed to 0, but their aura of shielding increases to range 2 and also grants cover. They can exit this stance as an action, and also exit if shoved or stunned."
+    }
+  ]
+}

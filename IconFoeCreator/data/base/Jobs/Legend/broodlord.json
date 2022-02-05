@@ -1,0 +1,136 @@
+{
+  "Name": "Brood Lord",
+  "Inherits": "Legend",
+  "Type": "Job",
+  "RestrictToBaseTemplates": true,
+  "Vitality": 10,
+  "HPMultiplier": 2,
+  "Speed": 4,
+  "Dash": 2,
+  "Defense": 8,
+  "Armor": 1,
+  "FrayDamage": 4,
+  "DamageDie": "d6",
+  "Traits": [
+    {
+      "Name": "Large",
+      "Description": "Size 2."
+    },
+    {
+      "Name": "Shelter",
+      "Description": "+1 boon on saves."
+    },
+    {
+      "Name": "Unique Minions",
+      "Description": "The Broodlord has a set of unique Brood Minions. It can summon any combination of the following minions, which all have defense 7 and 1 hp by default. They can move 3 spaces when the Brood Lord takes their turn, otherwise cannot take actions by themselves unless specified.\n• Clawing Brood: Foes treat spaces adjacent clawing brood as engagement.\n• Grappler Brood: Characters that start their turn next to an Grappler brood are shoved 2 in a direction of the Brood Lord's choice.\n• Crusher Brood: Characters that start their turn adjacent to 1 or more crusher brood take [D] piercing damage."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Diaga",
+      "ActionCost": 1,
+      "Description": "An ally in range 4 can save, ending a mark, status, or blight on a successful save. If that ally is bloodied, they also gain vigor 1."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Brood Control",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Brood can only move 1 space instead of 3, and brood assault becomes 1 action."
+    },
+    {
+      "Name": "Spines",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Shadow spines lose pierce and become line 3."
+    },
+    {
+      "Name": "Brood Gem",
+      "HP": 10,
+      "HPMultiplyByPlayers": true,
+      "Description": "Evolve Brood recharges on a 6. Characters can sell a possession gem for 4 dust."
+    }
+  ],
+  "PhasesDescription": "The Brood Lord starts in Phase 1, and goes into Phase 2 for one round when all it's minions are defeated.",
+  "Phases": [
+    {
+      "Name": "Darklurker",
+      "Traits": [
+        {
+          "Name": "Legion",
+          "Description": "When starting combat in this phase, or when entering it, summon 5 of its unique summons per player character, which can be placed in any space on the battlefield not within range 2 of players."
+        },
+        {
+          "Name": "Lurk",
+          "Description": "The Brood Lord is intangible. Characters can pass through and end their turn in its space. If all its summons are destroyed, it is immediately forced into phase 2."
+        },
+        {
+          "Name": "Looming Shadow",
+          "Description": "The Brood Lord's space is difficult terrain for hostile characters and allied characters spend 0 movement to cross spaces in the area."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Brood Assault",
+          "ActionCost": 0,
+          "Tags": [ "melee attack", "1/turn" ],
+          "Description": "The Brood Lord makes three melee attacks, and can make them from its space or any brood's space.",
+          "Hit": "[D].",
+          "Miss": "1 damage.",
+          "PostAttack": "Gain pierce if three or more brood are adjacent to the target."
+        },
+        {
+          "Name": "Shadow Spines",
+          "ActionCost": 1,
+          "Tags": [ "close blast 1", "repeatable" ],
+          "AreaEffect": "Piercing [fray] damage. Allies are immune."
+        },
+        {
+          "Name": "Great Puppeteer",
+          "ActionCost": 1,
+          "Description": "All allies in range 5 of the Brood Lord may dash 3 spaces."
+        },
+        {
+          "Name": "Evolve Brood",
+          "ActionCost": 2,
+          "Tags": [ "recharge 4+" ],
+          "Description": "Destroy one brood summon and replace it with Great Brood. The Great Brood is a summon with 10 HP, Defense 7, and Sturdy. 1/round on a Brood Lord's turn, it can move 4 spaces and attack an adjacent character (on hit: [D] and shove 1)."
+        }
+      ]
+    },
+    {
+      "Name": "Revealed",
+      "Traits": [
+        {
+          "Name": "Reveal",
+          "Description": "The Brood Lord loses intangible. Characters sharing its space are placed in the nearest free space adjacent to it. It must stay in this phase until the end of the next round."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Aether Boil",
+          "ActionCost": 1,
+          "Description": "Summon a blast 1 terrain effect, which cannot overlap with another Aether boil. When the Brood Lord changes phases, all aether boils explode and are destroyed. Characters within must save or take 2[D] piercing damage, or [D] on a successful save."
+        },
+        {
+          "Name": "Shadow Spines",
+          "ActionCost": 1,
+          "Tags": [ "close blast 1", "repeatable" ],
+          "AreaEffect": "Piercing [fray] damage. Allies are immune."
+        },
+        {
+          "Name": "Scuttle",
+          "ActionCost": 1,
+          "Description": "Shove an adjacent character 1, then dash 2."
+        },
+        {
+          "Name": "Screaming Spire",
+          "ActionCost": 2,
+          "Tags": [ "recharge 4+" ],
+          "Description": "The Brood Lord summons a height 1 terrain piece in any free space not adjacent to a player character. Brood summons in range 2 of the spire have dodge and foes in range 2 of the spire are vulnerable. The spire is automatically hit by attacks and abilities and has 10 HP."
+        }
+      ]
+    }
+  ]
+}

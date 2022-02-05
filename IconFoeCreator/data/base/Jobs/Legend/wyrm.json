@@ -1,0 +1,155 @@
+{
+  "Name": "Wyrm",
+  "Inherits": "Legend",
+  "Type": "Job",
+  "RestrictToBaseTemplates": true,
+  "Vitality": 8,
+  "HPMultiplier": 2,
+  "Speed": 4,
+  "Dash": 2,
+  "Defense": 6,
+  "Armor": 3,
+  "FrayDamage": 5,
+  "DamageDie": "d10",
+  "SetupTraits": [
+    {
+      "Name": "Blightheart",
+      "Description": "Wyrms deal one of the four blights exclusively, except for in their God of Destruction phase. Pick one when creating the Wyrm."
+    }
+  ],
+  "Traits": [
+    {
+      "Name": "Overdrive 6",
+      "Description": "Attacks are all critical hits on hit at round 6 or later."
+    },
+    {
+      "Name": "Enormous",
+      "Description": "Size 3."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Wings",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Cannot fly (all flying turns into dashes)."
+    },
+    {
+      "Name": "Heartscale",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Loses all armor."
+    },
+    {
+      "Name": "Horns",
+      "HP": 10,
+      "HPMultiplyByPlayers": true,
+      "Description": "Wyrm gains permanent hatred of the player that destroyed the horns."
+    },
+    {
+      "Name": "Tail",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Tail lash costs 2 actions. Characters can sell a Wyrm tail for 4 dust."
+    }
+  ],
+  "PhasesDescription": "Enters a new phase at the start of every round, in order (looping back to phase I after phase III). Since the Wyrm enters God of Destruction the round its Overdrive triggers, characters should aim to end the fight by then.",
+  "Phases": [
+    {
+      "Name": "Dominant",
+      "Traits": [
+        {
+          "Name": "Cataclysm",
+          "Description": "At the start of each of its turns, create a rock spire, a height 1 terrain piece in range 3 of a player character."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Swat",
+          "ActionCost": 1,
+          "Description": "An adjacent foe must save or be shoved 3 and branded. On a successful save, they are shoved 1.",
+          "Collide": "Also Stunned."
+        },
+        {
+          "Name": "Eruption",
+          "ActionCost": 1,
+          "Tags": [ "recharge 5+" ],
+          "Description": "A Rock spire in range 5 emits a pool of blight, covering every adjacent space to the spire. The space is dangerous and difficult terrain, and characters that end their turn in the space are blighted."
+        },
+        {
+          "Name": "Tail Lash",
+          "ActionCost": 1,
+          "Tags": [ "melee attack", "arc 4" ],
+          "Hit": "2[D]+[fray].",
+          "Miss": "[fray].",
+          "AreaEffect": "[D] and Shove 1. Must target a foe in its area. Destroys any rock spires in the area."
+        }
+      ]
+    },
+    {
+      "Name": "Soaring",
+      "Traits": [
+        {
+          "Name": "Take to Wing",
+          "Description": "Flying."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Soar",
+          "ActionCost": 0,
+          "Tags": [ "1/turn" ],
+          "Description": "Fly 4 spaces in a straight line."
+        },
+        {
+          "Name": "Spitfire",
+          "ActionCost": 2,
+          "Tags": [ "recharge 5+" ],
+          "Description": "Mark a character in range 6. At the end of that character's turn, if that character is still marked, the Wyrm shoots a blast of blight at them for a blast 1 explosion area effect. Characters within must save. On a successful save, they take [D]. On a failed save they take 2[D] and are blighted. Rock spires in the area are destroyed. This ability can mark any number of characters."
+        },
+        {
+          "Name": "Scorch",
+          "ActionCost": 2,
+          "Tags": [ "ranged attack 8", "blast 1", "pierce" ],
+          "Hit": "2[D]+[fray] and character is blighted.",
+          "Miss": "[D].",
+          "AreaEffect": "[D].",
+          "Blightboost": "Increase all damage by [D]."
+        }
+      ]
+    },
+    {
+      "Name": "God of Destruction",
+      "Description": "The wyrm loses flying.",
+      "Traits": [
+        {
+          "Name": "Pulse of Destruction",
+          "Description": "The Wyrm's max speed is 0 this phase and it is unstoppable. Every turn but the last turn this phase, the Wyrm must take spitfire action. The Wyrm's last turn is slow, and it always takes Elden Chaos and Aftermath in order. Radiance: All characters not in cover from the Wyrm take [D] Divine damage at the start of their turns."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Spitfire",
+          "ActionCost": 2,
+          "Description": "Mark a character in range 6. At the end of that character's turn, if that character is still marked, the Wyrm shoots a blast of energy at them for a blast 1 explosion area effect. Characters within must save. On a successful save, they take [D]. On a failed save they take 2[D] and are blighted. Rock spires in the area are destroyed. This ability can mark any number of characters."
+        },
+        {
+          "Name": "Elden Chaos",
+          "ActionCost": 1,
+          "Tags": [ "ranged attack", "end turn" ],
+          "Description": "The Wyrm breathes a beam of pure ancient chaos. The beam is a 3 wide line area effect that crosses through all obstacles, terrain, and goes across the whole battlefield. Deals half damage to characters in cover.",
+          "Hit": "Deal 2[D], three times, and inflict all blights.",
+          "Critical": "3[D], three times, and inflict all blights.",
+          "Miss": "Deal [D] twice and inflict all blights.",
+          "AreaEffect": "Deal [D] twice and inflict all blights."
+        },
+        {
+          "Name": "Aftermath",
+          "ActionCost": 0,
+          "Tags": [ "after Elden Chaos" ],
+          "Description": "All characters except the wyrm are dazed and winded. Destroy all rock spires and clear all eruptions."
+        }
+      ]
+    }
+  ]
+}

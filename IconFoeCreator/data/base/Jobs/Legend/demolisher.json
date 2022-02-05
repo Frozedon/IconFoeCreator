@@ -1,0 +1,149 @@
+{
+  "Name": "Demolisher",
+  "Inherits": "Legend",
+  "Type": "Job",
+  "RestrictToBaseTemplates": true,
+  "Vitality": 10,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 6,
+  "Armor": 2,
+  "FrayDamage": 4,
+  "DamageDie": "d6",
+  "Traits": [
+    {
+      "Name": "Enormous",
+      "Description": "Size 3."
+    },
+    {
+      "Name": "Heavy",
+      "Description": "Immune to shove."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Head",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Demolisher becomes blinded until the end of the next round"
+    },
+    {
+      "Name": "Lash",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Demolisher loses its lash attack."
+    },
+    {
+      "Name": "Armament",
+      "HP": 12,
+      "HPMultiplyByPlayers": true,
+      "Description": "Demolisher gets +1 curse on all its melee attacks. Destroyed Demolisher armament can be sold for 2 dust."
+    }
+  ],
+  "PhasesDescription": "Starts in Lumbering. Phase change triggers instantly when bloodied.",
+  "Phases": [
+    {
+      "Name": "Lumbering",
+      "Actions": [
+        {
+          "Name": "Hurl Rock",
+          "ActionCost": 1,
+          "Tags": [ "repeatable" ],
+          "Description": "A foe in range 6 takes [fray] damage and is branded, then must save or be shoved 3.",
+          "Collide": "Also Stunned.",
+          "PostAction": "After this action resolves, summon a size 1 piece of terrain adjacent to their original location."
+        },
+        {
+          "Name": "Lash",
+          "ActionCost": 1,
+          "Description": "The Demolisher whips a chain, hook, or tongue around a foe in range 5. They take 3 piercing damage and are shoved to an adjacent space to the Demolisher."
+        },
+        {
+          "Name": "Charge",
+          "ActionCost": 1,
+          "Tags": [ "1/round" ],
+          "Description": "Dash 6. All characters it passes over are shoved 1 to the side and take [D]."
+        },
+        {
+          "Name": "Pound",
+          "ActionCost": 1,
+          "Tags": [ "melee attack", "multiattack", "range 2", "combo" ],
+          "Hit": "[D]",
+          "Miss": "[fray].",
+          "PostAttack": "Deals 2[D] against characters suffering from a status.",
+          "Combos": [
+            {
+              "Name": "Roar",
+              "ActionsCost": 1,
+              "Tags": [ "end turn" ],
+              "Description": "End turn. Characters in range 3 take physical piercing damage, become winded, and are shoved 1 towards the Demolisher. Can use smash."
+            },
+            {
+              "Name": "Smash",
+              "ActionsCost": 2,
+              "Tags": [ "melee attack", "close blast 1" ],
+              "Hit": "4[D], and character is stunned.",
+              "Miss": "2[D].",
+              "AreaEffect": "2[D].",
+              "PostAction": "End turn and combo returns to Pound."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Rage Mode",
+      "Description": "When bloodied.",
+      "Traits": [
+        {
+          "Name": "Tantrum",
+          "Description": "Gain hatred of the closest character at the start of each of its turns. Can choose if multiple characters are close."
+        },
+        {
+          "Name": "True Enrage",
+          "Description": "Gain unstoppable and +1 action at 25% hp."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Hurl Rock",
+          "ActionCost": 1,
+          "Tags": [ "repeatable" ],
+          "Description": "A foe in range 6 takes [fray] damage and is branded, then must save or be shoved 3.",
+          "Collide": "Also Stunned.",
+          "PostAction": "After this action resolves, summon a size 1 piece of terrain adjacent to their original location."
+        },
+        {
+          "Name": "Great Lash",
+          "ActionCost": 1,
+          "Description": "The Demolisher whips a chain, hook, or tongue around all foes in range 5. They take 3 piercing damage and are shoved to an adjacent space to the Demolisher."
+        },
+        {
+          "Name": "Charge",
+          "ActionCost": 1,
+          "Description": "Dash 6.",
+          "AreaEffect": "All characters it passes over are shoved 1 to the side and take [D]."
+        },
+        {
+          "Name": "Pound",
+          "ActionCost": 1,
+          "Tags": [ "melee attack", "multiattack", "true strike", "range 2", "combo" ],
+          "Hit": "[D]",
+          "Miss": "[fray].",
+          "PostAttack": "Deals 2[D] against characters suffering from a status.",
+          "Combos": [
+            {
+              "Name": "Smash",
+              "ActionsCost": 2,
+              "Tags": [ "melee attack", "close blast 1" ],
+              "Hit": "4[D], and character is stunned.",
+              "Miss": "2[D].",
+              "AreaEffect": "2[D].",
+              "PostAction": "End turn and combo returns to Pound."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

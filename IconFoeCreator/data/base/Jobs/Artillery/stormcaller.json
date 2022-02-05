@@ -1,0 +1,33 @@
+{
+  "Name": "Storm Caller",
+  "Inherits": "Artillery",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Overdrive 4",
+      "Description": "Attacks are all critical hits on hit at round 4 or later."
+    },
+    {
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Geyser",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack 8", "cross 1", "pierce" ],
+      "Hit": "[D]+[fray] and inflict blight.",
+      "Miss": "[fray].",
+      "AreaEffect": "[fray].",
+      "Effect": "Summon a pit in a free space in the area.",
+      "Blightboost": "Foe is shattered."
+    },
+    {
+      "Name": "Summon Storm",
+      "ActionCost": 1,
+      "Tags": [ "terrain effect", "recharge 6+" ],
+      "Description": "Summon a blast 1 terrain effect in range 8. While inside, characters are vulnerable and blinded. This terrain effect lasts until this ability is used again or the storm caller is defeated."
+    }
+  ]
+}

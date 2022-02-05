@@ -1,37 +1,21 @@
 {
   "Name": "Skirmisher",
   "Group": "Skirmisher",
-  "Health": [ 5, 6, 7 ],
+  "Vitality": 8,
   "Speed": 4,
-  "Run": 2,
   "Dash": 4,
-  "Defense": 9,
-  "Armor": [ 0, 0, 0 ],
-  "Attack": [ 2, 4, 6 ],
-  "FrayDamage": [ 1, 2, 3 ],
-  "LightDamage": 3,
-  "HeavyDamage": 7,
-  "CriticalDamage": 10,
-  "LightDamageDie": "1d6",
-  "HeavyDamageDie": "2d6",
-  "CriticalDamageDie": "3d6",
-  "DamageType": "Either",
+  "Defense": 12,
+  "Armor": 0,
+  "FrayDamage": 3,
+  "DamageDie": "d10",
   "Traits": [
     {
       "Name": "Skirmisher",
-      "Description": "Can move diagonally."
-    },
-    {
-      "Name": "Extended Dash",
-      "Description": "Can dash as 1 action."
+      "Description": "Can move diagonally and dash action is full speed."
     },
     {
       "Name": "Dodge",
-      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
-    },
-    {
-      "Name": "Finishing Blow",
-      "Description": "Deal bonus damage if character is bloody."
+      "Description": "Immune to damage from successful saves, area effects, or missed attacks."
     }
   ]
 }

@@ -1,31 +1,33 @@
 {
   "Name": "Idol",
   "Inherits": "Relict",
-  "Type": "Faction",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
+  "AddHPPercent": 0.25,
   "Traits": [
     {
+      "Name": "Sturdy",
+      "Description": "Immune to shove, daze, and stun."
+    },
+    {
       "Name": "Large",
-      "Description": "Increase size to 2."
-    },
-    {
-      "Name": "Combat Subroutine",
-      "Description": "Has hatred of the closest foe."
-    },
-    {
-      "Name": "Dire Hide",
-      "Description": "Resistant to physical damage when not bloody."
-    },
-    {
-      "Name": "Imbued Strength",
-      "Description": "All melee damage is boosted and gains shove 1."
+      "Description": "Size 2."
     },
     {
       "Name": "Shambling",
-      "Description": "Permanently staggered, slow, and winded."
+      "Description": "Cannot dash.",
+      "NoDash": true
     },
     {
-      "Name": "Heavy",
-      "Description": "Immune to shove."
+      "Name": "Living Statue",
+      "Description": "When defeated, becomes a height 2 piece of terrain."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Combat Subroutine",
+      "ActionCost": 0,
+      "Description": "At the start of combat, the idol must Mark a foe. The idol has hatred of that character and its attacks gain +1 boon and true strike against them. It cannot mark a new character until its first character is defeated or the mark is removed."
     }
   ]
 }

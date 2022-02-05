@@ -1,0 +1,25 @@
+{
+  "Name": "Legend",
+  "Group": "Legend",
+  "HPMultiplyByPlayers": true,
+  "Traits": [
+    {
+      "Name": "Legend",
+      "Description": "Takes 1 turn after every player character takes a turn. If slow, only one of its turns is affected."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Juggernaut",
+      "ActionCost": 0,
+      "Tags": [ "1/round" ],
+      "Description": "Clear a status, mark, or all blights affecting this character."
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Encounter Budget",
+      "Description": "This foe takes up points equal to the number of players in an encounter budget."
+    }
+  ]
+}

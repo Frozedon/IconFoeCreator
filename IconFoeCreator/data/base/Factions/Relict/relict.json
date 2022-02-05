@@ -1,22 +1,27 @@
 {
   "Name": "Relict",
   "Group": "Relict",
-  "Type": "Faction",
+  "Type": "Template",
+  "IsBaseTemplate": true,
   "FactionBlight": "Electrified",
   "Traits": [
     {
-      "Name": "Defiant Spark",
-      "Description": "All Relict have Defiance."
+      "Name": "Defiance",
+      "Description": "Prevents hit points from being reduced past 1 hp. When this triggers, remove this effect and character becomes immune to all damage for the rest of the current turn."
     },
     {
       "Name": "Shuffle",
-      "Description": "Relict can move 1 space forward at the start of their turn. When they do this, they can also move any relicts that are contiguously connected to them via adjacency. When shuffle activates for mobs, it activates for all five simultaneously."
+      "Description": "All Relict can move 1 space forward at the start of their turn as a free action. When they do this, they can also move any relicts that are contiguously connected to them via adjacency. When shuffle activates for mobs, it activates for all five simultaneously."
     }
   ],
   "SetupTraits": [
     {
       "Name": "Monsters",
       "Description": "Relict do not flee or negotiate."
+    },
+    {
+      "Name": "Life Link",
+      "Description": "All foes with this trait on the battlefield share the same health pool, which is all their health added together. Dealing damage to health (not vigor) with any foe with this trait damages this common health pool. If new characters are summoned with life link, it adds to this health pool. Foes with life link are only defeated if the total pool is reduced to 0, and are all defeated at once. If defiance triggers, it triggers on all linked foes at once."
     }
   ]
 }

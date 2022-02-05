@@ -1,0 +1,20 @@
+{
+  "Name": "Arkivist",
+  "Inherits": "Relict",
+  "Type": "Template",
+  "RestrictToClass": "Leader",
+  "Traits": [
+    {
+      "Name": "Life Link",
+      "Description": "All foes with this trait on the battlefield share the same health pool."
+    },
+    {
+      "Name": "Servitors",
+      "Description": "At the first turn in the first round of combat, summon 4 wight in free adjacent spaces."
+    },
+    {
+      "Name": "Aura of the Endless Legion",
+      "Description": "When any non-wight relict are defeated in range 3, summon a wight in an adjacent space to them."
+    }
+  ]
+}

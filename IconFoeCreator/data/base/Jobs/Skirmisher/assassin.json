@@ -2,41 +2,28 @@
   "Name": "Assassin",
   "Inherits": "Skirmisher",
   "Type": "Job",
-  "Traits": [
+  "Interrupts": [
     {
-      "Name": "Prowl",
-      "Description": "Gains stealth at the start of their turn."
-    },
-    {
-      "Name": "Nimble",
-      "Description": "Has evasion unless suffering from a status."
+      "Name": "Shadow Slip",
+      "Tags": [ "requires a shadow clone" ],
+      "Description": "When targeted by an attack, gain evasion against that attack, then after the attack resolves, teleport to the space of a shadow clone and replace it, removing the clone and gaining stealth. This interrupt can be repeated as long as there is at least one shadow clone."
     }
   ],
   "Actions": [
     {
-      "Name": "Bolt",
-      "ActionCost": 1,
-      "Tags": [ "ranged attack 4", "+1 boon" ],
-      "Hit": "Deal light magic damage."
-    },
-    {
-      "Name": "Stab",
+      "Name": "Shadow Stab",
       "ActionCost": 1,
       "Tags": [ "melee attack", "+1 boon" ],
-      "Hit": "Deal light physical damage. Boost damage and gains pierce if the target has no allies adjacent."
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray].",
+      "Effect": "Teleport 1 and gain stealth.",
+      "PostAttack": "Deals 3[D] if made from stealth."
     },
     {
-      "Name": "Deumbra",
+      "Name": "Shadow Clone",
       "ActionCost": 1,
-      "Tags": [ "repeatable 2" ],
-      "Description": "Teleport 2."
-    },
-    {
-      "Name": "Lunge",
-      "ActionCost": 2,
-      "Tags": [ "melee attack", "recharge 6" ],
-      "Description": "May dash 4 before attack.",
-      "Hit": "Deal heavy physical damage. Trigger finishing blow if character is blinded or has no adjacent allies."
+      "Tags": [ "summon" ],
+      "Description": "Summon a shadow clone in a free space in range 3, an intangible size 1 summon. Foes adjacent to a shadow clone at the start of their turn take fray damage from the clone. Clones disappear at the end of combat or if the assassin in defeated."
     }
   ]
 }

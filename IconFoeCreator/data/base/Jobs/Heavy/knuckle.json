@@ -2,64 +2,31 @@
   "Name": "Knuckle",
   "Inherits": "Heavy",
   "Type": "Job",
-  "Run": 1,
-  "Dash": 2,
+  "Armor": 4,
   "Traits": [
     {
-      "Name": "Toughness",
-      "Description": "Start combat with 1 vigor."
-    },
-    {
-      "Name": "Slow",
-      "Description": "Go after all other characters. If multiple characters take slow turns, it takes the same order as regular turns (ally/enemy/ally)."
-    },
-    {
-      "Name": "Vigilance",
-      "Description": "Foes can’t dash in your engagement and can’t move through your space."
-    },
-    {
-      "Name": "Improved Armor",
-      "Description": "+1 armor.",
-      "AddArmor": 1,
-      "Nonessential": true
-    },
-    {
-      "Name": "Poise",
-      "Description": "Sturdy when bloody."
-    }
-  ],
-  "Interrupts": [
-    {
-      "Name": "Guardian",
-      "Count": 1,
-      "Description": "When an ally you can see in range 3 is targeted by an attack, you can dash up to 2 spaces towards that ally, ignoring vigilance. Then, if you’re adjacent, you can change the target of the attack to you."
+      "Name": "Rook",
+      "Description": "Grants cover to allies."
     }
   ],
   "Actions": [
     {
       "Name": "Overpower",
       "ActionCost": 1,
-      "Tags": [ "melee attack", "multiattack 2", "true strike" ],
-      "Hit": "Deal light damage.",
-      "Miss": "Deal fray damage."
+      "Tags": [ "melee attack", "multiattack" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray]."
     },
     {
-      "Name": "Shove",
+      "Name": "Crushing Advance",
       "ActionCost": 1,
-      "Description": "Adjacent foe is shoved 1, and must save or be shoved 1 again.",
-      "Collide": "They become dazed."
+      "Description": "Dash 1 space, shove an adjacent foe 1 space, then become sturdy until the start of next turn."
     },
     {
-      "Name": "Fortify",
+      "Name": "Taunt",
       "ActionCost": 1,
-      "Tags": [ "stance" ],
-      "Description": "Count as in cover and grant cover to allied characters, but cannot dash. End if shoved, dazed, staggered, or stunned."
-    },
-    {
-      "Name": "Mark of Vigilance",
-      "ActionCost": 1,
-      "Tags": [ "mark", "recharge 4+" ],
-      "Description": "Mark a foe in range 3. The Knuckle and all allies of the Knuckle gain counter and vigilance agains tthe character. Foe can pass a save at the end of their turn to clear the mark."
+      "Tags": [ "recharge 4+" ],
+      "Description": "Foe in range 4 must save or be shoved towards the knuckle as far as possible, then gain hatred of the knuckle."
     }
   ]
 }

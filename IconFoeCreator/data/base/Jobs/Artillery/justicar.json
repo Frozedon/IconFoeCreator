@@ -1,0 +1,26 @@
+{
+  "Name": "Justicar",
+  "Inherits": "Artillery",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Overdrive 4",
+      "Description": "Attacks are all critical hits on hit at round 4 or later."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Bolt",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack 8" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray]."
+    },
+    {
+      "Name": "Judgement",
+      "ActionCost": 1,
+      "Tags": [ "mark" ],
+      "Description": "Mark a character in range 8. At the end of that character's turn, if they are still marked, they take [D] piercing damage for every 3 spaces of distance between them and the justicar. Then, clear the mark."
+    }
+  ]
+}

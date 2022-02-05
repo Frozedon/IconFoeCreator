@@ -1,0 +1,31 @@
+{
+  "Name": "Greenseer",
+  "Inherits": "Leader",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Wilding",
+      "Description": "Immune to difficult and dangerous terrain."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Wild Strike",
+      "ActionCost": 1,
+      "Tags": [ "multiattack", "ranged attack 6" ],
+      "AutoHit": "[fray].",
+      "Effect": "Deal +[D] if character is in difficult or dangerous terrain."
+    },
+    {
+      "Name": "Vine Lash",
+      "ActionCost": 1,
+      "Description": "A character in range 6 must save or be shoved 4. On a successful save they are shoved 2. They take 1 piercing damage for every space they move through difficult terrain during this shove."
+    },
+    {
+      "Name": "Wild Growth",
+      "ActionCost": 1,
+      "Tags": [ "range 6", "terrain effect", "1/combat" ],
+      "Description": "Create a blast 1 area of difficult terrain. The difficult terrain provides cover for allies."
+    }
+  ]
+}

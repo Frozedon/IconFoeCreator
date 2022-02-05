@@ -4,30 +4,23 @@
   "Type": "Job",
   "Traits": [
     {
-      "Name": "Prowl",
-      "Description": "Gains stealth at the start of their turn."
-    },
-    {
       "Name": "Slippery",
-      "Description": "Gain evasion when bloody."
+      "Description": "While bloodied, has evasion."
     }
   ],
   "Actions": [
     {
       "Name": "Stab",
       "ActionCost": 1,
-      "Tags": [ "melee attack", "+1 boon" ],
-      "Hit": "Deal light physical damage. Boost damage and gains pierce if the target has no allies adjacent."
+      "Tags": [ "melee attack" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray].",
+      "PostAttack": "Attack deals 2[D] is made against a blinded or slow character."
     },
     {
       "Name": "Cheap Trick",
       "ActionCost": 1,
-      "Description": "An adjacent foe must physical save or become blinded."
-    },
-    {
-      "Name": "Sprint",
-      "ActionCost": 1,
-      "Description": "Dash 6."
+      "Description": "A foe in range 2 must save or become blinded or slow (Skulk chooses). The Skulk then gains stealth."
     }
   ]
 }

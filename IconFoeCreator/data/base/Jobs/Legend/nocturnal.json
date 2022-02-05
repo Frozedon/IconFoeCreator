@@ -1,0 +1,150 @@
+{
+  "Name": "Nocturnal",
+  "Inherits": "Legend",
+  "Type": "Job",
+  "RestrictToBaseTemplates": true,
+  "Vitality": 8,
+  "Speed": 4,
+  "Dash": 4,
+  "Defense": 12,
+  "Armor": 0,
+  "FrayDamage": 3,
+  "DamageDie": "d10",
+  "Traits": [
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally and dash action is full speed."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to damage from successful saves, area effects, or missed attacks."
+    },
+    {
+      "Name": "Large",
+      "Description": "Size 2."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Head",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Nocturnal always has the Blood Scent trait (phase 3) active."
+    },
+    {
+      "Name": "Back",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Nocturnal loses its Clinging Mists trait in phase I. Back spines can be sold for 2 dust if broken."
+    },
+    {
+      "Name": "Wings",
+      "HP": 6,
+      "HPMultiplyByPlayers": true,
+      "Description": "Nocturnal loses its ability to fly. Its Rake action becomes a dash instead."
+    }
+  ],
+  "PhasesDescription": "Phase change triggers at the start of the Nocturnal's first turn each round past the first. The Nocturnal starts in phase II and can shift up or down one phase (so it can't shift from I to III for example). It must shift phases.",
+  "Phases": [
+    {
+      "Name": "Slasher",
+      "Traits": [
+        {
+          "Name": "Hunter in the Mist",
+          "Description": "Increase all damage deal by +4 against characters with no other allied character or summon adjacent."
+        },
+        {
+          "Name": "Clinging Mists",
+          "Description": "Unless the Nocturnal is in range 3 of a foe or summon controlled by a foe, it's intangible and not visible on the map, and the GM secretly records its location."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Rake",
+          "ActionCost": 1,
+          "Tags": [ "area effect", "line 4", "repeatable" ],
+          "Description": "Foes in the area take [fray] damage. The Nocturnal may teleport to any space in the area after this action resolves."
+        },
+        {
+          "Name": "Amygdala",
+          "ActionCost": 1,
+          "Tags": [ "recharge 4+" ],
+          "Description": "All foes in range 3 are forced to flee. They become vulnerable, then must save or be marked and shoved 3 in a direction of the Nocturnal's choice. While marked, at the start of their turns, the Nocturnal can shove them 3 in a direction of its choice. They can save at the end of their turns to end this mark."
+        },
+        {
+          "Name": "The Horror",
+          "ActionCost": 1,
+          "Tags": [ "melee attack" ],
+          "Hit": "[D]+[fray].",
+          "Miss": "[fray].",
+          "Effect": "May teleport up to 3 spaces before or after the attack."
+        }
+      ]
+    },
+    {
+      "Name": "Night Lord",
+      "Traits": [
+        {
+          "Name": "Take to Wing",
+          "Description": "Flying."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Rake",
+          "ActionCost": 1,
+          "Tags": [ "area effect", "line 4", "repeatable" ],
+          "Description": "Foes in the area take [fray] damage. The Nocturnal may teleport to any space in the area after this action resolves."
+        },
+        {
+          "Name": "Fell Shot",
+          "ActionCost": 1,
+          "Tags": [ "2/round" ],
+          "Description": "Mark two unoccupied spaces in range 8.",
+          "AreaEffect": "Characters other than the Nocturnal that enter that space are struck by a projectile, taking [D] piercing damage and gaining blight, and ending this effect. The areas last until this character is defeated."
+        },
+        {
+          "Name": "Blood Drain",
+          "ActionCost": 1,
+          "Tags": [ "melee attack", "range 2" ],
+          "Hit": "2[D].",
+          "Miss": "[D].",
+          "Effect": "If made against a character with Vigor, removes all Vigor before applying damage."
+        }
+      ]
+    },
+    {
+      "Name": "Blood Frenzy",
+      "Traits": [
+        {
+          "Name": "Blood Scent",
+          "Description": "Gains Hatred of the closest bloody character"
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Death Shriek",
+          "ActionCost": 1,
+          "Tags": [ "repeatable" ],
+          "Description": "All foes in range 2 must save. On a failure, they take [D] and are shoved up to 3 spaces in any direction. On a successful save, shove them 1 space."
+        },
+        {
+          "Name": "Blood Drain",
+          "ActionCost": 1,
+          "Tags": [ "melee attack", "range 2", "combo" ],
+          "Hit": "2[D].",
+          "Miss": "[D].",
+          "Effect": "If made against a character with Vigor, removes all Vigor before applying damage.",
+          "Combos": [
+            {
+              "Name": "Embrace",
+              "ActionCost": 2,
+              "Tags": [ "melee attack" ],
+              "Description": "An adjacent foe must save. On a successful save, they are shoved 1 and take 2[D]. On a failed save, they take damage equal to 50% of their max hp. Either way, this attack can't take them below 1 hp."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

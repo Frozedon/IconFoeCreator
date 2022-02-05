@@ -2,68 +2,53 @@
   "Name": "Rogue",
   "Inherits": "Elite",
   "Type": "Job",
-  "Health": [ 4, 5, 6 ],
-  "HPMultiplier": 6,
+  "Vitality": 8,
   "Speed": 5,
-  "Run": 3,
   "Dash": 5,
-  "Defense": 9,
-  "Armor": [ 0, 0, 0 ],
-  "Attack": [ 2, 4, 6 ],
-  "FrayDamage": [ 2, 3, 4 ],
-  "LightDamage": 3,
-  "HeavyDamage": 7,
-  "CriticalDamage": 10,
-  "LightDamageDie": "1d6",
-  "HeavyDamageDie": "2d6",
-  "CriticalDamageDie": "3d6",
-  "DamageType": "Both",
+  "Defense": 14,
+  "Armor": 0,
+  "FrayDamage": 3,
+  "DamageDie": "d10",
   "Traits": [
     {
       "Name": "Skirmisher",
-      "Description": "Can move diagonally."
-    },
-    {
-      "Name": "Prowl",
-      "Description": "Gains stealth at the start of their turn."
+      "Description": "Can move diagonally and dash action is full speed."
     },
     {
       "Name": "Dodge",
-      "Description": "Immune to all damage and effects on miss or successful save. Resistant to damage from non-attack spaces of area effects."
+      "Description": "Immune to damage from successful saves, area effects, or missed attacks."
     },
     {
-      "Name": "Finishing Blow",
-      "Description": "Deal bonus damage if character is bloody."
-    },
+      "Name": "Agility",
+      "Description": "Permanant evasion."
+    }
+  ],
+  "Interrupts": [
     {
-      "Name": "Evasion",
-      "Description": "Permanent evasion."
+      "Name": "Disappearing Act",
+      "Description": "When bloodied for the first time in a combat, may teleport 4 as an interrupt and gain stealth."
     }
   ],
   "Actions": [
     {
       "Name": "Wicked Slice",
       "ActionCost": 1,
-      "Tags": [ "melee attack", "+1 boon", "multiattack 2" ],
-      "Hit": "Deal light physical damage.",
-      "Effect": "Boost damage vs blind characters."
+      "Tags": [ "melee attack", "+1 boon", "multiattack" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray].",
+      "PostAttack": "Increase damage to 2[D] against blind or slow characters.",
+      "Effect": "Dash 1 before and after the attack."
     },
     {
       "Name": "Vile",
       "ActionCost": 1,
-      "Description": "A foe in range 5 must save or become blind and blighted."
+      "Description": "A foe in range 5 must save or become slowed, and take 1 piercing damage for each space they move until the end of their next turn."
     },
     {
       "Name": "Danse Macabre",
       "ActionCost": 2,
       "Tags": [ "recharge 5+" ],
-      "Description": "Target a close blast 2 area. Teleport three times. May deal light damage as an area effect to an adjacent foe each time. Must choose a different hostile character each time unless every character has been hit at least once."
-    },
-    {
-      "Name": "Deumbra",
-      "ActionCost": 1,
-      "Tags": [ "repeatable 2" ],
-      "Description": "Teleport 2."
+      "Description": "Target a close blast 2 area. Teleport five times. May deal [D] to an adjacent foe each time. Must choose a different foe each time unless every foe has been hit at least once."
     }
   ]
 }

@@ -1,0 +1,29 @@
+{
+  "Name": "Chaos Wright",
+  "Inherits": "Artillery",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Overdrive 4",
+      "Description": "Attacks are all critical hits on hit at round 4 or later."
+    },
+    {
+      "Name": "Phasing",
+      "Description": "Can ignore obstruction and pass through, but not end your turn in, terrain or characters."
+    },
+    {
+      "Name": "The Old Blood",
+      "Description": "Immune to blights."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Chaos Shard",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack 6" ],
+      "Hit": "Character is inflicted with all four blights.",
+      "Miss": "Character is inflicted with two blights of this wright's choice.",
+      "Blightboost": "Character takes [D] once for every blight they are inflicted with. Roll damage once and apply it once for each blight."
+    }
+  ]
+}

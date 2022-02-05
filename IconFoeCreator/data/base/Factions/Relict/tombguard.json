@@ -1,0 +1,17 @@
+{
+  "Name": "Tomb Guard",
+  "Inherits": "Relict",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
+  "Traits": [
+    {
+      "Name": "Shambling",
+      "Description": "Cannot dash.",
+      "NoDash": true
+    },
+    {
+      "Name": "Duty of Death",
+      "Description": "The Tomb Guard and adjacent allies have dodge and cover."
+    }
+  ]
+}

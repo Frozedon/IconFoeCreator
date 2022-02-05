@@ -1,0 +1,29 @@
+{
+  "Name": "Greatsword",
+  "Inherits": "Heavy",
+  "Type": "Job",
+  "Interrupts": [
+    {
+      "Name": "Great Parry",
+      "Count": 1,
+      "Description": "When self or an adjacent ally is targeted by an attack, may grant resistance against the attack."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Great Slice",
+      "ActionCost": 2,
+      "Tags": [ "melee attack", "line 3" ],
+      "Hit": "2[D]+[fray].",
+      "Miss": "[fray].",
+      "AreaEffect": "[D]."
+    },
+    {
+      "Name": "Split Foe",
+      "ActionCost": 2,
+      "Tags": [ "melee attack", "true strike", "+1 curse", "recharge 6" ],
+      "Hit": "3[D].",
+      "Miss": "[D]."
+    }
+  ]
+}

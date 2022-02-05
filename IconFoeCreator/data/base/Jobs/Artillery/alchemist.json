@@ -2,24 +2,15 @@
   "Name": "Alchemist",
   "Inherits": "Artillery",
   "Type": "Job",
+  "Armor": 1,
   "Traits": [
     {
-      "Name": "Overdrive 3",
-      "Description": "Deals boosted damage if the current round is 3 or higher."
-    },
-    {
-      "Name": "Aetherwall",
-      "Description": "Cover from ranged attacks further away than range 2."
-    },
-    {
-      "Name": "Improved Armor",
-      "Description": "+1 armor.",
-      "AddArmor": 1,
-      "Nonessential": true
+      "Name": "Overdrive 4",
+      "Description": "Attacks are all critical hits on hit at round 4 or later."
     },
     {
       "Name": "Acid Splash",
-      "Description": "Attacks deal piercing fray magic damage on hit or miss to all foes in range 2 of the target as an area effect."
+      "Description": "Attacks deal piercing [fray] damage on hit or miss to all foes in range 2 of the target as an area effect."
     },
     {
       "Name": "Insulated",
@@ -30,22 +21,17 @@
     {
       "Name": "Spray",
       "ActionCost": 1,
-      "Tags": [ "ranged attack", "close blast 1", "repeatable 2" ],
-      "Hit": "Deal piercing fray damage and inflict blight.",
-      "Miss": "Deal fray damage.",
-      "AreaEffect": "Deal fray damage.",
-      "Blightboost": "Increase all damage to light."
+      "Tags": [ "ranged attack", "close blast 1" ],
+      "Hit": "[D]+[fray] and inflict blight.",
+      "Miss": "[fray] and inflict blight.",
+      "AreaEffect": "[fray].",
+      "Blightboost": "Attack target explodes in a blast 1 area around them, shoving characters 1 away from them and dealing piercing fray damage to all characters."
     },
     {
       "Name": "Sticky Solution",
       "ActionCost": 1,
-      "Tags": [ "arc 3", "recharge 5+" ],
-      "Description": "Area becomes difficult terrain for the rest of combat."
-    },
-    {
-      "Name": "Flash",
-      "ActionCost": 1,
-      "Description": "A character in range 8 must save or take fray magic damage and be blighted."
+      "Tags": [ "close blast 1" ],
+      "Description": "Area becomes difficult terrain for the rest of combat, or until this ability is used again."
     }
   ]
 }

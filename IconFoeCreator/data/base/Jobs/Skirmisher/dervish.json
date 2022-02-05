@@ -1,0 +1,25 @@
+{
+  "Name": "Dervish",
+  "Inherits": "Skirmisher",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Nimble",
+      "Description": "Has evasion unless suffering from a status."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Razor Wind",
+      "ActionCost": 1,
+      "Tags": [ "melee attack" ],
+      "Description": "Dash 1, then",
+      "Effect": "adjacent foes take [fray] damage. Dash 1, then repeat the area effect, then dash 1, then repeat the area effect."
+    },
+    {
+      "Name": "Thousand Cuts",
+      "ActionCost": 1,
+      "Effect": "Teleport 1 and deal 1 damage to an adjacent foe. Repeat this effect twice."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "Name": "Priest",
+  "Inherits": "Leader",
+  "Type": "Job",
+  "Actions": [
+    {
+      "Name": "Holy",
+      "ActionCost": 1,
+      "Tags": [ "blast 1", "range 4" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray].",
+      "AreaEffect": "[fray].",
+      "Effect": "Foes inside are branded. Branded foes must save or become pacified."
+    },
+    {
+      "Name": "Succor",
+      "ActionCost": 2,
+      "Tags": [ "1/combat" ],
+      "Description": "Target defeated ally in range 4 and return them to the battlefield with 50% hp."
+    },
+    {
+      "Name": "Shield of Faith",
+      "ActionCost": 2,
+      "Tags": [ "1/combat", "mark" ],
+      "Description": "Allied character in range 3 becomes marked, and gains sturdy and resistance while marked. This mark ends if they or the priest is defeated."
+    }
+  ]
+}

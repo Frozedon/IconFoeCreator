@@ -1,11 +1,17 @@
 {
   "Name": "Mob",
-  "Group": "Mob",
-  "Health": [ 0, 0, 0 ],
+  "Vitality": 0,
+  "HP": 1,
   "Traits": [
     {
       "Name": "Mob",
       "Description": "This character doesn't trigger slay effects."
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Encounter Budget",
+      "Description": "1 point in an encounter budget gets 5 mobs of the same type."
     }
   ]
 }

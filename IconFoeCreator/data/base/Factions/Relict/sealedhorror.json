@@ -1,0 +1,17 @@
+{
+  "Name": "Sealed Horror",
+  "Inherits": "Relict",
+  "Type": "Template",
+  "RestrictToClass": "Heavy",
+  "Traits": [
+    {
+      "Name": "Bronze Shell",
+      "Description": "Permanent resistant and sturdy but always blinded and slow. Lose this trait if bloodied."
+    },
+    {
+      "Name": "Shambling",
+      "Description": "Cannot dash.",
+      "NoDash": true
+    }
+  ]
+}

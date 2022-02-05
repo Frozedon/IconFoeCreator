@@ -2,80 +2,61 @@
   "Name": "Eldenwright",
   "Inherits": "Elite",
   "Type": "Job",
-  "Health": [ 5, 6, 7 ],
+  "Vitality": 8,
   "HPMultiplier": 8,
   "Speed": 3,
-  "Run": 1,
   "Dash": 1,
-  "Defense": 7,
-  "Armor": [ 0, 0, 0 ],
-  "Attack": [ 2, 4, 6 ],
-  "FrayDamage": [ 3, 4, 5 ],
-  "LightDamage": 3,
-  "HeavyDamage": 7,
-  "CriticalDamage": 10,
-  "LightDamageDie": "1d6",
-  "HeavyDamageDie": "2d6",
-  "CriticalDamageDie": "3d6",
-  "DamageType": "Magic",
+  "Defense": 6,
+  "Armor": 0,
+  "FrayDamage": 5,
+  "LightDamageDie": "d8",
   "Traits": [
     {
-      "Name": "Overdrive 5",
-      "Description": "Deals boosted damage if the current round is 5 or higher."
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
     },
     {
-      "Name": "Slow",
-      "Description": "Go after all other characters. If multiple characters take slow turns, it takes the same order as regular turns (ally/enemy/ally)."
+      "Name": "Overdrive 4",
+      "Description": "Attacks are all critical hits on hit at round 4 or later."
     },
     {
       "Name": "Aetherwall",
       "Description": "Cover from ranged attacks further away than range 2."
     },
     {
-      "Name": "Resonance",
-      "Description": "Attacks deal boosted damage if they hit 3 or more foes."
-    },
-    {
       "Name": "Unstable Reality",
-      "Description": "1/any turn. After being damaged by an attack or effect, teleport 1 in any direction."
-    },
-    {
-      "Name": "Power Overwhelming",
-      "Description": "If overdrive has triggered, gain flying and vigor 1."
+      "Description": "1/turn, teleports 1 when damaged by an attack or ability."
     }
   ],
   "Actions": [
     {
       "Name": "Annihilate",
       "ActionCost": 2,
-      "Tags": [ "superheavy ranged attack 10", "blast 1", "+1 boon" ],
-      "Hit": "Deal heavy magic damage and inflict blight.",
-      "Miss": "Deal light magic damage.",
-      "AreaEffect": "Deal light magic damage.",
-      "Blightboost": "Increase to blast 2. After attack resolves, summon a height 1 space of terrain in the area."
-    },
-    {
-      "Name": "Liminal Arrows",
-      "ActionCost": 1,
-      "Tags": [ "recharge 5+" ],
-      "Description": "Mark all foes in line of sight and range 10. At the end of those character’s turns, they take heavy magic damage if marked and not in cover from the Eldenwright, then the mark ends."
-    },
-    {
-      "Name": "Fell Shot",
-      "ActionCost": 1,
-      "Tags": [ "repeatable 2" ],
-      "Description": "Mark 2 unoccupied spaces in range 10. Foes or allies that pass through these spaces take piercing fray magic damage as an area effect. At the start of the eldenwright's turn, any spaces created by this ability disappear."
+      "Tags": [ "ranged attack 10", "blast 1", "pierce" ],
+      "Hit": "2[D]+[fray].",
+      "Miss": "[fray].",
+      "AreaEffect": "[D].",
+      "Effect": "All foes must save or become vulnerable.",
+      "Blightboost": "Increase to blast 2.",
+      "TerrainEffect": "After attack resolves, summon a height 1 space of terrain in the area."
     },
     {
       "Name": "Great Slip",
       "ActionCost": 1,
-      "Description": "Teleport 5."
+      "Description": "Teleport 3."
     },
     {
-      "Name": "Aethersup",
+      "Name": "Fell Shot",
       "ActionCost": 1,
-      "Tags": [ "1/round" ],
-      "Description": "Tick down Overdrive counter by 1."
+      "Tags": [ "repeatable" ],
+      "Description": "Mark an unoccupied space in range 8.",
+      "AreaEffect": "Characters that enter that space are struck by a projectile, taking [D] damage and gaining blight, and ending this effect. The areas last until this character is defeated."
+    },
+    {
+      "Name": "Liminal Arrows ",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "Mark a foe in line of sight and range 10. At the end of that character's turn, it takes [D] piercing damage 3 times if it's not in cover from the Eldenwright. Then this mark ends. The Eldenwright can mark any number of foes with this ability."
     }
   ]
 }

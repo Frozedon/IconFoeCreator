@@ -1,0 +1,27 @@
+{
+  "Name": "Disruptor",
+  "Inherits": "Artillery",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Overdrive 4",
+      "Description": "Attacks are all critical hits on hit at round 4 or later."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Magnetism",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack 8" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray].",
+      "Effect": "All characters in range 2 of the foe are shoved 1 towards or away from that character (Disruptor chooses)."
+    },
+    {
+      "Name": "Disrupt",
+      "ActionCost": 1,
+      "Tags": [ "mark" ],
+      "Description": "A character in range 8 is marked. While marked, they take 2 piercing damage for every adjacent character every time they end their turn."
+    }
+  ]
+}

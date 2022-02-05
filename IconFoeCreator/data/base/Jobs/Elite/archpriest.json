@@ -2,68 +2,54 @@
   "Name": "Archpriest",
   "Inherits": "Elite",
   "Type": "Job",
-  "Health": [ 5, 6, 7 ],
-  "HPMultiplier": 8,
-  "Speed": 3,
-  "Run": 2,
+  "Vitality": 10,
+  "Speed": 4,
   "Dash": 2,
-  "Defense": 7,
-  "Armor": [ 1, 1, 1 ],
-  "Attack": [ 1, 3, 5 ],
-  "FrayDamage": [ 2, 3, 4 ],
-  "LightDamage": 3,
-  "HeavyDamage": 7,
-  "CriticalDamage": 10,
-  "LightDamageDie": "1d6",
-  "HeavyDamageDie": "2d6",
-  "CriticalDamageDie": "3d6",
-  "DamageType": "Both",
+  "Defense": 8,
+  "Armor": 1,
+  "FrayDamage": 3,
+  "LightDamageDie": "d6",
   "Traits": [
     {
-      "Name": "Defiance",
-      "Description": "Prevents hit points from being reduced past 1 hp. When this triggers, remove this effect."
+      "Name": "Shelter",
+      "Description": "+1 boon on saves."
     },
     {
-      "Name": "Great Shelter",
-      "Description": "Adjacent allies gain +1 boon on saves. At the start of the archpriest’s turn, all adjacent allies can cleanse a blight, end a status, or clear a mark."
+      "Name": "Gran Diaga",
+      "Description": "At the start of the arch priest's turn, cure all adjacent allies."
     }
   ],
   "Actions": [
     {
-      "Name": "Autocure",
-      "Tags": [ "1/turn" ],
-      "Description": "May grant vigor 1 to a bloodied ally in range 3."
+      "Name": "Diaga",
+      "ActionCost": 1,
+      "Description": "An ally in range 4 can save, ending a mark, status, or blight on a successful save. If that ally is bloodied, they also gain vigor 1."
     },
     {
       "Name": "Great Holy",
       "ActionCost": 1,
-      "Tags": [ "ranged attack 4", "blast 2" ],
-      "Hit": "Deal light magic damage.",
-      "Miss": "Deal fray magic damage.",
-      "AreaEffect": "Deal fray damage.", 
-      "Effect": "Foes inside must save or be staggered."
+      "Tags": [ "ranged attack 6", "blast 2" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray].",
+      "AreaEffect": "[fray].", 
+      "Effect": "Foes inside are branded. Branded foes must save or become pacified."
     },
     {
       "Name": "Seal",
       "ActionCost": 1,
-      "Description": "A foe in range 5 must save or become pacified and slow."
-    },
-    {
-      "Name": "Punishment",
-      "ActionCost": 1,
-      "Description": "A foe in range 4 must save or become staggered. If already staggered, they become stunned."
+      "Description": "A foe in range 5 must save or become unable to use attack abilities until the end of their next turn. On a successful save, they take fray damage and are blighted instead."
     },
     {
       "Name": "Immaculate",
       "ActionCost": 1,
-      "Tags": [ "recharge 4+" ],
-      "Description": "An ally in range 5 becomes Intangible to foes until the end of its next turn."
+      "Tags": [ "recharge 6" ],
+      "Description": "An ally in range 5 becomes Intangible until the end of its next turn."
     },
     {
-      "Name": "Gran Succor",
+      "Name": "Gran Redempta",
       "ActionCost": 2,
       "Tags": [ "1/combat" ],
-      "Description": "All defeated characters in range 3 are returned with the summon type and 25% hp. They can act as normal starting with the next round."
+      "Description": "All defeated allies in range 3 are returned to combat, with 25% hp. They can act as normal starting with the next round."
     }
   ]
 }

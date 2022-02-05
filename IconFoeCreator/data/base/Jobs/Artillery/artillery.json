@@ -1,25 +1,21 @@
 {
   "Name": "Artillery",
   "Group": "Artillery",
-  "Health": [ 4, 5, 6 ],
+  "Vitality": 8,
   "Speed": 3,
-  "Run": 2,
-  "Dash": 1,
-  "Defense": 7,
-  "Armor": [ 0, 0, 0 ],
-  "Attack": [ 2, 4, 6 ],
-  "FrayDamage": [ 2, 3, 4 ],
-  "LightDamage": 3,
-  "HeavyDamage": 7,
-  "CriticalDamage": 10,
-  "LightDamageDie": "1d6",
-  "HeavyDamageDie": "2d6",
-  "CriticalDamageDie": "3d6",
-  "DamageType": "Magic",
+  "Dash": 2,
+  "Defense": 6,
+  "Armor": 0,
+  "FrayDamage": 5,
+  "DamageDie": "d8",
   "Traits": [
     {
+      "Name": "Aetherwall",
+      "Description": "Cover from ranged attacks further away than range 2."
+    },
+    {
       "Name": "Blightboost",
-      "Description": "If attacking a blighted character, gain an increased effect."
+      "Description": "This attack gains additional benefits if its main target is blighted."
     }
   ]
 }

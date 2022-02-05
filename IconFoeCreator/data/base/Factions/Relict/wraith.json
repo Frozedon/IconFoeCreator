@@ -1,24 +1,28 @@
 {
   "Name": "Wraith",
   "Inherits": "Relict",
-  "Type": "Faction",
+  "Type": "Template",
+  "RestrictToClass": "Artillery",
   "Traits": [
     {
-      "Name": "Immortal Rage",
-      "Description": "When defeated, instead become Intangible for one round. At the end of that round, evaporate from the battlefield."
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
     },
     {
       "Name": "Ethereal",
-      "Description": "Flying, phasing, and intangible unless there’s a foe in range 2.",
-      "DescriptionNonessential": "Reduce hp by 50%.",
-      "AddHPPercent": -0.5
+      "Description": "Phasing, and has evasion unless there's an adjacent foe."
+    },
+    {
+      "Name": "Unstable Reality",
+      "Description": "1/turn, teleports 1 when damaged by an attack or ability."
     }
   ],
   "Actions": [
     {
-      "Name": "Slip",
-      "ActionCount": 1,
-      "Description": "Teleport 3."
+      "Name": "Networked",
+      "ActionCost": 0,
+      "Tags": [ "repeatable" ],
+      "Effect": "The Wraith can teleport to any space adjacent to another relict."
     }
   ]
 }

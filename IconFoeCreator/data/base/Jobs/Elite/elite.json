@@ -6,5 +6,11 @@
       "Name": "Elite",
       "Description": "Takes 2 turns."
     }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Encounter Budget",
+      "Description": "This foe takes up 2 points in an encounter budget."
+    }
   ]
 }

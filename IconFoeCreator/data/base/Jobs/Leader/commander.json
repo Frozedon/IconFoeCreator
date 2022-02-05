@@ -2,54 +2,33 @@
   "Name": "Commander",
   "Inherits": "Leader",
   "Type": "Job",
+  "Armor": 1,
   "Traits": [
-    {
-      "Name": "Shelter",
-      "Description": "Adjacent allies get +1 accuracy on saves."
-    },
-    {
-      "Name": "Improved Armor",
-      "Description": "+1 armor.",
-      "AddArmor": 1,
-      "Nonessential": true
-    },
     {
       "Name": "Command Aura",
       "Description": "Allies in range 3 have +1 boon on attacks."
-    },
-    {
-      "Name": "Tactics Aura",
-      "Description": "Staggered, winded, dazed, or stunned foes in range 3 are also vulnerable."
-    }
-  ],
-  "Interrupts": [
-    {
-      "Name": "Counter Strike",
-      "Description": "The commander or an ally in range 3 gains evasion against an incoming physical attack."
     }
   ],
   "Actions": [
     {
-      "Name": "Autocure",
-      "Tags": [ "1/turn" ],
-      "Description": "May grant vigor 1 to a bloodied ally in range 3."
-    },
-    {
       "Name": "Leader's Strike",
       "ActionCost": 1,
       "Tags": [ "melee attack", "repeatable 2" ],
-      "Hit": "Deal light damage and an ally in range 3 can dash 2 spaces."
+      "Hit": "[D].",
+      "Miss": "1 damage.",
+      "Effect": "An ally in range 3 can dash 2 spaces."
     },
     {
       "Name": "Commander's Mark",
       "ActionCost": 1,
-      "Description": "A foe in range 4 must save or become marked. While marked, they lose and cannot gain stealth, and attacks against them gain true strike. They can repeat this save at the end of their turns to end this effect."
+      "Tags": [ "range 4", "mark" ],
+      "Description": "Foe must save or become marked. While marked, they can't benefit from stealth, and attacks against them gain true strike."
     },
     {
-      "Name": "Forced March",
+      "Name": "Marching Orders",
       "ActionCost": 1,
       "Tags": [ "stance" ],
-      "Description": "When Commander takes this stance, and at start of each of the commander’s turns, the commander and all allies in range 3 can dash 2 in the same direction."
+      "Description": "When Commander takes this stance, as an action, and at start of each of the commander's turns, the commander and all allies in range 3 can dash 2 in the same direction."
     }
   ]
 }

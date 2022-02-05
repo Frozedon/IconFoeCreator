@@ -1,19 +1,17 @@
 {
   "Name": "Heavy",
   "Group": "Heavy",
-  "Health": [ 5, 6, 7 ],
-  "Speed": 4,
-  "Run": 2,
-  "Dash": 4,
-  "Defense": 5,
-  "Armor": [ 1, 2, 3 ],
-  "Attack": [ 0, 2, 4 ],
-  "FrayDamage": [ 2, 3, 4 ],
-  "LightDamage": 3,
-  "HeavyDamage": 7,
-  "CriticalDamage": 10,
-  "LightDamageDie": "1d6",
-  "HeavyDamageDie": "2d6",
-  "CriticalDamageDie": "3d6",
-  "DamageType": "Physical"
+  "Vitality": 10,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 6,
+  "Armor": 3,
+  "FrayDamage": 4,
+  "DamageDie": "d6",
+  "Traits": [
+    {
+      "Name": "Fortify",
+      "Description": "At the end of their turn, gains vigilance 1."
+    }
+  ]
 }

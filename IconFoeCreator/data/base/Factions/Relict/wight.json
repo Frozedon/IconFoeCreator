@@ -1,15 +1,24 @@
 {
   "Name": "Wight",
-  "Inherits": "Relict",
-  "Type": "Faction",
+  "Inherits": "Mob",
+  "Type": "Job",
+  "Group": "Relict",
+  "RestrictToTemplate": "Relict",
+  "HP": 2,
+  "RemoveTraits": [ "Defiance" ],
   "Traits": [
     {
-      "Name": "Networked",
-      "Description": "+1 boon on all attacks if another Relict is adjacent to their target."
-    },
+      "Name": "Life Link",
+      "Description": "All foes with this trait on the battlefield share the same health pool."
+    }
+  ],
+  "Actions": [
     {
-      "Name": "Deathblow",
-      "Description": "When defiance triggers, deal piercing magic fray damage to an adjacent character."
+      "Name": "Lurching Grab",
+      "ActionCost": 2,
+      "Tags": [ "melee attack" ],
+      "Description": "Dash 1, then",
+      "AutoHit": "1 damage. If another Wight is adjacent to the target, increase damage to 2."
     }
   ]
 }

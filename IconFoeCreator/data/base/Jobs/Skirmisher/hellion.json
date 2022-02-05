@@ -5,26 +5,28 @@
   "Traits": [
     {
       "Name": "Winged",
-      "Description": "Gains flying at start of their turn. Loses flying if dazed, winded, staggered, or stunned."
+      "Description": "Flying."
     }
   ],
   "Actions": [
     {
-      "Name": "Stab",
+      "Name": "Rake",
       "ActionCost": 1,
-      "Tags": [ "melee attack", "+1 boon" ],
-      "Hit": "Deal light physical damage. Boost damage and gains pierce if the target has no allies adjacent."
+      "Tags": [ "melee attack", "Line 4" ],
+      "Hit": "[D]+[fray] and foe is slowed.",
+      "Miss": "[fray].",
+      "PostAttack": "Hellion can fly to any point on the line after the attack."
+    },
+    {
+      "Name": "Pinions",
+      "ActionCost": 1,
+      "Description": "Deal fray damage 4 times to foes in range 3. Each foe in range must be hit at least once before being hit by another pinion."
     },
     {
       "Name": "Swoop",
       "ActionCost": 1,
-      "Tags": [ "recharge 6" ],
-      "Description": "End turn and leave the battlefield. Return to the battlefield in a free space at start of next turn."
-    },
-    {
-      "Name": "Dive",
-      "ActionCost": 1,
-      "Description": "Fly in a line 3 area effect. One character within the area must save or take fray damage, be shoved to the end of the line, and become blinded."
+      "Tags": [ "recharge 4+" ],
+      "Description": "End turn and leave the battlefield. Return to the battlefield in a visible free space at start of next turn with stealth."
     }
   ]
 }

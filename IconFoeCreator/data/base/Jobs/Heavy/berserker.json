@@ -1,0 +1,34 @@
+{
+  "Name": "Berserker",
+  "Inherits": "Heavy",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Defiance",
+      "Description": "Prevents hit points from being reduced past 1 hp. When this triggers, remove this effect and character becomes immune to all damage for the rest of the current turn."
+    },
+    {
+      "Name": "Enrage",
+      "Description": "While bloody, gain +1 action."
+    },
+    {
+      "Name": "Bullheaded",
+      "Description": "Has resistance unless suffering from a status."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Bloody Crescent",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "repeatable" ],
+      "Hit": "[D].",
+      "Miss": "[fray]."
+    },
+    {
+      "Name": "Leap",
+      "ActionCost": 1,
+      "Tags": [ "repeatable" ],
+      "Description": "The berserker flies 2. When it lands, all adjacent characters are shoved 1."
+    }
+  ]
+}

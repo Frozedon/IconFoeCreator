@@ -1,0 +1,29 @@
+{
+  "Name": "Rift Dancer",
+  "Inherits": "Artillery",
+  "Type": "Job",
+  "Traits": [
+    {
+      "Name": "Overdrive 4",
+      "Description": "Attacks are all critical hits on hit at round 4 or later."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Dissonant Bolt",
+      "ActionCost": 1,
+      "Tags": [ "line 6", "pierce" ],
+      "Hit": "[D]+[fray], inflict blight.",
+      "Miss": "[fray].",
+      "AreaEffect": "[fray].",
+      "Effect": "Teleport any character in the area to any point on the line.",
+      "Blightboost": "Foe is vulnerable."
+    },
+    {
+      "Name": "Flash Step",
+      "ActionCost": 1,
+      "Tags": [ "repeatable" ],
+      "Description": "Teleport 3, then deal 2 piercing damage to a foe in range 3."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "Name": "Shadow",
+  "Inherits": "Skirmisher",
+  "Type": "Job",
+  "Actions": [
+    {
+      "Name": "Umbra",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack 4", "+1 boon" ],
+      "Hit": "[D]+[fray] and foe is blinded.",
+      "Miss": "[fray].",
+      "PostAttack": "If made from stealth, has range 6, deals 3[D], and ignores cover."
+    },
+    {
+      "Name": "Nocturne",
+      "ActionCost": 2,
+      "Description": "Teleport 8, then gain stealth and evasion until the start of the shadow's next turn."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "Name": "Arc Spectre",
+  "Inherits": "Relict",
+  "Type": "Template",
+  "Chapter": 2,
+  "RestrictToClass": "Artillery",
+  "Traits": [
+    {
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
+    },
+    {
+      "Name": "Ethereal",
+      "Description": "Phasing, and has evasion unless there's an adjacent foe."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Chain Lightning",
+      "ActionCost": 2,
+      "Tags": [ "ranged attack", "arc 6", "pierce" ],
+      "Hit": "2[D]+[fray].",
+      "Miss": "[fray].",
+      "AreaEffect": "[fray].",
+      "Effect": "A foe in range 3 from the attack target must save or take [D] piercing damage. If they fail the save, this effect repeats, from their location. A character can be hit multiple times by this effect."
+    }
+  ]
+}

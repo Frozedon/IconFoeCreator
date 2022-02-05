@@ -1,0 +1,51 @@
+{
+  "Name": "Royal Guard",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Group": "Relict",
+  "IsUniqueJob": true,
+  "RestrictToTemplate": "Relict",
+  "Vitality": 8,
+  "HPMultiplier": 8,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 5,
+  "Armor": 5,
+  "FrayDamage": 4,
+  "DamageDie": "d6",
+  "Traits": [
+    {
+      "Name": "Sturdy",
+      "Description": "Immune to shove, daze, and stun."
+    },
+    {
+      "Name": "Large",
+      "Description": "Size 2."
+    },
+    {
+      "Name": "Fortify",
+      "Description": "At the end of their turn, gains vigilance 1."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Battalion of Limbs",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "multiattack" ],
+      "Hit": "[D]+[fray].",
+      "Miss": "[fray].",
+      "Effect": "After the royal guard damages a foe with this attack, they mark that foe. This mark can be placed on any number of characters and stacks indefinitely. For each stack of the mark, this attack deals +[D] on hit or miss. A character can save against this mark at the end of their turn to clear all stacks, but only if they are not adjacent to the royal guard."
+    },
+    {
+      "Name": "Weapon Vortex",
+      "ActionCost": 1,
+      "Description": "Foes in range 2 of the royal guard are shoved 1 towards it."
+    },
+    {
+      "Name": "Wind of Obliteration",
+      "ActionCost": 2,
+      "Tags": [ "recharge 5+" ],
+      "Effect": "The Royal Guard dashes 2 with phasing, then deals [D] to all adjacent characters and shoves them 1. Then, repeat this effect twice."
+    }
+  ]
+}

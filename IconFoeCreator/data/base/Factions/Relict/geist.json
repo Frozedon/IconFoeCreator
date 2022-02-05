@@ -1,0 +1,20 @@
+{
+  "Name": "Geist",
+  "Inherits": "Relict",
+  "Type": "Template",
+  "RestrictToClass": "Skirmisher",
+  "Traits": [
+    {
+      "Name": "Ethereal",
+      "Description": "Phasing, and has evasion unless there's an adjacent foe."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Terrorize",
+      "ActionCost": 0,
+      "Tags": [ "recharge 5+" ],
+      "Effect": "A foe in range 6 is blinded until it ends a turn adjacent to an ally."
+    }
+  ]
+}

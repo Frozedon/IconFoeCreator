@@ -1,0 +1,112 @@
+{
+  "Name": "Arkenlich",
+  "Inherits": "Legend",
+  "Group": "Relict",
+  "Type": "Job",
+  "IsUniqueJob": true,
+  "RestrictToTemplate": "Relict",
+  "Chapter": 2,
+  "Vitality": 8,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 6,
+  "Armor": 0,
+  "FrayDamage": 5,
+  "DamageDie": "d8",
+  "Traits": [
+    {
+      "Name": "Overdrive 6",
+      "Description": "Attacks are all critical hits on hit at round 6 or later."
+    },
+    {
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
+    },
+    {
+      "Name": "Dark Majesty",
+      "Description": "Has phasing, evasion, and resistance. Lose this trait if all souls stones are destroyed."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Soul Stones",
+      "HP": 10,
+      "Description": "At the start of combat, summon soul stones equal to the number of players +1. Soul stones are size 1 summons with 10 hp, 6 defense, and the aetherwall trait that cannot be moved in any way. Each must be accessible to characters and placed at least range 6 from the arkenlich."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Unholy",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack", "range 8", "blast 1" ],
+      "Hit": "2[D]+[fray].",
+      "Miss": "[fray].",
+      "AreaEffect": "[D].",
+      "Effect": "This action can also be made as a close blast 1 melee attack."
+    },
+    {
+      "Name": "Vile",
+      "ActionCost": 1,
+      "Description": "A foe in range 5 must save or become slowed, and until the end of their next turn, they take 1 piercing damage for each space they move."
+    },
+    {
+      "Name": "Finger of Death",
+      "ActionCost": 2,
+      "Tags": [ "ranged attack 8", "recharge 6" ],
+      "Hit": "5[D].",
+      "Miss": "2[D].",
+      "Effect": "This attack can't lower a character past 1 hp."
+    },
+    {
+      "Name": "Puppet Strings",
+      "ActionCost": 1,
+      "Tags": [ "recharge 5+" ],
+      "Description": "All foes must save or be shoved 2 in a direction of the lich's choice, or shoved 1 on a successful save."
+    }
+  ],
+  "PhasesDescription": "The lich progress through its three phases in order (I>III, then back to I), starting with phase I, then swapping to the next phase each round.",
+  "Phases": [
+    {
+      "Name": "",
+      "Actions": [
+        {
+          "Name": "Soul Sacrifice",
+          "ActionCost": 0,
+          "Tags": [ "start of phase only" ],
+          "Description": "At the start of this phase, all visible foes have their soul shoved out of their body and summoned in a location of the lich's choice within range 5 of them. The soul doesn't take action on its own, but can be targeted as if it was the original character for abilities and effects. Damage taken via a character's soul becomes Divine damage. A character can re-unite with their soul by moving into and ending their turn in its space, ending this effect."
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "Actions": [
+        {
+          "Name": "Entombment of Iz",
+          "ActionCost": 1,
+          "Tags": [ "recharge 6" ],
+          "Description": "The Lich entombs a character in a magical sarcophagus. While inside, they are winded+, have their speed reduced to 0 and are blinded. The Sarcophagus is a height 1 terrain piece with 10 hp that is destructible. Attacks automatically hit and it is destroyed when it reaches 0. It has resistance to damage from the character inside it."
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "Actions": [
+        {
+          "Name": "Utterances of the Crawling Dead",
+          "ActionCost": 0,
+          "Tags": [ "start of phase only" ],
+          "Description": "The lich begins incanting, reducing its max speed to 0 this round. It marks out an area 2 spaces around itself, which is visible to all characters. Every other part of the battlefield is filled with shifting darkness. The lich's last turn this round is a slow turn, and it takes the following action:",
+          "Combos": [
+            {
+              "Name": "Soul Annihilation",
+              "ActionsCost": 1,
+              "Tags": [ "end turn" ],
+              "Description": "All spaces outside the area marked by Utterances of the Crawling Dead erupt. Foes inside must save or take 100% of their max hp as piercing damage, or 50% on a successful save. This damage cannot reduce a character past 1 hp."
+            }
+          ],
+          "PostAction": "If overdrive has activated, Utterances of the Crawling Dead does not mark a safe area"
+        }
+      ]
+    }
+  ]
+}
