@@ -1,18 +1,24 @@
 {
   "Name": "", // Name of this statblock
   "Inherits": "", // Name of statblock you want to inherit traits from
-  "Group": "", // The group it should be filtered by
   "Type": "", // "Job" or "Faction"
-  "Health": [ 0, 0, 0 ], // Separated by chapter
+  "Group": "", // The group it should be filtered by
+  "IsBaseTemplate": "", // Is a base template of a faction
+  "IsUniqueJob": "", // Is a unique job from a faction
+  "Chapter": 0, // Minimum chapter required to use
+  "RestrictToTemplate": "", // A template that this job is required to use
+  "RestrictToClass": "", // The class of job that the template has to be on
+  "RestrictToBaseTemplates": false, // If this job can only use base faction templates
+  "Vitality": 0,
+  "AddHPPercent": 0.0, // Percent more HP the foe gains
   "HPMultiplier": 4, // Multiplied by Health to determine HP
   "HPMultiplyByPlayers": false, // Adds note to multiply by players
   "Speed": 0,
   "Dash": 0,
   "Defense": 0,
   "Armor": 0,
-  "FrayDamage": 0,
-  "DamageDie": "",
-  "DamageType": "",
+  "FrayDamage": 0, // [fray]
+  "DamageDie": "", // [D]
   "FactionBlight": "",
   "Traits": [
     {
@@ -28,6 +34,7 @@
       "NoDash": false
     }
   ],
+  "RemoveTraits": [ "", ... ], // Traits to remove from inherited template or job
   "SetupTraits": [
     {
       "Name": "",
@@ -71,6 +78,19 @@
       "Name": "",
       "HP": 0,
       "Description": ""
+    }
+  ],
+  "PhasesDescription": "", // Description to explain how their phases work
+  "Phases": [ // This list is given in the order of the phases
+    {
+      "Name": "",
+      "Description": "",
+      "Traits": [
+        { } // Same variables as "Traits"
+      ],
+      "Actions": [
+        { } // Same variables as "Actions"
+      ]
     }
   ]
 }

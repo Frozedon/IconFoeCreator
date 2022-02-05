@@ -1,8 +1,9 @@
 {
   "Name": "Kinfisher",
   "Inherits": "Elite",
-  "Group": "Ruin Beast",
   "Type": "Job",
+  "Group": "Ruin Beast",
+  "IsUniqueJob": true,
   "Chapter": 1,
   "RestrictToTemplate": "Ruin Beast",
   "Vitality": 8,

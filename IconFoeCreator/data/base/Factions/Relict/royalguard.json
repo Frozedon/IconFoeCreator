@@ -4,6 +4,7 @@
   "Type": "Job",
   "Group": "Relict",
   "IsUniqueJob": true,
+  "Chapter": 1,
   "RestrictToTemplate": "Relict",
   "Vitality": 8,
   "HPMultiplier": 8,

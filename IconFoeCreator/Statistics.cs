@@ -28,13 +28,12 @@ namespace IconFoeCreator
         public int? Armor { get; set; }
         public int? FrayDamage { get; set; }
         public string DamageDie { get; set; }
-        public int? Size { get; set; }
+        public string FactionBlight { get; set; }
         public List<Trait> Traits { get; set; } // Additive inheritance
         public List<string> RemoveTraits { get; set; }
         public List<Trait> SetupTraits { get; set; } // Additive inheritance
         public List<Interrupt> Interrupts { get; set; } // Additive inheritance
         public List<Action> Actions { get; set; } // Additive inheritance
-        public string FactionBlight { get; set; }
         public List<BodyPart> BodyParts { get; set; } // Additive inheritance
         public string PhasesDescription { get; set; }
         public List<Phase> Phases { get; set; }
