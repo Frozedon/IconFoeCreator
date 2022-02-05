@@ -23,7 +23,14 @@ namespace IconFoeCreator
 
     public partial class MainWindow : Window
     {
+        public static readonly string EMPTY_STAT = "...";
+        public static readonly string ANY_GROUP = "Any";
+
         StatisticBuilder statBuilder;
+        string LastFactionName;
+        string LastTemplateName;
+        string LastClassName;
+        string LastJobName;
 
         public MainWindow()
         {
@@ -37,11 +44,6 @@ namespace IconFoeCreator
             UpdateClassOptions();
             UpdateJobOptions();
 
-            Faction_comboBox.SelectionChanged += OnFactionChanged;
-            Class_comboBox.SelectionChanged += OnClassChanged;
-            Template_comboBox.SelectionChanged += OnIndexChanged;
-            Job_comboBox.SelectionChanged += OnIndexChanged;
-
             ChapterItem[] chapters = new ChapterItem[Constants.ChapterCount];
             for (int i = 0; i < Constants.ChapterCount; ++i)
             {
@@ -49,24 +51,50 @@ namespace IconFoeCreator
             }
             Chapter_comboBox.ItemsSource = chapters;
             Chapter_comboBox.SelectedIndex = 0;
-            Chapter_comboBox.SelectionChanged += OnIndexChanged;
+
+            LastFactionName = Faction_comboBox.SelectedItem.ToString();
+            LastTemplateName = Template_comboBox.SelectedItem.ToString();
+            LastClassName = Class_comboBox.SelectedItem.ToString();
+            LastJobName = Job_comboBox.SelectedItem.ToString();
+
+            Faction_comboBox.SelectionChanged += OnSelectionChanged;
+            Template_comboBox.SelectionChanged += OnSelectionChanged;
+            Class_comboBox.SelectionChanged += OnSelectionChanged;
+            Job_comboBox.SelectionChanged += OnSelectionChanged;
+            Chapter_comboBox.SelectionChanged += OnSelectionChanged;
 
             UpdateDescription();
         }
 
-        private void OnIndexChanged(object sender, EventArgs e)
+        private void OnSelectionChanged(object sender, EventArgs e)
         {
-            UpdateDescription();
-        }
+            if (Faction_comboBox.SelectedItem != null && LastFactionName != Faction_comboBox.SelectedItem.ToString())
+            {
+                LastFactionName = Faction_comboBox.SelectedItem.ToString();
+                UpdateTemplateOptions();
+            }
 
-        private void OnFactionChanged(object sender, EventArgs e)
-        {
-            UpdateTemplateOptions();
-        }
+            if (Template_comboBox.SelectedItem != null && LastTemplateName != Template_comboBox.SelectedItem.ToString())
+            {
+                LastTemplateName = Template_comboBox.SelectedItem.ToString();
+                UpdateClassOptions();
+                UpdateJobOptions();
+                UpdateDescription();
+            }
 
-        private void OnClassChanged(object sender, EventArgs e)
-        {
-            UpdateJobOptions();
+            if (Class_comboBox.SelectedItem != null && LastClassName != Class_comboBox.SelectedItem.ToString())
+            {
+                LastClassName = Class_comboBox.SelectedItem.ToString();
+                UpdateJobOptions();
+            }
+
+            if (Job_comboBox.SelectedItem != null && LastJobName != Job_comboBox.SelectedItem.ToString())
+            {
+                LastJobName = Job_comboBox.SelectedItem.ToString();
+                UpdateFactionOptions();
+                UpdateTemplateOptions();
+                UpdateDescription();
+            }
         }
 
         private void UpdateDescription()
@@ -84,82 +112,275 @@ namespace IconFoeCreator
 
         private void UpdateFactionOptions()
         {
-            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
-            List<StatisticGroup> statGroups = statBuilder.Factions.FindAll(delegate (StatisticGroup stat)
+            string selectedItem = String.Empty;
+            if (Faction_comboBox.SelectedItem != null)
             {
-                return showHomebrew || stat.HasBase;
-            });
-
-            List<string> statGroupNames = new List<string>();
-            foreach (StatisticGroup stat in statGroups)
-            {
-                statGroupNames.Add(stat.Name);
+                selectedItem = Faction_comboBox.SelectedItem.ToString();
             }
 
-            Faction_comboBox.ItemsSource = statGroupNames;
-            Faction_comboBox.SelectedIndex = 0;
+            Faction_comboBox.ItemsSource = GetAvailableFactions();
+            int index = 0;
+
+            if (selectedItem.Length > 0)
+            {
+                for (int i = 0; i < Faction_comboBox.Items.Count; ++i)
+                {
+                    if (selectedItem == Faction_comboBox.Items[i].ToString())
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+
+            Faction_comboBox.SelectedIndex = index;
         }
 
         private void UpdateClassOptions()
         {
-            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
-            List<StatisticGroup> statGroups = statBuilder.Classes.FindAll(delegate (StatisticGroup stat)
+            string selectedItem = String.Empty;
+            if (Class_comboBox.SelectedItem != null)
             {
-                return showHomebrew || stat.HasBase;
-            });
-
-            List<string> statGroupNames = new List<string>();
-            foreach (StatisticGroup stat in statGroups)
-            {
-                statGroupNames.Add(stat.Name);
+                selectedItem = Class_comboBox.SelectedItem.ToString();
             }
 
-            Class_comboBox.ItemsSource = statGroupNames;
-            Class_comboBox.SelectedIndex = 0;
+            Class_comboBox.ItemsSource = GetAvailableClasses();
+            int index = 0;
+
+            if (selectedItem.Length > 0)
+            {
+                for (int i = 0; i < Class_comboBox.Items.Count; ++i)
+                {
+                    if (selectedItem == Class_comboBox.Items[i].ToString())
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+
+            Class_comboBox.SelectedIndex = index;
         }
 
         private void UpdateTemplateOptions()
         {
-            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
-            string factionGroup = Faction_comboBox.SelectedItem.ToString().ToLower();
-            if (factionGroup == StatisticBuilder.ANY_GROUP.ToLower())
+            string selectedItem = String.Empty;
+            if (Template_comboBox.SelectedItem != null)
             {
-                Template_comboBox.ItemsSource = statBuilder.Templates.FindAll(delegate (Statistics stat)
-                {
-                    return showHomebrew || !stat.IsHomebrew;
-                });
-            }
-            else
-            {
-                Template_comboBox.ItemsSource = statBuilder.Templates.FindAll(delegate (Statistics stat)
-                {
-                    return stat.Group != null && stat.Group.ToLower() == factionGroup && (showHomebrew || !stat.IsHomebrew);
-                });
+                selectedItem = Template_comboBox.SelectedItem.ToString();
             }
 
-            Template_comboBox.SelectedIndex = 0;
+            Template_comboBox.ItemsSource = GetAvailableTemplates();
+            int index = 0;
+
+            if (selectedItem.Length > 0)
+            {
+                for (int i = 0; i < Template_comboBox.Items.Count; ++i)
+                {
+                    if (selectedItem == Template_comboBox.Items[i].ToString())
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+
+            Template_comboBox.SelectedIndex = index;
         }
 
         private void UpdateJobOptions()
         {
-            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
-            string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
-            if (classGroup == StatisticBuilder.ANY_GROUP.ToLower())
+            string selectedItem = String.Empty;
+            if (Job_comboBox.SelectedItem != null)
             {
-                Job_comboBox.ItemsSource = statBuilder.Jobs.FindAll(delegate (Statistics stat)
-                {
-                    return showHomebrew || !stat.IsHomebrew;
-                });
-            }
-            else
-            {
-                Job_comboBox.ItemsSource = statBuilder.Jobs.FindAll(delegate (Statistics stat)
-                {
-                    return stat.Group != null && stat.Group.ToLower() == classGroup && (showHomebrew || !stat.IsHomebrew);
-                });
+                selectedItem = Job_comboBox.SelectedItem.ToString();
             }
 
-            Job_comboBox.SelectedIndex = 0;
+            Job_comboBox.ItemsSource = GetAvailableJobs();
+            int index = 0;
+
+            if (selectedItem.Length > 0)
+            {
+                for (int i = 0; i < Job_comboBox.Items.Count; ++i)
+                {
+                    if (selectedItem == Job_comboBox.Items[i].ToString())
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+
+            Job_comboBox.SelectedIndex = index;
+        }
+
+        private List<string> GetAvailableFactions()
+        {
+            List<string> availableFactions = new List<string>(statBuilder.Factions);
+            List<Statistics> availableTemplates = GetAvailableTemplates();
+
+            availableFactions = RemoveGroupsNotInStats(availableFactions, availableTemplates);
+
+            if (availableFactions.Count == 0 || availableFactions[0] != ANY_GROUP)
+            {
+                availableFactions.Insert(0, ANY_GROUP);
+            }
+
+            return availableFactions;
+        }
+
+        private List<string> GetAvailableClasses()
+        {
+            List<string> availableClasses = new List<string>(statBuilder.Classes);
+            List<Statistics> availableJobs = GetAvailableJobs();
+
+            availableClasses = RemoveGroupsNotInStats(availableClasses, availableJobs);
+
+            if (availableClasses.Count == 0 || availableClasses[0] != ANY_GROUP)
+            {
+                availableClasses.Insert(0, ANY_GROUP);
+            }
+
+            return availableClasses;
+        }
+
+        private List<Statistics> GetAvailableTemplates()
+        {
+            List<Statistics> availableTemplates = new List<Statistics>(statBuilder.Templates);
+
+            if (Faction_comboBox.SelectedItem != null)
+            {
+                string factionGroup = Faction_comboBox.SelectedItem.ToString().ToLower();
+                if (factionGroup != ANY_GROUP.ToLower())
+                {
+                    availableTemplates = RemoveStatsOfOtherGroups(availableTemplates, factionGroup);
+                }
+            }
+
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
+            if (!showHomebrew)
+            {
+                availableTemplates = RemoveHomebrewStats(availableTemplates);
+            }
+
+            if (Job_comboBox.SelectedItem != null)
+            {
+                Statistics jobStat = (Statistics)Job_comboBox.SelectedItem;
+                if (jobStat.RestrictToBaseTemplates)
+                {
+                    availableTemplates = RemoveNonBaseStats(availableTemplates);
+                }
+
+                if (!String.IsNullOrEmpty(jobStat.RestrictToTemplate))
+                {
+                    availableTemplates = RemoveStatsOfOtherNames(availableTemplates, jobStat.RestrictToTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(jobStat.Group))
+                {
+                    availableTemplates = RemoveStatsOfMismatchedClass(availableTemplates, jobStat.Group);
+                }
+            }
+
+            if (availableTemplates.Count == 0 || availableTemplates[0].Name != EMPTY_STAT)
+            {
+                availableTemplates.Insert(0, new Statistics() { Name = EMPTY_STAT });
+            }
+
+            return availableTemplates;
+        }
+
+
+        private List<Statistics> GetAvailableJobs()
+        {
+            List<Statistics> availableJobs = new List<Statistics>(statBuilder.Jobs);
+
+            if (Class_comboBox.SelectedItem != null)
+            {
+                string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
+                if (classGroup != ANY_GROUP.ToLower())
+                {
+                    availableJobs = RemoveStatsOfOtherGroups(availableJobs, classGroup);
+                }
+            }
+
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
+            if (!showHomebrew)
+            {
+                availableJobs = RemoveHomebrewStats(availableJobs);
+            }
+
+            if (Template_comboBox.SelectedItem != null)
+            {
+                Statistics templateStat = (Statistics)Template_comboBox.SelectedItem;
+                if (!String.IsNullOrEmpty(templateStat.RestrictToClass))
+                {
+                    availableJobs = RemoveStatsOfOtherGroups(availableJobs, templateStat.RestrictToClass);
+                }
+            }
+
+            if (availableJobs.Count == 0 || availableJobs[0].Name != EMPTY_STAT)
+            {
+                availableJobs.Insert(0, new Statistics() { Name = EMPTY_STAT });
+            }
+
+            return availableJobs;
+        }
+
+        private List<string> RemoveGroupsNotInStats(List<string> groups, List<Statistics> stats)
+        {
+            return groups.FindAll(delegate (string groupName)
+            {
+                foreach (Statistics stat in stats)
+                {
+                    if (stat.Group == groupName)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+        }
+
+        private List<Statistics> RemoveStatsOfOtherGroups(List<Statistics> stats, string groupName)
+        {
+            return stats.FindAll(delegate (Statistics stat)
+            {
+                return !String.IsNullOrEmpty(stat.Group) && stat.Group.ToLower() == groupName.ToLower();
+            });
+        }
+
+        private List<Statistics> RemoveStatsOfOtherNames(List<Statistics> stats, string onlyThisStatName)
+        {
+            return stats.FindAll(delegate (Statistics stat)
+            {
+                return stat.Name.ToLower() == onlyThisStatName.ToLower();
+            });
+        }
+
+        private List<Statistics> RemoveHomebrewStats(List<Statistics> stats)
+        {
+            return stats.FindAll(delegate (Statistics stat)
+            {
+                return !stat.IsHomebrew;
+            });
+        }
+
+        private List<Statistics> RemoveNonBaseStats(List<Statistics> stats)
+        {
+            return stats.FindAll(delegate (Statistics stat)
+            {
+                return stat.IsBaseTemplate;
+            });
+        }
+
+        private List<Statistics> RemoveStatsOfMismatchedClass(List<Statistics> stats, string className)
+        {
+            return stats.FindAll(delegate (Statistics stat)
+            {
+                return String.IsNullOrEmpty(stat.RestrictToClass) || stat.RestrictToClass == className;
+            });
         }
 
         private void CopyDescription_button_Click(object sender, RoutedEventArgs e)
