@@ -8,16 +8,17 @@ namespace IconFoeCreator
 {
     public static class DescriptionCreator
     {
-        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics template, Statistics job, int chapter, bool useFlatDamage, bool showNonessentialTraits)
+        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics template, Statistics job, bool showNonessentialTraits)
         {
             descTextBox.Document.Blocks.Clear();
+            setupTextBox.Document.Blocks.Clear();
 
             bool hasTemplate = template != null && Statistics.IsValid(template);
             bool hasJob = job != null && Statistics.IsValid(job);
             Statistics stats;
             if (hasTemplate && hasJob)
             {
-                stats = job.InheritFrom(template);
+                stats = template.InheritFrom(job);
             }
             else if (hasJob)
             {
@@ -33,29 +34,32 @@ namespace IconFoeCreator
             }
 
             // Traits can add armor, max armor, or alter hit points
-            int addArmor = 0;
-            int maxArmor = int.MaxValue;
+            int vitality = stats.Vitality.GetValueOrDefault();
             double addHP = stats.AddHPPercent.GetValueOrDefault(0.0);
-            int addSpeed = 0;
-            int addDash = 0;
-            bool noDash = false;
-            foreach (Trait trait in stats.Traits)
+            int hitPoints;
+            if (stats.HP.HasValue)
             {
-                if (trait.AddArmor.HasValue) { addArmor += trait.AddArmor.Value; }
-                if (trait.MaxArmor.HasValue) { maxArmor = Math.Min(maxArmor, trait.MaxArmor.Value); }
-                if (trait.AddHPPercent.HasValue) { addHP += trait.AddHPPercent.Value; }
-                if (trait.AddSpeed.HasValue) { addSpeed += trait.AddSpeed.Value; }
-                if (trait.AddDash.HasValue) { addDash += trait.AddDash.Value; }
-                if (trait.NoDash.HasValue) { noDash = trait.NoDash.Value; }
+                hitPoints = stats.HP.Value;
+            }
+            else
+            {
+                hitPoints = vitality * stats.HPMultiplier.GetValueOrDefault(4);
+            }
+            hitPoints = (int)((double)hitPoints * (1.0 + addHP));
+            if (stats.DoubleNormalFoeHP.GetValueOrDefault(false)
+                && hasJob
+                && !job.IsMob.GetValueOrDefault()
+                && !job.IsElite.GetValueOrDefault()
+                && !job.IsLegend.GetValueOrDefault())
+            {
+                hitPoints *= 2;
             }
 
-            int vitality = stats.Vitality.GetValueOrDefault();
-            double hitPoints = vitality * stats.HPMultiplier.GetValueOrDefault(4) * (1.0 + addHP);
-            hitPoints = Math.Max(hitPoints, 1);
-            int speed = stats.Speed.GetValueOrDefault() + addSpeed;
-            string dashText = noDash ? "No Dash" : "Dash " + (stats.Dash.GetValueOrDefault() + addDash);
+            int speed = stats.Speed.GetValueOrDefault();
+            int dash = stats.Dash.GetValueOrDefault();
+            string dashText = dash <= 0 ? "No Dash" : ("Dash " + dash);
             int defense = stats.Defense.GetValueOrDefault();
-            int armor = Math.Min(stats.Armor.GetValueOrDefault() + addArmor, maxArmor);
+            int armor = stats.Armor.GetValueOrDefault();
 
             {
                 Paragraph paragraph = MakeParagraph();
@@ -87,11 +91,20 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "HP: ");
-                AddNormal(paragraph, ((int)hitPoints).ToString());
-                if (stats.HPMultiplyByPlayers.GetValueOrDefault(false))
+
+                if (hitPoints > 0)
                 {
-                    AddNormal(paragraph, " x number of players characters");
+                    AddNormal(paragraph, hitPoints.ToString());
+                    if (stats.HPMultiplyByPlayers.GetValueOrDefault(false))
+                    {
+                        AddNormal(paragraph, " x number of players characters");
+                    }
                 }
+                else
+                {
+                    AddNormal(paragraph, "-");
+                }
+
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
@@ -204,8 +217,6 @@ namespace IconFoeCreator
             }
 
             // Setup traits in other textbox
-            setupTextBox.Document.Blocks.Clear();
-
             if (stats.SetupTraits.Count > 0)
             {
                 AddSetupTraits(setupTextBox, stats.SetupTraits);
@@ -379,6 +390,16 @@ namespace IconFoeCreator
                 AddBold(paragraph, ", " + tag);
             }
 
+            if (action.Recharge > 1)
+            {
+                AddBold(paragraph, ", recharge " + action.Recharge);
+
+                if (action.Recharge < 6)
+                {
+                    AddBold(paragraph, "+");
+                }
+            }
+
             AddBold(paragraph, "):");
 
             if (!String.IsNullOrEmpty(action.Description))
@@ -480,8 +501,8 @@ namespace IconFoeCreator
                 {
                     AddBold(paragraph, "/player");
                 }
-                AddBold(paragraph, ")");
-                AddNormal(paragraph, " - " + bodyPart.Description);
+                AddBold(paragraph, "): ");
+                AddNormal(paragraph, bodyPart.Description);
                 textBox.Document.Blocks.Add(paragraph);
             }
         }

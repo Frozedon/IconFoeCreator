@@ -99,11 +99,11 @@ namespace IconFoeCreator
                 LastJobName = Job_comboBox.SelectedItem.ToString();
 
                 // If has template restriction, change it to that
-                string templateRestriction = ((Statistics)Job_comboBox.SelectedItem).RestrictToTemplate;
+                /*string templateRestriction = ((Statistics)Job_comboBox.SelectedItem).RestrictToTemplate;
                 if (!String.IsNullOrEmpty(templateRestriction))
                 {
                     ForceChangeTemplateTo(templateRestriction);
-                }
+                }*/
 
                 UpdateDescription();
             }
@@ -117,8 +117,6 @@ namespace IconFoeCreator
                 Setup_richTextBox,
                 (Statistics)Template_comboBox.SelectedItem,
                 (Statistics)Job_comboBox.SelectedItem,
-                chapterItem.Value,
-                FlatDamage_checkBox.IsChecked.GetValueOrDefault(),
                 NonessentialTraits_checkBox.IsChecked.GetValueOrDefault());
         }
 

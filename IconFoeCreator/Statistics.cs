@@ -24,6 +24,7 @@ namespace IconFoeCreator
         public int? HP { get; set; }
         public double? AddHPPercent { get; set; }
         public int? HPMultiplier { get; set; }
+        public bool? DoubleNormalFoeHP { get; set; }
         public bool? HPMultiplyByPlayers { get; set; }
         public int? Speed { get; set; }
         public int? Dash { get; set; }
@@ -64,22 +65,26 @@ namespace IconFoeCreator
 
         public Statistics InheritFrom(Statistics otherStats)
         {
-            Statistics newStats = new Statistics();
-            newStats.Inherited = true;
-
-            newStats.Name = Name;
-            newStats.Inherits = Inherits;
-            newStats.Type = Type;
-            newStats.IsBaseTemplate = IsBaseTemplate;
-            newStats.IsUniqueJob = IsUniqueJob;
-            newStats.Chapter = Chapter;
-            newStats.RestrictToTemplate = RestrictToTemplate;
-            newStats.RestrictToClass = RestrictToClass;
-            newStats.RestrictToBaseTemplates = RestrictToBaseTemplates;
-            newStats.IsHomebrew = IsHomebrew;
+            Statistics newStats = new Statistics
+            {
+                Inherited = true,
+                Name = Name,
+                Inherits = Inherits,
+                Type = Type,
+                IsBaseTemplate = IsBaseTemplate,
+                UsesTemplate = UsesTemplate,
+                UsesClass = UsesClass,
+                RestrictToBaseTemplates = RestrictToBaseTemplates,
+                Chapter = Chapter,
+                IsHomebrew = IsHomebrew
+            };
 
             // Inherited values
-            if (Group != null && Group != String.Empty) { newStats.Group = Group; } else { newStats.Group = otherStats.Group; }
+            if (!String.IsNullOrEmpty(Group)) { newStats.Group = Group; } else { newStats.Group = otherStats.Group; }
+            if (IsMob.HasValue) { newStats.IsMob = IsMob; } else { newStats.IsMob = otherStats.IsMob; }
+            if (IsElite.HasValue) { newStats.IsElite = IsElite; } else { newStats.IsElite = otherStats.IsElite; }
+            if (IsLegend.HasValue) { newStats.IsLegend = IsLegend; } else { newStats.IsLegend = otherStats.IsLegend; }
+            if (IsUniqueJob.HasValue) { newStats.IsUniqueJob = IsUniqueJob; } else { newStats.IsUniqueJob = otherStats.IsUniqueJob; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
             if (AddHPPercent.HasValue) { newStats.AddHPPercent = AddHPPercent; } else { newStats.AddHPPercent = otherStats.AddHPPercent; }
@@ -90,9 +95,9 @@ namespace IconFoeCreator
             if (Defense.HasValue) { newStats.Defense = Defense; } else { newStats.Defense = otherStats.Defense; }
             if (Armor.HasValue) { newStats.Armor = Armor; } else { newStats.Armor = otherStats.Armor; }
             if (FrayDamage.HasValue) { newStats.FrayDamage = FrayDamage; } else { newStats.FrayDamage = otherStats.FrayDamage; }
-            if (DamageDie != null && DamageDie != String.Empty) { newStats.DamageDie = DamageDie; } else { newStats.DamageDie = otherStats.DamageDie; }
-            if (FactionBlight != null && FactionBlight != String.Empty) { newStats.FactionBlight = FactionBlight; } else { newStats.FactionBlight = otherStats.FactionBlight; }
-            if (PhasesDescription != null && PhasesDescription != String.Empty) { newStats.PhasesDescription = PhasesDescription; } else { newStats.PhasesDescription = otherStats.PhasesDescription; }
+            if (!String.IsNullOrEmpty(DamageDie)) { newStats.DamageDie = DamageDie; } else { newStats.DamageDie = otherStats.DamageDie; }
+            if (!String.IsNullOrEmpty(FactionBlight)) { newStats.FactionBlight = FactionBlight; } else { newStats.FactionBlight = otherStats.FactionBlight; }
+            if (!String.IsNullOrEmpty(PhasesDescription)) { newStats.PhasesDescription = PhasesDescription; } else { newStats.PhasesDescription = otherStats.PhasesDescription; }
             if (Phases.Count() > 0) { newStats.Phases = Phases; } else { newStats.Phases = otherStats.Phases; }
 
             // Additive statistics
@@ -113,12 +118,16 @@ namespace IconFoeCreator
             for (int i = 0; i < newStats.RemoveTraits.Count; ++i)
             {
                 string statNameToRemove = newStats.RemoveTraits[i].ToLower();
-                for (int j = 0; j < newStats.Traits.Count; ++j)
+                for (int j = 0; j < newStats.Traits.Count;)
                 {
                     string statName = newStats.Traits[j].Name.ToLower();
                     if (statName == statNameToRemove)
                     {
                         newStats.Traits.RemoveAt(j);
+                    }
+                    else
+                    {
+                        ++j;
                     }
                 }
             }
@@ -153,8 +162,6 @@ namespace IconFoeCreator
         public string Description { get; set; }
         public string DescriptionNonessential { get; set; }
         public bool Nonessential { get; set; }
-        public double? AddHPPercent { get; set; }
-        public int? HPMultiplierIfNormalFoe { get; set; }
 
         public Trait()
         {
