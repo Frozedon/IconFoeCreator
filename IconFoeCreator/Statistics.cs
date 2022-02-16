@@ -89,6 +89,7 @@ namespace IconFoeCreator
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
             if (AddHPPercent.HasValue) { newStats.AddHPPercent = AddHPPercent; } else { newStats.AddHPPercent = otherStats.AddHPPercent; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
+            if (DoubleNormalFoeHP.HasValue) { newStats.DoubleNormalFoeHP = DoubleNormalFoeHP; } else { newStats.DoubleNormalFoeHP = otherStats.DoubleNormalFoeHP; }
             if (HPMultiplyByPlayers.HasValue) { newStats.HPMultiplyByPlayers = HPMultiplyByPlayers; } else { newStats.HPMultiplyByPlayers = otherStats.HPMultiplyByPlayers; }
             if (Speed.HasValue) { newStats.Speed = Speed; } else { newStats.Speed = otherStats.Speed; }
             if (Dash.HasValue) { newStats.Dash = Dash; } else { newStats.Dash = otherStats.Dash; }
