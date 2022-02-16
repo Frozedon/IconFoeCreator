@@ -20,5 +20,11 @@
       "ActionCost": 1,
       "Description": "An ally in range 4 can save, ending a mark, status, or blight on a successful save. If that ally is bloodied, they also gain vigor 1."
     }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Encounter Budget",
+      "Description": "This foe takes up 1 point in an encounter budget."
+    }
   ]
 }

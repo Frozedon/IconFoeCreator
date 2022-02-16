@@ -3,11 +3,11 @@
   "Inherits": "Demon",
   "Type": "Template",
   "UsesClass": "Leader",
+  "AddHPPercent": -0.25,
   "Traits": [
     {
       "Name": "Regenerator",
-      "Description": "Regeneration 1.",
-      "AddHPPercent": -0.25
+      "Description": "Regeneration 1."
     },
     {
       "Name": "Disgorge",

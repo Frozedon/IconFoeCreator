@@ -20,7 +20,7 @@
   "SetupTraits": [
     {
       "Name": "Encounter Budget",
-      "Description": "This foe takes up points equal to the number of players in an encounter budget."
+      "Description": "This foe is worth the entire encounter budget."
     }
   ]
 }

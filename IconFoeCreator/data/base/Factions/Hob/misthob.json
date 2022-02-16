@@ -2,6 +2,7 @@
   "Name": "Mist Hob",
   "Inherits": "Hob",
   "Type": "Template",
+  "AddHPPercent": -0.25,
   "Traits": [
     {
       "Name": "Phasing",
@@ -13,8 +14,7 @@
     },
     {
       "Name": "Drifting Mist",
-      "Description": "Has evasion while in the area of a terrain effect or adjacent to a space of terrain height 1 or higher.",
-      "AddHPPercent": -0.25
+      "Description": "Has evasion while in the area of a terrain effect or adjacent to a space of terrain height 1 or higher."
     }
   ],
   "Interrupts": [

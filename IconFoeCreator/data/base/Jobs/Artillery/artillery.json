@@ -17,5 +17,11 @@
       "Name": "Blightboost",
       "Description": "This attack gains additional benefits if its main target is blighted."
     }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Encounter Budget",
+      "Description": "This foe takes up 1 point in an encounter budget."
+    }
   ]
 }

@@ -2,11 +2,11 @@
   "Name": "Bonfire Spirit",
   "Inherits": "Hob",
   "Type": "Template",
+  "AddHPPercent": -0.25,
   "Traits": [
     {
       "Name": "Fire Body",
-      "Description": "Has evasion and phasing. Characters they pass through are burning.",
-      "AddHPPercent": -0.25
+      "Description": "Has evasion and phasing. Characters they pass through are burning."
     }
   ],
   "Actions": [

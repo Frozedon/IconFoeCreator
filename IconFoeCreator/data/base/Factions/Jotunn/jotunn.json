@@ -4,6 +4,7 @@
   "Type": "Template",
   "IsBaseTemplate": true,
   "FactionBlight": "Frostbite",
+  "DoubleNormalFoeHP": true,
   "SetupTraits": [
     {
       "Name": "Kin",
@@ -22,10 +23,6 @@
     {
       "Name": "Elite",
       "Description": "Takes 2 turns."
-    },
-    {
-      "Name": "Elite Health",
-      "Description": "Double HP if upgrading from a normal foe."
     },
     {
       "Name": "Titanblood",

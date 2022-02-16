@@ -17,5 +17,11 @@
       "Name": "Dodge",
       "Description": "Immune to damage from successful saves, area effects, or missed attacks."
     }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Encounter Budget",
+      "Description": "This foe takes up 1 point in an encounter budget."
+    }
   ]
 }

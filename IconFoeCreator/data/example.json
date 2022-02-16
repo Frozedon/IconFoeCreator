@@ -30,8 +30,6 @@
       "Description": "",
       "DescriptionNonessential": "", // This description is handled automatically and can be hidden
       "Nonessential": false, // This trait is handled automatically and can be hidden
-      "AddHPPercent": 0.0,
-      "HPMultiplierIfNormalFoe": false
     }
   ],
   "RemoveTraits": [ "", ... ], // Traits to remove from inherited template or job
