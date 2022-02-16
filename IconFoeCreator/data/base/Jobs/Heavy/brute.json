@@ -4,11 +4,14 @@
   "Type": "Job",
   "AddHPPercent": 0.25,
   "Armor": 0,
-  "Size": 2,
   "Traits": [
     {
       "Name": "Sturdy",
       "Description": "Immune to shove, daze, and stun."
+    },
+    {
+      "Name": "Large",
+      "Description": "Size 2."
     }
   ],
   "Actions": [

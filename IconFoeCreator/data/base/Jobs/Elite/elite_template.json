@@ -3,11 +3,8 @@
   "Inherits": "Elite",
   "Type": "Template",
   "IsElite": true,
+  "DoubleNormalFoeHP": true,
   "Traits": [
-    {
-      "Name": "Elite Health",
-      "Description": "Double HP if upgrading from a normal foe."
-    },
     {
       "Name": "Elite Recharge",
       "Description": "Increase the recharge of any of their abilities at 4+ or lower to 5+."
