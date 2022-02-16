@@ -1,6 +1,7 @@
 {
   "Name": "Legend",
   "Group": "Legend",
+  "IsLegend": true,
   "HPMultiplyByPlayers": true,
   "Traits": [
     {

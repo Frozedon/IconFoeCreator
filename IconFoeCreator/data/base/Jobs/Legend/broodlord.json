@@ -94,7 +94,7 @@
         {
           "Name": "Evolve Brood",
           "ActionCost": 2,
-          "Tags": [ "recharge 4+" ],
+          "Recharge": 4,
           "Description": "Destroy one brood summon and replace it with Great Brood. The Great Brood is a summon with 10 HP, Defense 7, and Sturdy. 1/round on a Brood Lord's turn, it can move 4 spaces and attack an adjacent character (on hit: [D] and shove 1)."
         }
       ]
@@ -127,7 +127,7 @@
         {
           "Name": "Screaming Spire",
           "ActionCost": 2,
-          "Tags": [ "recharge 4+" ],
+          "Recharge": 4,
           "Description": "The Brood Lord summons a height 1 terrain piece in any free space not adjacent to a player character. Brood summons in range 2 of the spire have dodge and foes in range 2 of the spire are vulnerable. The spire is automatically hit by attacks and abilities and has 10 HP."
         }
       ]

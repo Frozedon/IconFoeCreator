@@ -1,0 +1,110 @@
+{
+  "Name": "Falling Leaf Tua",
+  "Inherits": "Legend",
+  "Group": "Hob",
+  "Type": "Job",
+  "IsUniqueJob": true,
+  "Chapter": 1,
+  "UsesTemplate": "Hob",
+  "Vitality": 8,
+  "HPMultiplier": 2,
+  "Speed": 5,
+  "Dash": 5,
+  "Defense": 10,
+  "Armor": 0,
+  "FrayDamage": 3,
+  "DamageDie": "d10",
+  "Traits": [
+    {
+      "Name": "Greenwalker",
+      "Description": "All hobs ignore difficult and dangerous terrain."
+    },
+    {
+      "Name": "Phasing",
+      "Description": "Can ignore obstruction and pass through, but not end your turn in, terrain or characters."
+    },
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally and dash action is full speed."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Leaf Blade",
+      "HP": 8,
+      "HPMultiplyByPlayers": true,
+      "Description": "Leaf dance becomes only dash 2."
+    },
+    {
+      "Name": "Mask",
+      "HP": 4,
+      "HPMultiplyByPlayers": true,
+      "Description": "The memory of any abilities is returned to characters they were stolen from, and the effects of Steal Friendship immediately end. This body part can be broken multiple times."
+    }
+  ],
+  "Interrupts": [
+    {
+      "Name": "Steal Memory",
+      "Count": 2,
+      "Trigger": "A foe in range 2 uses an ability and the ability resolves.",
+      "Effect": "That foe must save. On a failed save, they lose the memory of that ability, becoming unable to use it until the end of their next turn."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Spirit Away",
+      "ActionCost": 0,
+      "Description": "The Hob swaps places with a character in range 2, teleporting both. If either character cannot teleport, this move cannot be made."
+    },
+    {
+      "Name": "Leaf Dance",
+      "ActionCost": 1,
+      "Tags": [ "+1 boon", "Multiattack", "melee attack" ],
+      "Hit": "[D]+[fray] and foe is blinded.",
+      "Miss": "[fray].",
+      "Effect": "Tua may dash up to 4 spaces during any part of this attack, making attacks against any adjacent foes during its movement, but must move in a straight line."
+    }
+  ],
+  "PhasesDescription": "On round 3 and 6, the Tua uses Mortal Mockery. When Mortal Mockery ends, it returns immediately to phase 1.",
+  "Phases": [
+    {
+      "Name": "Prancing",
+      "Traits": [
+        {
+          "Name": "Untouchable",
+          "Description": "Unless attacked with true strike or auto-hit, attacks always miss the Tua. When missed by an an attack, can teleport 1 and shove the attacker 1 space in any direction."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Shrike",
+          "ActionCost": 1,
+          "Tags": [ "mark" ],
+          "Description": "A foe in range 8 is marked, and becomes vulnerable while marked. Whenever the Tua teleports, if it’s in range 4 of that foe, it deals 1 damage to them."
+        },
+        {
+          "Name": "Whirlwind",
+          "ActionCost": 1,
+          "Recharge": 5,
+          "Effect": "Teleport 1, then deal 1 damage to an adjacent foe and shove them 1. Repeat this effect three times."
+        },
+        {
+          "Name": "Steal Friendship",
+          "ActionCost": 0,
+          "Recharge": 6,
+          "Effect": "A foe in range 6 must save. On a failed save, they treat all foes as allies and all allies as foes for the purposes of abilities until the end of their next turn."
+        }
+      ]
+    },
+    {
+      "Name": "Mortal Mockery",
+      "Description": "The Tua transforms its physical form into a mockery of the closest foe. It gains vigor equal to its max hp during this phase, but loses its Untouchable trait. When it loses this vigor, it immediately switches back to phase 1.",
+      "Traits": [
+        {
+          "Name": "Steal Ability",
+          "Description": "Once between its turns, when a foe uses an ability within range 6 of the Tua, the Tua can steal it as an effect. The Tua can use that ability on its next turn, and the targeted foe cannot use the ability until the end of its next turn."
+        }
+      ]
+    }
+  ]
+}

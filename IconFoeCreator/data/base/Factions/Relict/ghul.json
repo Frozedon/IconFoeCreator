@@ -2,7 +2,7 @@
   "Name": "Ghul",
   "Inherits": "Relict",
   "Type": "Template",
-  "RestrictToClass": "Skirmisher",
+  "UsesClass": "Skirmisher",
   "Traits": [
     {
       "Name": "Blood Scent",
@@ -13,7 +13,7 @@
     {
       "Name": "Life Drain",
       "ActionCost": 0,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "Before the Ghul makes any attack against a foe with vigor, it can activate Life Drain. The Ghul gains vigor 1, then that character must save or lose all vigor. It fails the save if it's bloodied."
     }
   ]

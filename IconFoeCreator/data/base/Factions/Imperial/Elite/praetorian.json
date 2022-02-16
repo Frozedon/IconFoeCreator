@@ -1,0 +1,49 @@
+{
+  "Name": "Praetorian",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Group": "Imperial",
+  "IsUniqueJob": true,
+  "UsesTemplate": "Imperial",
+  "Chapter": 1,
+  "Vitality": 8,
+  "HPMultiplier": 8,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 6,
+  "Armor": 5,
+  "FrayDamage": 4,
+  "DamageDie": "d6",
+  "Traits": [
+    {
+      "Name": "Fortify",
+      "Description": "At the end of their turn, gains vigilance 1. Vigilance charges stack if a character gains more than one. A character can spend a charge of Vigilance for one of the following:\n- When an adjacent ally is targeted as part of an ability, shift all damage and effects to you instead of that ally, regardless of range.\n- Deal piercing fray damage to any foe that breaks adjacency with you for any reason during their turn.\nLose all vigilance charges at the start of your turn."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Inspire Dread",
+      "ActionCost": 0,
+      "Tags": [ "1/round" ],
+      "Description": "An imperial ally in range 3 immediately recharges an ability."
+    },
+    {
+      "Name": "Heavy Mace",
+      "ActionCost": 1,
+      "Tags": [ "multiattack", "melee attack", "+1 curse" ],
+      "Hit": "3[D] and foe is dazed.",
+      "Miss": "[D]."
+    },
+    {
+      "Name": "Rocket Jump",
+      "ActionCost": 1,
+      "Description": "The Praetorian flies 4 spaces in a straight line. All adjacent foes when it lands are dazed and shoved 1."
+    },
+    {
+      "Name": "Arkentech Force Shield",
+      "ActionCost": 1,
+      "Recharge": 6,
+      "Description": "The Praetorian gains aura 2 until the end of its next turn. The Praetorian and any of its allies have resistance against abilities originating from characters outside the aura."
+    }
+  ]
+}

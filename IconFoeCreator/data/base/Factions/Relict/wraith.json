@@ -2,7 +2,7 @@
   "Name": "Wraith",
   "Inherits": "Relict",
   "Type": "Template",
-  "RestrictToClass": "Artillery",
+  "UsesClass": "Artillery",
   "Traits": [
     {
       "Name": "Flying",

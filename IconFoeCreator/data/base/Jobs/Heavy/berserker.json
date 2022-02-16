@@ -20,7 +20,7 @@
     {
       "Name": "Bloody Crescent",
       "ActionCost": 1,
-      "Tags": [ "melee attack", "repeatable" ],
+      "Tags": [ "true strike", "melee attack", "repeatable" ],
       "Hit": "[D].",
       "Miss": "[fray]."
     },

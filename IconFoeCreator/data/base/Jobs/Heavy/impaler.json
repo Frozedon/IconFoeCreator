@@ -13,7 +13,8 @@
     {
       "Name": "Impale",
       "ActionCost": 2,
-      "Tags": [ "melee attack", "true strike", "recharge 5+" ],
+      "Recharge": 5,
+      "Tags": [ "melee attack", "true strike" ],
       "Hit": "[D] and shove 4. The Impaler dashes after the target, following it.",
       "Miss": "[D] and shove 2.",
       "Collide": "Foe is also dazed and winded."

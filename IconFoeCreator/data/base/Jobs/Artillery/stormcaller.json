@@ -26,7 +26,8 @@
     {
       "Name": "Summon Storm",
       "ActionCost": 1,
-      "Tags": [ "terrain effect", "recharge 6+" ],
+      "Recharge": 6,
+      "Tags": [ "terrain effect" ],
       "Description": "Summon a blast 1 terrain effect in range 8. While inside, characters are vulnerable and blinded. This terrain effect lasts until this ability is used again or the storm caller is defeated."
     }
   ]

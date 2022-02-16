@@ -15,7 +15,7 @@
     {
       "Name": "Clobber",
       "ActionCost": 1,
-      "Tags": [ "melee attack" ],
+      "Tags": [ "true strike", "melee attack" ],
       "Hit": "[D]+[fray]",
       "Miss": "[fray].",
       "Effect": "Foe must save or become dazed. If already dazed, they are stunned instead on a failed save."

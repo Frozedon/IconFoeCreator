@@ -2,7 +2,7 @@
   "Name": "Stalker",
   "Inherits": "Ruin Beast",
   "Type": "Template",
-  "RestrictToClass": "Skirmisher",
+  "UsesClass": "Skirmisher",
   "Traits": [
     {
       "Name": "Chameleonic",
@@ -13,7 +13,7 @@
     {
       "Name": "Decoy",
       "Count": 1,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "When hit by an attack, turns that hit into a miss and teleports 3 spaces to an unoccupied space it can see, which is its 'real' location."
     }
   ]

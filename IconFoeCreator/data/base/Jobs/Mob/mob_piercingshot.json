@@ -1,27 +1,13 @@
 {
   "Name": "Mob (Piercing Shot)",
-  "Group": "Mob",
+  "Inherits": "Mob",
   "Type": "Job",
-  "Vitality": 0,
-  "HP": 1, 
-  "Traits": [
-    {
-      "Name": "Mob",
-      "Description": "This character doesn't trigger slay effects."
-    }
-  ],
   "Actions": [
     {
       "Name": "Piercing Shot",
       "ActionCost": 2,
       "Tags": [ "ranged attack 6" ],
       "Description": "Deal 1 piercing damage as an effect."
-    }
-  ],
-  "SetupTraits": [
-    {
-      "Name": "Encounter Budget",
-      "Description": "1 point in an encounter budget gets 5 mobs of the same type."
     }
   ]
 }

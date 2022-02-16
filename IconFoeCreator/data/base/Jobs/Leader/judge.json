@@ -15,7 +15,7 @@
     {
       "Name": "Shrine of Sanctuary",
       "ActionCost": 2,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "Summon a height 1 piece of destructible terrain (10 HP, attacks automatically hit). While adjacent to the terrain, allies have resistance."
     }
   ]

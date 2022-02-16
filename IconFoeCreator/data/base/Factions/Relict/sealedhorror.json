@@ -2,7 +2,7 @@
   "Name": "Sealed Horror",
   "Inherits": "Relict",
   "Type": "Template",
-  "RestrictToClass": "Heavy",
+  "UsesClass": "Heavy",
   "Traits": [
     {
       "Name": "Bronze Shell",

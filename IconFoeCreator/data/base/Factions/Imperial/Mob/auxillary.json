@@ -1,0 +1,25 @@
+{
+  "Name": "Auxillary",
+  "Inherits": "Mob",
+  "Type": "Job",
+  "Group": "Imperial",
+  "IsUniqueJob": true,
+  "HP": 1,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 8,
+  "Traits": [
+    {
+      "Name": "Receive Orders",
+      "Description": "When the Imperial starts its turn in range of a command aura, it recharges all its abilities."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Arquebus",
+      "ActionCost": 2,
+      "Tags": [ "superheavy ranged attack 8" ],
+      "AutoHit": "Deal 1 damage. Increase to 2 damage if in the command aura of an imperial officer."
+    }
+  ]
+}

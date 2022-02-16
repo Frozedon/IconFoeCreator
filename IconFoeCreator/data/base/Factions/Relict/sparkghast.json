@@ -3,7 +3,7 @@
   "Inherits": "Relict",
   "Type": "Template",
   "Chapter": 2,
-  "RestrictToClass": "Skirmisher",
+  "UsesClass": "Skirmisher",
   "Traits": [
     {
       "Name": "Phasing",
@@ -18,7 +18,7 @@
     {
       "Name": "Sap Vitality",
       "ActionCost": 2,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "The Spark ghast deals [D] to an adjacent character.",
       "Effect": "Roll a d6. On a 5+, it deals [D] again, and repeat this effect. This becomes 3+ if the character has any amount of vigor."
     }

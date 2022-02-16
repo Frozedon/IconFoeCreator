@@ -1,0 +1,66 @@
+{
+  "Name": "Great Bell Demon",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Group": "Demon",
+  "IsUniqueJob": true,
+  "UsesTemplate": "Demon",
+  "Chapter": 1,
+  "Vitality": 12,
+  "HPMultiplier": 8,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 5,
+  "Armor": 1,
+  "FrayDamage": 3,
+  "DamageDie": "d8",
+  "Traits": [
+    {
+      "Name": "Fortify",
+      "Description": "At the end of their turn, gains vigilance 1. Vigilance charges stack if a character gains more than one. A character can spend a charge of Vigilance for one of the following:\n- When an adjacent ally is targeted as part of an ability, shift all damage and effects to you instead of that ally, regardless of range.\n- Deal piercing fray damage to any foe that breaks adjacency with you for any reason during their turn.\nLose all vigilance charges at the start of your turn."
+    },
+    {
+      "Name": "Sturdy",
+      "Description": "Immune to shove, daze, and stun."
+    },
+    {
+      "Name": "Large",
+      "Description": "Size 2."
+    },
+    {
+      "Name": "Ironbound",
+      "Description": "Permanently winded. Cannot teleport, dash, or fly.",
+      "NoDash": true
+    },
+    {
+      "Name": "Black Temple Bell",
+      "Description": "This demon's huge bell is soheavy it can only attack once a round."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Flatten Mortal",
+      "ActionCost": 2,
+      "Tags": [ "melee attack", "piercing", "close blast 1" ],
+      "Hit": "4[D] and foe is stunned.",
+      "Miss": "[D].",
+      "AreaEffect": "[D]."
+    },
+    {
+      "Name": "Bell Sweep",
+      "ActionCost": 1,
+      "AreaEffect": "All adjacent foes to the demon are shoved 1 and take fray damage."
+    },
+    {
+      "Name": "Swat",
+      "ActionCost": 1,
+      "Description": "An adjacent foe is shoved 3.",
+      "Collide": "Foe is winded."
+    },
+    {
+      "Name": "CLANG",
+      "ActionCost": 1,
+      "Description": "Every foe in range 2 of the demon takes 1 piercing damage and must save or be dazed."
+    }
+  ]
+}

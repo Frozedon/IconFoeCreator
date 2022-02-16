@@ -2,7 +2,7 @@
   "Name": "Halitoad",
   "Inherits": "Ruin Beast",
   "Type": "Template",
-  "RestrictToClass": "Heavy",
+  "UsesClass": "Heavy",
   "Traits": [
     {
       "Name": "Large",
@@ -17,7 +17,7 @@
     {
       "Name": "Tongue Lash",
       "ActionCost": 1,
-      "Tags": [ "recharge 4+" ],
+      "Recharge": 4,
       "Description": "A foe in range 5 must save or become poisoned and shoved as far as possible towards the Halitoad. If they are already poisoned, they are also winded."
     }
   ]

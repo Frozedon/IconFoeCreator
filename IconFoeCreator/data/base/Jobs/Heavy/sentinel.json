@@ -2,8 +2,12 @@
   "Name": "Sentinel",
   "Inherits": "Heavy",
   "Type": "Job",
-  "Armor": 3,
+  "Armor": 4,
   "Traits": [
+    {
+      "Name": "Defiance",
+      "Description": "Prevents hit points from being reduced past 1 hp. When this triggers, remove this effect and character becomes immune to all damage for the rest of the current turn."
+    },
     {
       "Name": "Hold the Line",
       "Description": "If the Sentinel ends any turn without attacking, they gain Sturdy and Vigilance 3. Vigilance triggers on all spaces in range 2 of them."
@@ -13,10 +17,10 @@
     {
       "Name": "Sweep",
       "ActionCost": 2,
-      "Tags": [ "melee attack", "multiattack", "range 2" ],
+      "Tags": [ "true strike", "melee attack", "multiattack", "range 2" ],
       "Hit": "[D]+[fray].",
       "Miss": "[fray].",
-      "Effect": "Shove 1"
+      "Effect": "Shove 1."
     }
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "Name": "Natal",
+  "Inherits": "Mob",
+  "Type": "Job",
+  "Group": "Demon",
+  "IsUniqueJob": true,
+  "HP": 1,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 5,
+  "Traits": [
+    {
+      "Name": "Summon",
+      "Description": "Natals disappear when reduced to 0 hp and don't cause engagement."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Void Vomit",
+      "ActionCost": 2,
+      "Description": "Deal 1 piercing damage as an effect to a character in range 3. If that character is adjacent to another demon, increase damage to 2."
+    }
+  ]
+}

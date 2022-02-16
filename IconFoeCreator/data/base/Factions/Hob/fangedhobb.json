@@ -1,0 +1,24 @@
+{
+  "Name": "Fanged Hobb",
+  "Inherits": "Hob",
+  "Type": "Template",
+  "Traits": [
+    {
+      "Name": "Sturdy",
+      "Description": "Immune to shove, daze, and stun."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Spirit Away",
+      "ActionCost": 0,
+      "Description": "The Hob swaps places with a character in range 2, teleporting both. If either character cannot teleport, this move cannot be made."
+    },
+    {
+      "Name": "Clamp",
+      "ActionCost": 0,
+      "Recharge": 4,
+      "Description": "The Hobb chomps down on an adjacent foe with spectral fangs. That foe must save or until the start of the Hob's next turn, the Hob moves into and shares their space, moving when they move, including flying or teleporting. Whenever they take damage from an action or ability, the Hob gnaws on them, dealing 1 piercing damage and shoving them 1. At the start of the Hob's next turn, they detach, ending this effect. It also ends if the Hob and their target are separated for any reason. This ability automatically recharges if the foe makes their save."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "Name": "Bulging Demon",
+  "Inherits": "Demon",
+  "Type": "Template",
+  "UsesClass": "Leader",
+  "Traits": [
+    {
+      "Name": "Regenerator",
+      "Description": "Regeneration 1.",
+      "AddHPPercent": -0.25
+    },
+    {
+      "Name": "Disgorge",
+      "Description": "Whenever vigor is broken, summon a natal in range 2."
+    },
+    {
+      "Name": "Last Revenge",
+      "Description": "When reduce to 0 HP, explodes in a blast 1 area effect. Non-demons in the area take [D] and are blighted. Summon 2 Natals in the area."
+    }
+  ]
+}

@@ -2,11 +2,12 @@
   "Name": "Soldier",
   "Inherits": "Heavy",
   "Type": "Job",
+  "Armor": 4,
   "Actions": [
     {
       "Name": "Slash",
       "ActionCost": 1,
-      "Tags": [ "melee attack" ],
+      "Tags": [ "true strike", "melee attack" ],
       "Hit": "[D]+[fray].",
       "Miss": "[fray]."
     },

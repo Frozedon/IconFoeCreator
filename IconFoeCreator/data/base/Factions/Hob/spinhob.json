@@ -1,0 +1,24 @@
+{
+  "Name": "Spinhob",
+  "Inherits": "Hob",
+  "Type": "Template",
+  "Actions": [
+    {
+      "Name": "Spirit Away",
+      "ActionCost": 0,
+      "Description": "The Hob swaps places with a character in range 2, teleporting both. If either character cannot teleport, this move cannot be made."
+    },
+    {
+      "Name": "Yank Thread",
+      "ActionCost": 0,
+      "Description": "The Spinhob shoves a marked character in range 5 3 spaces in any direction. Foes can save to avoid this effect.",
+      "Collide": " Character is branded."
+    },
+    {
+      "Name": "Interweave Essence",
+      "ActionCost": 1,
+      "Recharge": 6,
+      "Description": "The Spinhob marks any two non-summon characters in range 2 of each other. The two are joined by an aethereal thread. While within range 2 of each other, they have resistance. The thread breaks if either of them are bloodied, and cannot be used on a bloodied character."
+    }
+  ]
+}

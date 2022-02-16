@@ -1,0 +1,23 @@
+{
+  "Name": "Hob",
+  "Group": "Hob",
+  "Type": "Template",
+  "IsBaseTemplate": true,
+  "FactionBlight": "Any",
+  "Traits": [
+    {
+      "Name": "Greenwalker",
+      "Description": "All hobs ignore difficult and dangerous terrain."
+    }
+  ],
+  "SetupTraits": [
+    {
+      "Name": "Kin",
+      "Description": "Hobs can (technically) be bargained with, and will occasionally flee or surrender when they are badly losing a fight. Unless greatly pressed, hobs that are considered kin will never kill characters intentionally, preferring to punish or humiliate.\n• Motivations: Hobs are usually strongly motivated by trespass or injury against the land. Some are motivated by some perceived slight or offense against some ancient bargain, rule, or compact. Still others are simply motivated by natural beauty or whimsy and don't see malice in their own actions.\n• Flee: Being immortal nature spirits, being killed doesn't really bother a Hob (they will usually return with the next season), but they can be flighty and will run away if afraid."
+    },
+    {
+      "Name": "Monsters",
+      "Description": "Hobs that are stirred up by some natural disaster or desecration of the natural world are warped and malicious, and will not bargain or negotiate until things are put right, usually returning to their usual natures once the crisis passes."
+    }
+  ]
+}

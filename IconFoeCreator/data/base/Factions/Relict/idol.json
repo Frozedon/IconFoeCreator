@@ -2,7 +2,7 @@
   "Name": "Idol",
   "Inherits": "Relict",
   "Type": "Template",
-  "RestrictToClass": "Heavy",
+  "UsesClass": "Heavy",
   "AddHPPercent": 0.25,
   "Traits": [
     {

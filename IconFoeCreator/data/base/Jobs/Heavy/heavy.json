@@ -11,7 +11,7 @@
   "Traits": [
     {
       "Name": "Fortify",
-      "Description": "At the end of their turn, gains vigilance 1."
+      "Description": "At the end of their turn, gains vigilance 1. Vigilance charges stack if a character gains more than one. A character can spend a charge of Vigilance for one of the following:\n- When an adjacent ally is targeted as part of an ability, shift all damage and effects to you instead of that ally, regardless of range.\n- Deal piercing fray damage to any foe that breaks adjacency with you for any reason during their turn.\nLose all vigilance charges at the start of your turn."
     }
   ]
 }

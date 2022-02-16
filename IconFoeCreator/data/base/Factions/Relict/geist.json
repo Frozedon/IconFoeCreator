@@ -2,7 +2,7 @@
   "Name": "Geist",
   "Inherits": "Relict",
   "Type": "Template",
-  "RestrictToClass": "Skirmisher",
+  "UsesClass": "Skirmisher",
   "Traits": [
     {
       "Name": "Ethereal",
@@ -13,7 +13,7 @@
     {
       "Name": "Terrorize",
       "ActionCost": 0,
-      "Tags": [ "recharge 5+" ],
+      "Recharge": 5,
       "Effect": "A foe in range 6 is blinded until it ends a turn adjacent to an ally."
     }
   ]

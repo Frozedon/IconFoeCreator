@@ -3,7 +3,7 @@
   "Inherits": "Relict",
   "Type": "Template",
   "Chapter": 2,
-  "RestrictToClass": "Leader",
+  "UsesClass": "Leader",
   "Traits": [
     {
       "Name": "Flying",
@@ -18,7 +18,7 @@
     {
       "Name": "Possess",
       "ActionCost": 1,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "The Silent one moves into and shares the space of an adjacent foe, possessing them. While possessing that character, they are intangible, share its space, move when it moves. They can still take actions normally, but can't leave the possessed character's space. The possessed character takes a free action at the end of its turn, which the Silent One chooses: dash 3 in any direction, deal [D] to an adjacent character, or become pacified.\nA character can save to remove this effect at the end of their turns, and if successful becomes immune to it for the rest of combat. When possession ends, the silent one appears in a free adjacent space."
     }
   ]

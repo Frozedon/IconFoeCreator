@@ -22,7 +22,7 @@
       "Name": "Commander's Mark",
       "ActionCost": 1,
       "Tags": [ "range 4", "mark" ],
-      "Description": "Foe must save or become marked. While marked, they can't benefit from stealth, and attacks against them gain true strike."
+      "Mark": "Foe must save or become marked. While marked, they can't benefit from stealth, and attacks against them gain true strike."
     },
     {
       "Name": "Marching Orders",

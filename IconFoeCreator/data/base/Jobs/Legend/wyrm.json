@@ -73,7 +73,7 @@
         {
           "Name": "Eruption",
           "ActionCost": 1,
-          "Tags": [ "recharge 5+" ],
+          "Recharge": 5,
           "Description": "A Rock spire in range 5 emits a pool of blight, covering every adjacent space to the spire. The space is dangerous and difficult terrain, and characters that end their turn in the space are blighted."
         },
         {
@@ -104,7 +104,7 @@
         {
           "Name": "Spitfire",
           "ActionCost": 2,
-          "Tags": [ "recharge 5+" ],
+          "Recharge": 5,
           "Description": "Mark a character in range 6. At the end of that character's turn, if that character is still marked, the Wyrm shoots a blast of blight at them for a blast 1 explosion area effect. Characters within must save. On a successful save, they take [D]. On a failed save they take 2[D] and are blighted. Rock spires in the area are destroyed. This ability can mark any number of characters."
         },
         {

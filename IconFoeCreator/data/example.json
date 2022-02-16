@@ -3,12 +3,15 @@
   "Inherits": "", // Name of statblock you want to inherit traits from
   "Type": "", // "Job" or "Faction"
   "Group": "", // The group it should be filtered by
-  "IsBaseTemplate": "", // Is a base template of a faction
-  "IsUniqueJob": "", // Is a unique job from a faction
-  "Chapter": 0, // Minimum chapter required to use
-  "RestrictToTemplate": "", // A template that this job is required to use
-  "RestrictToClass": "", // The class of job that the template has to be on
+  "IsBaseTemplate": false, // Is a base template of a faction
+  "IsMob": false, // Is a mob foe
+  "IsElite": false, // Is an elite foe
+  "IsLegend": false, // Is a legend foe
+  "IsUniqueJob": false, // Is a unique job from a faction
+  "UsesTemplate": "", // A template that this job is required to use
+  "UsesClass": "", // The class of job that the template has to be on
   "RestrictToBaseTemplates": false, // If this job can only use base faction templates
+  "Chapter": 1, // Minimum chapter required to use
   "Vitality": 0,
   "AddHPPercent": 0.0, // Percent more HP the foe gains
   "HPMultiplier": 4, // Multiplied by Health to determine HP
@@ -28,10 +31,7 @@
       "DescriptionNonessential": "", // This description is handled automatically and can be hidden
       "Nonessential": false, // This trait is handled automatically and can be hidden
       "AddHPPercent": 0.0,
-      "AddArmor": 0,
-      "MaxArmor": 0,
-      "NoRun": false,
-      "NoDash": false
+      "HPMultiplierIfNormalFoe": false
     }
   ],
   "RemoveTraits": [ "", ... ], // Traits to remove from inherited template or job
@@ -39,12 +39,7 @@
     {
       "Name": "",
       "Tags": [ "" ], // Anything that should be in paranthesis
-      "Description": "",
-      "AddHPPercent": 0.0,
-      "AddArmor": 0,
-      "MaxArmor": 0,
-      "NoRun": false,
-      "NoDash": false
+      "Description": ""
     }
   ],
   "Interrupts": [
@@ -52,7 +47,10 @@
       "Name": "",
       "Count": 0,
       "Tags": [ "" ], // Anything that should be in paranthesis after "Interrupt #"
-      "Description": ""
+      "Description": "",
+      "Trigger": "",
+      "Effect": "",
+      "Collide": ""
     }
   ],
   "Actions": [
@@ -62,21 +60,29 @@
       "Tags": [ "" ], // Anything that should be in paranthesis after "action #"
       "Description": "",
       "Hit": "",
+      "AutoHit": "",
       "Critical": "",
       "Miss": "",
+      "PostAttack": "",
       "AreaEffect": "",
       "Effect": "",
+      "Mark": "",
+      "Stance": "",
       "Collide": "",
       "Blightboost": "",
+      "TerrainEffect": "",
+      "Special": "",
       "Combos": [
         { } // Same variables as "Actions"
-      ]
+      ],
+      "PostAction": ""
     }
   ],
   "BodyParts": [
     {
       "Name": "",
       "HP": 0,
+      "HPMultiplyByPlayers": false,
       "Description": ""
     }
   ],

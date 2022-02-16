@@ -55,7 +55,7 @@
     {
       "Name": "Liminal Arrows ",
       "ActionCost": 1,
-      "Tags": [ "recharge 5+" ],
+      "Recharge": 5,
       "Description": "Mark a foe in line of sight and range 10. At the end of that character's turn, it takes [D] piercing damage 3 times if it's not in cover from the Eldenwright. Then this mark ends. The Eldenwright can mark any number of foes with this ability."
     }
   ]

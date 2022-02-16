@@ -21,7 +21,8 @@
     {
       "Name": "Split Foe",
       "ActionCost": 2,
-      "Tags": [ "melee attack", "true strike", "+1 curse", "recharge 6" ],
+      "Recharge": 6,
+      "Tags": [ "melee attack", "true strike", "+1 curse" ],
       "Hit": "3[D].",
       "Miss": "[D]."
     }

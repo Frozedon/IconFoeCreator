@@ -1,0 +1,55 @@
+{
+  "Name": "Painwheel",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Group": "Demon",
+  "IsUniqueJob": true,
+  "UsesTemplate": "Demon",
+  "Chapter": 1,
+  "Vitality": 8,
+  "HPMultiplier": 8,
+  "Speed": 15,
+  "Dash": 15,
+  "Defense": 12,
+  "Armor": 0,
+  "FrayDamage": 3,
+  "DamageDie": "d10",
+  "Traits": [
+    {
+      "Name": "Dodge",
+      "Description": "Immune to damage from successful saves, area effects, or missed attacks."
+    },
+    {
+      "Name": "Burning Wheel",
+      "Description": "This demon's speed is 15. However, any movement this demon makes on its turn must be in the same direction and in straight lines."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Agonize",
+      "ActionCost": 1,
+      "Tags": [ "melee attack" ],
+      "Hit": "[D] and character must save or become slowed.",
+      "Miss": "1 damage.",
+      "Effect": "The Wheel dashes up to 8 spaces before this attack. It deals additional damage equal to how far it traveled before it attacked."
+    },
+    {
+      "Name": "Spit Fire",
+      "ActionCost": 1,
+      "Tags": [ "blast 1", "range 4" ],
+      "AreaEffect": "Fray damage and characters are burning. Burning characters instead take [D]."
+    },
+    {
+      "Name": "Spin Out",
+      "ActionCost": 1,
+      "Description": "Adjacent foes must save or become blinded and burning."
+    },
+    {
+      "Name": "Exfoliate",
+      "ActionCost": 2,
+      "Recharge": 6,
+      "Description": "Repeat the following effect three times.",
+      "Effect": "An adjacent foe must save or take [D]+fray. Slow characters fail the save."
+    }
+  ]
+}

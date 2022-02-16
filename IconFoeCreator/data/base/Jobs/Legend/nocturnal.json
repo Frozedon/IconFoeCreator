@@ -68,7 +68,7 @@
         {
           "Name": "Amygdala",
           "ActionCost": 1,
-          "Tags": [ "recharge 4+" ],
+          "Recharge": 4,
           "Description": "All foes in range 3 are forced to flee. They become vulnerable, then must save or be marked and shoved 3 in a direction of the Nocturnal's choice. While marked, at the start of their turns, the Nocturnal can shove them 3 in a direction of its choice. They can save at the end of their turns to end this mark."
         },
         {

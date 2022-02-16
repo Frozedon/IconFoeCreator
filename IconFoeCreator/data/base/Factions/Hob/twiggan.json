@@ -1,0 +1,22 @@
+{
+  "Name": "Twiggan",
+  "Inherits": "Hob",
+  "Type": "Template",
+  "Traits": [
+    {
+      "Name": "Counter",
+      "Description": "Deal 2 damage to your attacker after being attacked, hit or miss."
+    },
+    {
+      "Name": "Body of the Land",
+      "Description": "When defeated, roll a d6. The Hob collapses into the natural land, disappearing. Every space of this Hob becomes a height 1 terrain piece (5-6), difficult terrain (2-4), or a pit (1)."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Frolic",
+      "ActionCost": 1,
+      "Description": "The Twiggan swaps places with an ally in range 2, teleporting."
+    }
+  ]
+}

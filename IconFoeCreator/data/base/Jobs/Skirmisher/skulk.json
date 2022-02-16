@@ -15,7 +15,7 @@
       "Tags": [ "melee attack" ],
       "Hit": "[D]+[fray].",
       "Miss": "[fray].",
-      "PostAttack": "Attack deals 2[D] is made against a blinded or slow character."
+      "PostAttack": "Attack deals 2[D] if made against a blinded or slow character."
     },
     {
       "Name": "Cheap Trick",

@@ -5,7 +5,7 @@
   "Type": "Job",
   "IsUniqueJob": true,
   "Chapter": 2,
-  "RestrictToTemplate": "Relict",
+  "UsesTemplate": "Relict",
   "Vitality": 8,
   "Speed": 3,
   "Dash": 2,
@@ -52,7 +52,8 @@
     {
       "Name": "Finger of Death",
       "ActionCost": 2,
-      "Tags": [ "ranged attack 8", "recharge 6" ],
+      "Recharge": 6,
+      "Tags": [ "ranged attack 8"],
       "Hit": "5[D].",
       "Miss": "2[D].",
       "Effect": "This attack can't lower a character past 1 hp."
@@ -60,7 +61,7 @@
     {
       "Name": "Puppet Strings",
       "ActionCost": 1,
-      "Tags": [ "recharge 5+" ],
+      "Recharge": 5,
       "Description": "All foes must save or be shoved 2 in a direction of the lich's choice, or shoved 1 on a successful save."
     }
   ],
@@ -83,7 +84,7 @@
         {
           "Name": "Entombment of Iz",
           "ActionCost": 1,
-          "Tags": [ "recharge 6" ],
+          "Recharge": 6,
           "Description": "The Lich entombs a character in a magical sarcophagus. While inside, they are winded+, have their speed reduced to 0 and are blinded. The Sarcophagus is a height 1 terrain piece with 10 hp that is destructible. Attacks automatically hit and it is destroyed when it reaches 0. It has resistance to damage from the character inside it."
         }
       ]

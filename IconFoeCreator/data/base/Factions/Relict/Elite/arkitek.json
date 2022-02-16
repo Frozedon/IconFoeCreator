@@ -4,8 +4,8 @@
   "Type": "Job",
   "Group": "Relict",
   "IsUniqueJob": true,
+  "UsesTemplate": "Relict",
   "Chapter": 2,
-  "RestrictToTemplate": "Relict",
   "Vitality": 10,
   "HPMultiplier": 8,
   "Speed": 4,
@@ -50,13 +50,13 @@
     {
       "Name": "Pillar of Iz",
       "ActionCost": 1,
-      "Tags": [ "recharge 5+" ],
+      "Recharge": 5,
       "Description": "The Arkitek summons a height 1 terrain piece in range 5, a pylon, with 10 hp. Characters on the terrain when it's created are pushed up on top of it. The Pylon has aura 1. Inside the aura, relict characters have resistance to all damage."
     },
     {
       "Name": "Entombment of Iz",
       "ActionCost": 1,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "The Arkitek entombs a character in a magical sarcophagus. While inside, they are winded+, have their speed reduced to 0 and are blinded. The Sarcophagus is a height 1 terrain piece with 10 hp that is destructible. Attacks automatically hit and it is destroyed when it reaches 0. It has resistance to damage from the character inside it."
     }
   ]

@@ -1,0 +1,56 @@
+{
+  "Name": "Vannir",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Group": "Jotunn",
+  "IsUniqueJob": true,
+  "UsesTemplate": "Jotunn",
+  "Chapter": 1,
+  "Vitality": 8,
+  "HPMultiplier": 8,
+  "Speed": 3,
+  "Dash": 2,
+  "Defense": 6,
+  "Armor": 0,
+  "FrayDamage": 4,
+  "DamageDie": "d8",
+  "Traits": [
+    {
+      "Name": "Aetherwall",
+      "Description": "Cover from ranged attacks further away than range 2."
+    },
+    {
+      "Name": "Overdrive 4",
+      "Description": "Attacks are all critical hits on hit at round 4 or later."
+    },
+    {
+      "Name": "Titanfall",
+      "Description": "When defeated, roll 1d6 and assign a compass direction (1-none, 2-N, 3-E, 4-S, 5-W, 6-GM choice). The Jotunn falls into a close blast 1 area to its space. Size 1 characters inside must save or take 2[D] damage, or [D] on a successful save. Move all characters out of the area into the closest available space and place the defeated Jotunn there. They count as a 2x2 space of height 1 terrain while defeated."
+    },
+    {
+      "Name": "Enormous",
+      "Description": "Size 3."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Star Shower",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack", "cross 3", "range 10" ],
+      "Hit": "[D]+fray.",
+      "Miss": "[fray].",
+      "AreaEffect": "[D]."
+    },
+    {
+      "Name": "Rune of Destruction",
+      "ActionCost": 1,
+      "Description": "The Vannir summons a glowing rune on a free ground space within range 4. The rune can be moved over freely. There can only be a maximum of three of these Runes at once (each could be from different Vannir), and the newest one created replaces the oldest rune if there are already three. At the end of any round in which a rune is not covered by a terrain piece, character, or summon, all foes take [D] piercing damage for each active rune. Runes disappear at the end of combat."
+    },
+    {
+      "Name": "Aencraft",
+      "ActionCost": 1,
+      "Recharge": 5,
+      "Description": "The Vannir summons 3 illusory duplicates in range 3, which are summons with 1 hp, then may swap places with one of them, teleporting. Characters don't know which is the real one, and the Vannir may move all of them when they move, and use abilities from any of their locations. If the Vannir takes this move and has duplicates remaining, it can summon until it has 3, then swap places again."
+    }
+  ]
+}

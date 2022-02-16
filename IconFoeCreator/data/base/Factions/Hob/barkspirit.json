@@ -1,0 +1,25 @@
+{
+  "Name": "Bark Spirit",
+  "Inherits": "Hob",
+  "Type": "Template",
+  "Traits": [
+    {
+      "Name": "Body of the Land",
+      "Description": "When defeated, roll a d6. The Hob collapses into the natural land, disappearing. Every space of this Hob becomes a height 1 terrain piece (5-6), difficult terrain (2-4), or a pit (1)."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Summon Root",
+      "ActionCost": 1,
+      "Recharge": 4,
+      "Description": "The Bark spirit creates a root, a sturdy size 1 summon in range 5. The area around the root is difficult terrain, and the root emits aura 1 around it. Foes in the aura are winded."
+    },
+    {
+      "Name": "Curse of Thorns",
+      "ActionCost": 1,
+      "Tags": [ "mark" ],
+      "Description": "A character in range 5 from the Bark Spirit is cursed and marked. While marked, if that character ends their turn within range 2 of a hob or a hob summon, they take [D] piercing damage."
+    }
+  ]
+}

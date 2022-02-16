@@ -1,0 +1,31 @@
+{
+  "Name": "Demon",
+  "Group": "Demon",
+  "Type": "Template",
+  "IsBaseTemplate": true,
+  "FactionBlight": "Any",
+  "SetupTraits": [
+    {
+      "Name": "Monsters",
+      "Description": "Demons do not flee or negotiate."
+    },
+    {
+      "Name": "Legion",
+      "Description": "When fighting demons, at the start of combat, place 5 Natals, this faction's special mob, on the map in unoccupied space somewhere outside of range 2 of players. These don't count for the total encounter budget."
+    }
+  ],
+  "Traits": [
+    {
+      "Name": "Banish",
+      "Description": "A character can disintegrate an adjacent defeated demon as an action, returning it to the void from which it came, and preventing it from being devoured."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Devour",
+      "ActionCost": 2,
+      "Tags": [ "1/combat" ],
+      "Description": "The Demon devours and absorbs an adjacent Demon, including any defeated Demon, destroying it and gaining vigor 2. They can also use this on a Natal to grant them vigor 1, which can be done any number of times a combat."
+    }
+  ]
+}

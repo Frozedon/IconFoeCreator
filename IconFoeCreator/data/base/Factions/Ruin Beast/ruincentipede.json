@@ -2,7 +2,7 @@
   "Name": "Ruin Centipede",
   "Inherits": "Ruin Beast",
   "Type": "Template",
-  "RestrictToClass": "Artillery",
+  "UsesClass": "Artillery",
   "Traits": [
     {
       "Name": "Acid Splash",
@@ -13,7 +13,7 @@
     {
       "Name": "Toxic Spines",
       "ActionCost": 1,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "A character in range 6 must save or become poisoned and until the end of their next turn, take 1 piercing damage for each space they voluntarily move."
     }
   ]

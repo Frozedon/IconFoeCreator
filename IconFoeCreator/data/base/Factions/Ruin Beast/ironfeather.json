@@ -2,7 +2,7 @@
   "Name": "Ironfeather",
   "Inherits": "Ruin Beast",
   "Type": "Template",
-  "RestrictToClass": "Artillery",
+  "UsesClass": "Artillery",
   "Traits": [
     {
       "Name": "Flying",
@@ -13,7 +13,7 @@
     {
       "Name": "Feather Spray",
       "ActionCost": 1,
-      "Tags": [ "recharge 4+" ],
+      "Recharge": 4,
       "Description": "Characters in a close blast 1 area take fray damage twice as an area effect and must save or become vulnerable."
     }
   ]

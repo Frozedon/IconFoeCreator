@@ -1,0 +1,11 @@
+{
+  "Name": "Mob (Template)",
+  "Inherits": "Mob",
+  "Type": "Template",
+  "SetupTraits": [
+    {
+      "Name": "Mob",
+      "Description": "If they have more than two active abilities available to them, pick two and discard the others. Abilities can deal a maximum of 1 damage if they cost 1 action, or 2 damage if they cost 2 or have a recharge."
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "Inherits": "Ruin Beast",
   "Type": "Template",
   "Chapter": 2,
-  "RestrictToClass": "Artillery",
+  "UsesClass": "Artillery",
   "Traits": [
     {
       "Name": "Gallop",
@@ -14,7 +14,8 @@
     {
       "Name": "Spiral Horn",
       "ActionCost": 2,
-      "Tags": [ "ranged attack", "line 10", "recharge 6" ],
+      "Recharge": 6,
+      "Tags": [ "ranged attack", "line 10" ],
       "Hit": "[D] three times.",
       "Miss": "-.",
       "AreaEffect": "-.",

@@ -25,7 +25,7 @@
     {
       "Name": "Taunt",
       "ActionCost": 1,
-      "Tags": [ "recharge 4+" ],
+      "Recharge": 4,
       "Description": "Foe in range 4 must save or be shoved towards the knuckle as far as possible, then gain hatred of the knuckle."
     }
   ]

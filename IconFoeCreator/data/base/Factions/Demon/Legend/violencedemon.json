@@ -1,0 +1,148 @@
+{
+  "Name": "Violence Demon",
+  "Inherits": "Legend",
+  "Group": "Demon",
+  "Type": "Job",
+  "IsUniqueJob": true,
+  "Chapter": 2,
+  "UsesTemplate": "Demon",
+  "Vitality": 8,
+  "HPMultiplier": 4,
+  "Speed": 5,
+  "Dash": 5,
+  "Defense": 10,
+  "Armor": 1,
+  "FrayDamage": 3,
+  "DamageDie": "d10",
+  "Traits": [
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally and dash action is full speed."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to damage from successful saves, area effects, or missed attacks."
+    },
+    {
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
+    },
+    {
+      "Name": "Blade of Agony",
+      "Description": "Many actions from this legend summon a blade of agony. Blades can be summoned in range 3 from the demon. A blade is in intangible summon that still causes obstruction.\n- Blade Slash: Whenever a blade is summoned, all blades, including the one that was just summoned, slash every space adjacent to them, dealing 1 piercing damage as an effect. A character can hit by multiple blades at once. The violence demon is immune to its own blades.\n- Blade consume X: Certain actions must consume X blades of agony to be used. Blades are consumed at the start of the action and must be in range 3 of the demon to be valid. This destroys the blades, removing them from the battlefield."
+    }
+  ],
+  "BodyParts": [
+    {
+      "Name": "Regard",
+      "HP": 10,
+      "Description": "Earning the demons' regard inflicts it with its own Compel Duel ability (see below). This body part can be triggered multiple times."
+    },
+    {
+      "Name": "Seventh Sword",
+      "HP": 20,
+      "Description": "If destroyed, the demon loses its Split Kin attack. The eye-like gems of the demon's seventh sword can be taken for 4 Dust."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Call Blades",
+      "ActionCost": 1,
+      "Tags": [ "1/round" ],
+      "Description": "Summon three blades of agony from the void. Characters adjacent to them when they are summoned are shoved 1."
+    },
+    {
+      "Name": "Sixfold Cut",
+      "ActionCost": 1,
+      "Tags": [ "melee attack" ],
+      "Hit": "Deal 1 piercing damage six times.",
+      "Miss": "Three times.",
+      "Effect": "Summon a blade of agony."
+    },
+    {
+      "Name": "Blade Storm",
+      "ActionCost": 2,
+      "Recharge": 6,
+      "Tags": [ "attack" ],
+      "Description": "Repeat the following effect six times. Each time, the demon must move in the same direction.",
+      "Effect": "The violence demon teleports 1, then deals 1 piercing damage to all other characters in a blast 1 area effect centered on it. Blades of Agony caught in the effect trigger their Blade Slash effect."
+    },
+    {
+      "Name": "Compel Duel",
+      "ActionCost": 0,
+      "Tags": [ "1/round" ],
+      "Description": "A character in range 6 from the Violence Demon must save or become vulnerable, then gain hatred of the violence demon. Both effects last until saved against."
+    }
+  ],
+  "PhasesDescription": "The Violence Demon must swap phase at the start of each round. It can choose which phase it starts combat in.",
+  "Phases": [
+    {
+      "Name": "Heart Seeker",
+      "Traits": [
+        {
+          "Name": "Counter",
+          "Description": "Deal 2 damage to your attacker after being attacked, hit or miss."
+        }
+      ],
+      "Interrupts": [
+        {
+          "Name": "Blade Parry",
+          "Count": 0,
+          "Tags": [ "blade consume 1" ],
+          "Trigger": "The violence demon is targeted by an attack.",
+          "Effect": "The demon gains evasion against that attack."
+        }
+      ],
+      "Actions": [
+        {
+          "Name": "Blade Pin",
+          "ActionCost": 0,
+          "Tags": [ "blade consume 1" ],
+          "Description": "A character in range 6 from the violence demon must save or be shoved 3.",
+          "Collide": "Character is pinned down by the blade, taking [D] and becoming winded."
+        },
+        {
+          "Name": "Maddening Shift",
+          "ActionCost": 0,
+          "Description": "The violence demon dashes 4 with phasing."
+        }
+      ]
+    },
+    
+    {
+      "Name": "Heart Eater",
+      "Actions": [
+        {
+          "Name": "Advance",
+          "ActionCost": 0,
+          "Tags": [ "1/round" ],
+          "Description": "The violence demon teleports up to 3 spaces, but must end adjacent to a foe."
+        },
+        {
+          "Name": "Split Kin",
+          "ActionCost": 2,
+          "Recharge": 6,
+          "Tags": [ "melee attack", "true strike", "line 6" ],
+          "Hit": "2[D]+fray and foe must save or become stunned.",
+          "Miss": "[D].",
+          "AreaEffect": "[D].",
+          "Effect": "Deals +[D] against bloodied foes. Summon two blades of agony."
+        },
+        {
+          "Name": "Garuda",
+          "ActionCost": 0,
+          "Tags": [ "blade consume 3" ],
+          "Description": "A foe in range 6 must save or become impaled by 3 blades and marked.",
+          "Effect": "At the start of their turn, a blade rips themselves out of them, dealing [D] damage and summoning a blade of agony adjacent to them. Once this effect has triggered three times, it ends. If the mark is removed early, summon the remaining blades in adjacent spaces to that character."
+        },
+        {
+          "Name": "Universal Violence",
+          "ActionCost": 2,
+          "Tags": [ "melee attack", "range 3", "+1 boon", "blade consume 6" ],
+          "Hit": "Foe takes [D] damage, six times.",
+          "Miss": "Three times."
+        }
+      ]
+    }
+  ]
+}

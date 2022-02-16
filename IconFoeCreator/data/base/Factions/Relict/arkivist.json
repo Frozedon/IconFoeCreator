@@ -2,7 +2,7 @@
   "Name": "Arkivist",
   "Inherits": "Relict",
   "Type": "Template",
-  "RestrictToClass": "Leader",
+  "UsesClass": "Leader",
   "Traits": [
     {
       "Name": "Life Link",

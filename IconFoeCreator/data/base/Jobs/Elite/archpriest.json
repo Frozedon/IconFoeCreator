@@ -42,7 +42,7 @@
     {
       "Name": "Immaculate",
       "ActionCost": 1,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "An ally in range 5 becomes Intangible until the end of its next turn."
     },
     {

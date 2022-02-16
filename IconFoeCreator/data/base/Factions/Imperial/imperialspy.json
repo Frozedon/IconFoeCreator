@@ -1,0 +1,23 @@
+{
+  "Name": "Imperial Spy",
+  "Inherits": "Imperial",
+  "Type": "Template",
+  "UsesClass": "Skirmisher",
+  "Interrupts": [
+    {
+      "Name": "Decoy",
+      "Count": 1,
+      "Recharge": 5,
+      "Trigger": "When hit by an attack.",
+      "Effect": "Turn that hit into a miss and teleport 3 spaces to an unoccupied space it can see, which is its 'real' location."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Disguise",
+      "ActionCost": 1,
+      "Recharge": 6,
+      "AreaEffect": "A foe in range 5 must save. On a failed save, the Spy switches places with them, teleporting both characters."
+    }
+  ]
+}

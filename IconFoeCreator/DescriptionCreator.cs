@@ -32,13 +32,10 @@ namespace IconFoeCreator
                 return;
             }
 
-            chapter = Math.Max(1, Math.Min(Constants.ChapterCount, chapter));
-            int index = chapter - 1;
-
             // Traits can add armor, max armor, or alter hit points
             int addArmor = 0;
             int maxArmor = int.MaxValue;
-            double addHP = 0.0;
+            double addHP = stats.AddHPPercent.GetValueOrDefault(0.0);
             int addSpeed = 0;
             int addDash = 0;
             bool noDash = false;
@@ -59,7 +56,6 @@ namespace IconFoeCreator
             string dashText = noDash ? "No Dash" : "Dash " + (stats.Dash.GetValueOrDefault() + addDash);
             int defense = stats.Defense.GetValueOrDefault();
             int armor = Math.Min(stats.Armor.GetValueOrDefault() + addArmor, maxArmor);
-            int frayDmg = stats.FrayDamage.GetValueOrDefault();
 
             {
                 Paragraph paragraph = MakeParagraph();
@@ -120,10 +116,10 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
-            if (frayDmg > 0)
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "Fray Damage: ");
+                int frayDmg = stats.FrayDamage.GetValueOrDefault();
                 AddNormal(paragraph, frayDmg.ToString());
                 descTextBox.Document.Blocks.Add(paragraph);
             }
@@ -309,8 +305,30 @@ namespace IconFoeCreator
                     AddBold(paragraph, ", " + tag);
                 }
 
-                AddBold(paragraph, "): ");
-                AddNormal(paragraph, interrupt.Description);
+                AddBold(paragraph, "):");
+
+                if (!String.IsNullOrEmpty(interrupt.Description))
+                {
+                    AddNormal(paragraph, " " + interrupt.Description);
+                }
+
+                if (!String.IsNullOrEmpty(interrupt.Trigger))
+                {
+                    AddItalic(paragraph, " Trigger: " );
+                    AddNormal(paragraph, interrupt.Trigger);
+                }
+
+                if (!String.IsNullOrEmpty(interrupt.Effect))
+                {
+                    AddItalic(paragraph, " Effect: ");
+                    AddNormal(paragraph, interrupt.Effect);
+                }
+
+                if (!String.IsNullOrEmpty(interrupt.Collide))
+                {
+                    AddItalic(paragraph, " Collide: ");
+                    AddNormal(paragraph, interrupt.Collide);
+                }
 
                 textBox.Document.Blocks.Add(paragraph);
             }
@@ -446,7 +464,7 @@ namespace IconFoeCreator
                 AddAction(textBox, comboAction, true);
             }
 
-            if (action.PostAction != null && action.PostAction != String.Empty)
+            if (!String.IsNullOrEmpty(action.PostAction))
             {
                 AddNormal(paragraph, " " + action.PostAction);
             }

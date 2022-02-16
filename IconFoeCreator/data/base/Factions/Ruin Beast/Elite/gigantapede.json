@@ -4,8 +4,8 @@
   "Type": "Job",
   "Group": "Ruin Beast",
   "IsUniqueJob": true,
+  "UsesTemplate": "Ruin Beast",
   "Chapter": 2,
-  "RestrictToTemplate": "Ruin Beast",
   "Vitality": 10,
   "HPMultiplier": 8,
   "Speed": 3,
@@ -18,7 +18,7 @@
   "Traits": [
     {
       "Name": "Fortify",
-      "Description": "At the end of their turn, gains vigilance 1."
+      "Description": "At the end of their turn, gains vigilance 1. Vigilance charges stack if a character gains more than one. A character can spend a charge of Vigilance for one of the following:\n- When an adjacent ally is targeted as part of an ability, shift all damage and effects to you instead of that ally, regardless of range.\n- Deal piercing fray damage to any foe that breaks adjacency with you for any reason during their turn.\nLose all vigilance charges at the start of your turn."
     },
     {
       "Name": "Defiance",
@@ -49,7 +49,8 @@
     {
       "Name": "Acid Spray",
       "ActionCost": 1,
-      "Tags": [ "line 4", "recharge 6" ],
+      "Recharge": 6,
+      "Tags": [ "line 4" ],
       "AreaEffect": "Characters inside must save or take [D] piercing damage 3 times, or once on a successful save.",
       "Effect": "Can only be made from the head."
     },

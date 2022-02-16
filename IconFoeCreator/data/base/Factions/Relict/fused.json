@@ -2,7 +2,7 @@
   "Name": "Fused",
   "Inherits": "Relict",
   "Type": "Template",
-  "RestrictToClass": "Heavy",
+  "UsesClass": "Heavy",
   "Traits": [
     {
       "Name": "Large",

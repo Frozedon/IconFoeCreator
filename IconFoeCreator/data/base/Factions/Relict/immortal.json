@@ -3,7 +3,7 @@
   "Inherits": "Relict",
   "Type": "Template",
   "Chapter": 3,
-  "RestrictToClass": "Heavy",
+  "UsesClass": "Heavy",
   "Traits": [
     {
       "Name": "Beyond Death",

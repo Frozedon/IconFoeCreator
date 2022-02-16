@@ -12,7 +12,7 @@
     {
       "Name": "Cleave",
       "ActionCost": 2,
-      "Tags": [ "melee attack" ],
+      "Tags": [ "true strike", "melee attack" ],
       "Hit": "2[D]+[fray].",
       "Miss": "[fray].",
       "AreaEffect": "All foes adjacent to the attack target take [D]."

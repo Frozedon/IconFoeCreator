@@ -2,7 +2,7 @@
   "Name": "Ruin Ape",
   "Inherits": "Ruin Beast",
   "Type": "Template",
-  "RestrictToClass": "Leader",
+  "UsesClass": "Leader",
   "Traits": [
     {
       "Name": "Latch",
@@ -13,7 +13,7 @@
     {
       "Name": "Spur",
       "ActionCost": 1,
-      "Tags": [ "recharge 4+" ],
+      "Recharge": 4,
       "Description": "The character the Ruin Ape is latched on to dashes 4 in a direction of the Ape's choice and can make an attack that takes 1 action or less as an interrupt."
     }
   ]

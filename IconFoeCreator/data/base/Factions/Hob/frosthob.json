@@ -1,0 +1,27 @@
+{
+  "Name": "Frosthob",
+  "Inherits": "Hob",
+  "Type": "Template",
+  "Traits": [
+    {
+      "Name": "Body of the Land",
+      "Description": "When defeated, roll a d6. The Hob collapses into the natural land, disappearing. Every space of this Hob becomes a height 1 terrain piece (5-6), difficult terrain (2-4), or a pit (1)."
+    },
+    {
+      "Name": "Flying",
+      "Description": "Ignores all terrain and terrain effects other than impassable terrain, and ignores engagement and obstruction."
+    },
+    {
+      "Name": "Icy Winds",
+      "Description": "The Hob has aura 1. Characters in the aura have cover and foes that end their turn there are inflicted with frostbite. Frosbitten foes are branded."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Eternal Ice",
+      "ActionCost": 2,
+      "Recharge": 6,
+      "Description": "The hob chooses a character in range 6, then freezes them inside an ice block. That character become intangible, has their speed reduced to 0, and is winded+ while inside the block, which is a height 1 terrain destructible piece sharing their space. The block has 10 hp and is resistant to damage from the character inside it. When it shatters, all these effects on the character end."
+    }
+  ]
+}

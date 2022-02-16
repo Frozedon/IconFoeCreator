@@ -47,7 +47,7 @@
     {
       "Name": "Danse Macabre",
       "ActionCost": 2,
-      "Tags": [ "recharge 5+" ],
+      "Recharge": 5,
       "Description": "Target a close blast 2 area. Teleport five times. May deal [D] to an adjacent foe each time. Must choose a different foe each time unless every foe has been hit at least once."
     }
   ]

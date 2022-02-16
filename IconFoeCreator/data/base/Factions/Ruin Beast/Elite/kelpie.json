@@ -4,8 +4,8 @@
   "Type": "Job",
   "Group": "Ruin Beast",
   "IsUniqueJob": true,
+  "UsesTemplate": "Ruin Beast",
   "Chapter": 1,
-  "RestrictToTemplate": "Ruin Beast",
   "Vitality": 8,
   "HPMultiplier": 8,
   "Speed": 4,
@@ -57,7 +57,7 @@
     {
       "Name": "Sink",
       "ActionCost": 1,
-      "Tags": [ "recharge 6" ],
+      "Recharge": 6,
       "Description": "The Kelpie disperses into seaweed and water and reappears in any space inside one of its deep water zones, teleporting, then gaining evasion until the start of its next turn."
     }
   ]

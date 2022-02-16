@@ -3,7 +3,7 @@
   "Inherits": "Mob",
   "Type": "Job",
   "Group": "Relict",
-  "RestrictToTemplate": "Relict",
+  "UsesTemplate": "Relict",
   "HP": 2,
   "RemoveTraits": [ "Defiance" ],
   "Traits": [

@@ -1,0 +1,61 @@
+{
+  "Name": "Judicator Demon",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Group": "Demon",
+  "IsUniqueJob": true,
+  "UsesTemplate": "Demon",
+  "Chapter": 1,
+  "Vitality": 10,
+  "HPMultiplier": 8,
+  "Speed": 4,
+  "Dash": 2,
+  "Defense": 8,
+  "Armor": 1,
+  "FrayDamage": 3,
+  "DamageDie": "d6",
+  "Traits": [
+    {
+      "Name": "Shelter",
+      "Description": "+1 boon on saves."
+    },
+    {
+      "Name": "Large",
+      "Description": "Size 2."
+    },
+    {
+      "Name": "Eyeless",
+      "Description": "Blinded permanently, but can still target foes normally."
+    },
+    {
+      "Name": "Decree",
+      "Description": "At the start of the round, the Broker makes one of the following decrees, making a different decree each round than the last one. Foes that do not follow the decree by the end of the round take 2[D] damage as an effect and are blinded. Blinded characters are stunned.\n- Decree of Anger: Attack this round.\n- Decree of Selfishness: Do not use abilities that target allies this round.\n- Decree of Paranoia: End turn without being adjacent to any other characters.\n- Decree of Rashness: End turn adjacent to a foe."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Diaga",
+      "ActionCost": 1,
+      "Description": "An ally in range 4 can save, ending a mark, status, or blight on a successful save. If that ally is bloodied, they also gain vigor 1."
+    },
+    {
+      "Name": "Enfeeble",
+      "ActionCost": 1,
+      "Tags": [ "ranged attack 6" ],
+      "Hit": "[D]+[fray] and character must save or be pacified.",
+      "Miss": "[fray]."
+    },
+    {
+      "Name": "World Revolving",
+      "ActionCost": 1,
+      "Description": "Shove all foes on the battlefield 1 space in the same direction.",
+      "Collide": "Foe takes fray damage and is branded."
+    },
+    {
+      "Name": "Balance Scales",
+      "ActionCost": 1,
+      "Recharge": 6,
+      "Description": "A foe in range 6 must save or take Divine damage equal to 25% of their hp, or 1 damage on a successful save. An ally in range 6 gains vigor 1."
+    }
+  ]
+}

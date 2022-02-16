@@ -1,0 +1,69 @@
+{
+  "Name": "Banderhob",
+  "Inherits": "Elite",
+  "Type": "Job",
+  "Group": "Hob",
+  "IsUniqueJob": true,
+  "UsesTemplate": "Hob",
+  "Chapter": 1,
+  "Vitality": 8,
+  "HPMultiplier": 8,
+  "Speed": 6,
+  "Dash": 6,
+  "Defense": 10,
+  "Armor": 0,
+  "FrayDamage": 3,
+  "DamageDie": "d10",
+  "Traits": [
+    {
+      "Name": "Greenwalker",
+      "Description": "All hobs ignore difficult and dangerous terrain."
+    },
+    {
+      "Name": "Phasing",
+      "Description": "Can ignore obstruction and pass through, but not end your turn in, terrain or characters."
+    },
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally and dash action is full speed."
+    },
+    {
+      "Name": "Dodge",
+      "Description": "Immune to damage from successful saves, area effects, or missed attacks."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Spirit Away",
+      "ActionCost": 0,
+      "Description": "The Hob swaps places with a character in range 2, teleporting both. If either character cannot teleport, this move cannot be made."
+    },
+    {
+      "Name": "Protect The Child",
+      "ActionCost": 0,
+      "Tags": [ "mark" ],
+      "Description": "At the start of combat, the Banderhobb marks a foe of its choice, deciding it's a child to be protected. Any time a character deals damage to that character with an action or ability or ends their turn adjacent to that character, the Hob teleports to an adjacent space as an effect, then swipes that character. This effect can only trigger once a turn. Other hobs are shoved 1 and take no damage. Foes and non-hob characters take [D] piercing damage. This mark ends if the Banderhobb's target deals damage to it in any way. If the mark ends, the Banderhobb can choose a new target as an effect action, but can't choose any target it's already chosen this combat."
+    },
+    {
+      "Name": "Savage Swipes",
+      "ActionCost": 1,
+      "Tags": [ "melee attack", "multiattack" ],
+      "Hit": "[D].",
+      "Miss": "1 damage.",
+      "Effect": "If there's only one valid character, increase damage to 2[D]+fray on hit."
+    },
+    {
+      "Name": "Bounding Leaps",
+      "ActionCost": 1,
+      "Description": "The Banderhob flies 4.",
+      "Effect": "If it lands on a space of terrain height 1 or higher, it can repeat this flight once more."
+    },
+    {
+      "Name": "Pounce",
+      "ActionCost": 2,
+      "Recharge": 5,
+      "Description": "The hob flies 4, then an adjacent foe must save or take 2[D] and be shoved 2, or [D] on a successful save.",
+      "Collide": "Foe is slowed."
+    }
+  ]
+}

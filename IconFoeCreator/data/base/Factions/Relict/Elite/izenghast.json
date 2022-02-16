@@ -4,8 +4,8 @@
   "Type": "Job",
   "Group": "Relict",
   "IsUniqueJob": true,
+  "UsesTemplate": "Relict",
   "Chapter": 2,
-  "RestrictToTemplate": "Relict",
   "Vitality": 8,
   "HPMultiplier": 8,
   "Speed": 5,
@@ -53,7 +53,8 @@
     {
       "Name": "Shriek",
       "ActionCost": 2,
-      "Tags": [ "recharge 5+/interrupt" ],
+      "Recharge": 5,
+      "Tags": [ "interrupt" ],
       "Description": "The Izenghast releases a horrible shriek, a close blast 1 area effect. Characters in the area must save or take 4[D], or 2[D] on a successful save. Reduce this damage by [D] for every character past the first in the area. The Izenghast can take this action as an interrupt if defiance triggers, even if it hasn't recharged."
     }
   ]

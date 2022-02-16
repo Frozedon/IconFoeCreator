@@ -3,7 +3,7 @@
   "Inherits": "Relict",
   "Type": "Template",
   "Chapter": 3,
-  "RestrictToClass": "Leader",
+  "UsesClass": "Leader",
   "Traits": [
     {
       "Name": "Life Link",
@@ -20,7 +20,7 @@
     {
       "Name": "Link Vitality",
       "ActionCost": 1,
-      "Tags": [ "recharge 5+" ],
+      "Recharge": 5,
       "Description": "The priest links a relict and a foe they can see, marking both. While in range 4 of each other, each takes [D] Divine damage the first time in a turn the other linked character takes damage. A character may save to end this effect at the end of their turns. The mark ends on both of them if it ends on one."
     }
   ]

@@ -1,27 +1,13 @@
 {
   "Name": "Mob (Scrabble)",
-  "Group": "Mob",
+  "Inherits": "Mob",
   "Type": "Job",
-  "Vitality": 0,
-  "HP": 1, 
-  "Traits": [
-    {
-      "Name": "Mob",
-      "Description": "This character doesn't trigger slay effects."
-    }
-  ],
   "Actions": [
     {
       "Name": "Scrabble",
       "ActionCost": 2,
       "Tags": [ "melee attack" ],
       "Description": "Deal 1 damage as an effect. If an ally is adjacent to the target, deal 2 damage instead."
-    }
-  ],
-  "SetupTraits": [
-    {
-      "Name": "Encounter Budget",
-      "Description": "1 point in an encounter budget gets 5 mobs of the same type."
     }
   ]
 }

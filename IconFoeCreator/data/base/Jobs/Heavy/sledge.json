@@ -17,7 +17,8 @@
     {
       "Name": "Smite",
       "ActionCost": 2,
-      "Tags": [ "melee attack", "recharge 6" ],
+      "Recharge": 6,
+      "Tags": [ "melee attack" ],
       "Hit": "3[D] and foe is stunned and shoved 1.",
       "Miss": "1 damage and foe is dazed.",
       "Effect": "+1 boon against dazed characters."

@@ -12,11 +12,14 @@ namespace IconFoeCreator
         public string Type { get; set; } // Does not inherit
         public string Group { get; set; }
         public bool IsBaseTemplate { get; set; } // Does not inherit
-        public bool IsUniqueJob { get; set; } // Does not inherit
-        public int Chapter { get; set; } // Does not inherit
-        public string RestrictToTemplate { get; set; } // Does not inherit
-        public string RestrictToClass { get; set; } // Does not inherit
+        public bool? IsMob { get; set; }
+        public bool? IsElite { get; set; }
+        public bool? IsLegend { get; set; }
+        public bool? IsUniqueJob { get; set; }
+        public string UsesTemplate { get; set; } // Does not inherit
+        public string UsesClass { get; set; } // Does not inherit
         public bool RestrictToBaseTemplates { get; set; } // Does not inherit
+        public int Chapter { get; set; } // Does not inherit
         public int? Vitality { get; set; }
         public int? HP { get; set; }
         public double? AddHPPercent { get; set; }
@@ -149,13 +152,9 @@ namespace IconFoeCreator
         public List<string> Tags { get; set; }
         public string Description { get; set; }
         public string DescriptionNonessential { get; set; }
-        public double? AddHPPercent { get; set; }
-        public int? AddArmor { get; set; }
-        public int? MaxArmor { get; set; }
-        public int? AddSpeed { get; set; }
-        public int? AddDash { get; set; }
-        public bool? NoDash { get; set; }
         public bool Nonessential { get; set; }
+        public double? AddHPPercent { get; set; }
+        public int? HPMultiplierIfNormalFoe { get; set; }
 
         public Trait()
         {
@@ -169,6 +168,9 @@ namespace IconFoeCreator
         public int Count { get; set; }
         public List<string> Tags { get; set; }
         public string Description { get; set; }
+        public string Trigger { get; set; }
+        public string Effect { get; set; }
+        public string Collide { get; set; }
 
         public Interrupt()
         {
@@ -180,11 +182,12 @@ namespace IconFoeCreator
     {
         public string Name { get; set; }
         public int ActionCost { get; set; }
+        public int Recharge { get; set; }
         public List<string> Tags { get; set; }
         public string Description { get; set; }
         public string Hit { get; set; }
-        public string Critical { get; set; }
         public string AutoHit { get; set; }
+        public string Critical { get; set; }
         public string Miss { get; set; }
         public string PostAttack { get; set; }
         public string AreaEffect { get; set; }
@@ -194,6 +197,7 @@ namespace IconFoeCreator
         public string Collide { get; set; }
         public string Blightboost { get; set; }
         public string TerrainEffect { get; set; }
+        public string Special { get; set; }
         public List<Action> Combos { get; set; }
         public string PostAction { get; set; }
 

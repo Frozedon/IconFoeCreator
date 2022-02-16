@@ -1,0 +1,37 @@
+{
+  "Name": "Sprigg",
+  "Inherits": "Mob",
+  "Type": "Job",
+  "Group": "Hob",
+  "UsesTemplate": "Hob",
+  "HP": 0,
+  "Defense": 0,
+  "Speed": 3,
+  "Dash": 3,
+  "Traits": [
+    {
+      "Name": "Phasing",
+      "Description": "Can ignore obstruction and pass through, but not end your turn in, terrain or characters."
+    },
+    {
+      "Name": "Skirmisher",
+      "Description": "Can move diagonally and dash action is full speed."
+    },
+    {
+      "Name": "Barely There",
+      "Description": "Spriggs are intangible and don't cause engagement. Characters can't collide with them and can share their space. They disappear when combat ends, or all other non-sprigg allies have been defeated."
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Frolic",
+      "ActionCost": 1,
+      "Description": "The Sprigg swaps places with an ally in range 3, teleporting."
+    },
+    {
+      "Name": "Mischief",
+      "ActionCost": 2,
+      "Description": "The Sprigg swaps the places of two other characters in range 3 of each other and the Sprigg, teleporting both of them. If either cannot teleport, this move cannot be made."
+    }
+  ]
+}

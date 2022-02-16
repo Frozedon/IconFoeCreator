@@ -1,6 +1,7 @@
 {
   "Name": "Elite",
   "Group": "Elite",
+  "IsElite": true,
   "Traits": [
     {
       "Name": "Elite",
