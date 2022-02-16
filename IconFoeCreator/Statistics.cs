@@ -22,7 +22,7 @@ namespace IconFoeCreator
         public int Chapter { get; set; } // Does not inherit
         public int? Vitality { get; set; }
         public int? HP { get; set; }
-        public double? AddHPPercent { get; set; }
+        public double? AddHPPercent { get; set; } // Additive inheritance
         public int? HPMultiplier { get; set; }
         public bool? DoubleNormalFoeHP { get; set; }
         public bool? HPMultiplyByPlayers { get; set; }
@@ -87,7 +87,6 @@ namespace IconFoeCreator
             if (IsUniqueJob.HasValue) { newStats.IsUniqueJob = IsUniqueJob; } else { newStats.IsUniqueJob = otherStats.IsUniqueJob; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
-            if (AddHPPercent.HasValue) { newStats.AddHPPercent = AddHPPercent; } else { newStats.AddHPPercent = otherStats.AddHPPercent; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
             if (DoubleNormalFoeHP.HasValue) { newStats.DoubleNormalFoeHP = DoubleNormalFoeHP; } else { newStats.DoubleNormalFoeHP = otherStats.DoubleNormalFoeHP; }
             if (HPMultiplyByPlayers.HasValue) { newStats.HPMultiplyByPlayers = HPMultiplyByPlayers; } else { newStats.HPMultiplyByPlayers = otherStats.HPMultiplyByPlayers; }
@@ -102,6 +101,7 @@ namespace IconFoeCreator
             if (Phases.Count() > 0) { newStats.Phases = Phases; } else { newStats.Phases = otherStats.Phases; }
 
             // Additive statistics
+            newStats.AddHPPercent = AddHPPercent.GetValueOrDefault(0.0) + otherStats.AddHPPercent.GetValueOrDefault(0.0);
             newStats.Traits.AddRange(otherStats.Traits);
             newStats.Traits.AddRange(Traits);
             newStats.RemoveTraits.AddRange(otherStats.RemoveTraits);
