@@ -12,7 +12,6 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Inherits { get; set; } // Does not inherit
 
-        public bool Inherited { get; set; } // Does not inherit
         public string Type { get; set; } // Does not inherit
         public string Group { get; set; }
         public bool IsBaseTemplate { get; set; } // Does not inherit
@@ -20,8 +19,10 @@ namespace IconFoeCreator
         public bool? IsElite { get; set; }
         public bool? IsLegend { get; set; }
         public bool? IsUniqueJob { get; set; }
-        public string UsesClass { get; set; } // Does not inherit
-        public bool RestrictToBaseTemplates { get; set; } // Does not inherit
+        public string UsesClass { get; set; }
+        public string UsesFaction { get; set; }
+        public bool? RestrictToBaseTemplates { get; set; }
+        public bool? RestrictToNormalFoes { get; set; }
         public int Chapter { get; set; } // Does not inherit
         public int? Vitality { get; set; }
         public int? HP { get; set; }
@@ -41,7 +42,7 @@ namespace IconFoeCreator
         public List<Trait> Traits { get; set; } // Additive inheritance
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
-        public List<string> RemoveTraits { get; set; }
+        public List<string> RemoveTraits { get; set; } // Additive inheritance
 
         [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
         public List<Trait> SetupTraits { get; set; } // Additive inheritance
@@ -66,7 +67,6 @@ namespace IconFoeCreator
         {
             Name = String.Empty;
             Inherits = new List<string>();
-            Inherited = false;
             Type = String.Empty;
             Traits = new List<Trait>();
             RemoveTraits = new List<string>();
@@ -86,13 +86,10 @@ namespace IconFoeCreator
         {
             Statistics newStats = new Statistics
             {
-                Inherited = true,
                 Name = Name,
                 Inherits = Inherits,
                 Type = Type,
                 IsBaseTemplate = IsBaseTemplate,
-                UsesClass = UsesClass,
-                RestrictToBaseTemplates = RestrictToBaseTemplates,
                 Chapter = Chapter,
                 IsHomebrew = IsHomebrew
             };
@@ -103,6 +100,10 @@ namespace IconFoeCreator
             if (IsElite.HasValue) { newStats.IsElite = IsElite; } else { newStats.IsElite = otherStats.IsElite; }
             if (IsLegend.HasValue) { newStats.IsLegend = IsLegend; } else { newStats.IsLegend = otherStats.IsLegend; }
             if (IsUniqueJob.HasValue) { newStats.IsUniqueJob = IsUniqueJob; } else { newStats.IsUniqueJob = otherStats.IsUniqueJob; }
+            if (!String.IsNullOrEmpty(UsesClass)) { newStats.UsesClass = UsesClass; } else { newStats.UsesClass = otherStats.UsesClass; }
+            if (!String.IsNullOrEmpty(UsesFaction)) { newStats.UsesFaction = UsesFaction; } else { newStats.UsesFaction = otherStats.UsesFaction; }
+            if (RestrictToBaseTemplates.HasValue) { newStats.RestrictToBaseTemplates = RestrictToBaseTemplates; } else { newStats.RestrictToBaseTemplates = otherStats.RestrictToBaseTemplates; }
+            if (RestrictToNormalFoes.HasValue) { newStats.RestrictToNormalFoes = RestrictToNormalFoes; } else { newStats.RestrictToNormalFoes = otherStats.RestrictToNormalFoes; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }

@@ -11,14 +11,11 @@
     <ComboBox x:Name="Faction_comboBox" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
     <Label x:Name="Template_label" Content="Template" HorizontalAlignment="Left" Margin="6,62,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Template_comboBox" HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-    <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,120,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-    <Label x:Name="Job_label" Content="Job" HorizontalAlignment="Left" Margin="6,172,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Job_comboBox" HorizontalAlignment="Left" Margin="10,199,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-    <Label x:Name="Chapter_label" Content="Chapter" HorizontalAlignment="Left" Margin="6,230,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Chapter_comboBox" HorizontalAlignment="Left" Margin="10,257,0,0" VerticalAlignment="Top" Width="57" FontSize="16"/>
-    <CheckBox x:Name="NonessentialTraits_checkBox" Content="Show Nonessential Traits" HorizontalAlignment="Left" Margin="10,0,0,81.667" VerticalAlignment="Bottom" FontSize="14" Checked="NonessentialTraits_checkBox_Checked" Unchecked="NonessentialTraits_checkBox_Checked"/>
-    <CheckBox x:Name="FlatDamage_checkBox" Content="Use Flat Damage" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="FlatDamage_checkBox_Checked" Unchecked="FlatDamage_checkBox_Checked"/>
+    <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,153,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
+    <Label x:Name="Job_label" Content="Job" HorizontalAlignment="Left" Margin="6,205,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Job_comboBox" HorizontalAlignment="Left" Margin="10,232,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
+    <CheckBox x:Name="NonessentialTraits_checkBox" Content="Show Nonessential Traits" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="NonessentialTraits_checkBox_Checked" Unchecked="NonessentialTraits_checkBox_Checked"/>
     <CheckBox x:Name="Homebrew_checkBox" Content="Show Homebrew" HorizontalAlignment="Left" Margin="10,0,0,37.667" VerticalAlignment="Bottom" FontSize="14" Checked="Homebrew_checkBox_Checked" Unchecked="Homebrew_checkBox_Checked"/>
     <Button x:Name="ExportJson_button" Content="Export to JSON" HorizontalAlignment="Left" Margin="10,0,0,9.667" VerticalAlignment="Bottom" Width="115" FontSize="14" Click="ExportJson_button_Click"/>
     <Grid Margin="215,10,10.333,9.667">
@@ -43,6 +40,8 @@
       </RichTextBox>
       <Button x:Name="CopySetup_button" Content="Copy to Clipboard" Margin="0,0,0,-0.333" VerticalAlignment="Bottom" FontSize="14" Width="140" Click="CopySetup_button_Click" HorizontalAlignment="Left" Grid.Column="1"/>
     </Grid>
+    <Label x:Name="SuperTemplate_label" Content="Super Template" HorizontalAlignment="Left" Margin="6,290,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="SuperTemplate_comboBox" HorizontalAlignment="Left" Margin="10,317,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
 
   </Grid>
 </Window>

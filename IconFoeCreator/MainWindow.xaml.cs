@@ -43,14 +43,7 @@ namespace IconFoeCreator
             UpdateTemplateOptions();
             UpdateClassOptions();
             UpdateJobOptions();
-
-            ChapterItem[] chapters = new ChapterItem[Constants.ChapterCount];
-            for (int i = 0; i < Constants.ChapterCount; ++i)
-            {
-                chapters[i] = new ChapterItem() { Value = i + 1 };
-            }
-            Chapter_comboBox.ItemsSource = chapters;
-            Chapter_comboBox.SelectedIndex = 0;
+            UpdateSuperTemplateOptions();
 
             LastFactionName = Faction_comboBox.SelectedItem.ToString();
             LastTemplateName = Template_comboBox.SelectedItem.ToString();
@@ -61,6 +54,7 @@ namespace IconFoeCreator
             Template_comboBox.SelectionChanged += OnTemplateChanged;
             Class_comboBox.SelectionChanged += OnClassChanged;
             Job_comboBox.SelectionChanged += OnJobChanged;
+            SuperTemplate_comboBox.SelectionChanged += OnSuperTemplateChanged;
 
             UpdateDescription();
         }
@@ -97,26 +91,41 @@ namespace IconFoeCreator
             if (Job_comboBox.SelectedItem != null && LastJobName != Job_comboBox.SelectedItem.ToString())
             {
                 LastJobName = Job_comboBox.SelectedItem.ToString();
-
-                // If has template restriction, change it to that
-                /*string templateRestriction = ((Statistics)Job_comboBox.SelectedItem).RestrictToTemplate;
-                if (!String.IsNullOrEmpty(templateRestriction))
-                {
-                    ForceChangeTemplateTo(templateRestriction);
-                }*/
-
                 UpdateDescription();
             }
         }
 
+        private void OnSuperTemplateChanged(object sender, EventArgs e)
+        {
+            UpdateDescription();
+        }
+
         private void UpdateDescription()
         {
-            ChapterItem chapterItem = (ChapterItem)Chapter_comboBox.SelectedItem;
+            List<Statistics> statsToMerge = new List<Statistics>();
+
+            Statistics job = (Statistics)Job_comboBox.SelectedItem;
+            if (job != null && Statistics.IsValid(job))
+            {
+                statsToMerge.Add(job);
+            }
+
+            Statistics template = (Statistics)Template_comboBox.SelectedItem;
+            if (template != null && Statistics.IsValid(template))
+            {
+                statsToMerge.Add(template);
+            }
+
+            Statistics superTemplate = (Statistics)SuperTemplate_comboBox.SelectedItem;
+            if (superTemplate != null && Statistics.IsValid(superTemplate))
+            {
+                statsToMerge.Add(superTemplate);
+            }
+
             DescriptionCreator.UpdateDescription(
                 Description_richTextBox,
                 Setup_richTextBox,
-                (Statistics)Template_comboBox.SelectedItem,
-                (Statistics)Job_comboBox.SelectedItem,
+                statsToMerge,
                 NonessentialTraits_checkBox.IsChecked.GetValueOrDefault());
         }
 
@@ -222,6 +231,19 @@ namespace IconFoeCreator
             }
 
             Job_comboBox.SelectedIndex = index;
+        }
+
+        private void UpdateSuperTemplateOptions()
+        {
+            List<Statistics> availableSuperTemplates = new List<Statistics>(statBuilder.SuperTemplates);
+
+            if (availableSuperTemplates.Count == 0 || availableSuperTemplates[0].Name != EMPTY_STAT)
+            {
+                availableSuperTemplates.Insert(0, new Statistics() { Name = EMPTY_STAT });
+            }
+
+            SuperTemplate_comboBox.ItemsSource = availableSuperTemplates;
+            SuperTemplate_comboBox.SelectedIndex = 0;
         }
 
         private List<string> GetAvailableFactions()

@@ -8,29 +8,22 @@ namespace IconFoeCreator
 {
     public static class DescriptionCreator
     {
-        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics template, Statistics job, bool showNonessentialTraits)
+        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, List<Statistics> statsList, bool showNonessentialTraits)
         {
             descTextBox.Document.Blocks.Clear();
             setupTextBox.Document.Blocks.Clear();
 
-            bool hasTemplate = template != null && Statistics.IsValid(template);
-            bool hasJob = job != null && Statistics.IsValid(job);
-            Statistics stats;
-            if (hasTemplate && hasJob)
-            {
-                stats = template.InheritFrom(job);
-            }
-            else if (hasJob)
-            {
-                stats = job;
-            }
-            else if (hasTemplate)
-            {
-                stats = template;
-            }
-            else
+            if (statsList.Count == 0)
             {
                 return;
+            }
+
+            Statistics stats = new Statistics();
+            string name = String.Empty;
+            foreach (Statistics statsToMerge in statsList)
+            {
+                stats = statsToMerge.InheritFrom(stats);
+                name = statsToMerge.Name + " " + name;
             }
 
             // Traits can add armor, max armor, or alter hit points
@@ -47,10 +40,9 @@ namespace IconFoeCreator
             }
             hitPoints = (int)((double)hitPoints * (1.0 + addHP));
             if (stats.DoubleNormalFoeHP.GetValueOrDefault(false)
-                && hasJob
-                && !job.IsMob.GetValueOrDefault()
-                && !job.IsElite.GetValueOrDefault()
-                && !job.IsLegend.GetValueOrDefault())
+                && !stats.IsMob.GetValueOrDefault()
+                && !stats.IsElite.GetValueOrDefault()
+                && !stats.IsLegend.GetValueOrDefault())
             {
                 hitPoints *= 2;
             }
@@ -64,18 +56,7 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.TextDecorations = TextDecorations.Underline;
-                if (hasTemplate)
-                {
-                    AddBold(paragraph, template.ToString());
-                }
-                if (hasTemplate && hasJob)
-                {
-                    AddBold(paragraph, " ");
-                }
-                if (hasJob)
-                {
-                    AddBold(paragraph, job.ToString());
-                }
+                AddBold(paragraph, name);
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 

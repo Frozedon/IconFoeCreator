@@ -12,6 +12,7 @@ namespace IconFoeCreator
         public List<Statistics> Templates;
         public List<string> Classes;
         public List<Statistics> Jobs;
+        public List<Statistics> SuperTemplates;
 
         private static readonly string DATA_FOLDER_PATH = "data/";
         private static readonly string BASE_FOLDER_PATH = "base/";
@@ -23,6 +24,7 @@ namespace IconFoeCreator
             Templates = new List<Statistics>();
             Classes = new List<string>();
             Jobs = new List<Statistics>();
+            SuperTemplates = new List<Statistics>();
         }
 
         public void BuildStatistics()
@@ -106,6 +108,10 @@ namespace IconFoeCreator
                         }
                     }
                 }
+                else if (stat.Type == "SuperTemplate")
+                {
+                    SuperTemplates.Add(stat);
+                }
             }
 
             // Sort lists
@@ -115,6 +121,11 @@ namespace IconFoeCreator
             });
 
             Templates.Sort(delegate (Statistics x, Statistics y)
+            {
+                return x.Name.CompareTo(y.Name);
+            });
+
+            SuperTemplates.Sort(delegate (Statistics x, Statistics y)
             {
                 return x.Name.CompareTo(y.Name);
             });
