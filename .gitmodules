@@ -1,0 +1,3 @@
+[submodule "IconFoeJson"]
+	path = IconFoeJson
+	url = https://github.com/Frozedon/IconFoeJson.git
