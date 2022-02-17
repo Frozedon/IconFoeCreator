@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SingleOrArrayConverter.cs" />
     <Compile Include="StatisticBuilder.cs" />
     <Compile Include="Statistics.cs" />
     <Page Include="MainWindow.xaml">

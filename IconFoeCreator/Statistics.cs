@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +8,10 @@ namespace IconFoeCreator
     public class Statistics
     {
         public string Name { get; set; } // Does not inherit
-        public string Inherits { get; set; } // Does not inherit
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Inherits { get; set; } // Does not inherit
+
         public bool Inherited { get; set; } // Does not inherit
         public string Type { get; set; } // Does not inherit
         public string Group { get; set; }
@@ -16,7 +20,6 @@ namespace IconFoeCreator
         public bool? IsElite { get; set; }
         public bool? IsLegend { get; set; }
         public bool? IsUniqueJob { get; set; }
-        public string UsesTemplate { get; set; } // Does not inherit
         public string UsesClass { get; set; } // Does not inherit
         public bool RestrictToBaseTemplates { get; set; } // Does not inherit
         public int Chapter { get; set; } // Does not inherit
@@ -33,20 +36,36 @@ namespace IconFoeCreator
         public int? FrayDamage { get; set; }
         public string DamageDie { get; set; }
         public string FactionBlight { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
         public List<Trait> Traits { get; set; } // Additive inheritance
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveTraits { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
         public List<Trait> SetupTraits { get; set; } // Additive inheritance
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
         public List<Interrupt> Interrupts { get; set; } // Additive inheritance
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; } // Additive inheritance
+
+        [JsonConverter(typeof(SingleOrArrayConverter<BodyPart>))]
         public List<BodyPart> BodyParts { get; set; } // Additive inheritance
+
         public string PhasesDescription { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Phase>))]
         public List<Phase> Phases { get; set; }
+
         public bool IsHomebrew { get; set; } // To be used and set internally
 
         public Statistics()
         {
             Name = String.Empty;
-            Inherits = String.Empty;
+            Inherits = new List<string>();
             Inherited = false;
             Type = String.Empty;
             Traits = new List<Trait>();
@@ -72,7 +91,6 @@ namespace IconFoeCreator
                 Inherits = Inherits,
                 Type = Type,
                 IsBaseTemplate = IsBaseTemplate,
-                UsesTemplate = UsesTemplate,
                 UsesClass = UsesClass,
                 RestrictToBaseTemplates = RestrictToBaseTemplates,
                 Chapter = Chapter,
@@ -159,7 +177,10 @@ namespace IconFoeCreator
     public class Trait
     {
         public string Name { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
+
         public string Description { get; set; }
         public string DescriptionNonessential { get; set; }
         public bool Nonessential { get; set; }
@@ -174,7 +195,10 @@ namespace IconFoeCreator
     {
         public string Name { get; set; }
         public int Count { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
+
         public string Description { get; set; }
         public string Trigger { get; set; }
         public string Effect { get; set; }
@@ -191,7 +215,10 @@ namespace IconFoeCreator
         public string Name { get; set; }
         public int ActionCost { get; set; }
         public int Recharge { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
+
         public string Description { get; set; }
         public string Hit { get; set; }
         public string AutoHit { get; set; }
@@ -206,7 +233,10 @@ namespace IconFoeCreator
         public string Blightboost { get; set; }
         public string TerrainEffect { get; set; }
         public string Special { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Combos { get; set; }
+
         public string PostAction { get; set; }
 
         public Action()
@@ -228,7 +258,11 @@ namespace IconFoeCreator
     {
         public string Name { get; set; }
         public string Description { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
         public List<Trait> Traits { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
 
         public Phase()

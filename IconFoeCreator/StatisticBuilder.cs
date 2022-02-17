@@ -52,14 +52,26 @@ namespace IconFoeCreator
                 for (int i = 0; i < allStats.Count(); ++i)
                 {
                     Statistics stat = allStats[i];
-                    if (stat.Inherits != null && stat.Inherits != String.Empty && !stat.Inherited)
+                    for (int j = 0; j < stat.Inherits.Count();)
                     {
-                        Statistics match = allStats.FirstOrDefault(otherStat => otherStat.Name == stat.Inherits);
-                        if (match != null && (match.Inherits == null || match.Inherits == String.Empty || match.Inherited))
+                        string inherits = stat.Inherits[j];
+                        Statistics match = allStats.FirstOrDefault(otherStat => otherStat.Name == inherits);
+                        if (match != null)
                         {
-                            Statistics newStat = stat.InheritFrom(match);
-                            allStats[i] = newStat;
-                            changed = true;
+                            if (match.Inherits.Count() == 0)
+                            {
+                                allStats[i] = stat = stat.InheritFrom(match);
+                                stat.Inherits.Remove(inherits);
+                                changed = true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            ++j;
                         }
                     }
                 }
