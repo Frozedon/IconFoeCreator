@@ -14,6 +14,7 @@ namespace IconFoeCreator
 
         public string Type { get; set; } // Does not inherit
         public string Group { get; set; }
+        public double? EncounterBudget { get; set; }
         public bool IsBaseTemplate { get; set; } // Does not inherit
         public bool? IsMob { get; set; }
         public bool? IsElite { get; set; }
@@ -96,6 +97,7 @@ namespace IconFoeCreator
 
             // Inherited values
             if (!String.IsNullOrEmpty(Group)) { newStats.Group = Group; } else { newStats.Group = otherStats.Group; }
+            if (EncounterBudget.HasValue) { newStats.EncounterBudget = EncounterBudget; } else { newStats.EncounterBudget = otherStats.EncounterBudget; }
             if (IsMob.HasValue) { newStats.IsMob = IsMob; } else { newStats.IsMob = otherStats.IsMob; }
             if (IsElite.HasValue) { newStats.IsElite = IsElite; } else { newStats.IsElite = otherStats.IsElite; }
             if (IsLegend.HasValue) { newStats.IsLegend = IsLegend; } else { newStats.IsLegend = otherStats.IsLegend; }

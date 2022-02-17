@@ -198,6 +198,8 @@ namespace IconFoeCreator
             }
 
             // Setup traits in other textbox
+            AddEncounterBudget(setupTextBox, stats.EncounterBudget.GetValueOrDefault(1.0));
+
             if (stats.SetupTraits.Count > 0)
             {
                 AddSetupTraits(setupTextBox, stats.SetupTraits);
@@ -547,6 +549,32 @@ namespace IconFoeCreator
 
                 textBox.Document.Blocks.Add(paragraph);
             }
+        }
+
+        public static void AddEncounterBudget(RichTextBox textBox, double encounterBudget)
+        {
+            Paragraph paragraph = MakeParagraph();
+            AddBold(paragraph, "Encounter Budget. ");
+
+            if (encounterBudget < 0.0)
+            {
+                AddNormal(paragraph, "This foe is worth the entire encounter budget.");
+            }
+            else if (encounterBudget > 0.0 && encounterBudget < 1.0)
+            {
+                int amount = (int)(1.0 / encounterBudget);
+                AddNormal(paragraph, "1 point in an encounter budget gets " + amount + " mobs of the same type.");
+            }
+            else if (encounterBudget == 1.0)
+            {
+                AddNormal(paragraph, "This foe takes up " + (int)encounterBudget + " point in an encounter budget.");
+            }
+            else
+            {
+                AddNormal(paragraph, "This foe takes up " + (int)encounterBudget + " points in an encounter budget.");
+            }
+
+            textBox.Document.Blocks.Add(paragraph);
         }
     }
 }
