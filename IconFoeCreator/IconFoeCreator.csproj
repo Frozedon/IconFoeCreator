@@ -106,6 +106,6 @@
     <PreBuildEvent>del $(ProjectDir)$(OutDir)data /s /q</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(ProjectDir)data\* $(ProjectDir)$(OutDir)data\ /e /y /i /r</PostBuildEvent>
+    <PostBuildEvent>xcopy $(ProjectDir)..\IconFoeJson\data\* $(ProjectDir)$(OutDir)data\ /e /y /i /r</PostBuildEvent>
   </PropertyGroup>
 </Project>
