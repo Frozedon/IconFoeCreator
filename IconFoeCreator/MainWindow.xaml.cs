@@ -295,7 +295,7 @@ namespace IconFoeCreator
                     availableTemplates = RemoveTemplatesOfWrongClass(availableTemplates, classGroup);
                 }
 
-                if (selectedJob.IsMob.GetValueOrDefault(false) || selectedJob.IsElite.GetValueOrDefault(false) || selectedJob.IsLegend.GetValueOrDefault(false))
+                if (selectedJob.RestrictToBasicTemplates.GetValueOrDefault(false))
                 {
                     availableTemplates = RemoveNonBasicTemplates(availableTemplates);
                 }

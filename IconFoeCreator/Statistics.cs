@@ -20,6 +20,7 @@ namespace IconFoeCreator
         public bool? IsElite { get; set; }
         public bool? IsLegend { get; set; }
         public string UsesClass { get; set; }
+        public bool? RestrictToBasicTemplates { get; set; }
         public int Chapter { get; set; } // Does not inherit
         public int? Vitality { get; set; }
         public int? HP { get; set; }
@@ -98,6 +99,7 @@ namespace IconFoeCreator
             if (IsElite.HasValue) { newStats.IsElite = IsElite; } else { newStats.IsElite = otherStats.IsElite; }
             if (IsLegend.HasValue) { newStats.IsLegend = IsLegend; } else { newStats.IsLegend = otherStats.IsLegend; }
             if (!String.IsNullOrEmpty(UsesClass)) { newStats.UsesClass = UsesClass; } else { newStats.UsesClass = otherStats.UsesClass; }
+            if (RestrictToBasicTemplates.HasValue) { newStats.RestrictToBasicTemplates = RestrictToBasicTemplates; } else { newStats.RestrictToBasicTemplates = otherStats.RestrictToBasicTemplates; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
