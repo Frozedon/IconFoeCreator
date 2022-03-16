@@ -12,11 +12,17 @@ namespace IconFoeCreator
         public List<Statistics> Templates;
         public List<string> Classes;
         public List<Statistics> Jobs;
-        public List<Statistics> SuperTemplates;
+        public List<Statistics> UniqueFoes;
+        public List<Statistics> Specials;
 
         private static readonly string DATA_FOLDER_PATH = "data/";
         private static readonly string BASE_FOLDER_PATH = "base/";
         private static readonly string HOMEBREW_FOLDER_PATH = "homebrew/";
+
+        private static readonly string TYPE_TEMPLATE = "template";
+        private static readonly string TYPE_JOB = "job";
+        private static readonly string TYPE_UNIQUEFOE = "uniquefoe";
+        private static readonly string TYPE_SPECIAL = "special";
 
         public StatisticBuilder()
         {
@@ -24,7 +30,8 @@ namespace IconFoeCreator
             Templates = new List<Statistics>();
             Classes = new List<string>();
             Jobs = new List<Statistics>();
-            SuperTemplates = new List<Statistics>();
+            UniqueFoes = new List<Statistics>();
+            Specials = new List<Statistics>();
         }
 
         public void BuildStatistics()
@@ -33,6 +40,8 @@ namespace IconFoeCreator
             Templates.Clear();
             Classes.Clear();
             Jobs.Clear();
+            UniqueFoes.Clear();
+            Specials.Clear();
 
             List<Statistics> allStats = new List<Statistics>();
 
@@ -82,11 +91,12 @@ namespace IconFoeCreator
             // Organize into Lists
             foreach (Statistics stat in allStats)
             {
-                if (stat.Type == "Job")
+                string typeLowercase = stat.Type.ToLower();
+                if (typeLowercase == TYPE_JOB)
                 {
                     Jobs.Add(stat);
 
-                    if (stat.Group != null && stat.Group != String.Empty)
+                    if (!String.IsNullOrEmpty(stat.Group))
                     {
                         var group = Classes.FirstOrDefault(otherGroup => otherGroup == stat.Group);
                         if (group == null)
@@ -95,11 +105,11 @@ namespace IconFoeCreator
                         }
                     }
                 }
-                else if (stat.Type == "Template")
+                else if (typeLowercase == TYPE_TEMPLATE)
                 {
                     Templates.Add(stat);
 
-                    if (stat.Group != null && stat.Group != String.Empty)
+                    if (!String.IsNullOrEmpty(stat.Group))
                     {
                         var group = Factions.FirstOrDefault(otherGroup => otherGroup == stat.Group);
                         if (group == null)
@@ -108,9 +118,22 @@ namespace IconFoeCreator
                         }
                     }
                 }
-                else if (stat.Type == "SuperTemplate")
+                else if (typeLowercase == TYPE_UNIQUEFOE)
                 {
-                    SuperTemplates.Add(stat);
+                    UniqueFoes.Add(stat);
+
+                    if (!String.IsNullOrEmpty(stat.Group))
+                    {
+                        var group = Factions.FirstOrDefault(otherGroup => otherGroup == stat.Group);
+                        if (group == null)
+                        {
+                            Factions.Add(stat.Group);
+                        }
+                    }
+                }
+                else if (typeLowercase == TYPE_SPECIAL)
+                {
+                    Specials.Add(stat);
                 }
             }
 
@@ -125,7 +148,12 @@ namespace IconFoeCreator
                 return x.Name.CompareTo(y.Name);
             });
 
-            SuperTemplates.Sort(delegate (Statistics x, Statistics y)
+            UniqueFoes.Sort(delegate (Statistics x, Statistics y)
+            {
+                return x.Name.CompareTo(y.Name);
+            });
+
+            Specials.Sort(delegate (Statistics x, Statistics y)
             {
                 return x.Name.CompareTo(y.Name);
             });

@@ -15,15 +15,11 @@ namespace IconFoeCreator
         public string Type { get; set; } // Does not inherit
         public string Group { get; set; }
         public double? EncounterBudget { get; set; }
-        public bool IsBaseTemplate { get; set; } // Does not inherit
+        public bool IsBasicTemplate { get; set; } // Does not inherit
         public bool? IsMob { get; set; }
         public bool? IsElite { get; set; }
         public bool? IsLegend { get; set; }
-        public bool? IsUniqueJob { get; set; }
         public string UsesClass { get; set; }
-        public string UsesFaction { get; set; }
-        public bool? RestrictToBaseTemplates { get; set; }
-        public bool? RestrictToNormalFoes { get; set; }
         public int Chapter { get; set; } // Does not inherit
         public int? Vitality { get; set; }
         public int? HP { get; set; }
@@ -90,7 +86,7 @@ namespace IconFoeCreator
                 Name = Name,
                 Inherits = Inherits,
                 Type = Type,
-                IsBaseTemplate = IsBaseTemplate,
+                IsBasicTemplate = IsBasicTemplate,
                 Chapter = Chapter,
                 IsHomebrew = IsHomebrew
             };
@@ -101,11 +97,7 @@ namespace IconFoeCreator
             if (IsMob.HasValue) { newStats.IsMob = IsMob; } else { newStats.IsMob = otherStats.IsMob; }
             if (IsElite.HasValue) { newStats.IsElite = IsElite; } else { newStats.IsElite = otherStats.IsElite; }
             if (IsLegend.HasValue) { newStats.IsLegend = IsLegend; } else { newStats.IsLegend = otherStats.IsLegend; }
-            if (IsUniqueJob.HasValue) { newStats.IsUniqueJob = IsUniqueJob; } else { newStats.IsUniqueJob = otherStats.IsUniqueJob; }
             if (!String.IsNullOrEmpty(UsesClass)) { newStats.UsesClass = UsesClass; } else { newStats.UsesClass = otherStats.UsesClass; }
-            if (!String.IsNullOrEmpty(UsesFaction)) { newStats.UsesFaction = UsesFaction; } else { newStats.UsesFaction = otherStats.UsesFaction; }
-            if (RestrictToBaseTemplates.HasValue) { newStats.RestrictToBaseTemplates = RestrictToBaseTemplates; } else { newStats.RestrictToBaseTemplates = otherStats.RestrictToBaseTemplates; }
-            if (RestrictToNormalFoes.HasValue) { newStats.RestrictToNormalFoes = RestrictToNormalFoes; } else { newStats.RestrictToNormalFoes = otherStats.RestrictToNormalFoes; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }

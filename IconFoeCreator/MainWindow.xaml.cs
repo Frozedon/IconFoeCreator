@@ -27,10 +27,6 @@ namespace IconFoeCreator
         public static readonly string ANY_GROUP = "Any";
 
         StatisticBuilder statBuilder;
-        string LastFactionName;
-        string LastTemplateName;
-        string LastClassName;
-        string LastJobName;
 
         public MainWindow()
         {
@@ -39,63 +35,44 @@ namespace IconFoeCreator
             statBuilder = new StatisticBuilder();
             statBuilder.BuildStatistics();
 
-            UpdateFactionOptions();
+            Faction_comboBox.ItemsSource = GetAvailableFactions();
+            Faction_comboBox.SelectedIndex = 0;
+            Class_comboBox.ItemsSource = GetAvailableClasses();
+            Class_comboBox.SelectedIndex = 0;
             UpdateTemplateOptions();
-            UpdateClassOptions();
             UpdateJobOptions();
-            UpdateSuperTemplateOptions();
-
-            LastFactionName = Faction_comboBox.SelectedItem.ToString();
-            LastTemplateName = Template_comboBox.SelectedItem.ToString();
-            LastClassName = Class_comboBox.SelectedItem.ToString();
-            LastJobName = Job_comboBox.SelectedItem.ToString();
 
             Faction_comboBox.SelectionChanged += OnFactionChanged;
             Template_comboBox.SelectionChanged += OnTemplateChanged;
             Class_comboBox.SelectionChanged += OnClassChanged;
             Job_comboBox.SelectionChanged += OnJobChanged;
-            SuperTemplate_comboBox.SelectionChanged += OnSuperTemplateChanged;
 
             UpdateDescription();
         }
 
         private void OnFactionChanged(object sender, EventArgs e)
         {
-            if (Faction_comboBox.SelectedItem != null && LastFactionName != Faction_comboBox.SelectedItem.ToString())
+            if (Faction_comboBox.SelectedItem != null)
             {
-                LastFactionName = Faction_comboBox.SelectedItem.ToString();
                 UpdateTemplateOptions();
             }
         }
 
         private void OnClassChanged(object sender, EventArgs e)
         {
-            if (Class_comboBox.SelectedItem != null && LastClassName != Class_comboBox.SelectedItem.ToString())
+            if (Class_comboBox.SelectedItem != null)
             {
-                LastClassName = Class_comboBox.SelectedItem.ToString();
+                UpdateTemplateOptions();
                 UpdateJobOptions();
             }
         }
 
         private void OnTemplateChanged(object sender, EventArgs e)
         {
-            if (Template_comboBox.SelectedItem != null && LastTemplateName != Template_comboBox.SelectedItem.ToString())
-            {
-                LastTemplateName = Template_comboBox.SelectedItem.ToString();
-                UpdateDescription();
-            }
+            UpdateDescription();
         }
 
         private void OnJobChanged(object sender, EventArgs e)
-        {
-            if (Job_comboBox.SelectedItem != null && LastJobName != Job_comboBox.SelectedItem.ToString())
-            {
-                LastJobName = Job_comboBox.SelectedItem.ToString();
-                UpdateDescription();
-            }
-        }
-
-        private void OnSuperTemplateChanged(object sender, EventArgs e)
         {
             UpdateDescription();
         }
@@ -116,69 +93,11 @@ namespace IconFoeCreator
                 statsToMerge.Add(template);
             }
 
-            Statistics superTemplate = (Statistics)SuperTemplate_comboBox.SelectedItem;
-            if (superTemplate != null && Statistics.IsValid(superTemplate))
-            {
-                statsToMerge.Add(superTemplate);
-            }
-
             DescriptionCreator.UpdateDescription(
                 Description_richTextBox,
                 Setup_richTextBox,
                 statsToMerge,
                 NonessentialTraits_checkBox.IsChecked.GetValueOrDefault());
-        }
-
-        private void UpdateFactionOptions()
-        {
-            string selectedItem = String.Empty;
-            if (Faction_comboBox.SelectedItem != null)
-            {
-                selectedItem = Faction_comboBox.SelectedItem.ToString();
-            }
-
-            Faction_comboBox.ItemsSource = GetAvailableFactions();
-            int index = 0;
-
-            if (selectedItem.Length > 0)
-            {
-                for (int i = 0; i < Faction_comboBox.Items.Count; ++i)
-                {
-                    if (selectedItem == Faction_comboBox.Items[i].ToString())
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-
-            Faction_comboBox.SelectedIndex = index;
-        }
-
-        private void UpdateClassOptions()
-        {
-            string selectedItem = String.Empty;
-            if (Class_comboBox.SelectedItem != null)
-            {
-                selectedItem = Class_comboBox.SelectedItem.ToString();
-            }
-
-            Class_comboBox.ItemsSource = GetAvailableClasses();
-            int index = 0;
-
-            if (selectedItem.Length > 0)
-            {
-                for (int i = 0; i < Class_comboBox.Items.Count; ++i)
-                {
-                    if (selectedItem == Class_comboBox.Items[i].ToString())
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-
-            Class_comboBox.SelectedIndex = index;
         }
 
         private void UpdateTemplateOptions()
@@ -189,9 +108,11 @@ namespace IconFoeCreator
                 selectedItem = Template_comboBox.SelectedItem.ToString();
             }
 
-            Template_comboBox.ItemsSource = GetAvailableTemplates();
-            int index = 0;
 
+            Template_comboBox.ItemsSource = GetAvailableTemplates();
+
+
+            int index = 0;
             if (selectedItem.Length > 0)
             {
                 for (int i = 0; i < Template_comboBox.Items.Count; ++i)
@@ -203,7 +124,6 @@ namespace IconFoeCreator
                     }
                 }
             }
-
             Template_comboBox.SelectedIndex = index;
         }
 
@@ -215,9 +135,11 @@ namespace IconFoeCreator
                 selectedItem = Job_comboBox.SelectedItem.ToString();
             }
 
-            Job_comboBox.ItemsSource = GetAvailableJobs();
-            int index = 0;
 
+            Job_comboBox.ItemsSource = GetAvailableJobs();
+
+
+            int index = 0;
             if (selectedItem.Length > 0)
             {
                 for (int i = 0; i < Job_comboBox.Items.Count; ++i)
@@ -229,29 +151,12 @@ namespace IconFoeCreator
                     }
                 }
             }
-
             Job_comboBox.SelectedIndex = index;
-        }
-
-        private void UpdateSuperTemplateOptions()
-        {
-            List<Statistics> availableSuperTemplates = new List<Statistics>(statBuilder.SuperTemplates);
-
-            if (availableSuperTemplates.Count == 0 || availableSuperTemplates[0].Name != EMPTY_STAT)
-            {
-                availableSuperTemplates.Insert(0, new Statistics() { Name = EMPTY_STAT });
-            }
-
-            SuperTemplate_comboBox.ItemsSource = availableSuperTemplates;
-            SuperTemplate_comboBox.SelectedIndex = 0;
         }
 
         private List<string> GetAvailableFactions()
         {
             List<string> availableFactions = new List<string>(statBuilder.Factions);
-            List<Statistics> availableTemplates = GetAvailableTemplates();
-
-            availableFactions = RemoveGroupsNotInStats(availableFactions, availableTemplates);
 
             if (availableFactions.Count == 0 || availableFactions[0] != ANY_GROUP)
             {
@@ -264,9 +169,6 @@ namespace IconFoeCreator
         private List<string> GetAvailableClasses()
         {
             List<string> availableClasses = new List<string>(statBuilder.Classes);
-            List<Statistics> availableJobs = GetAvailableJobs();
-
-            availableClasses = RemoveGroupsNotInStats(availableClasses, availableJobs);
 
             if (availableClasses.Count == 0 || availableClasses[0] != ANY_GROUP)
             {
@@ -287,6 +189,12 @@ namespace IconFoeCreator
                 {
                     availableTemplates = RemoveStatsOfOtherGroups(availableTemplates, factionGroup);
                 }
+
+                string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
+                if (classGroup != ANY_GROUP.ToLower())
+                {
+                    availableTemplates = RemoveStatsOfOtherClasses(availableTemplates, classGroup);
+                }
             }
 
             bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
@@ -295,10 +203,7 @@ namespace IconFoeCreator
                 availableTemplates = RemoveHomebrewStats(availableTemplates);
             }
 
-            if (availableTemplates.Count == 0 || availableTemplates[0].Name != EMPTY_STAT)
-            {
-                availableTemplates.Insert(0, new Statistics() { Name = EMPTY_STAT });
-            }
+            availableTemplates.Insert(0, new Statistics() { Name = EMPTY_STAT });
 
             return availableTemplates;
         }
@@ -323,10 +228,7 @@ namespace IconFoeCreator
                 availableJobs = RemoveHomebrewStats(availableJobs);
             }
 
-            if (availableJobs.Count == 0 || availableJobs[0].Name != EMPTY_STAT)
-            {
-                availableJobs.Insert(0, new Statistics() { Name = EMPTY_STAT });
-            }
+            availableJobs.Insert(0, new Statistics() { Name = EMPTY_STAT });
 
             return availableJobs;
         }
@@ -352,6 +254,14 @@ namespace IconFoeCreator
             return stats.FindAll(delegate (Statistics stat)
             {
                 return !String.IsNullOrEmpty(stat.Group) && stat.Group.ToLower() == groupName.ToLower();
+            });
+        }
+
+        private List<Statistics> RemoveStatsOfOtherClasses(List<Statistics> stats, string className)
+        {
+            return stats.FindAll(delegate (Statistics stat)
+            {
+                return String.IsNullOrEmpty(stat.UsesClass) || stat.UsesClass.ToLower() == className.ToLower();
             });
         }
 
@@ -406,9 +316,7 @@ namespace IconFoeCreator
 
         private void Homebrew_checkBox_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateFactionOptions();
             UpdateTemplateOptions();
-            UpdateClassOptions();
             UpdateJobOptions();
         }
 
