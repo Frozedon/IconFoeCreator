@@ -147,6 +147,11 @@ namespace IconFoeCreator
 
             Templates.Sort(delegate (Statistics x, Statistics y)
             {
+                if (x.IsBasicTemplate && !y.IsBasicTemplate)
+                    return -1;
+                if (!x.IsBasicTemplate && y.IsBasicTemplate)
+                    return 1;
+
                 return x.Name.CompareTo(y.Name);
             });
 
