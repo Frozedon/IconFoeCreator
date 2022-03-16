@@ -44,6 +44,8 @@
     <ComboBox x:Name="UniqueFoe_comboBox" HorizontalAlignment="Left" Margin="27,145,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
     <Label x:Name="Special_Label" Content="Special" HorizontalAlignment="Left" Margin="27,172,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Special_comboBox" HorizontalAlignment="Left" Margin="27,199,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
+    <CheckBox x:Name="Mob_checkBox" Content="Mob" HorizontalAlignment="Left" Margin="36,0,0,352.667" VerticalAlignment="Bottom" FontSize="14" Checked="Mob_checkBox_Checked" Unchecked="Mob_checkBox_Checked"/>
+    <CheckBox x:Name="Elite_checkBox" Content="Elite" HorizontalAlignment="Left" Margin="130,0,0,352.667" VerticalAlignment="Bottom" FontSize="14" Checked="Elite_checkBox_Checked" Unchecked="Elite_checkBox_Checked"/>
 
   </Grid>
 </Window>

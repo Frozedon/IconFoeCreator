@@ -64,44 +64,14 @@ namespace IconFoeCreator
 
         private void OnTemplateChanged(object sender, EventArgs e)
         {
-            // Disable unique foe dropdown
-            if (Template_comboBox.SelectedItem != null && Template_comboBox.SelectedItem.ToString() != EMPTY_STAT)
-            {
-                UniqueFoe_comboBox.SelectedIndex = 0;
-                UniqueFoe_comboBox.IsEnabled = false;
-            }
-            else if (!UniqueFoe_comboBox.IsEnabled
-                && (Job_comboBox.SelectedItem == null || Job_comboBox.SelectedItem.ToString() == EMPTY_STAT))
-            {
-                UniqueFoe_comboBox.IsEnabled = true;
-            }
-
+            UpdateUniqueFoeDropdownState();
             UpdateDescription();
         }
 
         private void OnUniqueFoeChanged(object sender, EventArgs e)
         {
-            // Disable template dropdown and job dropdown
-            if (UniqueFoe_comboBox.SelectedItem != null && UniqueFoe_comboBox.SelectedItem.ToString() != EMPTY_STAT)
-            {
-                Template_comboBox.SelectedIndex = 0;
-                Template_comboBox.IsEnabled = false;
-
-                Job_comboBox.SelectedIndex = 0;
-                Job_comboBox.IsEnabled = false;
-            }
-            else
-            {
-                if (!Template_comboBox.IsEnabled)
-                {
-                    Template_comboBox.IsEnabled = true;
-                }
-                if (!Job_comboBox.IsEnabled)
-                {
-                    Job_comboBox.IsEnabled = true;
-                }
-            }
-
+            UpdateTemplateDropdownState();
+            UpdateJobDropdownState();
             UpdateDescription();
         }
 
@@ -112,28 +82,14 @@ namespace IconFoeCreator
 
         private void OnClassChanged(object sender, EventArgs e)
         {
-            if (Class_comboBox.SelectedItem != null)
-            {
-                UpdateTemplateOptions();
-                UpdateUniqueFoeOptions();
-                UpdateJobOptions();
-            }
+            UpdateTemplateOptions();
+            UpdateUniqueFoeOptions();
+            UpdateJobOptions();
         }
 
         private void OnJobChanged(object sender, EventArgs e)
         {
-            // Disable unique foe dropdown
-            if (Job_comboBox.SelectedItem != null && Job_comboBox.SelectedItem.ToString() != EMPTY_STAT)
-            {
-                UniqueFoe_comboBox.SelectedIndex = 0;
-                UniqueFoe_comboBox.IsEnabled = false;
-            }
-            else if (!UniqueFoe_comboBox.IsEnabled
-                && (Template_comboBox.SelectedItem == null || Template_comboBox.SelectedItem.ToString() == EMPTY_STAT))
-            {
-                UniqueFoe_comboBox.IsEnabled = true;
-            }
-
+            UpdateUniqueFoeDropdownState();
             UpdateTemplateOptions();
             UpdateDescription();
         }
@@ -166,11 +122,92 @@ namespace IconFoeCreator
                 statsToMerge.Add(special);
             }
 
+            if (Mob_checkBox.IsChecked.GetValueOrDefault(false))
+            {
+                Statistics mobTemplate = statBuilder.Specials.Find(stat => stat.Name.ToLower() == "mob (template)");
+                if (mobTemplate != null)
+                {
+                    statsToMerge.Add(mobTemplate);
+                }
+            }
+            else if (Elite_checkBox.IsChecked.GetValueOrDefault(false))
+            {
+                Statistics eliteTemplate = statBuilder.Specials.Find(stat => stat.Name.ToLower() == "elite (template)");
+                if (eliteTemplate != null)
+                {
+                    statsToMerge.Add(eliteTemplate);
+                }
+            }
+
             DescriptionCreator.UpdateDescription(
                 Description_richTextBox,
                 Setup_richTextBox,
                 statsToMerge,
                 NonessentialTraits_checkBox.IsChecked.GetValueOrDefault());
+        }
+
+        private void UpdateTemplateDropdownState()
+        {
+            // Disable if the unique foe has been chosen
+            if (UniqueFoe_comboBox.SelectedItem != null && UniqueFoe_comboBox.SelectedItem.ToString() != EMPTY_STAT)
+            {
+                Template_comboBox.SelectedIndex = 0;
+                Template_comboBox.IsEnabled = false;
+            }
+            else if (!Template_comboBox.IsEnabled)
+            {
+                Template_comboBox.IsEnabled = true;
+            }
+        }
+
+        private void UpdateUniqueFoeDropdownState()
+        {
+            // Disable if the job or template has been chosen
+            // Also disable if the mob or elite check boxes have been checked
+            if ((Job_comboBox.SelectedItem != null && Job_comboBox.SelectedItem.ToString() != EMPTY_STAT)
+                || (Template_comboBox.SelectedItem != null && Template_comboBox.SelectedItem.ToString() != EMPTY_STAT)
+                || Mob_checkBox.IsChecked.GetValueOrDefault(false)
+                || Elite_checkBox.IsChecked.GetValueOrDefault(false))
+            {
+                UniqueFoe_comboBox.SelectedIndex = 0;
+                UniqueFoe_comboBox.IsEnabled = false;
+            }
+            else if (!UniqueFoe_comboBox.IsEnabled)
+            {
+                UniqueFoe_comboBox.IsEnabled = true;
+            }
+        }
+
+        private void UpdateJobDropdownState()
+        {
+            // Disable if the unique foe has been chosen
+            if (UniqueFoe_comboBox.SelectedItem != null && UniqueFoe_comboBox.SelectedItem.ToString() != EMPTY_STAT)
+            {
+                Job_comboBox.SelectedIndex = 0;
+                Job_comboBox.IsEnabled = false;
+            }
+            else if (!Job_comboBox.IsEnabled)
+            {
+                Job_comboBox.IsEnabled = true;
+            }
+        }
+
+        private void UpdateMobCheckBoxState()
+        {
+            // Disable if the elite check box is checked
+            if (Elite_checkBox.IsChecked.GetValueOrDefault(false))
+            {
+                Mob_checkBox.IsChecked = false;
+            }
+        }
+
+        private void UpdateEliteCheckBoxState()
+        {
+            // Disable if the mob check box is checked
+            if (Mob_checkBox.IsChecked.GetValueOrDefault(false))
+            {
+                Elite_checkBox.IsChecked = false;
+            }
         }
 
         private void UpdateFactionOptions()
@@ -543,19 +580,40 @@ namespace IconFoeCreator
             Setup_richTextBox.Copy();
         }
 
-        private void NonessentialTraits_checkBox_Checked(object sender, RoutedEventArgs e)
+        private void Mob_checkBox_Checked(object sender, RoutedEventArgs e)
         {
+            UpdateEliteCheckBoxState();
+            UpdateUniqueFoeDropdownState();
+
+            UpdateTemplateOptions();
+            UpdateUniqueFoeOptions();
+
             UpdateDescription();
         }
 
-        private void FlatDamage_checkBox_Checked(object sender, RoutedEventArgs e)
+        private void Elite_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateMobCheckBoxState();
+            UpdateUniqueFoeDropdownState();
+
+            UpdateTemplateOptions();
+            UpdateUniqueFoeOptions();
+
+            UpdateDescription();
+        }
+
+        private void NonessentialTraits_checkBox_Checked(object sender, RoutedEventArgs e)
         {
             UpdateDescription();
         }
 
         private void Homebrew_checkBox_Checked(object sender, RoutedEventArgs e)
         {
+            UpdateFactionOptions();
             UpdateTemplateOptions();
+            UpdateUniqueFoeOptions();
+            UpdateSpecialTemplateOptions();
+            UpdateClassOptions();
             UpdateJobOptions();
         }
 
