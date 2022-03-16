@@ -23,7 +23,12 @@ namespace IconFoeCreator
             foreach (Statistics statsToMerge in statsList)
             {
                 stats = statsToMerge.InheritFrom(stats);
-                name = statsToMerge.Name + " " + name;
+                string title = statsToMerge.Name;
+                if (!String.IsNullOrEmpty(statsToMerge.TitleName))
+                {
+                    title = statsToMerge.TitleName;
+                }
+                name = title + " " + name;
             }
 
             // Traits can add armor, max armor, or alter hit points
@@ -273,12 +278,6 @@ namespace IconFoeCreator
                     }
 
                     textBox.Document.Blocks.Add(paragraph);
-
-
-                    if (trait.NestedTraits.Count > 0)
-                    {
-                        AddTraits(textBox, trait.NestedTraits, showNonessentialTraits, indent + 1);
-                    }
                 }
             }
         }

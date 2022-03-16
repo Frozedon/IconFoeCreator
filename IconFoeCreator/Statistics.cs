@@ -8,6 +8,7 @@ namespace IconFoeCreator
     public class Statistics
     {
         public string Name { get; set; } // Does not inherit
+        public string TitleName { get; set; } // Does not inherit
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Inherits { get; set; } // Does not inherit
@@ -64,6 +65,7 @@ namespace IconFoeCreator
         public Statistics()
         {
             Name = String.Empty;
+            TitleName = String.Empty;
             Inherits = new List<string>();
             Type = String.Empty;
             Traits = new List<Trait>();
@@ -85,6 +87,7 @@ namespace IconFoeCreator
             Statistics newStats = new Statistics
             {
                 Name = Name,
+                TitleName = TitleName,
                 Inherits = Inherits,
                 Type = Type,
                 IsBasicTemplate = IsBasicTemplate,
@@ -194,12 +197,10 @@ namespace IconFoeCreator
         public string Description { get; set; }
         public string DescriptionNonessential { get; set; }
         public bool Nonessential { get; set; }
-        public List<Trait> NestedTraits { get; set; }
 
         public Trait()
         {
             Tags = new List<string>();
-            NestedTraits = new List<Trait>();
         }
     }
 
