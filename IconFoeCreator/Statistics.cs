@@ -38,6 +38,7 @@ namespace IconFoeCreator
         public int? FrayDamage { get; set; }
         public int? DamageDie { get; set; }
         public string FactionBlight { get; set; }
+        public int? MinimumRecharge { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
         public List<Trait> Traits { get; set; } // Additive inheritance
@@ -121,6 +122,7 @@ namespace IconFoeCreator
             if (!String.IsNullOrEmpty(FactionBlight)) { newStats.FactionBlight = FactionBlight; } else { newStats.FactionBlight = otherStats.FactionBlight; }
             if (!String.IsNullOrEmpty(PhasesDescription)) { newStats.PhasesDescription = PhasesDescription; } else { newStats.PhasesDescription = otherStats.PhasesDescription; }
             if (Phases.Count() > 0) { newStats.Phases = Phases; } else { newStats.Phases = otherStats.Phases; }
+            if (MinimumRecharge.HasValue) { newStats.MinimumRecharge = MinimumRecharge; } else { newStats.MinimumRecharge = otherStats.MinimumRecharge; }
 
             // Additive statistics
             newStats.AddHPPercent = AddHPPercent.GetValueOrDefault(0.0) + otherStats.AddHPPercent.GetValueOrDefault(0.0);
