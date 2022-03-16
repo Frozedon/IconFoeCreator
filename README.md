@@ -21,11 +21,11 @@ TODO List
 - [X] Copy to Clipboard button
 - [X] Separate Setup Rules textbox
 - [X] Make window resizeable
-- [ ] Add window icon
+- [X] Add window icon
 - [X] Update to WPF
 - [X] Separate Base and Homebrew Data
 - [X] Updated to 1.3
 - [X] Moves jsons into their own git
-- [ ] Make organization of Classes better to seperate out base jobs and faction unique ones
-- [ ] Handle stacking super templates better in UI ("Elite", "Mob", "Imperial Officer") 
-- [ ] Improve building foes with restrictions being enforced
+- [X] Make organization of Classes better to seperate out base jobs and faction unique ones
+- [X] Handle stacking super templates better in UI ("Elite", "Mob", "Imperial Officer") 
+- [X] Improve building foes with restrictions being enforced
