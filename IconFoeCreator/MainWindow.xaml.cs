@@ -85,12 +85,17 @@ namespace IconFoeCreator
             UpdateTemplateOptions();
             UpdateUniqueFoeOptions();
             UpdateJobOptions();
+            UpdateMobCheckBoxState();
+            UpdateEliteCheckBoxState();
         }
 
         private void OnJobChanged(object sender, EventArgs e)
         {
             UpdateUniqueFoeDropdownState();
             UpdateTemplateOptions();
+            UpdateMobCheckBoxState();
+            UpdateEliteCheckBoxState();
+
             UpdateDescription();
         }
 
@@ -195,20 +200,72 @@ namespace IconFoeCreator
 
         private void UpdateMobCheckBoxState()
         {
-            // Disable if the elite check box is checked
+            // Uncheck if the elite check box is checked
             if (Elite_checkBox.IsChecked.GetValueOrDefault(false))
             {
                 Mob_checkBox.IsChecked = false;
             }
+
+            // Disable if class or job is not core class
+            bool enable = true;
+            if (Class_comboBox.SelectedItem != null)
+            {
+                string className = Class_comboBox.SelectedItem.ToString().ToLower();
+                if (className != ANY_GROUP.ToLower() && Array.Find(StatisticBuilder.CoreClasses, name => name == className) == null)
+                {
+                    enable = false;
+                }
+            }
+            if (Job_comboBox.SelectedItem != null)
+            {
+                Statistics job = (Statistics)Job_comboBox.SelectedItem;
+                if (!String.IsNullOrEmpty(job.Group))
+                {
+                    string groupName = job.Group.ToLower();
+                    if (Array.Find(StatisticBuilder.CoreClasses, name => name == groupName) == null)
+                    {
+                        enable = false;
+                    }
+                }
+            }
+
+            Mob_checkBox.IsEnabled = enable;
+            if (!enable) { Mob_checkBox.IsChecked = false; }
         }
 
         private void UpdateEliteCheckBoxState()
         {
-            // Disable if the mob check box is checked
+            // Uncheck if the mob check box is checked
             if (Mob_checkBox.IsChecked.GetValueOrDefault(false))
             {
                 Elite_checkBox.IsChecked = false;
             }
+
+            // Disable if class or job is not core class
+            bool enable = true;
+            if (Class_comboBox.SelectedItem != null)
+            {
+                string className = Class_comboBox.SelectedItem.ToString().ToLower();
+                if (className != ANY_GROUP.ToLower() && Array.Find(StatisticBuilder.CoreClasses, name => name == className) == null)
+                {
+                    enable = false;
+                }
+            }
+            if (Job_comboBox.SelectedItem != null)
+            {
+                Statistics job = (Statistics)Job_comboBox.SelectedItem;
+                if (!String.IsNullOrEmpty(job.Group))
+                {
+                    string groupName = job.Group.ToLower();
+                    if (Array.Find(StatisticBuilder.CoreClasses, name => name == groupName) == null)
+                    {
+                        enable = false;
+                    }
+                }
+            }
+
+            Elite_checkBox.IsEnabled = enable;
+            if (!enable) { Elite_checkBox.IsChecked = false; }
         }
 
         private void UpdateFactionOptions()
@@ -380,6 +437,11 @@ namespace IconFoeCreator
                 }
             }
 
+            if (Elite_checkBox.IsChecked.GetValueOrDefault())
+            {
+                availableTemplates = RemoveNonBasicTemplates(availableTemplates);
+            }
+
             bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
             if (!showHomebrew)
             {
@@ -514,7 +576,9 @@ namespace IconFoeCreator
             string classNameLower = className.ToLower();
             return templates.FindAll(delegate (Statistics stat)
             {
-                return String.IsNullOrEmpty(stat.UsesClass) || stat.UsesClass.ToLower() == classNameLower;
+                return String.IsNullOrEmpty(stat.UsesClass)
+                || classNameLower == "mob"
+                || stat.UsesClass.ToLower() == classNameLower;
             });
         }
 
