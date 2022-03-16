@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IconFoeCreator"
         mc:Ignorable="d"
-        Title="Icon Foe Creator" Height="500" Width="800">
+        Title="Icon Foe Creator" Height="760" Width="1024">
   <Grid>
     <Label x:Name="Faction_label" Content="Faction" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Faction_comboBox" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
     <Label x:Name="Template_label" Content="Template" HorizontalAlignment="Left" Margin="27,64,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Template_comboBox" HorizontalAlignment="Left" Margin="27,91,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
-    <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,184,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,211,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-    <Label x:Name="Job_label" Content="Job" HorizontalAlignment="Left" Margin="27,238,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Job_comboBox" HorizontalAlignment="Left" Margin="27,266,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
+    <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,238,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,265,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
+    <Label x:Name="Job_label" Content="Job" HorizontalAlignment="Left" Margin="27,292,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Job_comboBox" HorizontalAlignment="Left" Margin="27,320,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
     <CheckBox x:Name="NonessentialTraits_checkBox" Content="Show Nonessential Traits" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="NonessentialTraits_checkBox_Checked" Unchecked="NonessentialTraits_checkBox_Checked"/>
     <CheckBox x:Name="Homebrew_checkBox" Content="Show Homebrew" HorizontalAlignment="Left" Margin="10,0,0,37.667" VerticalAlignment="Bottom" FontSize="14" Checked="Homebrew_checkBox_Checked" Unchecked="Homebrew_checkBox_Checked"/>
     <Button x:Name="ExportJson_button" Content="Export to JSON" HorizontalAlignment="Left" Margin="10,0,0,9.667" VerticalAlignment="Bottom" Width="115" FontSize="14" Click="ExportJson_button_Click"/>
@@ -40,10 +40,10 @@
       </RichTextBox>
       <Button x:Name="CopySetup_button" Content="Copy to Clipboard" Margin="0,0,0,-0.333" VerticalAlignment="Bottom" FontSize="14" Width="140" Click="CopySetup_button_Click" HorizontalAlignment="Left" Grid.Column="1"/>
     </Grid>
-    <Label x:Name="SuperTemplate_label" Content="Super Template" HorizontalAlignment="Left" Margin="6,323,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="SuperTemplate_comboBox" HorizontalAlignment="Left" Margin="10,350,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
     <Label x:Name="UniqueFoe_Label" Content="Unique Foe" HorizontalAlignment="Left" Margin="27,118,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="UniqueFoe_comboBox" HorizontalAlignment="Left" Margin="27,145,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
+    <Label x:Name="Special_Label" Content="Special" HorizontalAlignment="Left" Margin="27,172,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Special_comboBox" HorizontalAlignment="Left" Margin="27,199,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
 
   </Grid>
 </Window>

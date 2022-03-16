@@ -38,12 +38,14 @@ namespace IconFoeCreator
             UpdateFactionOptions();
             UpdateTemplateOptions();
             UpdateUniqueFoeOptions();
+            UpdateSpecialTemplateOptions();
             UpdateClassOptions();
             UpdateJobOptions();
 
             Faction_comboBox.SelectionChanged += OnFactionChanged;
             Template_comboBox.SelectionChanged += OnTemplateChanged;
             UniqueFoe_comboBox.SelectionChanged += OnUniqueFoeChanged;
+            Special_comboBox.SelectionChanged += OnSpecialTemplateChanged;
             Class_comboBox.SelectionChanged += OnClassChanged;
             Job_comboBox.SelectionChanged += OnJobChanged;
 
@@ -56,16 +58,7 @@ namespace IconFoeCreator
             {
                 UpdateTemplateOptions();
                 UpdateUniqueFoeOptions();
-            }
-        }
-
-        private void OnClassChanged(object sender, EventArgs e)
-        {
-            if (Class_comboBox.SelectedItem != null)
-            {
-                UpdateTemplateOptions();
-                UpdateUniqueFoeOptions();
-                UpdateJobOptions();
+                UpdateSpecialTemplateOptions();
             }
         }
 
@@ -112,6 +105,21 @@ namespace IconFoeCreator
             UpdateDescription();
         }
 
+        private void OnSpecialTemplateChanged(object sender, EventArgs e)
+        {
+            UpdateDescription();
+        }
+
+        private void OnClassChanged(object sender, EventArgs e)
+        {
+            if (Class_comboBox.SelectedItem != null)
+            {
+                UpdateTemplateOptions();
+                UpdateUniqueFoeOptions();
+                UpdateJobOptions();
+            }
+        }
+
         private void OnJobChanged(object sender, EventArgs e)
         {
             // Disable unique foe dropdown
@@ -150,6 +158,12 @@ namespace IconFoeCreator
             if (uniqueFoe != null && Statistics.IsValid(uniqueFoe))
             {
                 statsToMerge.Add(uniqueFoe);
+            }
+
+            Statistics special = (Statistics)Special_comboBox.SelectedItem;
+            if (special != null && Statistics.IsValid(special))
+            {
+                statsToMerge.Add(special);
             }
 
             DescriptionCreator.UpdateDescription(
@@ -219,6 +233,33 @@ namespace IconFoeCreator
             UniqueFoe_comboBox.SelectedIndex = index;
         }
 
+        private void UpdateSpecialTemplateOptions()
+        {
+            string selectedItem = String.Empty;
+            if (Special_comboBox.SelectedItem != null)
+            {
+                selectedItem = Special_comboBox.SelectedItem.ToString();
+            }
+
+
+            Special_comboBox.ItemsSource = GetAvailableSpecialTemplates();
+
+
+            int index = 0;
+            if (selectedItem.Length > 0)
+            {
+                for (int i = 0; i < Special_comboBox.Items.Count; ++i)
+                {
+                    if (selectedItem == Special_comboBox.Items[i].ToString())
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+            Special_comboBox.SelectedIndex = index;
+        }
+
         private void UpdateClassOptions()
         {
             Class_comboBox.ItemsSource = GetAvailableClasses();
@@ -282,7 +323,7 @@ namespace IconFoeCreator
                 string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
                 if (!String.IsNullOrEmpty(classGroup) && classGroup != ANY_GROUP.ToLower())
                 {
-                    availableTemplates = RemoveTemplatesOfWrongClass(availableTemplates, classGroup);
+                    availableTemplates = RemoveStatsOfWrongClass(availableTemplates, classGroup);
                 }
             }
 
@@ -292,7 +333,7 @@ namespace IconFoeCreator
                 string classGroup = selectedJob.Group;
                 if (!String.IsNullOrEmpty(classGroup))
                 {
-                    availableTemplates = RemoveTemplatesOfWrongClass(availableTemplates, classGroup);
+                    availableTemplates = RemoveStatsOfWrongClass(availableTemplates, classGroup);
                 }
 
                 if (selectedJob.RestrictToBasicTemplates.GetValueOrDefault(false))
@@ -306,6 +347,8 @@ namespace IconFoeCreator
             {
                 availableTemplates = RemoveHomebrewStats(availableTemplates);
             }
+
+            availableTemplates = RemoveStatsThatDoNotDisplay(availableTemplates);
 
             availableTemplates.Insert(0, new Statistics() { Name = EMPTY_STAT });
 
@@ -340,9 +383,37 @@ namespace IconFoeCreator
                 availableUniques = RemoveHomebrewStats(availableUniques);
             }
 
+            availableUniques = RemoveStatsThatDoNotDisplay(availableUniques);
+
             availableUniques.Insert(0, new Statistics() { Name = EMPTY_STAT });
 
             return availableUniques;
+        }
+        
+        private List<Statistics> GetAvailableSpecialTemplates()
+        {
+            List<Statistics> availableSpecials = new List<Statistics>(statBuilder.Specials);
+
+            if (Faction_comboBox.SelectedItem != null)
+            {
+                string factionGroup = Faction_comboBox.SelectedItem.ToString().ToLower();
+                if (!String.IsNullOrEmpty(factionGroup) && factionGroup != ANY_GROUP.ToLower())
+                {
+                    availableSpecials = RemoveStatsOfWrongFaction(availableSpecials, factionGroup);
+                }
+            }
+
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
+            if (!showHomebrew)
+            {
+                availableSpecials = RemoveHomebrewStats(availableSpecials);
+            }
+
+            availableSpecials = RemoveStatsThatDoNotDisplay(availableSpecials);
+
+            availableSpecials.Insert(0, new Statistics() { Name = EMPTY_STAT });
+
+            return availableSpecials;
         }
 
         private List<string> GetAvailableClasses()
@@ -376,6 +447,8 @@ namespace IconFoeCreator
                 availableJobs = RemoveHomebrewStats(availableJobs);
             }
 
+            availableJobs = RemoveStatsThatDoNotDisplay(availableJobs);
+
             availableJobs.Insert(0, new Statistics() { Name = EMPTY_STAT });
 
             return availableJobs;
@@ -389,17 +462,21 @@ namespace IconFoeCreator
             });
         }
 
-        private List<Statistics> RemoveTemplatesOfWrongClass(List<Statistics> templates, string className)
+        private List<Statistics> RemoveStatsOfWrongFaction(List<Statistics> stats, string factionName)
+        {
+            string factionNameLower = factionName.ToLower();
+            return stats.FindAll(delegate (Statistics stat)
+            {
+                return String.IsNullOrEmpty(stat.UsesFaction) || stat.UsesFaction.ToLower() == factionNameLower;
+            });
+        }
+
+        private List<Statistics> RemoveStatsOfWrongClass(List<Statistics> templates, string className)
         {
             string classNameLower = className.ToLower();
             return templates.FindAll(delegate (Statistics stat)
             {
-                if (!String.IsNullOrEmpty(stat.UsesClass) && classNameLower != stat.UsesClass.ToLower())
-                {
-                    return false;
-                }
-
-                return true;
+                return String.IsNullOrEmpty(stat.UsesClass) || stat.UsesClass.ToLower() == classNameLower;
             });
         }
 
@@ -446,23 +523,12 @@ namespace IconFoeCreator
             });
         }
 
-        private void ForceChangeTemplateTo(string templateName)
+        private List<Statistics> RemoveStatsThatDoNotDisplay(List<Statistics> stats)
         {
-            if (String.IsNullOrEmpty(templateName))
+            return stats.FindAll(delegate (Statistics stat)
             {
-                return;
-            }
-
-            for (int i = 0; i < Template_comboBox.Items.Count; ++i)
-            {
-                Statistics templateStat = (Statistics)Template_comboBox.Items[i];
-                if (templateStat.Name == templateName)
-                {
-                    Template_comboBox.SelectedIndex = i;
-                    break;
-                }
-            }
-
+                return !stat.DoNotDisplay;
+            });
         }
 
         private void CopyDescription_button_Click(object sender, RoutedEventArgs e)

@@ -15,7 +15,7 @@ namespace IconFoeCreator
         public List<Statistics> UniqueFoes;
         public List<Statistics> Specials;
 
-        public static readonly string[] CoreClasses = { "Heavy", "Skirmisher", "Leader", "Artillery" };
+        public static readonly string[] CoreClasses = { "heavy", "skirmisher", "leader", "artillery" };
 
         private static readonly string DATA_FOLDER_PATH = "data/";
         private static readonly string BASE_FOLDER_PATH = "base/";
@@ -167,8 +167,8 @@ namespace IconFoeCreator
 
             Classes.Sort(delegate (string x, string y)
             {
-                string xResult = Array.Find(CoreClasses, element => element == x);
-                string yResult = Array.Find(CoreClasses, element => element == y);
+                string xResult = Array.Find(CoreClasses, element => element == x.ToLower());
+                string yResult = Array.Find(CoreClasses, element => element == y.ToLower());
 
                 if (xResult == null && yResult != null)
                     return 1;

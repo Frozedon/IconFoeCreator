@@ -15,12 +15,14 @@ namespace IconFoeCreator
 
         public string Type { get; set; } // Does not inherit
         public string Group { get; set; }
+        public bool DoNotDisplay { get; set; } // Does not inherit
         public double? EncounterBudget { get; set; }
         public bool IsBasicTemplate { get; set; } // Does not inherit
         public bool? IsMob { get; set; }
         public bool? IsElite { get; set; }
         public bool? IsLegend { get; set; }
         public string UsesClass { get; set; }
+        public string UsesFaction { get; set; }
         public bool? RestrictToBasicTemplates { get; set; }
         public int Chapter { get; set; } // Does not inherit
         public int? Vitality { get; set; }
@@ -91,6 +93,7 @@ namespace IconFoeCreator
                 Inherits = Inherits,
                 Type = Type,
                 IsBasicTemplate = IsBasicTemplate,
+                DoNotDisplay = DoNotDisplay,
                 Chapter = Chapter,
                 IsHomebrew = IsHomebrew
             };
@@ -102,6 +105,7 @@ namespace IconFoeCreator
             if (IsElite.HasValue) { newStats.IsElite = IsElite; } else { newStats.IsElite = otherStats.IsElite; }
             if (IsLegend.HasValue) { newStats.IsLegend = IsLegend; } else { newStats.IsLegend = otherStats.IsLegend; }
             if (!String.IsNullOrEmpty(UsesClass)) { newStats.UsesClass = UsesClass; } else { newStats.UsesClass = otherStats.UsesClass; }
+            if (!String.IsNullOrEmpty(UsesFaction)) { newStats.UsesFaction = UsesFaction; } else { newStats.UsesFaction = otherStats.UsesFaction; }
             if (RestrictToBasicTemplates.HasValue) { newStats.RestrictToBasicTemplates = RestrictToBasicTemplates; } else { newStats.RestrictToBasicTemplates = otherStats.RestrictToBasicTemplates; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
