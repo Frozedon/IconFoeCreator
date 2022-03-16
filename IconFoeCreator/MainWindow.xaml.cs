@@ -143,6 +143,7 @@ namespace IconFoeCreator
                 Description_richTextBox,
                 Setup_richTextBox,
                 statsToMerge,
+                DamageValues_checkBox.IsChecked.GetValueOrDefault(),
                 NonessentialTraits_checkBox.IsChecked.GetValueOrDefault());
         }
 
@@ -599,6 +600,11 @@ namespace IconFoeCreator
             UpdateTemplateOptions();
             UpdateUniqueFoeOptions();
 
+            UpdateDescription();
+        }
+
+        private void DamageValues_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
             UpdateDescription();
         }
 

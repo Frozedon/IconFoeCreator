@@ -36,7 +36,7 @@ namespace IconFoeCreator
         public int? Defense { get; set; }
         public int? Armor { get; set; }
         public int? FrayDamage { get; set; }
-        public string DamageDie { get; set; }
+        public int? DamageDie { get; set; }
         public string FactionBlight { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
@@ -117,7 +117,7 @@ namespace IconFoeCreator
             if (Defense.HasValue) { newStats.Defense = Defense; } else { newStats.Defense = otherStats.Defense; }
             if (Armor.HasValue) { newStats.Armor = Armor; } else { newStats.Armor = otherStats.Armor; }
             if (FrayDamage.HasValue) { newStats.FrayDamage = FrayDamage; } else { newStats.FrayDamage = otherStats.FrayDamage; }
-            if (!String.IsNullOrEmpty(DamageDie)) { newStats.DamageDie = DamageDie; } else { newStats.DamageDie = otherStats.DamageDie; }
+            if (DamageDie.HasValue) { newStats.DamageDie = DamageDie; } else { newStats.DamageDie = otherStats.DamageDie; }
             if (!String.IsNullOrEmpty(FactionBlight)) { newStats.FactionBlight = FactionBlight; } else { newStats.FactionBlight = otherStats.FactionBlight; }
             if (!String.IsNullOrEmpty(PhasesDescription)) { newStats.PhasesDescription = PhasesDescription; } else { newStats.PhasesDescription = otherStats.PhasesDescription; }
             if (Phases.Count() > 0) { newStats.Phases = Phases; } else { newStats.Phases = otherStats.Phases; }
