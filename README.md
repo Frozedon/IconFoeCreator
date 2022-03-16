@@ -2,7 +2,13 @@ If you want to support me, head over here to send me donations https://ko-fi.com
 
 ____________
 
-This is a tool to be used with the Icon rpg. It contains all the statblocks for all the different foe jobs and factions. With it you can quickly select the two keywords and it will automatically build the completed description of the foe.
+![Icon256](https://raw.githubusercontent.com/Frozedon/IconFoeCreator/main/ProgramIcons/Icon256.png)
+
+This is a tool to be used with the Icon rpg. https://massif-press.itch.io/icon
+
+It contains all the statblocks for all the different foe jobs and factions. With it you can quickly select the two keywords and it will automatically build the completed description of the foe.
+
+____________
 
 TODO List
 - [X] Make git
