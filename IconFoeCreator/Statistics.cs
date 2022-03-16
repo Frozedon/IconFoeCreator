@@ -144,6 +144,19 @@ namespace IconFoeCreator
                         ++j;
                     }
                 }
+
+                for (int j = 0; j < newStats.SetupTraits.Count;)
+                {
+                    string statName = newStats.SetupTraits[j].Name.ToLower();
+                    if (statName == statNameToRemove)
+                    {
+                        newStats.SetupTraits.RemoveAt(j);
+                    }
+                    else
+                    {
+                        ++j;
+                    }
+                }
             }
 
             // Remove traits with duplicate names
@@ -179,10 +192,12 @@ namespace IconFoeCreator
         public string Description { get; set; }
         public string DescriptionNonessential { get; set; }
         public bool Nonessential { get; set; }
+        public List<Trait> NestedTraits { get; set; }
 
         public Trait()
         {
             Tags = new List<string>();
+            NestedTraits = new List<Trait>();
         }
     }
 

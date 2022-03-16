@@ -202,7 +202,7 @@ namespace IconFoeCreator
 
             if (stats.SetupTraits.Count > 0)
             {
-                AddSetupTraits(setupTextBox, stats.SetupTraits);
+                AddTraits(setupTextBox, stats.SetupTraits, true);
             }
         }
 
@@ -228,7 +228,7 @@ namespace IconFoeCreator
             paragraph.Inlines.Add(new Italic(new Run(text)));
         }
 
-        public static void AddTraits(RichTextBox textBox, List<Trait> traits, bool showNonessentialTraits)
+        public static void AddTraits(RichTextBox textBox, List<Trait> traits, bool showNonessentialTraits, int indent = 0)
         {
             traits.Sort(delegate (Trait x, Trait y)
             {
@@ -241,6 +241,11 @@ namespace IconFoeCreator
                 {
                     Paragraph paragraph = MakeParagraph();
 
+                    if (indent > 0)
+                    {
+                        paragraph.TextIndent = (indent - 1) * 10.0;
+                        AddBold(paragraph, "• ");
+                    }
                     AddBold(paragraph, trait.Name);
 
                     if (trait.Tags.Count > 0)
@@ -268,6 +273,12 @@ namespace IconFoeCreator
                     }
 
                     textBox.Document.Blocks.Add(paragraph);
+
+
+                    if (trait.NestedTraits.Count > 0)
+                    {
+                        AddTraits(textBox, trait.NestedTraits, showNonessentialTraits, indent + 1);
+                    }
                 }
             }
         }
@@ -517,37 +528,6 @@ namespace IconFoeCreator
                 {
                     AddActions(textBox, phase.Actions);
                 }
-            }
-        }
-
-        public static void AddSetupTraits(RichTextBox textBox, List<Trait> traits)
-        {
-            foreach (Trait trait in traits)
-            {
-                Paragraph paragraph = MakeParagraph();
-
-                AddBold(paragraph, trait.Name);
-
-                if (trait.Tags.Count > 0)
-                {
-                    AddBold(paragraph, " (");
-
-                    bool firstTag = true;
-                    foreach (string tag in trait.Tags)
-                    {
-                        if (!firstTag) { AddBold(paragraph, ", "); }
-                        else { firstTag = false; }
-
-                        AddBold(paragraph, tag);
-                    }
-
-                    AddBold(paragraph, ")");
-                }
-
-                AddBold(paragraph, ". ");
-                AddNormal(paragraph, trait.Description);
-
-                textBox.Document.Blocks.Add(paragraph);
             }
         }
 
