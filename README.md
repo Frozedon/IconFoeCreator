@@ -20,7 +20,6 @@ TODO List
 - [X] Faction dropdown to filter the faction templates
 - [X] Class dropdown to filter the jobs
 - [X] Checkbox to show setup info like "Kin" and "Monster" (hide by default)
-- [ ] Tabs for saving foe combos
 - [X] Monstrosities
 - [X] Add Nocturnal, Brood Lord, and Wyrm JSON
 - [X] Make Faction super-templates selectable
@@ -35,3 +34,5 @@ TODO List
 - [X] Make organization of Classes better to seperate out base jobs and faction unique ones
 - [X] Handle stacking super templates better in UI ("Elite", "Mob", "Imperial Officer") 
 - [X] Improve building foes with restrictions being enforced
+- [X] Add checkbox to remove restriction filtering
+- [ ] Tabs for saving foe combos

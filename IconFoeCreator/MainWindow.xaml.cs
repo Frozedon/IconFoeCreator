@@ -54,12 +54,9 @@ namespace IconFoeCreator
 
         private void OnFactionChanged(object sender, EventArgs e)
         {
-            if (Faction_comboBox.SelectedItem != null)
-            {
-                UpdateTemplateOptions();
-                UpdateUniqueFoeOptions();
-                UpdateSpecialTemplateOptions();
-            }
+            UpdateTemplateOptions();
+            UpdateUniqueFoeOptions();
+            UpdateSpecialTemplateOptions();
         }
 
         private void OnTemplateChanged(object sender, EventArgs e)
@@ -270,122 +267,59 @@ namespace IconFoeCreator
 
         private void UpdateFactionOptions()
         {
-            Faction_comboBox.ItemsSource = GetAvailableFactions();
-            Faction_comboBox.SelectedIndex = 0;
+            UpdateDropdownOptions(Faction_comboBox, GetAvailableFactions);
         }
 
         private void UpdateTemplateOptions()
         {
-            string selectedItem = String.Empty;
-            if (Template_comboBox.SelectedItem != null)
-            {
-                selectedItem = Template_comboBox.SelectedItem.ToString();
-            }
-
-
-            Template_comboBox.ItemsSource = GetAvailableTemplates();
-
-
-            int index = 0;
-            if (selectedItem.Length > 0)
-            {
-                for (int i = 0; i < Template_comboBox.Items.Count; ++i)
-                {
-                    if (selectedItem == Template_comboBox.Items[i].ToString())
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-            Template_comboBox.SelectedIndex = index;
+            UpdateDropdownOptions(Template_comboBox, GetAvailableTemplates);
         }
 
         private void UpdateUniqueFoeOptions()
         {
-            string selectedItem = String.Empty;
-            if (UniqueFoe_comboBox.SelectedItem != null)
-            {
-                selectedItem = UniqueFoe_comboBox.SelectedItem.ToString();
-            }
-
-
-            UniqueFoe_comboBox.ItemsSource = GetAvailableUniqueFoes();
-
-
-            int index = 0;
-            if (selectedItem.Length > 0)
-            {
-                for (int i = 0; i < UniqueFoe_comboBox.Items.Count; ++i)
-                {
-                    if (selectedItem == UniqueFoe_comboBox.Items[i].ToString())
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-            UniqueFoe_comboBox.SelectedIndex = index;
+            UpdateDropdownOptions(UniqueFoe_comboBox, GetAvailableUniqueFoes);
         }
 
         private void UpdateSpecialTemplateOptions()
         {
-            string selectedItem = String.Empty;
-            if (Special_comboBox.SelectedItem != null)
-            {
-                selectedItem = Special_comboBox.SelectedItem.ToString();
-            }
-
-
-            Special_comboBox.ItemsSource = GetAvailableSpecialTemplates();
-
-
-            int index = 0;
-            if (selectedItem.Length > 0)
-            {
-                for (int i = 0; i < Special_comboBox.Items.Count; ++i)
-                {
-                    if (selectedItem == Special_comboBox.Items[i].ToString())
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-            Special_comboBox.SelectedIndex = index;
+            UpdateDropdownOptions(Special_comboBox, GetAvailableSpecialTemplates);
         }
 
         private void UpdateClassOptions()
         {
-            Class_comboBox.ItemsSource = GetAvailableClasses();
-            Class_comboBox.SelectedIndex = 0;
+            UpdateDropdownOptions(Class_comboBox, GetAvailableClasses);
         }
 
         private void UpdateJobOptions()
         {
+            UpdateDropdownOptions(Job_comboBox, GetAvailableJobs);
+        }
+
+        private void UpdateDropdownOptions<T>(System.Windows.Controls.ComboBox comboBox, Func<List<T>> getStats)
+        {
             string selectedItem = String.Empty;
-            if (Job_comboBox.SelectedItem != null)
+            if (comboBox.SelectedItem != null)
             {
-                selectedItem = Job_comboBox.SelectedItem.ToString();
+                selectedItem = comboBox.SelectedItem.ToString();
             }
 
 
-            Job_comboBox.ItemsSource = GetAvailableJobs();
+            comboBox.ItemsSource = getStats();
 
 
             int index = 0;
             if (selectedItem.Length > 0)
             {
-                for (int i = 0; i < Job_comboBox.Items.Count; ++i)
+                for (int i = 0; i < comboBox.Items.Count; ++i)
                 {
-                    if (selectedItem == Job_comboBox.Items[i].ToString())
+                    if (selectedItem == comboBox.Items[i].ToString())
                     {
                         index = i;
                         break;
                     }
                 }
             }
-            Job_comboBox.SelectedIndex = index;
+            comboBox.SelectedIndex = index;
         }
 
         private List<string> GetAvailableFactions()
@@ -413,33 +347,36 @@ namespace IconFoeCreator
                 }
             }
 
-            if (Class_comboBox.SelectedItem != null)
+            if (!RemoveRestrictionFiltering_checkBox.IsChecked.GetValueOrDefault(false))
             {
-                string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
-                if (!String.IsNullOrEmpty(classGroup) && classGroup != ANY_GROUP.ToLower())
+                if (Class_comboBox.SelectedItem != null)
                 {
-                    availableTemplates = RemoveStatsOfWrongClass(availableTemplates, classGroup);
-                }
-            }
-
-            if (Job_comboBox.SelectedItem != null)
-            {
-                Statistics selectedJob = (Statistics)Job_comboBox.SelectedItem;
-                string classGroup = selectedJob.Group;
-                if (!String.IsNullOrEmpty(classGroup))
-                {
-                    availableTemplates = RemoveStatsOfWrongClass(availableTemplates, classGroup);
+                    string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
+                    if (!String.IsNullOrEmpty(classGroup) && classGroup != ANY_GROUP.ToLower())
+                    {
+                        availableTemplates = RemoveStatsOfWrongClass(availableTemplates, classGroup);
+                    }
                 }
 
-                if (selectedJob.RestrictToBasicTemplates.GetValueOrDefault(false))
+                if (Job_comboBox.SelectedItem != null)
+                {
+                    Statistics selectedJob = (Statistics)Job_comboBox.SelectedItem;
+                    string classGroup = selectedJob.Group;
+                    if (!String.IsNullOrEmpty(classGroup))
+                    {
+                        availableTemplates = RemoveStatsOfWrongClass(availableTemplates, classGroup);
+                    }
+
+                    if (selectedJob.RestrictToBasicTemplates.GetValueOrDefault(false))
+                    {
+                        availableTemplates = RemoveNonBasicTemplates(availableTemplates);
+                    }
+                }
+
+                if (Elite_checkBox.IsChecked.GetValueOrDefault())
                 {
                     availableTemplates = RemoveNonBasicTemplates(availableTemplates);
                 }
-            }
-
-            if (Elite_checkBox.IsChecked.GetValueOrDefault())
-            {
-                availableTemplates = RemoveNonBasicTemplates(availableTemplates);
             }
 
             bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
@@ -468,12 +405,15 @@ namespace IconFoeCreator
                 }
             }
 
-            if (Class_comboBox.SelectedItem != null)
+            if (!RemoveRestrictionFiltering_checkBox.IsChecked.GetValueOrDefault(false))
             {
-                string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
-                if (!String.IsNullOrEmpty(classGroup) && classGroup != ANY_GROUP.ToLower())
+                if (Class_comboBox.SelectedItem != null)
                 {
-                    availableUniques = RemoveUniqueFoesOfWrongClass(availableUniques, classGroup);
+                    string classGroup = Class_comboBox.SelectedItem.ToString().ToLower();
+                    if (!String.IsNullOrEmpty(classGroup) && classGroup != ANY_GROUP.ToLower())
+                    {
+                        availableUniques = RemoveUniqueFoesOfWrongClass(availableUniques, classGroup);
+                    }
                 }
             }
 
@@ -663,6 +603,18 @@ namespace IconFoeCreator
 
             UpdateTemplateOptions();
             UpdateUniqueFoeOptions();
+
+            UpdateDescription();
+        }
+
+        private void RemoveRestrictionFiltering_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateFactionOptions();
+            UpdateTemplateOptions();
+            UpdateUniqueFoeOptions();
+            UpdateSpecialTemplateOptions();
+            UpdateClassOptions();
+            UpdateJobOptions();
 
             UpdateDescription();
         }
