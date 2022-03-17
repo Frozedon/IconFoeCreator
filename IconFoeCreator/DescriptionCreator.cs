@@ -214,6 +214,11 @@ namespace IconFoeCreator
                 AddPhases(descTextBox, stats.Phases, damageInfo, minimumRecharge);
             }
 
+            if (stats.ExtraAbilitySets.Count > 0)
+            {
+                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, damageInfo, minimumRecharge);
+            }
+
             // Setup traits in other textbox
             AddEncounterBudget(setupTextBox, stats.EncounterBudget.GetValueOrDefault(1.0));
 
@@ -387,7 +392,7 @@ namespace IconFoeCreator
                 if (action.ActionCost == 1) { AddBold(paragraph, " action"); }
                 else { AddBold(paragraph, " actions"); }
             }
-            else
+            else if (action.ActionCost == 0)
             {
                 AddBold(paragraph, "Free action");
             }
@@ -504,12 +509,19 @@ namespace IconFoeCreator
             foreach (BodyPart bodyPart in bodyParts)
             {
                 Paragraph paragraph = MakeParagraph();
-                AddBold(paragraph, bodyPart.Name + " (" + bodyPart.HP + " hp");
-                if (bodyPart.HPMultiplyByPlayers)
-                {
-                    AddBold(paragraph, "/player");
+                AddBold(paragraph, bodyPart.Name);
+                
+                if (bodyPart.HP > 0) {
+
+                    AddBold(paragraph, " (" + bodyPart.HP + " hp");
+                    if (bodyPart.HPMultiplyByPlayers)
+                    {
+                        AddBold(paragraph, "/player");
+                    }
+                    AddBold(paragraph, ")");
                 }
-                AddBold(paragraph, "): ");
+
+                AddBold(paragraph, ": ");
                 AddNormal(paragraph, bodyPart.Description);
                 textBox.Document.Blocks.Add(paragraph);
             }
@@ -520,18 +532,17 @@ namespace IconFoeCreator
             for (int i = 0; i < phases.Count; ++i)
             {
                 Phase phase = phases[i];
-                Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness(0, 12, 0, 0);
-
-                AddBold(paragraph, "Phase " + (i + 1) + ": ");
-                AddNormal(paragraph, phase.Name);
+                Paragraph paragraph1 = MakeParagraph();
+                paragraph1.Margin = new Thickness(0, 12, 0, 0);
+                AddBold(paragraph1, "Phase " + (i + 1) + ": " + phase.Name);
+                textBox.Document.Blocks.Add(paragraph1);
 
                 if (phase.Description != null && phase.Description != String.Empty)
                 {
-                    AddNormal(paragraph, " (" + phase.Description + ")");
+                    Paragraph paragraph2 = MakeParagraph();
+                    AddNormal(paragraph2, phase.Description);
+                    textBox.Document.Blocks.Add(paragraph2);
                 }
-
-                textBox.Document.Blocks.Add(paragraph);
 
                 if (phase.Traits.Count > 0)
                 {
@@ -541,6 +552,37 @@ namespace IconFoeCreator
                 if (phase.Actions.Count > 0)
                 {
                     AddActions(textBox, phase.Actions, dmgInfo, minRecharge);
+                }
+            }
+        }
+
+        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySet> abilitySets, DamageInfo dmgInfo, int minRecharge)
+        {
+            for (int i = 0; i < abilitySets.Count; ++i)
+            {
+                AbilitySet abilitySet = abilitySets[i];
+
+                Paragraph paragraph1 = MakeParagraph();
+                paragraph1.Margin = new Thickness(0, 12, 0, 0);
+                paragraph1.TextDecorations = TextDecorations.Underline;
+                AddBold(paragraph1, abilitySet.Name);
+                textBox.Document.Blocks.Add(paragraph1);
+
+                if (!String.IsNullOrEmpty(abilitySet.Description))
+                {
+                    Paragraph paragraph2 = MakeParagraph();
+                    AddNormal(paragraph2, abilitySet.Description);
+                    textBox.Document.Blocks.Add(paragraph2);
+                }
+
+                if (abilitySet.Traits.Count > 0)
+                {
+                    AddTraits(textBox, abilitySet.Traits, dmgInfo, true);
+                }
+
+                if (abilitySet.Actions.Count > 0)
+                {
+                    AddActions(textBox, abilitySet.Actions, dmgInfo, minRecharge);
                 }
             }
         }

@@ -63,6 +63,9 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<Phase>))]
         public List<Phase> Phases { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<AbilitySet>))]
+        public List<AbilitySet> ExtraAbilitySets { get; set; }
+
         public bool IsHomebrew { get; set; } // To be used and set internally
 
         public Statistics()
@@ -78,6 +81,7 @@ namespace IconFoeCreator
             Actions = new List<Action>();
             BodyParts = new List<BodyPart>();
             Phases = new List<Phase>();
+            ExtraAbilitySets = new List<AbilitySet>();
         }
 
         public override string ToString()
@@ -138,6 +142,8 @@ namespace IconFoeCreator
             newStats.Actions.AddRange(Actions);
             newStats.BodyParts.AddRange(otherStats.BodyParts);
             newStats.BodyParts.AddRange(BodyParts);
+            newStats.ExtraAbilitySets.AddRange(otherStats.ExtraAbilitySets);
+            newStats.ExtraAbilitySets.AddRange(ExtraAbilitySets);
 
             // Remove traits named to remove
             for (int i = 0; i < newStats.RemoveTraits.Count; ++i)
@@ -285,6 +291,24 @@ namespace IconFoeCreator
         public List<Action> Actions { get; set; }
 
         public Phase()
+        {
+            Traits = new List<Trait>();
+            Actions = new List<Action>();
+        }
+    }
+
+    public class AbilitySet
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
+        public List<Trait> Traits { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
+        public List<Action> Actions { get; set; }
+
+        public AbilitySet()
         {
             Traits = new List<Trait>();
             Actions = new List<Action>();
