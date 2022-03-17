@@ -36,3 +36,4 @@ TODO List
 - [X] Improve building foes with restrictions being enforced
 - [X] Add checkbox to remove restriction filtering
 - [ ] Tabs for saving foe combos
+- [ ] Remove Factions/Classes when no they are only in homebrew
