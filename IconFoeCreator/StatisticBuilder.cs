@@ -6,11 +6,22 @@ using System.Linq;
 
 namespace IconFoeCreator
 {
+    public class Group
+    {
+        public string Name;
+        public bool OnlyHomebrew;
+
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+
     public class StatisticBuilder
     {
-        public List<string> Factions;
+        public List<Group> Factions;
         public List<Statistics> Templates;
-        public List<string> Classes;
+        public List<Group> Classes;
         public List<Statistics> Jobs;
         public List<Statistics> UniqueFoes;
         public List<Statistics> Specials;
@@ -28,9 +39,9 @@ namespace IconFoeCreator
 
         public StatisticBuilder()
         {
-            Factions = new List<string>();
+            Factions = new List<Group>();
             Templates = new List<Statistics>();
-            Classes = new List<string>();
+            Classes = new List<Group>();
             Jobs = new List<Statistics>();
             UniqueFoes = new List<Statistics>();
             Specials = new List<Statistics>();
@@ -100,10 +111,14 @@ namespace IconFoeCreator
 
                     if (!String.IsNullOrEmpty(stat.Group))
                     {
-                        var group = Classes.FirstOrDefault(otherGroup => otherGroup == stat.Group);
+                        var group = Classes.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
                         if (group == null)
                         {
-                            Classes.Add(stat.Group);
+                            Classes.Add(new Group { Name = stat.Group, OnlyHomebrew = stat.IsHomebrew });
+                        }
+                        else if (!stat.IsHomebrew)
+                        {
+                            group.OnlyHomebrew = false;
                         }
                     }
                 }
@@ -113,10 +128,14 @@ namespace IconFoeCreator
 
                     if (!String.IsNullOrEmpty(stat.Group))
                     {
-                        var group = Factions.FirstOrDefault(otherGroup => otherGroup == stat.Group);
+                        var group = Factions.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
                         if (group == null)
                         {
-                            Factions.Add(stat.Group);
+                            Factions.Add(new Group { Name = stat.Group, OnlyHomebrew = stat.IsHomebrew });
+                        }
+                        else if (!stat.IsHomebrew)
+                        {
+                            group.OnlyHomebrew = false;
                         }
                     }
                 }
@@ -126,10 +145,14 @@ namespace IconFoeCreator
 
                     if (!String.IsNullOrEmpty(stat.Group))
                     {
-                        var group = Factions.FirstOrDefault(otherGroup => otherGroup == stat.Group);
+                        var group = Factions.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
                         if (group == null)
                         {
-                            Factions.Add(stat.Group);
+                            Factions.Add(new Group { Name = stat.Group, OnlyHomebrew = stat.IsHomebrew });
+                        }
+                        else if (!stat.IsHomebrew)
+                        {
+                            group.OnlyHomebrew = false;
                         }
                     }
                 }
@@ -165,22 +188,22 @@ namespace IconFoeCreator
                 return x.Name.CompareTo(y.Name);
             });
 
-            Classes.Sort(delegate (string x, string y)
+            Classes.Sort(delegate (Group x, Group y)
             {
-                string xResult = Array.Find(CoreClasses, element => element == x.ToLower());
-                string yResult = Array.Find(CoreClasses, element => element == y.ToLower());
+                string xResult = Array.Find(CoreClasses, element => element == x.Name.ToLower());
+                string yResult = Array.Find(CoreClasses, element => element == y.Name.ToLower());
 
                 if (xResult == null && yResult != null)
                     return 1;
                 if (xResult != null && yResult == null)
                     return -1;
 
-                return x.CompareTo(y);
+                return x.Name.CompareTo(y.Name);
             });
 
-            Factions.Sort(delegate (string x, string y)
+            Factions.Sort(delegate (Group x, Group y)
             {
-                return x.CompareTo(y);
+                return x.Name.CompareTo(y.Name);
             });
         }
 

@@ -113,6 +113,7 @@
     <PreBuildEvent>del $(ProjectDir)$(OutDir)data /s /q</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(ProjectDir)..\IconFoeJson\data\* $(ProjectDir)$(OutDir)data\ /e /y /i /r</PostBuildEvent>
+    <PostBuildEvent>xcopy $(ProjectDir)..\IconFoeJson\data\* $(ProjectDir)$(OutDir)data\base\ /e /y /i /r
+xcopy $(ProjectDir)..\IconFoeJson-Homebrew\data\* $(ProjectDir)$(OutDir)data\homebrew\ /e /y /i /r</PostBuildEvent>
   </PropertyGroup>
 </Project>

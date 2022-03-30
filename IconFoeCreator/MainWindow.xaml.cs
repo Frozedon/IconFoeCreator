@@ -324,14 +324,23 @@ namespace IconFoeCreator
 
         private List<string> GetAvailableFactions()
         {
-            List<string> availableFactions = new List<string>(statBuilder.Factions);
+            List<Group> availableFactions = new List<Group>(statBuilder.Factions);
 
-            if (availableFactions.Count == 0 || availableFactions[0] != ANY_GROUP)
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
+            if (!showHomebrew)
             {
-                availableFactions.Insert(0, ANY_GROUP);
+                availableFactions = RemoveHomebrewGroups(availableFactions);
             }
 
-            return availableFactions;
+            List<string> avaiableFactionNames = new List<string>();
+
+            avaiableFactionNames.Insert(0, ANY_GROUP);
+            foreach (Group group in availableFactions)
+            {
+                avaiableFactionNames.Add(group.Name);
+            }
+
+            return avaiableFactionNames;
         }
 
         private List<Statistics> GetAvailableTemplates()
@@ -458,14 +467,23 @@ namespace IconFoeCreator
 
         private List<string> GetAvailableClasses()
         {
-            List<string> availableClasses = new List<string>(statBuilder.Classes);
+            List<Group> availableClasses = new List<Group>(statBuilder.Classes);
 
-            if (availableClasses.Count == 0 || availableClasses[0] != ANY_GROUP)
+            bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
+            if (!showHomebrew)
             {
-                availableClasses.Insert(0, ANY_GROUP);
+                availableClasses = RemoveHomebrewGroups(availableClasses);
             }
 
-            return availableClasses;
+            List<string> availableClassNames = new List<string>();
+
+            availableClassNames.Insert(0, ANY_GROUP);
+            foreach (Group group in availableClasses)
+            {
+                availableClassNames.Add(group.Name);
+            }
+
+            return availableClassNames;
         }
 
         private List<Statistics> GetAvailableJobs()
@@ -562,6 +580,14 @@ namespace IconFoeCreator
             return stats.FindAll(delegate (Statistics stat)
             {
                 return !stat.IsHomebrew;
+            });
+        }
+
+        private List<Group> RemoveHomebrewGroups(List<Group> groups)
+        {
+            return groups.FindAll(delegate (Group group)
+            {
+                return !group.OnlyHomebrew;
             });
         }
 
