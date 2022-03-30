@@ -29,7 +29,8 @@ namespace IconFoeCreator
         public int? HP { get; set; }
         public double? AddHPPercent { get; set; } // Additive inheritance
         public int? HPMultiplier { get; set; }
-        public bool? DoubleNormalFoeHP { get; set; }
+        public bool? DoubleHP { get; set; }
+        public bool? DoubleHPIfNormalFoe { get; set; }
         public bool? HPMultiplyByPlayers { get; set; }
         public int? Speed { get; set; }
         public int? Dash { get; set; }
@@ -115,7 +116,8 @@ namespace IconFoeCreator
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
-            if (DoubleNormalFoeHP.HasValue) { newStats.DoubleNormalFoeHP = DoubleNormalFoeHP; } else { newStats.DoubleNormalFoeHP = otherStats.DoubleNormalFoeHP; }
+            if (DoubleHP.HasValue) { newStats.DoubleHP = DoubleHP; } else { newStats.DoubleHP = otherStats.DoubleHP; }
+            if (DoubleHPIfNormalFoe.HasValue) { newStats.DoubleHPIfNormalFoe = DoubleHPIfNormalFoe; } else { newStats.DoubleHPIfNormalFoe = otherStats.DoubleHPIfNormalFoe; }
             if (HPMultiplyByPlayers.HasValue) { newStats.HPMultiplyByPlayers = HPMultiplyByPlayers; } else { newStats.HPMultiplyByPlayers = otherStats.HPMultiplyByPlayers; }
             if (Speed.HasValue) { newStats.Speed = Speed; } else { newStats.Speed = otherStats.Speed; }
             if (Dash.HasValue) { newStats.Dash = Dash; } else { newStats.Dash = otherStats.Dash; }

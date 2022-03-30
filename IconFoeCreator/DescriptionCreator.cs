@@ -52,10 +52,11 @@ namespace IconFoeCreator
                 hitPoints = vitality * stats.HPMultiplier.GetValueOrDefault(4);
             }
             hitPoints = (int)((double)hitPoints * (1.0 + addHP));
-            if (stats.DoubleNormalFoeHP.GetValueOrDefault(false)
+            if (stats.DoubleHP.GetValueOrDefault(false) ||
+                (stats.DoubleHPIfNormalFoe.GetValueOrDefault(false)
                 && !stats.IsMob.GetValueOrDefault()
                 && !stats.IsElite.GetValueOrDefault()
-                && !stats.IsLegend.GetValueOrDefault())
+                && !stats.IsLegend.GetValueOrDefault()))
             {
                 hitPoints *= 2;
             }
