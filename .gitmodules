@@ -1,3 +1,6 @@
 [submodule "IconFoeJson"]
 	path = IconFoeJson
 	url = https://github.com/Frozedon/IconFoeJson.git
+[submodule "IconFoeJson-Homebrew"]
+	path = IconFoeJson-Homebrew
+	url = https://github.com/Frozedon/IconFoeJson-Homebrew
