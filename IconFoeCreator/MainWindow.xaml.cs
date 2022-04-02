@@ -381,11 +381,6 @@ namespace IconFoeCreator
                         availableTemplates = RemoveNonBasicTemplates(availableTemplates);
                     }
                 }
-
-                if (Elite_checkBox.IsChecked.GetValueOrDefault())
-                {
-                    availableTemplates = RemoveNonBasicTemplates(availableTemplates);
-                }
             }
 
             bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
