@@ -26,15 +26,15 @@ namespace IconFoeCreator
 
     public partial class MainWindow : Window
     {
+        public static readonly string UNIQUE_CLASS = "unique";
         public static readonly string EMPTY_STAT = "...";
         public static readonly string ANY_GROUP = "Any";
 
-        public static readonly string UNIQUE_CLASS = "unique";
-
-        public static readonly Thickness DEFAULT_BORDER_THICKNESS = new Thickness(1.8);
-        public static readonly SolidColorBrush DEFAULT_BRUSH = Brushes.White;
+        public static readonly ComboBoxItem EMPTY_STAT_ITEM = new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } };
+        public static readonly ComboBoxItem ANY_GROUP_ITEM = new ComboBoxItem() { Content = new Group() { Name = ANY_GROUP, OnlyHomebrew = false } };
 
         StatisticBuilder statBuilder;
+        DropdownOptions dropdownOptions;
 
         public MainWindow()
         {
@@ -42,6 +42,9 @@ namespace IconFoeCreator
 
             statBuilder = new StatisticBuilder();
             statBuilder.BuildStatistics();
+
+            dropdownOptions = new DropdownOptions();
+            dropdownOptions.ConvertToDropdownItems(statBuilder);
 
             UpdateFactionOptions();
             UpdateTemplateOptions();
@@ -115,12 +118,12 @@ namespace IconFoeCreator
             return null;
         }
 
-        private string GetComboBoxString(object item)
+        private Group GetComboBoxGroup(object item)
         {
             if (item != null)
             {
                 ComboBoxItem templateItem = (ComboBoxItem)item;
-                return (string)templateItem.Content;
+                return (Group)templateItem.Content;
             }
 
             return null;
@@ -241,10 +244,10 @@ namespace IconFoeCreator
             bool enable = true;
             if (Class_comboBox.SelectedItem != null)
             {
-                string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
-                if (!String.IsNullOrEmpty(selectedClass))
+                Group selectedClass = GetComboBoxGroup(Class_comboBox.SelectedItem);
+                if (selectedClass != null && !String.IsNullOrEmpty(selectedClass.Name))
                 {
-                    string className = selectedClass.ToString().ToLower();
+                    string className = selectedClass.Name.ToLower();
                     if (className != ANY_GROUP.ToLower() && Array.Find(StatisticBuilder.CORE_CLASSES, name => name == className) == null)
                     {
                         enable = false;
@@ -278,10 +281,10 @@ namespace IconFoeCreator
 
             // Disable if class or job is not core class
             bool enable = true;
-            string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
-            if (!String.IsNullOrEmpty(selectedClass))
+            Group selectedClass = GetComboBoxGroup(Class_comboBox.SelectedItem);
+            if (selectedClass != null && !String.IsNullOrEmpty(selectedClass.Name))
             {
-                string className = selectedClass.ToString().ToLower();
+                string className = selectedClass.Name.ToLower();
                 if (className != ANY_GROUP.ToLower() && Array.Find(StatisticBuilder.CORE_CLASSES, name => name == className) == null)
                 {
                     enable = false;
@@ -340,7 +343,7 @@ namespace IconFoeCreator
                 selectedItem = comboBox.SelectedItem.ToString();
             }
 
-            comboBox.ItemsSource = AddColorToOptions(getStats());
+            comboBox.ItemsSource = getStats();
 
             int index = 0;
             if (selectedItem.Length > 0)
@@ -357,60 +360,9 @@ namespace IconFoeCreator
             comboBox.SelectedIndex = index;
         }
 
-        private List<ComboBoxItem> AddColorToOptions<T>(List<T> stats)
+        private List<ComboBoxItem> GetAvailableFactions()
         {
-            List<ComboBoxItem> comboBoxItems = new List<ComboBoxItem>();
-
-            foreach (T stat in stats)
-            {
-                string className = String.Empty;
-
-                if (typeof(T) == typeof(Statistics))
-                {
-                    Statistics statConverted = (Statistics)(object)stat;
-                    if (!String.IsNullOrEmpty(statConverted.UsesClass))
-                    {
-                        className = statConverted.UsesClass;
-                    }
-                    else if (statConverted.IsMob.GetValueOrDefault(false))
-                    {
-                        className = StatisticBuilder.MOB;
-                    }
-                    else if (statConverted.Type.ToLower() == StatisticBuilder.TYPE_TEMPLATE && !statConverted.IsBasicTemplate)
-                    {
-                        className = UNIQUE_CLASS;
-                    }
-                    else if (!String.IsNullOrEmpty(statConverted.Group))
-                    {
-                        className = statConverted.Group;
-                    }
-                }
-                else if (typeof(T) == typeof(string))
-                {
-                    className = (string)(object)stat;
-                }
-
-                // Change color based on class
-                Brush backgroundBrush = ThemeColors.GetGradientClassColor(className) ?? Brushes.White;
-                Brush borderBrush = ThemeColors.GetLinearClassColor(className) ?? Brushes.LightGray;
-
-                ComboBoxItem item = new ComboBoxItem()
-                {
-                    Content = stat,
-                    Background = backgroundBrush,
-                    BorderBrush = borderBrush,
-                    BorderThickness = DEFAULT_BORDER_THICKNESS
-                };
-
-                comboBoxItems.Add(item);
-            }
-
-            return comboBoxItems;
-        }
-
-        private List<string> GetAvailableFactions()
-        {
-            List<Group> availableFactions = new List<Group>(statBuilder.Factions);
+            List<ComboBoxItem> availableFactions = new List<ComboBoxItem>(dropdownOptions.Factions);
 
             bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
             if (!showHomebrew)
@@ -418,33 +370,27 @@ namespace IconFoeCreator
                 availableFactions = RemoveHomebrewGroups(availableFactions);
             }
 
-            List<string> avaiableFactionNames = new List<string>();
+            availableFactions.Insert(0, ANY_GROUP_ITEM);
 
-            avaiableFactionNames.Insert(0, ANY_GROUP);
-            foreach (Group group in availableFactions)
-            {
-                avaiableFactionNames.Add(group.Name);
-            }
-
-            return avaiableFactionNames;
+            return availableFactions;
         }
 
-        private List<Statistics> GetAvailableTemplates()
+        private List<ComboBoxItem> GetAvailableTemplates()
         {
-            List<Statistics> availableTemplates = new List<Statistics>(statBuilder.Templates);
+            List<ComboBoxItem> availableTemplates = new List<ComboBoxItem>(dropdownOptions.Templates);
 
-            string selectedFaction = GetComboBoxString(Faction_comboBox.SelectedItem);
-            if (!String.IsNullOrEmpty(selectedFaction) && selectedFaction.ToLower() != ANY_GROUP.ToLower())
+            Group selectedFaction = GetComboBoxGroup(Faction_comboBox.SelectedItem);
+            if (selectedFaction != null && !String.IsNullOrEmpty(selectedFaction.Name) && selectedFaction.Name.ToLower() != ANY_GROUP.ToLower())
             {
-                availableTemplates = RemoveStatsOfOtherGroups(availableTemplates, selectedFaction);
+                availableTemplates = RemoveStatsOfOtherGroups(availableTemplates, selectedFaction.Name);
             }
 
             if (!RemoveRestrictionFiltering_checkBox.IsChecked.GetValueOrDefault(false))
             {
-                string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
-                if (!String.IsNullOrEmpty(selectedClass) && selectedClass.ToLower() != ANY_GROUP.ToLower())
+                Group selectedClass = GetComboBoxGroup(Class_comboBox.SelectedItem);
+                if (selectedClass != null && !String.IsNullOrEmpty(selectedClass.Name) && selectedClass.Name.ToLower() != ANY_GROUP.ToLower())
                 {
-                    availableTemplates = RemoveStatsOfWrongClass(availableTemplates, selectedClass);
+                    availableTemplates = RemoveStatsOfWrongClass(availableTemplates, selectedClass.Name);
                 }
 
                 Statistics selectedJob = GetComboBoxStats(Job_comboBox.SelectedItem);
@@ -471,27 +417,27 @@ namespace IconFoeCreator
 
             availableTemplates = RemoveStatsThatDoNotDisplay(availableTemplates);
 
-            availableTemplates.Insert(0, new Statistics() { Name = EMPTY_STAT });
+            availableTemplates.Insert(0, EMPTY_STAT_ITEM);
 
             return availableTemplates;
         }
 
-        private List<Statistics> GetAvailableUniqueFoes()
+        private List<ComboBoxItem> GetAvailableUniqueFoes()
         {
-            List<Statistics> availableUniques = new List<Statistics>(statBuilder.UniqueFoes);
+            List<ComboBoxItem> availableUniques = new List<ComboBoxItem>(dropdownOptions.UniqueFoes);
 
-            string selectedFaction = GetComboBoxString(Faction_comboBox.SelectedItem);
-            if (!String.IsNullOrEmpty(selectedFaction) && selectedFaction.ToLower() != ANY_GROUP.ToLower())
+            Group selectedFaction = GetComboBoxGroup(Faction_comboBox.SelectedItem);
+            if (selectedFaction != null && !String.IsNullOrEmpty(selectedFaction.Name) && selectedFaction.Name.ToLower() != ANY_GROUP.ToLower())
             {
-                availableUniques = RemoveStatsOfOtherGroups(availableUniques, selectedFaction);
+                availableUniques = RemoveStatsOfOtherGroups(availableUniques, selectedFaction.Name);
             }
 
             if (!RemoveRestrictionFiltering_checkBox.IsChecked.GetValueOrDefault(false))
             {
-                string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
-                if (!String.IsNullOrEmpty(selectedClass) && selectedClass.ToLower() != ANY_GROUP.ToLower())
+                Group selectedClass = GetComboBoxGroup(Class_comboBox.SelectedItem);
+                if (selectedClass != null && !String.IsNullOrEmpty(selectedClass.Name) && selectedClass.Name.ToLower() != ANY_GROUP.ToLower())
                 {
-                    availableUniques = RemoveUniqueFoesOfWrongClass(availableUniques, selectedClass);
+                    availableUniques = RemoveUniqueFoesOfWrongClass(availableUniques, selectedClass.Name);
                 }
             }
 
@@ -503,19 +449,19 @@ namespace IconFoeCreator
 
             availableUniques = RemoveStatsThatDoNotDisplay(availableUniques);
 
-            availableUniques.Insert(0, new Statistics() { Name = EMPTY_STAT });
+            availableUniques.Insert(0, EMPTY_STAT_ITEM);
 
             return availableUniques;
         }
-        
-        private List<Statistics> GetAvailableSpecialTemplates()
-        {
-            List<Statistics> availableSpecials = new List<Statistics>(statBuilder.Specials);
 
-            string selectedFaction = GetComboBoxString(Faction_comboBox.SelectedItem);
-            if (!String.IsNullOrEmpty(selectedFaction) && selectedFaction.ToLower() != ANY_GROUP.ToLower())
+        private List<ComboBoxItem> GetAvailableSpecialTemplates()
+        {
+            List<ComboBoxItem> availableSpecials = new List<ComboBoxItem>(dropdownOptions.Specials);
+
+            Group selectedFaction = GetComboBoxGroup(Faction_comboBox.SelectedItem);
+            if (selectedFaction != null && !String.IsNullOrEmpty(selectedFaction.Name) && selectedFaction.Name.ToLower() != ANY_GROUP.ToLower())
             {
-                availableSpecials = RemoveStatsOfWrongFaction(availableSpecials, selectedFaction);
+                availableSpecials = RemoveStatsOfWrongFaction(availableSpecials, selectedFaction.Name);
             }
 
             bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
@@ -526,14 +472,14 @@ namespace IconFoeCreator
 
             availableSpecials = RemoveStatsThatDoNotDisplay(availableSpecials);
 
-            availableSpecials.Insert(0, new Statistics() { Name = EMPTY_STAT });
+            availableSpecials.Insert(0, EMPTY_STAT_ITEM);
 
             return availableSpecials;
         }
 
-        private List<string> GetAvailableClasses()
+        private List<ComboBoxItem> GetAvailableClasses()
         {
-            List<Group> availableClasses = new List<Group>(statBuilder.Classes);
+            List<ComboBoxItem> availableClasses = new List<ComboBoxItem>(dropdownOptions.Classes);
 
             bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
             if (!showHomebrew)
@@ -541,25 +487,19 @@ namespace IconFoeCreator
                 availableClasses = RemoveHomebrewGroups(availableClasses);
             }
 
-            List<string> availableClassNames = new List<string>();
+            availableClasses.Insert(0, ANY_GROUP_ITEM);
 
-            availableClassNames.Insert(0, ANY_GROUP);
-            foreach (Group group in availableClasses)
-            {
-                availableClassNames.Add(group.Name);
-            }
-
-            return availableClassNames;
+            return availableClasses;
         }
 
-        private List<Statistics> GetAvailableJobs()
+        private List<ComboBoxItem> GetAvailableJobs()
         {
-            List<Statistics> availableJobs = new List<Statistics>(statBuilder.Jobs);
+            List<ComboBoxItem> availableJobs = new List<ComboBoxItem>(dropdownOptions.Jobs);
 
-            string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
-            if (!String.IsNullOrEmpty(selectedClass) && selectedClass.ToLower() != ANY_GROUP.ToLower())
+            Group selectedClass = GetComboBoxGroup(Class_comboBox.SelectedItem);
+            if (selectedClass != null && !String.IsNullOrEmpty(selectedClass.Name) && selectedClass.Name.ToLower() != ANY_GROUP.ToLower())
             {
-                availableJobs = RemoveStatsOfOtherGroups(availableJobs, selectedClass);
+                availableJobs = RemoveStatsOfOtherGroups(availableJobs, selectedClass.Name);
             }
 
             bool showHomebrew = Homebrew_checkBox.IsChecked.GetValueOrDefault();
@@ -570,58 +510,62 @@ namespace IconFoeCreator
 
             availableJobs = RemoveStatsThatDoNotDisplay(availableJobs);
 
-            availableJobs.Insert(0, new Statistics() { Name = EMPTY_STAT });
+            availableJobs.Insert(0, EMPTY_STAT_ITEM);
 
             return availableJobs;
         }
 
-        private List<Statistics> RemoveStatsOfOtherGroups(List<Statistics> stats, string groupName)
+        private List<ComboBoxItem> RemoveStatsOfOtherGroups(List<ComboBoxItem> stats, string groupName)
         {
-            return stats.FindAll(delegate (Statistics stat)
+            return stats.FindAll(delegate (ComboBoxItem stat)
             {
-                return !String.IsNullOrEmpty(stat.Group) && stat.Group.ToLower() == groupName.ToLower();
+                Statistics actualStat = (Statistics)stat.Content;
+                return !String.IsNullOrEmpty(actualStat.Group) && actualStat.Group.ToLower() == groupName.ToLower();
             });
         }
 
-        private List<Statistics> RemoveStatsOfWrongFaction(List<Statistics> stats, string factionName)
+        private List<ComboBoxItem> RemoveStatsOfWrongFaction(List<ComboBoxItem> stats, string factionName)
         {
             string factionNameLower = factionName.ToLower();
-            return stats.FindAll(delegate (Statistics stat)
+            return stats.FindAll(delegate (ComboBoxItem stat)
             {
-                return String.IsNullOrEmpty(stat.UsesFaction) || stat.UsesFaction.ToLower() == factionNameLower;
+                Statistics actualStat = (Statistics)stat.Content;
+                return String.IsNullOrEmpty(actualStat.UsesFaction) || actualStat.UsesFaction.ToLower() == factionNameLower;
             });
         }
 
-        private List<Statistics> RemoveStatsOfWrongClass(List<Statistics> templates, string className)
+        private List<ComboBoxItem> RemoveStatsOfWrongClass(List<ComboBoxItem> templates, string className)
         {
             string classNameLower = className.ToLower();
-            return templates.FindAll(delegate (Statistics stat)
+            return templates.FindAll(delegate (ComboBoxItem stat)
             {
-                return String.IsNullOrEmpty(stat.UsesClass)
+                Statistics actualStat = (Statistics)stat.Content;
+                return String.IsNullOrEmpty(actualStat.UsesClass)
                 || classNameLower == StatisticBuilder.MOB
-                || stat.UsesClass.ToLower() == classNameLower;
+                || actualStat.UsesClass.ToLower() == classNameLower;
             });
         }
 
-        private List<Statistics> RemoveUniqueFoesOfWrongClass(List<Statistics> uniqueFoes, string className)
+        private List<ComboBoxItem> RemoveUniqueFoesOfWrongClass(List<ComboBoxItem> uniqueFoes, string className)
         {
             string classNameLower = className.ToLower();
-            return uniqueFoes.FindAll(delegate (Statistics stat)
+            return uniqueFoes.FindAll(delegate (ComboBoxItem stat)
             {
-                if (!String.IsNullOrEmpty(stat.UsesClass) && classNameLower == stat.UsesClass.ToLower())
+                Statistics actualStat = (Statistics)stat.Content;
+                if (!String.IsNullOrEmpty(actualStat.UsesClass) && classNameLower == actualStat.UsesClass.ToLower())
                 {
                     return true;
                 }
 
-                if (stat.IsMob.GetValueOrDefault(false) && classNameLower == StatisticBuilder.MOB)
+                if (actualStat.IsMob.GetValueOrDefault(false) && classNameLower == StatisticBuilder.MOB)
                 {
                     return true;
                 }
-                if (stat.IsElite.GetValueOrDefault(false) && classNameLower == StatisticBuilder.ELITE)
+                if (actualStat.IsElite.GetValueOrDefault(false) && classNameLower == StatisticBuilder.ELITE)
                 {
                     return true;
                 }
-                if (stat.IsLegend.GetValueOrDefault(false) && classNameLower == StatisticBuilder.LEGEND)
+                if (actualStat.IsLegend.GetValueOrDefault(false) && classNameLower == StatisticBuilder.LEGEND)
                 {
                     return true;
                 }
@@ -630,35 +574,35 @@ namespace IconFoeCreator
             });
         }
 
-        private List<Statistics> RemoveNonBasicTemplates(List<Statistics> templates)
+        private List<ComboBoxItem> RemoveNonBasicTemplates(List<ComboBoxItem> templates)
         {
-            return templates.FindAll(delegate (Statistics stat)
+            return templates.FindAll(delegate (ComboBoxItem stat)
             {
-                return stat.IsBasicTemplate;
+                return ((Statistics)stat.Content).IsBasicTemplate;
             });
         }
 
-        private List<Statistics> RemoveHomebrewStats(List<Statistics> stats)
+        private List<ComboBoxItem> RemoveHomebrewStats(List<ComboBoxItem> stats)
         {
-            return stats.FindAll(delegate (Statistics stat)
+            return stats.FindAll(delegate (ComboBoxItem stat)
             {
-                return !stat.IsHomebrew;
+                return !((Statistics)stat.Content).IsHomebrew;
             });
         }
 
-        private List<Group> RemoveHomebrewGroups(List<Group> groups)
+        private List<ComboBoxItem> RemoveHomebrewGroups(List<ComboBoxItem> groups)
         {
-            return groups.FindAll(delegate (Group group)
+            return groups.FindAll(delegate (ComboBoxItem group)
             {
-                return !group.OnlyHomebrew;
+                return !((Group)group.Content).OnlyHomebrew;
             });
         }
 
-        private List<Statistics> RemoveStatsThatDoNotDisplay(List<Statistics> stats)
+        private List<ComboBoxItem> RemoveStatsThatDoNotDisplay(List<ComboBoxItem> stats)
         {
-            return stats.FindAll(delegate (Statistics stat)
+            return stats.FindAll(delegate (ComboBoxItem stat)
             {
-                return !stat.DoNotDisplay;
+                return !((Statistics)stat.Content).DoNotDisplay;
             });
         }
 
