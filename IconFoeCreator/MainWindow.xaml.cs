@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace IconFoeCreator
@@ -27,6 +28,11 @@ namespace IconFoeCreator
     {
         public static readonly string EMPTY_STAT = "...";
         public static readonly string ANY_GROUP = "Any";
+
+        public static readonly string UNIQUE_CLASS = "unique";
+
+        public static readonly Thickness DEFAULT_BORDER_THICKNESS = new Thickness(1.8);
+        public static readonly SolidColorBrush DEFAULT_BRUSH = Brushes.White;
 
         StatisticBuilder statBuilder;
 
@@ -235,11 +241,14 @@ namespace IconFoeCreator
             bool enable = true;
             if (Class_comboBox.SelectedItem != null)
             {
-                Statistics selectedClass = GetComboBoxStats(Class_comboBox.SelectedItem);
-                string className = selectedClass.ToString().ToLower();
-                if (className != ANY_GROUP.ToLower() && Array.Find(StatisticBuilder.CORE_CLASSES, name => name == className) == null)
+                string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
+                if (!String.IsNullOrEmpty(selectedClass))
                 {
-                    enable = false;
+                    string className = selectedClass.ToString().ToLower();
+                    if (className != ANY_GROUP.ToLower() && Array.Find(StatisticBuilder.CORE_CLASSES, name => name == className) == null)
+                    {
+                        enable = false;
+                    }
                 }
             }
             if (Job_comboBox.SelectedItem != null)
@@ -269,8 +278,8 @@ namespace IconFoeCreator
 
             // Disable if class or job is not core class
             bool enable = true;
-            Statistics selectedClass = GetComboBoxStats(Class_comboBox.SelectedItem);
-            if (selectedClass != null)
+            string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
+            if (!String.IsNullOrEmpty(selectedClass))
             {
                 string className = selectedClass.ToString().ToLower();
                 if (className != ANY_GROUP.ToLower() && Array.Find(StatisticBuilder.CORE_CLASSES, name => name == className) == null)
@@ -295,35 +304,35 @@ namespace IconFoeCreator
 
         private void UpdateFactionOptions()
         {
-            UpdateDropdownOptions(Faction_comboBox, GetAvailableFactions, Brushes.White);
+            UpdateDropdownOptions(Faction_comboBox, GetAvailableFactions);
         }
 
         private void UpdateTemplateOptions()
         {
-            UpdateDropdownOptions(Template_comboBox, GetAvailableTemplates, Brushes.DeepPink);
+            UpdateDropdownOptions(Template_comboBox, GetAvailableTemplates);
         }
 
         private void UpdateUniqueFoeOptions()
         {
-            UpdateDropdownOptions(UniqueFoe_comboBox, GetAvailableUniqueFoes, Brushes.White);
+            UpdateDropdownOptions(UniqueFoe_comboBox, GetAvailableUniqueFoes);
         }
 
         private void UpdateSpecialTemplateOptions()
         {
-            UpdateDropdownOptions(Special_comboBox, GetAvailableSpecialTemplates, Brushes.White);
+            UpdateDropdownOptions(Special_comboBox, GetAvailableSpecialTemplates);
         }
 
         private void UpdateClassOptions()
         {
-            UpdateDropdownOptions(Class_comboBox, GetAvailableClasses, Brushes.White);
+            UpdateDropdownOptions(Class_comboBox, GetAvailableClasses);
         }
 
         private void UpdateJobOptions()
         {
-            UpdateDropdownOptions(Job_comboBox, GetAvailableJobs, Brushes.White);
+            UpdateDropdownOptions(Job_comboBox, GetAvailableJobs);
         }
 
-        private void UpdateDropdownOptions<T>(System.Windows.Controls.ComboBox comboBox, Func<List<T>> getStats, Brush defaultColor)
+        private void UpdateDropdownOptions<T>(System.Windows.Controls.ComboBox comboBox, Func<List<T>> getStats)
         {
             string selectedItem = String.Empty;
             if (comboBox.SelectedItem != null)
@@ -332,8 +341,7 @@ namespace IconFoeCreator
             }
 
 
-            comboBox.ItemsSource = AddColorToOptions(getStats(), defaultColor);
-
+            comboBox.ItemsSource = AddColorToOptions(getStats());
 
             int index = 0;
             if (selectedItem.Length > 0)
@@ -350,7 +358,7 @@ namespace IconFoeCreator
             comboBox.SelectedIndex = index;
         }
 
-        private List<ComboBoxItem> AddColorToOptions<T>(List<T> stats, Brush defaultColor)
+        private List<ComboBoxItem> AddColorToOptions<T>(List<T> stats)
         {
             List<ComboBoxItem> comboBoxItems = new List<ComboBoxItem>();
 
@@ -365,6 +373,14 @@ namespace IconFoeCreator
                     {
                         className = statConverted.UsesClass;
                     }
+                    else if (statConverted.IsMob.GetValueOrDefault(false))
+                    {
+                        className = StatisticBuilder.MOB;
+                    }
+                    else if (statConverted.Type.ToLower() == StatisticBuilder.TYPE_TEMPLATE && !statConverted.IsBasicTemplate)
+                    {
+                        className = UNIQUE_CLASS;
+                    }
                     else if (!String.IsNullOrEmpty(statConverted.Group))
                     {
                         className = statConverted.Group;
@@ -375,47 +391,59 @@ namespace IconFoeCreator
                     className = (string)(object)stat;
                 }
 
+                string nameLower = String.Empty;
+                if (!String.IsNullOrEmpty(className))
+                {
+                    nameLower = className.ToLower();
+                }
+
+                // Change color based on class
+                Brush backgroundBrush = Brushes.White;
+                Brush borderBrush = Brushes.LightGray;
+
+                if (nameLower == StatisticBuilder.HEAVY_CLASS)
+                {
+                    backgroundBrush = ThemeColors.HEAVY_BRUSH_GRADIENT;
+                    borderBrush = ThemeColors.HEAVY_BRUSH;
+                }
+                else if (nameLower == StatisticBuilder.SKIRMISHER_CLASS)
+                {
+                    backgroundBrush = ThemeColors.SKIRMISHER_BRUSH_GRADIENT;
+                    borderBrush = ThemeColors.SKIRMISHER_BRUSH;
+                }
+                else if (nameLower == StatisticBuilder.LEADER_CLASS)
+                {
+                    backgroundBrush = ThemeColors.LEADER_BRUSH_GRADIENT;
+                    borderBrush = ThemeColors.LEADER_BRUSH;
+                }
+                else if (nameLower == StatisticBuilder.ARTILLERY_CLASS)
+                {
+                    backgroundBrush = ThemeColors.ARTILLERY_BRUSH_GRADIENT;
+                    borderBrush = ThemeColors.ARTILLERY_BRUSH;
+                }
+                else if (nameLower == StatisticBuilder.MOB)
+                {
+                    backgroundBrush = ThemeColors.MOB_BRUSH_GRADIENT;
+                    borderBrush = ThemeColors.MOB_BRUSH;
+                }
+                else if (nameLower == UNIQUE_CLASS)
+                {
+                    backgroundBrush = ThemeColors.UNIQUE_BRUSH_GRADIENT;
+                    borderBrush = ThemeColors.UNIQUE_BRUSH;
+                }
+
                 ComboBoxItem item = new ComboBoxItem()
                 {
                     Content = stat,
-                    Background = ClassToBrush(className, defaultColor)
+                    Background = backgroundBrush,
+                    BorderBrush = borderBrush,
+                    BorderThickness = DEFAULT_BORDER_THICKNESS
                 };
 
                 comboBoxItems.Add(item);
             }
 
             return comboBoxItems;
-        }
-
-        private Brush ClassToBrush(string name, Brush defaultColor)
-        {
-            Brush brush = defaultColor;
-            string nameLower = String.Empty;
-
-            if (!String.IsNullOrEmpty(name))
-            {
-                nameLower = name.ToLower();
-            }
-
-            // Change color based on class
-            if (nameLower == StatisticBuilder.HEAVY_CLASS)
-            {
-                brush = Brushes.Red;
-            }
-            else if (nameLower == StatisticBuilder.SKIRMISHER_CLASS)
-            {
-                brush = Brushes.Gold;
-            }
-            else if (nameLower == StatisticBuilder.LEADER_CLASS)
-            {
-                brush = Brushes.Green;
-            }
-            else if (nameLower == StatisticBuilder.ARTILLERY_CLASS)
-            {
-                brush = Brushes.Blue;
-            }
-
-            return brush;
         }
 
         private List<string> GetAvailableFactions()
@@ -608,7 +636,7 @@ namespace IconFoeCreator
             return templates.FindAll(delegate (Statistics stat)
             {
                 return String.IsNullOrEmpty(stat.UsesClass)
-                || classNameLower == "mob"
+                || classNameLower == StatisticBuilder.MOB
                 || stat.UsesClass.ToLower() == classNameLower;
             });
         }
@@ -618,25 +646,25 @@ namespace IconFoeCreator
             string classNameLower = className.ToLower();
             return uniqueFoes.FindAll(delegate (Statistics stat)
             {
-                if (!String.IsNullOrEmpty(stat.UsesClass) && classNameLower != stat.UsesClass.ToLower())
+                if (!String.IsNullOrEmpty(stat.UsesClass) && classNameLower == stat.UsesClass.ToLower())
                 {
-                    return false;
+                    return true;
                 }
 
-                if (stat.IsMob.GetValueOrDefault(false) && classNameLower != "mob")
+                if (stat.IsMob.GetValueOrDefault(false) && classNameLower == StatisticBuilder.MOB)
                 {
-                    return false;
+                    return true;
                 }
-                if (stat.IsElite.GetValueOrDefault(false) && classNameLower != "elite")
+                if (stat.IsElite.GetValueOrDefault(false) && classNameLower == StatisticBuilder.ELITE)
                 {
-                    return false;
+                    return true;
                 }
-                if (stat.IsLegend.GetValueOrDefault(false) && classNameLower != "legend")
+                if (stat.IsLegend.GetValueOrDefault(false) && classNameLower == StatisticBuilder.LEGEND)
                 {
-                    return false;
+                    return true;
                 }
 
-                return true;
+                return false;
             });
         }
 

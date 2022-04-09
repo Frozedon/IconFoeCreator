@@ -26,6 +26,9 @@ namespace IconFoeCreator
         public List<Statistics> UniqueFoes;
         public List<Statistics> Specials;
 
+        public static readonly string MOB = "mob";
+        public static readonly string ELITE = "elite";
+        public static readonly string LEGEND = "legend";
         public static readonly string HEAVY_CLASS = "heavy";
         public static readonly string SKIRMISHER_CLASS = "skirmisher";
         public static readonly string LEADER_CLASS = "leader";
@@ -36,10 +39,10 @@ namespace IconFoeCreator
         private static readonly string BASE_FOLDER_PATH = "base/";
         private static readonly string HOMEBREW_FOLDER_PATH = "homebrew/";
 
-        private static readonly string TYPE_TEMPLATE = "template";
-        private static readonly string TYPE_JOB = "job";
-        private static readonly string TYPE_UNIQUEFOE = "uniquefoe";
-        private static readonly string TYPE_SPECIAL = "special";
+        public static readonly string TYPE_TEMPLATE = "template";
+        public static readonly string TYPE_JOB = "job";
+        public static readonly string TYPE_UNIQUEFOE = "uniquefoe";
+        public static readonly string TYPE_SPECIAL = "special";
 
         public StatisticBuilder()
         {
