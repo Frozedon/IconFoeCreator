@@ -37,4 +37,4 @@ TODO List
 - [X] Add checkbox to remove restriction filtering
 - [ ] Tabs for saving foe combos
 - [X] Remove Factions/Classes when no they are only in homebrew
-- [ ] Add color coding
+- [X] Add color coding
