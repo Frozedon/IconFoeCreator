@@ -721,11 +721,7 @@ namespace IconFoeCreator
         private void Homebrew_checkBox_Checked(object sender, RoutedEventArgs e)
         {
             UpdateFactionOptions();
-            UpdateTemplateOptions();
-            UpdateUniqueFoeOptions();
-            UpdateSpecialTemplateOptions();
             UpdateClassOptions();
-            UpdateJobOptions();
         }
 
         private void ExportJson_button_Click(object sender, RoutedEventArgs e)
