@@ -340,7 +340,6 @@ namespace IconFoeCreator
                 selectedItem = comboBox.SelectedItem.ToString();
             }
 
-
             comboBox.ItemsSource = AddColorToOptions(getStats());
 
             int index = 0;
@@ -391,46 +390,9 @@ namespace IconFoeCreator
                     className = (string)(object)stat;
                 }
 
-                string nameLower = String.Empty;
-                if (!String.IsNullOrEmpty(className))
-                {
-                    nameLower = className.ToLower();
-                }
-
                 // Change color based on class
-                Brush backgroundBrush = Brushes.White;
-                Brush borderBrush = Brushes.LightGray;
-
-                if (nameLower == StatisticBuilder.HEAVY_CLASS)
-                {
-                    backgroundBrush = ThemeColors.HEAVY_BRUSH_GRADIENT;
-                    borderBrush = ThemeColors.HEAVY_BRUSH;
-                }
-                else if (nameLower == StatisticBuilder.SKIRMISHER_CLASS)
-                {
-                    backgroundBrush = ThemeColors.SKIRMISHER_BRUSH_GRADIENT;
-                    borderBrush = ThemeColors.SKIRMISHER_BRUSH;
-                }
-                else if (nameLower == StatisticBuilder.LEADER_CLASS)
-                {
-                    backgroundBrush = ThemeColors.LEADER_BRUSH_GRADIENT;
-                    borderBrush = ThemeColors.LEADER_BRUSH;
-                }
-                else if (nameLower == StatisticBuilder.ARTILLERY_CLASS)
-                {
-                    backgroundBrush = ThemeColors.ARTILLERY_BRUSH_GRADIENT;
-                    borderBrush = ThemeColors.ARTILLERY_BRUSH;
-                }
-                else if (nameLower == StatisticBuilder.MOB)
-                {
-                    backgroundBrush = ThemeColors.MOB_BRUSH_GRADIENT;
-                    borderBrush = ThemeColors.MOB_BRUSH;
-                }
-                else if (nameLower == UNIQUE_CLASS)
-                {
-                    backgroundBrush = ThemeColors.UNIQUE_BRUSH_GRADIENT;
-                    borderBrush = ThemeColors.UNIQUE_BRUSH;
-                }
+                Brush backgroundBrush = ThemeColors.GetGradientClassColor(className) ?? Brushes.White;
+                Brush borderBrush = ThemeColors.GetLinearClassColor(className) ?? Brushes.LightGray;
 
                 ComboBoxItem item = new ComboBoxItem()
                 {

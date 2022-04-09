@@ -86,5 +86,79 @@ namespace IconFoeCreator
                 new GradientStop() { Color = LEADER_COLOR, Offset = 1.0 }
             })
         };
+
+        public static Brush GetLinearClassColor(string className)
+        {
+            if (String.IsNullOrEmpty(className))
+            {
+                return null; 
+            }
+
+            string nameLower = className.ToLower();
+
+            if (nameLower == StatisticBuilder.HEAVY_CLASS)
+            {
+                return ThemeColors.HEAVY_BRUSH;
+            }
+            else if (nameLower == StatisticBuilder.SKIRMISHER_CLASS)
+            {
+                return ThemeColors.SKIRMISHER_BRUSH;
+            }
+            else if (nameLower == StatisticBuilder.LEADER_CLASS)
+            {
+                return ThemeColors.LEADER_BRUSH;
+            }
+            else if (nameLower == StatisticBuilder.ARTILLERY_CLASS)
+            {
+                return ThemeColors.ARTILLERY_BRUSH;
+            }
+            else if (nameLower == StatisticBuilder.MOB)
+            {
+                return ThemeColors.MOB_BRUSH;
+            }
+            else if (nameLower == MainWindow.UNIQUE_CLASS)
+            {
+                return ThemeColors.UNIQUE_BRUSH;
+            }
+
+            return null;
+        }
+
+        public static Brush GetGradientClassColor(string className)
+        {
+            if (String.IsNullOrEmpty(className))
+            {
+                return null;
+            }
+
+            string nameLower = className.ToLower();
+
+            if (nameLower == StatisticBuilder.HEAVY_CLASS)
+            {
+                return ThemeColors.HEAVY_BRUSH_GRADIENT;
+            }
+            else if (nameLower == StatisticBuilder.SKIRMISHER_CLASS)
+            {
+                return ThemeColors.SKIRMISHER_BRUSH_GRADIENT;
+            }
+            else if (nameLower == StatisticBuilder.LEADER_CLASS)
+            {
+                return ThemeColors.LEADER_BRUSH_GRADIENT;
+            }
+            else if (nameLower == StatisticBuilder.ARTILLERY_CLASS)
+            {
+                return ThemeColors.ARTILLERY_BRUSH_GRADIENT;
+            }
+            else if (nameLower == StatisticBuilder.MOB)
+            {
+                return ThemeColors.MOB_BRUSH_GRADIENT;
+            }
+            else if (nameLower == MainWindow.UNIQUE_CLASS)
+            {
+                return ThemeColors.UNIQUE_BRUSH_GRADIENT;
+            }
+
+            return null;
+        }
     }
 }
