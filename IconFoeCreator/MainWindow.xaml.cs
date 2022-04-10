@@ -30,9 +30,6 @@ namespace IconFoeCreator
         public static readonly string EMPTY_STAT = "...";
         public static readonly string ANY_GROUP = "Any";
 
-        public static readonly ComboBoxItem EMPTY_STAT_ITEM = new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } };
-        public static readonly ComboBoxItem ANY_GROUP_ITEM = new ComboBoxItem() { Content = new Group() { Name = ANY_GROUP, OnlyHomebrew = false } };
-
         StatisticBuilder statBuilder;
         DropdownOptions dropdownOptions;
 
@@ -370,7 +367,7 @@ namespace IconFoeCreator
                 availableFactions = RemoveHomebrewGroups(availableFactions);
             }
 
-            availableFactions.Insert(0, ANY_GROUP_ITEM);
+            availableFactions.Insert(0, new ComboBoxItem() { Content = new Group() { Name = ANY_GROUP, OnlyHomebrew = false } });
 
             return availableFactions;
         }
@@ -417,7 +414,7 @@ namespace IconFoeCreator
 
             availableTemplates = RemoveStatsThatDoNotDisplay(availableTemplates);
 
-            availableTemplates.Insert(0, EMPTY_STAT_ITEM);
+            availableTemplates.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
 
             return availableTemplates;
         }
@@ -449,7 +446,7 @@ namespace IconFoeCreator
 
             availableUniques = RemoveStatsThatDoNotDisplay(availableUniques);
 
-            availableUniques.Insert(0, EMPTY_STAT_ITEM);
+            availableUniques.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
 
             return availableUniques;
         }
@@ -472,7 +469,7 @@ namespace IconFoeCreator
 
             availableSpecials = RemoveStatsThatDoNotDisplay(availableSpecials);
 
-            availableSpecials.Insert(0, EMPTY_STAT_ITEM);
+            availableSpecials.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
 
             return availableSpecials;
         }
@@ -487,7 +484,7 @@ namespace IconFoeCreator
                 availableClasses = RemoveHomebrewGroups(availableClasses);
             }
 
-            availableClasses.Insert(0, ANY_GROUP_ITEM);
+            availableClasses.Insert(0, new ComboBoxItem() { Content = new Group() { Name = ANY_GROUP, OnlyHomebrew = false } });
 
             return availableClasses;
         }
@@ -510,7 +507,7 @@ namespace IconFoeCreator
 
             availableJobs = RemoveStatsThatDoNotDisplay(availableJobs);
 
-            availableJobs.Insert(0, EMPTY_STAT_ITEM);
+            availableJobs.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
 
             return availableJobs;
         }
