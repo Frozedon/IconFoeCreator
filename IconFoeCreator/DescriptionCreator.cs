@@ -31,12 +31,7 @@ namespace IconFoeCreator
             foreach (Statistics statsToMerge in statsList)
             {
                 stats = statsToMerge.InheritFrom(stats);
-                string title = statsToMerge.Name;
-                if (!String.IsNullOrEmpty(statsToMerge.TitleName))
-                {
-                    title = statsToMerge.TitleName;
-                }
-                name = title + " " + name;
+                name = statsToMerge.Name + " " + name;
             }
 
             List<Trait> traits = stats.LoadActualTraits(traitLib);
@@ -186,12 +181,12 @@ namespace IconFoeCreator
                 AddNormal(paragraph2, stats.PhasesDescription);
                 descTextBox.Document.Blocks.Add(paragraph2);
 
-                AddPhases(descTextBox, stats.Phases, damageInfo);
+                AddPhases(descTextBox, stats.Phases, damageInfo, traitLib);
             }
 
             if (stats.ExtraAbilitySets.Count > 0)
             {
-                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, damageInfo);
+                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, damageInfo, traitLib);
             }
 
             // Setup traits in other textbox
@@ -245,7 +240,7 @@ namespace IconFoeCreator
                 }
                 AddBold(paragraph, trait.Name);
 
-                if (trait.Tags.Count > 0)
+                /*if (trait.Tags.Count > 0)
                 {
                     AddBold(paragraph, " (");
 
@@ -259,7 +254,7 @@ namespace IconFoeCreator
                     }
 
                     AddBold(paragraph, ")");
-                }
+                }*/
 
                 AddBold(paragraph, ". ");
                 AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
@@ -505,7 +500,7 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddPhases(RichTextBox textBox, List<Phase> phases, DamageInfo dmgInfo)
+        private static void AddPhases(RichTextBox textBox, List<Phase> phases, DamageInfo dmgInfo, List<Trait> traitLib)
         {
             for (int i = 0; i < phases.Count; ++i)
             {
@@ -524,7 +519,7 @@ namespace IconFoeCreator
 
                 if (phase.Traits.Count > 0)
                 {
-                    AddTraits(textBox, phase.Traits, dmgInfo);
+                    AddTraits(textBox, Statistics.GetActualTraits(phase.Traits, traitLib), dmgInfo);
                 }
 
                 if (phase.Actions.Count > 0)
@@ -534,7 +529,7 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySet> abilitySets, DamageInfo dmgInfo)
+        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySet> abilitySets, DamageInfo dmgInfo, List<Trait> traitLib)
         {
             for (int i = 0; i < abilitySets.Count; ++i)
             {
@@ -555,7 +550,7 @@ namespace IconFoeCreator
 
                 if (abilitySet.Traits.Count > 0)
                 {
-                    AddTraits(textBox, abilitySet.Traits, dmgInfo);
+                    AddTraits(textBox, Statistics.GetActualTraits(abilitySet.Traits, traitLib), dmgInfo);
                 }
 
                 if (abilitySet.Actions.Count > 0)
@@ -577,7 +572,7 @@ namespace IconFoeCreator
             else if (encounterBudget > 0.0 && encounterBudget < 1.0)
             {
                 int amount = (int)(1.0 / encounterBudget);
-                AddNormal(paragraph, "1 point in an encounter budget gets " + amount + " mobs of the same type.");
+                AddNormal(paragraph, "1 point in an encounter budget gets " + amount + " of these foes.");
             }
             else if (encounterBudget == 1.0)
             {

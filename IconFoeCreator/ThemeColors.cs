@@ -96,19 +96,19 @@ namespace IconFoeCreator
 
             string nameLower = className.ToLower();
 
-            if (nameLower == StatisticBuilder.HEAVY_CLASS)
+            if (nameLower == StatisticBuilder.CLASS_HEAVY)
             {
                 return ThemeColors.HEAVY_BRUSH;
             }
-            else if (nameLower == StatisticBuilder.SKIRMISHER_CLASS)
+            else if (nameLower == StatisticBuilder.CLASS_SKIRMISHER)
             {
                 return ThemeColors.SKIRMISHER_BRUSH;
             }
-            else if (nameLower == StatisticBuilder.LEADER_CLASS)
+            else if (nameLower == StatisticBuilder.CLASS_LEADER)
             {
                 return ThemeColors.LEADER_BRUSH;
             }
-            else if (nameLower == StatisticBuilder.ARTILLERY_CLASS)
+            else if (nameLower == StatisticBuilder.CLASS_ARTILLERY)
             {
                 return ThemeColors.ARTILLERY_BRUSH;
             }
@@ -133,19 +133,19 @@ namespace IconFoeCreator
 
             string nameLower = className.ToLower();
 
-            if (nameLower == StatisticBuilder.HEAVY_CLASS)
+            if (nameLower == StatisticBuilder.CLASS_HEAVY)
             {
                 return ThemeColors.HEAVY_BRUSH_GRADIENT;
             }
-            else if (nameLower == StatisticBuilder.SKIRMISHER_CLASS)
+            else if (nameLower == StatisticBuilder.CLASS_SKIRMISHER)
             {
                 return ThemeColors.SKIRMISHER_BRUSH_GRADIENT;
             }
-            else if (nameLower == StatisticBuilder.LEADER_CLASS)
+            else if (nameLower == StatisticBuilder.CLASS_LEADER)
             {
                 return ThemeColors.LEADER_BRUSH_GRADIENT;
             }
-            else if (nameLower == StatisticBuilder.ARTILLERY_CLASS)
+            else if (nameLower == StatisticBuilder.CLASS_ARTILLERY)
             {
                 return ThemeColors.ARTILLERY_BRUSH_GRADIENT;
             }

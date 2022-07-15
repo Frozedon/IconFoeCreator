@@ -8,7 +8,9 @@ namespace IconFoeCreator
 {
     public class StatisticBuilder
     {
-        public List<Statistics> Stats;
+        public List<Statistics> Foes;
+        public List<Statistics> Templates;
+        public List<Statistics> Jobs;
         public List<string> Factions;
         public List<string> Classes;
         public List<Trait> Traits;
@@ -16,20 +18,26 @@ namespace IconFoeCreator
         public static readonly string MOB = "mob";
         public static readonly string ELITE = "elite";
         public static readonly string LEGEND = "legend";
-        public static readonly string HEAVY_CLASS = "heavy";
-        public static readonly string SKIRMISHER_CLASS = "skirmisher";
-        public static readonly string LEADER_CLASS = "leader";
-        public static readonly string ARTILLERY_CLASS = "artillery";
-        public static readonly string[] CORE_CLASSES = { HEAVY_CLASS, SKIRMISHER_CLASS, LEADER_CLASS, ARTILLERY_CLASS };
+        public static readonly string CLASS_HEAVY = "heavy";
+        public static readonly string CLASS_SKIRMISHER = "skirmisher";
+        public static readonly string CLASS_LEADER = "leader";
+        public static readonly string CLASS_ARTILLERY = "artillery";
+        public static readonly string[] CORE_CLASSES = { CLASS_HEAVY, CLASS_SKIRMISHER, CLASS_LEADER, CLASS_ARTILLERY };
 
         private static readonly string DATA_FOLDER_PATH = "data/";
         private static readonly string BASE_FOLDER_PATH = DATA_FOLDER_PATH + "base/";
         private static readonly string HOMEBREW_FOLDER_PATH = DATA_FOLDER_PATH + "homebrew/";
-        private static readonly string TRAITS_FILE_PATH = DATA_FOLDER_PATH + "traits.json";
+        private static readonly string TRAITS_FILE_NAME = "traits.json";
+
+        private static readonly string TYPE_FOE = "foe";
+        private static readonly string TYPE_TEMPLATE = "template";
+        private static readonly string TYPE_JOB = "job";
 
         public StatisticBuilder()
         {
-            Stats = new List<Statistics>();
+            Foes = new List<Statistics>();
+            Templates = new List<Statistics>();
+            Jobs = new List<Statistics>();
             Factions = new List<string>();
             Classes = new List<string>();
             Traits = new List<Trait>();
@@ -37,48 +45,69 @@ namespace IconFoeCreator
 
         public void BuildStatistics(bool useHomebrew)
         {
-            Stats.Clear();
+            Foes.Clear();
+            Templates.Clear();
+            Jobs.Clear();
             Factions.Clear();
             Classes.Clear();
             Traits.Clear();
 
             // Collect stats from files
+            List<Statistics> allStats = new List<Statistics>();
+
             if (Directory.Exists(BASE_FOLDER_PATH))
             {
-                ReadJsonFilesInDirectory(BASE_FOLDER_PATH, Stats);
+                ReadJsonFilesInDirectory(BASE_FOLDER_PATH, allStats);
+                ReadTraitsJsonFile(BASE_FOLDER_PATH + TRAITS_FILE_NAME, Traits);
             }
             if (useHomebrew && Directory.Exists(HOMEBREW_FOLDER_PATH))
             {
-                ReadJsonFilesInDirectory(HOMEBREW_FOLDER_PATH, Stats);
+                ReadJsonFilesInDirectory(HOMEBREW_FOLDER_PATH, allStats);
+                ReadTraitsJsonFile(HOMEBREW_FOLDER_PATH + TRAITS_FILE_NAME, Traits);
             }
 
             // Handle inheritance
-            HandleInheritance(Stats);
+            HandleInheritance(allStats);
 
             // Organize into Lists
-            foreach (Statistics stat in Stats)
+            foreach (Statistics stat in allStats)
             {
-                if (!String.IsNullOrEmpty(stat.Faction))
+                if (!String.IsNullOrEmpty(stat.Faction) && !Factions.Contains(stat.Faction))
                 {
                     Factions.Add(stat.Faction);
                 }
-                if (!String.IsNullOrEmpty(stat.Class))
+                if (!String.IsNullOrEmpty(stat.Class) && !Classes.Contains(stat.Class))
                 {
                     Classes.Add(stat.Class);
                 }
+
+                if (stat.Type.ToLower() == TYPE_FOE)
+                {
+                    Foes.Add(stat);
+                }
+                else if (stat.Type.ToLower() == TYPE_TEMPLATE)
+                {
+                    Templates.Add(stat);
+                }
+                else if (stat.Type.ToLower() == TYPE_JOB)
+                {
+                    Jobs.Add(stat);
+                }
             }
 
-            // Read traits
-            ReadTraitsJsonFile(TRAITS_FILE_PATH, Traits);
-
             // Sort lists
-            Stats.Sort(delegate (Statistics x, Statistics y)
+            Foes.Sort(delegate (Statistics x, Statistics y)
             {
-                if (x.IsBasicTemplate && !y.IsBasicTemplate)
-                    return -1;
-                if (!x.IsBasicTemplate && y.IsBasicTemplate)
-                    return 1;
+                return x.Name.CompareTo(y.Name);
+            });
 
+            Templates.Sort(delegate (Statistics x, Statistics y)
+            {
+                return x.Name.CompareTo(y.Name);
+            });
+
+            Jobs.Sort(delegate (Statistics x, Statistics y)
+            {
                 return x.Name.CompareTo(y.Name);
             });
 
@@ -133,7 +162,7 @@ namespace IconFoeCreator
             // Iterate through folder looking for json files
             foreach (string path in Directory.GetFiles(dirPath))
             {
-                if (path.EndsWith(".json") && !path.EndsWith("/example.json"))
+                if (path.EndsWith(".json") && !path.EndsWith("/example.json") && !path.EndsWith("/" + TRAITS_FILE_NAME))
                 {
                     using (StreamReader r = new StreamReader(path))
                     {

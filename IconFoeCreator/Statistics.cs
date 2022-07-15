@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace IconFoeCreator
 {
@@ -9,24 +10,26 @@ namespace IconFoeCreator
     {
         // Does Not Inherit
         public string Name { get; set; }
-        public string TitleName { get; set; }
+        public string Type { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Inherits { get; set; } 
 
-        public bool IsBasicTemplate { get; set; }
         public int Chapter { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveTraits { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> RemoveInterrupts { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> RemoveActions { get; set; }
 
         // Normal Inheritance
         public string Faction { get; set; }
         public string Class { get; set; }
         public bool? IsMob { get; set; }
-        public bool? IsElite { get; set; }
-        public bool? IsLegend { get; set; }
         public int? Vitality { get; set; }
         public int? HP { get; set; }
         public int? HPMultiplier { get; set; }
@@ -65,6 +68,7 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
 
+
         // Used by code
         private List<Trait> mActualTraits;
 
@@ -72,9 +76,8 @@ namespace IconFoeCreator
         public Statistics()
         {
             Name = String.Empty;
-            TitleName = String.Empty;
+            Type = String.Empty;
             Inherits = new List<string>();
-            IsBasicTemplate = false;
             Chapter = 0;
             Faction = String.Empty;
             Class = String.Empty;
@@ -84,6 +87,8 @@ namespace IconFoeCreator
             ExtraAbilitySets = new List<AbilitySet>();
             Traits = new List<string>();
             RemoveTraits = new List<string>();
+            RemoveInterrupts = new List<string>();
+            RemoveActions = new List<string>();
             SetupTraits = new List<Trait>();
             Interrupts = new List<Interrupt>();
             Actions = new List<Action>();
@@ -100,9 +105,8 @@ namespace IconFoeCreator
             Statistics newStats = new Statistics
             {
                 Name = Name,
-                TitleName = TitleName,
+                Type = Type,
                 Inherits = Inherits,
-                IsBasicTemplate = IsBasicTemplate,
                 Chapter = Chapter
             };
 
@@ -110,8 +114,6 @@ namespace IconFoeCreator
             if (!String.IsNullOrEmpty(Faction)) { newStats.Faction = Faction; } else { newStats.Faction = otherStats.Faction; }
             if (!String.IsNullOrEmpty(Class)) { newStats.Class = Class; } else { newStats.Class = otherStats.Class; }
             if (IsMob.HasValue) { newStats.IsMob = IsMob; } else { newStats.IsMob = otherStats.IsMob; }
-            if (IsElite.HasValue) { newStats.IsElite = IsElite; } else { newStats.IsElite = otherStats.IsElite; }
-            if (IsLegend.HasValue) { newStats.IsLegend = IsLegend; } else { newStats.IsLegend = otherStats.IsLegend; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
@@ -128,12 +130,8 @@ namespace IconFoeCreator
             // Additive statistics
             newStats.SetupTraits.AddRange(SetupTraits);
             newStats.SetupTraits.AddRange(otherStats.SetupTraits);
-            newStats.Interrupts.AddRange(Interrupts);
-            newStats.Interrupts.AddRange(otherStats.Interrupts);
-            newStats.Actions.AddRange(Actions);
-            newStats.Actions.AddRange(otherStats.Actions);
 
-            // Only add traits from the inherited traits that are not on the current removal list
+            // Only add traits, interrupts, and actions from the inherited that are not on the current removal lists
             newStats.Traits.AddRange(Traits);
             foreach (string trait in otherStats.Traits)
             {
@@ -143,6 +141,25 @@ namespace IconFoeCreator
             }
             newStats.Traits = newStats.Traits.Distinct().ToList();
 
+            newStats.Interrupts.AddRange(Interrupts);
+            foreach (Interrupt interrupt in otherStats.Interrupts)
+            {
+                if (!RemoveInterrupts.Exists(x => x == interrupt.Name))
+                {
+                    newStats.Interrupts.Add(interrupt);
+                }
+            }
+
+            newStats.Actions.AddRange(Actions);
+            foreach (Action action in otherStats.Actions)
+            {
+                if (!RemoveActions.Exists(x => x == action.Name))
+                {
+                    newStats.Actions.Add(action);
+                }
+            }
+
+
             return newStats;
         }
 
@@ -151,32 +168,32 @@ namespace IconFoeCreator
             return stats != null && stats.Name != null && stats.Name != "...";
         }
 
-        public List<Trait> GetTraits(List<Trait> traitLib)
+        public static List<Trait> GetActualTraits(List<string> traits, List<Trait> traitLib)
         {
-            List<Trait> traits = new List<Trait>();
+            List<Trait> updatedTraits = new List<Trait>();
 
-            foreach (string traitName in Traits)
+            foreach (string traitName in traits)
             {
-                Trait traitFound = traitLib.Find(x => x.Name == traitName);
+                Trait traitFound = traitLib.Find(x => x.Matches(traitName));
                 if (traitFound != null)
                 {
-                    traits.Add(traitFound);
+                    updatedTraits.Add(traitFound.MakeExpressedTrait(traitName));
                 }
                 else
                 {
-                    traits.Add(new Trait()
+                    updatedTraits.Add(new Trait()
                     {
                         Name = traitName
                     });
                 }
             }
 
-            return traits;
+            return updatedTraits;
         }
 
         public List<Trait> LoadActualTraits(List<Trait> traitLib)
         {
-            mActualTraits = GetTraits(traitLib);
+            mActualTraits = GetActualTraits(Traits, traitLib);
             return mActualTraits;
         }
 
@@ -199,7 +216,7 @@ namespace IconFoeCreator
                 dashMultiplier = 0.5f;
             }
 
-            return (int)Math.Ceiling((float)Speed * dashMultiplier);
+            return (int)Math.Ceiling((float)Speed.GetValueOrDefault(0) * dashMultiplier);
         }
 
         public int GetDefense()
@@ -254,12 +271,7 @@ namespace IconFoeCreator
     public class Trait
     {
         public string Name { get; set; }
-
-        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
-        public List<string> Tags { get; set; }
-
         public string Description { get; set; }
-        public bool Nonessential { get; set; }
 
         public float? DashMultiplier { get; set; }
         public int? Defense { get; set; }
@@ -270,8 +282,55 @@ namespace IconFoeCreator
 
         public Trait()
         {
-            Tags = new List<string>();
             Actions = new List<Action>();
+        }
+
+        private static readonly string VALUE_TOKEN = "[X]";
+
+        public bool Matches(string traitName)
+        {
+            if (Name.Contains(VALUE_TOKEN))
+            {
+                string regexName = "^" + Name.Replace(VALUE_TOKEN, "\\d+") + "$";
+                return Regex.IsMatch(traitName, regexName, RegexOptions.IgnoreCase);
+            }
+            else
+            {
+                return Name == traitName;
+            }
+        }
+
+        public Trait MakeExpressedTrait(string traitName)
+        {
+            if (Name.Contains(VALUE_TOKEN))
+            {
+                Trait newTrait = new Trait()
+                {
+                    Name = Name,
+                    Description = Description,
+                    DashMultiplier = DashMultiplier,
+                    Defense = Defense,
+                    EncounterBudget = EncounterBudget,
+                    Actions = Actions
+                };
+
+                string strippedTraitName = (string)traitName.Clone();
+                string[] substrings = Name.Split(VALUE_TOKEN.ToCharArray());
+                if (substrings.Length > 0)
+                {
+                    strippedTraitName = strippedTraitName.Replace(substrings[0], "");
+                }
+                string valueStr = Regex.Match(strippedTraitName, @"\d+", RegexOptions.IgnoreCase).Value;
+
+                newTrait.Name = Name.Replace(VALUE_TOKEN, valueStr);
+                newTrait.Description = Description.Replace(VALUE_TOKEN, valueStr);
+
+                return newTrait;
+            }
+            else
+            {
+                return this;
+            }
         }
     }
 
@@ -336,8 +395,8 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveTraits { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
-        public List<Trait> Traits { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Traits { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
@@ -356,15 +415,15 @@ namespace IconFoeCreator
         public string Name { get; set; }
         public string Description { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
-        public List<Trait> Traits { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Traits { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
 
         public Phase()
         {
-            Traits = new List<Trait>();
+            Traits = new List<string>();
             Actions = new List<Action>();
         }
     }
@@ -374,15 +433,15 @@ namespace IconFoeCreator
         public string Name { get; set; }
         public string Description { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
-        public List<Trait> Traits { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Traits { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
 
         public AbilitySet()
         {
-            Traits = new List<Trait>();
+            Traits = new List<string>();
             Actions = new List<Action>();
         }
     }
