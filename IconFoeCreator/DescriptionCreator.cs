@@ -16,7 +16,7 @@ namespace IconFoeCreator
 
     public static class DescriptionCreator
     {
-        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, List<Statistics> statsList, bool replaceDamageValues, bool showNonessentialTraits)
+        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, List<Trait> traitLib, List<Statistics> statsList, bool replaceDamageValues)
         {
             descTextBox.Document.Blocks.Clear();
             setupTextBox.Document.Blocks.Clear();
@@ -39,35 +39,24 @@ namespace IconFoeCreator
                 name = title + " " + name;
             }
 
+            List<Trait> traits = stats.LoadActualTraits(traitLib);
+
             // Traits can add armor, max armor, or alter hit points
             int vitality = stats.Vitality.GetValueOrDefault();
-            double addHP = stats.AddHPPercent.GetValueOrDefault(0.0);
-            int hitPoints;
+            int hp;
             if (stats.HP.HasValue)
             {
-                hitPoints = stats.HP.Value;
+                hp = stats.HP.Value;
             }
             else
             {
-                hitPoints = vitality * stats.HPMultiplier.GetValueOrDefault(4);
-            }
-            hitPoints = (int)((double)hitPoints * (1.0 + addHP));
-            if (stats.DoubleHP.GetValueOrDefault(false) ||
-                (stats.DoubleHPIfNormalFoe.GetValueOrDefault(false)
-                && !stats.IsMob.GetValueOrDefault()
-                && !stats.IsElite.GetValueOrDefault()
-                && !stats.IsLegend.GetValueOrDefault()))
-            {
-                hitPoints *= 2;
+                hp = vitality * stats.HPMultiplier.GetValueOrDefault(4);
             }
 
             int speed = stats.Speed.GetValueOrDefault();
-            int dash = stats.Dash.GetValueOrDefault();
+            int dash = stats.GetDash();
             string dashText = dash <= 0 ? "No Dash" : ("Dash " + dash);
-            int defense = stats.Defense.GetValueOrDefault();
-            int armor = stats.Armor.GetValueOrDefault();
-            int minimumRecharge = stats.MinimumRecharge.GetValueOrDefault(0);
-
+            int defense = stats.GetDefense();
             int damageDie = stats.DamageDie.GetValueOrDefault();
             int frayDamage = stats.FrayDamage.GetValueOrDefault();
             DamageInfo damageInfo = new DamageInfo {
@@ -96,9 +85,9 @@ namespace IconFoeCreator
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "HP: ");
 
-                if (hitPoints > 0)
+                if (hp > 0)
                 {
-                    AddNormal(paragraph, hitPoints.ToString());
+                    AddNormal(paragraph, hp.ToString());
                     if (stats.HPMultiplyByPlayers.GetValueOrDefault(false))
                     {
                         AddNormal(paragraph, " x number of players characters");
@@ -128,13 +117,6 @@ namespace IconFoeCreator
 
             {
                 Paragraph paragraph = MakeParagraph();
-                AddBold(paragraph, "Armor: ");
-                AddNormal(paragraph, armor.ToString());
-                descTextBox.Document.Blocks.Add(paragraph);
-            }
-
-            {
-                Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "Fray Damage: ");
                 AddNormal(paragraph, frayDamage.ToString());
                 descTextBox.Document.Blocks.Add(paragraph);
@@ -148,14 +130,6 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
-            {
-                Paragraph paragraph = MakeParagraph();
-                AddBold(paragraph, "Faction Blight: ");
-                if (stats.FactionBlight != null) { AddNormal(paragraph, stats.FactionBlight); }
-                else { AddNormal(paragraph, "Any"); }
-                descTextBox.Document.Blocks.Add(paragraph);
-            }
-
             if (stats.Traits.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
@@ -164,7 +138,7 @@ namespace IconFoeCreator
                 AddBold(paragraph, "Traits");
                 descTextBox.Document.Blocks.Add(paragraph);
 
-                AddTraits(descTextBox, stats.Traits, damageInfo, showNonessentialTraits);
+                AddTraits(descTextBox, traits, damageInfo);
             }
 
             if (stats.Interrupts.Count > 0)
@@ -186,7 +160,7 @@ namespace IconFoeCreator
                 AddBold(paragraph, "Actions");
                 descTextBox.Document.Blocks.Add(paragraph);
 
-                AddActions(descTextBox, stats.Actions, damageInfo, minimumRecharge);
+                AddActions(descTextBox, stats.Actions, damageInfo);
             }
 
             if (stats.BodyParts.Count > 0)
@@ -212,20 +186,20 @@ namespace IconFoeCreator
                 AddNormal(paragraph2, stats.PhasesDescription);
                 descTextBox.Document.Blocks.Add(paragraph2);
 
-                AddPhases(descTextBox, stats.Phases, damageInfo, minimumRecharge);
+                AddPhases(descTextBox, stats.Phases, damageInfo);
             }
 
             if (stats.ExtraAbilitySets.Count > 0)
             {
-                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, damageInfo, minimumRecharge);
+                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, damageInfo);
             }
 
             // Setup traits in other textbox
-            AddEncounterBudget(setupTextBox, stats.EncounterBudget.GetValueOrDefault(1.0));
+            AddEncounterBudget(setupTextBox, stats.GetEncounterBudget());
 
             if (stats.SetupTraits.Count > 0)
             {
-                AddTraits(setupTextBox, stats.SetupTraits, damageInfo, true);
+                AddTraits(setupTextBox, stats.SetupTraits, damageInfo);
             }
         }
 
@@ -253,7 +227,7 @@ namespace IconFoeCreator
             paragraph.Inlines.Add(new Italic(new Run(text)));
         }
 
-        private static void AddTraits(RichTextBox textBox, List<Trait> traits, DamageInfo dmgInfo, bool showNonessentialTraits, int indent = 0)
+        private static void AddTraits(RichTextBox textBox, List<Trait> traits, DamageInfo dmgInfo, int indent = 0)
         {
             traits.Sort(delegate (Trait x, Trait y)
             {
@@ -262,43 +236,35 @@ namespace IconFoeCreator
 
             foreach (Trait trait in traits)
             {
-                if (showNonessentialTraits || !trait.Nonessential)
+                Paragraph paragraph = MakeParagraph();
+
+                if (indent > 0)
                 {
-                    Paragraph paragraph = MakeParagraph();
-
-                    if (indent > 0)
-                    {
-                        paragraph.TextIndent = (indent - 1) * 10.0;
-                        AddBold(paragraph, "• ");
-                    }
-                    AddBold(paragraph, trait.Name);
-
-                    if (trait.Tags.Count > 0)
-                    {
-                        AddBold(paragraph, " (");
-
-                        bool firstTag = true;
-                        foreach (string tag in trait.Tags)
-                        {
-                            if (!firstTag) { AddBold(paragraph, ", "); }
-                            else { firstTag = false; }
-
-                            AddBold(paragraph, tag);
-                        }
-
-                        AddBold(paragraph, ")");
-                    }
-
-                    AddBold(paragraph, ". ");
-                    AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
-
-                    if (showNonessentialTraits)
-                    {
-                        AddNormal(paragraph, " " + trait.DescriptionNonessential);
-                    }
-
-                    textBox.Document.Blocks.Add(paragraph);
+                    paragraph.TextIndent = (indent - 1) * 10.0;
+                    AddBold(paragraph, "• ");
                 }
+                AddBold(paragraph, trait.Name);
+
+                if (trait.Tags.Count > 0)
+                {
+                    AddBold(paragraph, " (");
+
+                    bool firstTag = true;
+                    foreach (string tag in trait.Tags)
+                    {
+                        if (!firstTag) { AddBold(paragraph, ", "); }
+                        else { firstTag = false; }
+
+                        AddBold(paragraph, tag);
+                    }
+
+                    AddBold(paragraph, ")");
+                }
+
+                AddBold(paragraph, ". ");
+                AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
+
+                textBox.Document.Blocks.Add(paragraph);
             }
         }
 
@@ -358,7 +324,7 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddActions(RichTextBox textBox, List<Action> actions, DamageInfo dmgInfo, int minRecharge)
+        private static void AddActions(RichTextBox textBox, List<Action> actions, DamageInfo dmgInfo)
         {
             actions.Sort(delegate (Action x, Action y)
             {
@@ -371,11 +337,11 @@ namespace IconFoeCreator
 
             foreach (Action action in actions)
             {
-                AddAction(textBox, action, dmgInfo, minRecharge);
+                AddAction(textBox, action, dmgInfo);
             }
         }
 
-        private static void AddAction(RichTextBox textBox, Action action, DamageInfo dmgInfo, int minRecharge, bool combo = false)
+        private static void AddAction(RichTextBox textBox, Action action, DamageInfo dmgInfo, bool combo = false)
         {
             Paragraph paragraph = MakeParagraph();
 
@@ -405,10 +371,9 @@ namespace IconFoeCreator
 
             if (action.Recharge > 1)
             {
-                int recharge = Math.Max(minRecharge, action.Recharge);
-                AddBold(paragraph, ", recharge " + recharge);
+                AddBold(paragraph, ", recharge " + action.Recharge);
 
-                if (recharge < 6)
+                if (action.Recharge < 6)
                 {
                     AddBold(paragraph, "+");
                 }
@@ -492,11 +457,23 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.TerrainEffect, dmgInfo));
             }
 
+            if (!String.IsNullOrEmpty(action.SpecialInterrupt))
+            {
+                AddItalic(paragraph, " Interrupt: ");
+                AddNormal(paragraph, ReplaceDamageTokens(action.SpecialInterrupt, dmgInfo));
+            }
+
+            if (!String.IsNullOrEmpty(action.SpecialRecharge))
+            {
+                AddItalic(paragraph, " Recharge: ");
+                AddNormal(paragraph, ReplaceDamageTokens(action.SpecialRecharge, dmgInfo));
+            }
+
             textBox.Document.Blocks.Add(paragraph);
 
             foreach (Action comboAction in action.Combos)
             {
-                AddAction(textBox, comboAction, dmgInfo, minRecharge, true);
+                AddAction(textBox, comboAction, dmgInfo, true);
             }
 
             if (!String.IsNullOrEmpty(action.PostAction))
@@ -528,7 +505,7 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddPhases(RichTextBox textBox, List<Phase> phases, DamageInfo dmgInfo, int minRecharge)
+        private static void AddPhases(RichTextBox textBox, List<Phase> phases, DamageInfo dmgInfo)
         {
             for (int i = 0; i < phases.Count; ++i)
             {
@@ -547,17 +524,17 @@ namespace IconFoeCreator
 
                 if (phase.Traits.Count > 0)
                 {
-                    AddTraits(textBox, phase.Traits, dmgInfo, true);
+                    AddTraits(textBox, phase.Traits, dmgInfo);
                 }
 
                 if (phase.Actions.Count > 0)
                 {
-                    AddActions(textBox, phase.Actions, dmgInfo, minRecharge);
+                    AddActions(textBox, phase.Actions, dmgInfo);
                 }
             }
         }
 
-        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySet> abilitySets, DamageInfo dmgInfo, int minRecharge)
+        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySet> abilitySets, DamageInfo dmgInfo)
         {
             for (int i = 0; i < abilitySets.Count; ++i)
             {
@@ -578,12 +555,12 @@ namespace IconFoeCreator
 
                 if (abilitySet.Traits.Count > 0)
                 {
-                    AddTraits(textBox, abilitySet.Traits, dmgInfo, true);
+                    AddTraits(textBox, abilitySet.Traits, dmgInfo);
                 }
 
                 if (abilitySet.Actions.Count > 0)
                 {
-                    AddActions(textBox, abilitySet.Actions, dmgInfo, minRecharge);
+                    AddActions(textBox, abilitySet.Actions, dmgInfo);
                 }
             }
         }
