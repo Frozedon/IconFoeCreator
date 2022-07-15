@@ -15,6 +15,9 @@ namespace IconFoeCreator
         public List<string> SpecialClasses;
         public List<Trait> Traits;
 
+        public static readonly string FACTION_BASIC = "basic";
+        public static readonly string FACTION_BASIC_READABLE = "Basic Foes";
+
         public static readonly string CLASS_HEAVY = "heavy";
         public static readonly string CLASS_SKIRMISHER = "skirmisher";
         public static readonly string CLASS_LEADER = "leader";
@@ -111,10 +114,12 @@ namespace IconFoeCreator
                 return x.Name.CompareTo(y.Name);
             });
 
+            Factions.RemoveAll(x => x.ToLower() == FACTION_BASIC);
             Factions.Sort(delegate (string x, string y)
             {
                 return x.CompareTo(y);
             });
+            Factions.Insert(0, FACTION_BASIC_READABLE);
 
             Classes.RemoveAll(x => CLASSES_CORE.Contains(x.ToLower()));
             Classes.Sort(delegate (string x, string y)

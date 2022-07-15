@@ -117,7 +117,8 @@ namespace IconFoeCreator
                 Name = Name,
                 Type = Type,
                 Inherits = Inherits,
-                Chapter = Chapter
+                Chapter = Chapter,
+                UsesTemplate = UsesTemplate
             };
 
             // Inherited values
