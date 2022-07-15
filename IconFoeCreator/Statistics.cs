@@ -26,10 +26,11 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveActions { get; set; }
 
+
         // Normal Inheritance
         public string Faction { get; set; }
         public string Class { get; set; }
-        public bool? IsMob { get; set; }
+        public string SpecialClass { get; set; }
         public int? Vitality { get; set; }
         public int? HP { get; set; }
         public int? HPMultiplier { get; set; }
@@ -71,6 +72,8 @@ namespace IconFoeCreator
 
         // Used by code
         private List<Trait> mActualTraits;
+        private float mDashMultiplier;
+        private double mEncounterBudget;
 
 
         public Statistics()
@@ -81,10 +84,13 @@ namespace IconFoeCreator
             Chapter = 0;
             Faction = String.Empty;
             Class = String.Empty;
+            SpecialClass = String.Empty;
             BodyParts = new List<BodyPart>();
             PhasesDescription = String.Empty;
             Phases = new List<Phase>();
             ExtraAbilitySets = new List<AbilitySet>();
+            Chapter2 = new ChapterData();
+            Chapter3 = new ChapterData();
             Traits = new List<string>();
             RemoveTraits = new List<string>();
             RemoveInterrupts = new List<string>();
@@ -93,6 +99,8 @@ namespace IconFoeCreator
             Interrupts = new List<Interrupt>();
             Actions = new List<Action>();
             mActualTraits = new List<Trait>();
+            mDashMultiplier = 0.5f;
+            mEncounterBudget = 1.0;
         }
 
         public override string ToString()
@@ -113,7 +121,7 @@ namespace IconFoeCreator
             // Inherited values
             if (!String.IsNullOrEmpty(Faction)) { newStats.Faction = Faction; } else { newStats.Faction = otherStats.Faction; }
             if (!String.IsNullOrEmpty(Class)) { newStats.Class = Class; } else { newStats.Class = otherStats.Class; }
-            if (IsMob.HasValue) { newStats.IsMob = IsMob; } else { newStats.IsMob = otherStats.IsMob; }
+            if (!String.IsNullOrEmpty(SpecialClass)) { newStats.SpecialClass = SpecialClass; } else { newStats.SpecialClass = otherStats.SpecialClass; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
@@ -133,34 +141,81 @@ namespace IconFoeCreator
 
             // Only add traits, interrupts, and actions from the inherited that are not on the current removal lists
             newStats.Traits.AddRange(Traits);
-            foreach (string trait in otherStats.Traits)
-            {
-                if (!RemoveTraits.Exists(x => x == trait)) {
-                    newStats.Traits.Add(trait);
-                }
-            }
+            InheritTraits(newStats.Traits, otherStats.Traits, RemoveTraits);
             newStats.Traits = newStats.Traits.Distinct().ToList();
 
             newStats.Interrupts.AddRange(Interrupts);
-            foreach (Interrupt interrupt in otherStats.Interrupts)
-            {
-                if (!RemoveInterrupts.Exists(x => x == interrupt.Name))
-                {
-                    newStats.Interrupts.Add(interrupt);
-                }
-            }
+            InheritInterrupts(newStats.Interrupts, otherStats.Interrupts, RemoveInterrupts);
 
             newStats.Actions.AddRange(Actions);
-            foreach (Action action in otherStats.Actions)
-            {
-                if (!RemoveActions.Exists(x => x == action.Name))
-                {
-                    newStats.Actions.Add(action);
-                }
-            }
+            InheritActions(newStats.Actions, otherStats.Actions, RemoveActions);
+
+            // Keep all the data for chapter 2 and 3
+            newStats.Chapter2.Traits.AddRange(Chapter2.Traits);
+            newStats.Chapter2.Traits.AddRange(otherStats.Chapter2.Traits);
+            newStats.Chapter3.Traits.AddRange(Chapter3.Traits);
+            newStats.Chapter3.Traits.AddRange(otherStats.Chapter3.Traits);
+
+            newStats.Chapter2.Interrupts.AddRange(Chapter2.Interrupts);
+            newStats.Chapter2.Interrupts.AddRange(otherStats.Chapter2.Interrupts);
+            newStats.Chapter3.Interrupts.AddRange(Chapter3.Interrupts);
+            newStats.Chapter3.Interrupts.AddRange(otherStats.Chapter3.Interrupts);
+
+            newStats.Chapter2.Actions.AddRange(Chapter2.Actions);
+            newStats.Chapter2.Actions.AddRange(otherStats.Chapter2.Actions);
+            newStats.Chapter3.Actions.AddRange(Chapter3.Actions);
+            newStats.Chapter3.Actions.AddRange(otherStats.Chapter3.Actions);
+
+            newStats.Chapter2.RemoveTraits.AddRange(Chapter2.RemoveTraits);
+            newStats.Chapter2.RemoveTraits.AddRange(otherStats.Chapter2.RemoveTraits);
+            newStats.Chapter3.RemoveTraits.AddRange(Chapter3.RemoveTraits);
+            newStats.Chapter3.RemoveTraits.AddRange(otherStats.Chapter3.RemoveTraits);
+
+            newStats.Chapter2.RemoveInterrupts.AddRange(Chapter2.RemoveInterrupts);
+            newStats.Chapter2.RemoveInterrupts.AddRange(otherStats.Chapter2.RemoveInterrupts);
+            newStats.Chapter3.RemoveInterrupts.AddRange(Chapter3.RemoveInterrupts);
+            newStats.Chapter3.RemoveInterrupts.AddRange(otherStats.Chapter3.RemoveInterrupts);
+
+            newStats.Chapter2.RemoveActions.AddRange(Chapter2.RemoveActions);
+            newStats.Chapter2.RemoveActions.AddRange(otherStats.Chapter2.RemoveActions);
+            newStats.Chapter3.RemoveActions.AddRange(Chapter3.RemoveActions);
+            newStats.Chapter3.RemoveActions.AddRange(otherStats.Chapter3.RemoveActions);
 
 
             return newStats;
+        }
+
+        public static void InheritTraits(List<string> outputTraits, List<string> inheritedTraits, List<string> traitsToNotInherit)
+        {
+            foreach (string trait in inheritedTraits)
+            {
+                if (!traitsToNotInherit.Exists(x => x == trait))
+                {
+                    outputTraits.Add(trait);
+                }
+            }
+        }
+
+        public static void InheritInterrupts(List<Interrupt> outputInterrupts, List<Interrupt> inheritedInterrupts, List<string> interruptsToNotInherit)
+        {
+            foreach (Interrupt interrupt in inheritedInterrupts)
+            {
+                if (!interruptsToNotInherit.Exists(x => x == interrupt.Name))
+                {
+                    outputInterrupts.Add(interrupt);
+                }
+            }
+        }
+
+        public static void InheritActions(List<Action> outputActions, List<Action> inheritedActions, List<string> actionsToNotInherit)
+        {
+            foreach (Action action in inheritedActions)
+            {
+                if (!actionsToNotInherit.Exists(x => x == action.Name))
+                {
+                    outputActions.Add(action);
+                }
+            }
         }
 
         public static bool IsValid(Statistics stats)
@@ -168,7 +223,47 @@ namespace IconFoeCreator
             return stats != null && stats.Name != null && stats.Name != "...";
         }
 
-        public static List<Trait> GetActualTraits(List<string> traits, List<Trait> traitLib)
+        public void ProcessChapter(int chapter)
+        {
+            if (chapter >= 2)
+            {
+                List<string> newTraits = new List<string>();
+                newTraits.AddRange(Chapter2.Traits); 
+                InheritTraits(newTraits, Traits, Chapter2.RemoveTraits);
+                newTraits = newTraits.Distinct().ToList();
+                Traits = newTraits;
+
+                List<Interrupt> newInterrupts = new List<Interrupt>();
+                newInterrupts.AddRange(Chapter2.Interrupts);
+                InheritInterrupts(newInterrupts, Interrupts, Chapter2.RemoveInterrupts);
+                Interrupts = newInterrupts;
+
+                List<Action> newActions = new List<Action>();
+                newActions.AddRange(Chapter2.Actions);
+                InheritActions(newActions, Actions, Chapter2.RemoveActions);
+                Actions = newActions;
+            }
+            if (chapter >= 3)
+            {
+                List<string> newTraits = new List<string>();
+                newTraits.AddRange(Chapter3.Traits);
+                InheritTraits(newTraits, Traits, Chapter3.RemoveTraits);
+                newTraits = newTraits.Distinct().ToList();
+                Traits = newTraits;
+
+                List<Interrupt> newInterrupts = new List<Interrupt>();
+                newInterrupts.AddRange(Chapter3.Interrupts);
+                InheritInterrupts(newInterrupts, Interrupts, Chapter3.RemoveInterrupts);
+                Interrupts = newInterrupts;
+
+                List<Action> newActions = new List<Action>();
+                newActions.AddRange(Chapter3.Actions);
+                InheritActions(newActions, Actions, Chapter3.RemoveActions);
+                Actions = newActions;
+            }
+        }
+
+        public static List<Trait> BuildTraitList(List<string> traits, List<Trait> traitLib)
         {
             List<Trait> updatedTraits = new List<Trait>();
 
@@ -191,80 +286,60 @@ namespace IconFoeCreator
             return updatedTraits;
         }
 
-        public List<Trait> LoadActualTraits(List<Trait> traitLib)
+        public void ProcessTraits(List<Trait> traitLib)
         {
-            mActualTraits = GetActualTraits(Traits, traitLib);
-            return mActualTraits;
-        }
-
-        public int GetDash()
-        {
-            List<Trait> traitWithDash = mActualTraits.FindAll(x => x.DashMultiplier.HasValue);
-
-            float dashMultiplier = float.MaxValue;
-            foreach (Trait trait in traitWithDash)
-            {
-                float value = trait.DashMultiplier.Value;
-                if (value < dashMultiplier)
-                {
-                    dashMultiplier = value;
-                }
-            }
-
-            if (dashMultiplier == float.MaxValue)
-            {
-                dashMultiplier = 0.5f;
-            }
-
-            return (int)Math.Ceiling((float)Speed.GetValueOrDefault(0) * dashMultiplier);
-        }
-
-        public int GetDefense()
-        {
-            List<Trait> traitWithDefense = mActualTraits.FindAll(x => x.Defense.HasValue);
+            mActualTraits = BuildTraitList(Traits, traitLib);
 
             int defense = int.MaxValue;
-            foreach (Trait trait in traitWithDefense)
+            float dashMultiplier = float.MaxValue;
+            double encounterBudget = double.MaxValue;
+            foreach (Trait trait in mActualTraits)
             {
-                int value = trait.Defense.Value;
-                if (value < defense)
+                if (trait.Defense.HasValue && trait.Defense.Value < defense)
                 {
-                    defense = value;
+                    defense = trait.Defense.Value;
+                }
+                if (trait.DashMultiplier.HasValue && trait.DashMultiplier.Value < dashMultiplier)
+                {
+                    dashMultiplier = trait.DashMultiplier.Value;
+                }
+                if (trait.EncounterBudget.HasValue && trait.EncounterBudget.Value < encounterBudget)
+                {
+                    encounterBudget = trait.EncounterBudget.Value;
+                }
+                foreach (Action action in trait.Actions)
+                {
+                    Actions.Add(action);
                 }
             }
 
             if (defense != int.MaxValue)
             {
-                return defense;
+                Defense = defense;
             }
-            else
+            if (dashMultiplier != float.MaxValue)
             {
-                return Defense.GetValueOrDefault(0);
+                mDashMultiplier = dashMultiplier;
             }
+            if (encounterBudget != double.MaxValue)
+            {
+                mEncounterBudget = encounterBudget;
+            }
+        }
+
+        public List<Trait> GetActualTraits()
+        {
+            return mActualTraits;
+        }
+
+        public int GetDash()
+        {
+            return (int)Math.Ceiling((float)Speed.GetValueOrDefault(0) * mDashMultiplier);
         }
 
         public double GetEncounterBudget()
         {
-            List<Trait> traitWithEB = mActualTraits.FindAll(x => x.EncounterBudget.HasValue);
-
-            double encounterBudget = double.MaxValue;
-            foreach (Trait trait in traitWithEB)
-            {
-                double value = trait.EncounterBudget.Value;
-                if (value < encounterBudget)
-                {
-                    encounterBudget = value;
-                }
-            }
-
-            if (encounterBudget != double.MaxValue)
-            {
-                return encounterBudget;
-            }
-            else
-            {
-                return 1.0;
-            }
+            return mEncounterBudget;
         }
     }
 
@@ -398,8 +473,27 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Traits { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> RemoveInterrupts { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
+        public List<Interrupt> Interrupts { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> RemoveActions { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
+
+        public ChapterData()
+        {
+            RemoveTraits = new List<string>();
+            Traits = new List<string>();
+            RemoveInterrupts = new List<string>();
+            Interrupts = new List<Interrupt>();
+            RemoveActions = new List<string>();
+            Actions = new List<Action>();
+        }
     }
 
     public class BodyPart

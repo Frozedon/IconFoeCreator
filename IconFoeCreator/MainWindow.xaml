@@ -7,12 +7,12 @@
         mc:Ignorable="d"
         Title="Icon Foe Creator" Height="760" Width="1024">
   <Grid>
-    <Label x:Name="Faction_label" Content="Faction" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Faction_comboBox" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-    <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,66,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-    <Label x:Name="Foe_label" Content="Foe" HorizontalAlignment="Left" Margin="27,121,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Foe_comboBox" HorizontalAlignment="Left" Margin="27,149,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
+    <Label x:Name="Faction_label" Content="Faction" HorizontalAlignment="Left" Margin="6,64,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Faction_comboBox" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
+    <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,120,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
+    <Label x:Name="Foe_label" Content="Foe" HorizontalAlignment="Left" Margin="23,229,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Foe_comboBox" HorizontalAlignment="Left" Margin="27,258,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
     <CheckBox x:Name="Homebrew_checkBox" Content="Show Homebrew" HorizontalAlignment="Left" Margin="10,0,0,37.667" VerticalAlignment="Bottom" FontSize="14" Checked="Homebrew_checkBox_Checked" Unchecked="Homebrew_checkBox_Checked"/>
     <Button x:Name="ExportJson_button" Content="Export to JSON" HorizontalAlignment="Left" Margin="10,0,0,9.667" VerticalAlignment="Bottom" Width="115" FontSize="14" Click="ExportJson_button_Click"/>
     <Grid Margin="215,10,10.333,9.667">
@@ -38,6 +38,10 @@
       <Button x:Name="CopySetup_button" Content="Copy to Clipboard" Margin="0,0,0,-0.333" VerticalAlignment="Bottom" FontSize="14" Width="140" Click="CopySetup_button_Click" HorizontalAlignment="Left" Grid.Column="1"/>
     </Grid>
     <CheckBox x:Name="DamageValues_checkBox" Content="Replace Damage Values" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="DamageValues_checkBox_Checked" Unchecked="DamageValues_checkBox_Checked" />
+    <Label x:Name="Chapter_label" Content="Chapter" HorizontalAlignment="Left" Margin="6,9,0,0" VerticalAlignment="Top" FontSize="16" RenderTransformOrigin="0.066,0.489"/>
+    <ComboBox x:Name="Chapter_comboBox" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="44" FontSize="16" RenderTransformOrigin="0.432,1.073"/>
+    <Label x:Name="SpecialClass_label" Content="Special Class" HorizontalAlignment="Left" Margin="6,175,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="SpecialClass_comboBox" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
 
   </Grid>
 </Window>

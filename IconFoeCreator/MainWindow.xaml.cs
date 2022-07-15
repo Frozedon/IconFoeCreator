@@ -26,7 +26,6 @@ namespace IconFoeCreator
 
     public partial class MainWindow : Window
     {
-        public static readonly string UNIQUE_CLASS = "unique";
         public static readonly string EMPTY_STAT = "...";
         public static readonly string ANY_GROUP = "Any";
 
@@ -43,14 +42,24 @@ namespace IconFoeCreator
             dropdownOptions = new DropdownOptions();
             dropdownOptions.ConvertToDropdownItems(statBuilder);
 
+            UpdateChapterOptions();
             UpdateFactionOptions();
             UpdateClassOptions();
+            UpdateSpecialClassOptions();
             UpdateFoeOptions();
 
+            Chapter_comboBox.SelectionChanged += OnChapterChanged;
             Faction_comboBox.SelectionChanged += OnFactionChanged;
             Class_comboBox.SelectionChanged += OnClassChanged;
+            SpecialClass_comboBox.SelectionChanged += OnSpecialClassChanged;
             Foe_comboBox.SelectionChanged += OnFoeChanged;
 
+            UpdateDescription();
+        }
+
+        private void OnChapterChanged(object sender, EventArgs e)
+        {
+            UpdateFoeOptions();
             UpdateDescription();
         }
 
@@ -60,6 +69,11 @@ namespace IconFoeCreator
         }
 
         private void OnClassChanged(object sender, EventArgs e)
+        {
+            UpdateFoeOptions();
+        }
+
+        private void OnSpecialClassChanged(object sender, EventArgs e)
         {
             UpdateFoeOptions();
         }
@@ -91,6 +105,17 @@ namespace IconFoeCreator
             return null;
         }
 
+        private int GetComboBoxInt(object item)
+        {
+            if (item != null)
+            {
+                ComboBoxItem templateItem = (ComboBoxItem)item;
+                return (int)templateItem.Content;
+            }
+
+            return 1;
+        }
+
         private void UpdateDescription()
         {
             List<Statistics> statsToMerge = new List<Statistics>();
@@ -101,12 +126,20 @@ namespace IconFoeCreator
                 statsToMerge.Add(foe);
             }
 
+            int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
+
             DescriptionCreator.UpdateDescription(
                 Description_richTextBox,
                 Setup_richTextBox,
                 statBuilder.Traits,
                 statsToMerge,
+                chapter,
                 DamageValues_checkBox.IsChecked.GetValueOrDefault());
+        }
+
+        private void UpdateChapterOptions()
+        {
+            UpdateDropdownOptions(Chapter_comboBox, GetAvailableChapters);
         }
 
         private void UpdateFactionOptions()
@@ -117,6 +150,11 @@ namespace IconFoeCreator
         private void UpdateClassOptions()
         {
             UpdateDropdownOptions(Class_comboBox, GetAvailableClasses);
+        }
+
+        private void UpdateSpecialClassOptions()
+        {
+            UpdateDropdownOptions(SpecialClass_comboBox, GetAvailableSpecialClasses);
         }
 
         private void UpdateFoeOptions()
@@ -167,6 +205,15 @@ namespace IconFoeCreator
             return availableClasses;
         }
 
+        private List<ComboBoxItem> GetAvailableSpecialClasses()
+        {
+            List<ComboBoxItem> availableSpecialClasses = new List<ComboBoxItem>(dropdownOptions.SpecialClasses);
+
+            availableSpecialClasses.Insert(0, new ComboBoxItem() { Content = ANY_GROUP });
+
+            return availableSpecialClasses;
+        }
+
         private List<ComboBoxItem> GetAvailableFoes()
         {
             List<ComboBoxItem> availableTemplates = new List<ComboBoxItem>(dropdownOptions.Foes);
@@ -183,26 +230,75 @@ namespace IconFoeCreator
                 availableTemplates = RemoveStatsOfOtherClasses(availableTemplates, selectedClass);
             }
 
+            string selectedSpecialClass = GetComboBoxString(SpecialClass_comboBox.SelectedItem);
+            if (selectedSpecialClass != null && !String.IsNullOrEmpty(selectedSpecialClass) && selectedSpecialClass.ToLower() != ANY_GROUP.ToLower())
+            {
+                availableTemplates = RemoveStatsOfOtherSpecialClasses(availableTemplates, selectedSpecialClass);
+            }
+
+            int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
+            if (chapter > 0)
+            {
+                availableTemplates = RemoveStatsOfHigherChapter(availableTemplates, chapter);
+            }
+
             availableTemplates.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
 
             return availableTemplates;
         }
 
-        private List<ComboBoxItem> RemoveStatsOfOtherFactions(List<ComboBoxItem> stats, string groupName)
+        private List<ComboBoxItem> GetAvailableChapters()
+        {
+            List<ComboBoxItem> availableChapters = new List<ComboBoxItem>();
+
+            availableChapters.Add(new ComboBoxItem() { Content = 1 });
+            availableChapters.Add(new ComboBoxItem() { Content = 2 });
+            availableChapters.Add(new ComboBoxItem() { Content = 3 });
+
+            return availableChapters;
+        }
+
+        private List<ComboBoxItem> RemoveStatsOfOtherFactions(List<ComboBoxItem> stats, string factionName)
         {
             return stats.FindAll(delegate (ComboBoxItem stat)
             {
                 Statistics actualStat = (Statistics)stat.Content;
-                return !String.IsNullOrEmpty(actualStat.Faction) && actualStat.Faction.ToLower() == groupName.ToLower();
+                return !String.IsNullOrEmpty(actualStat.Faction) && actualStat.Faction.ToLower() == factionName.ToLower();
             });
         }
 
-        private List<ComboBoxItem> RemoveStatsOfOtherClasses(List<ComboBoxItem> stats, string groupName)
+        private List<ComboBoxItem> RemoveStatsOfOtherClasses(List<ComboBoxItem> stats, string className)
         {
             return stats.FindAll(delegate (ComboBoxItem stat)
             {
                 Statistics actualStat = (Statistics)stat.Content;
-                return !String.IsNullOrEmpty(actualStat.Class) && actualStat.Class.ToLower() == groupName.ToLower();
+                return !String.IsNullOrEmpty(actualStat.Class) && actualStat.Class.ToLower() == className.ToLower();
+            });
+        }
+
+        private List<ComboBoxItem> RemoveStatsOfOtherSpecialClasses(List<ComboBoxItem> stats, string specialClassName)
+        {
+            return stats.FindAll(delegate (ComboBoxItem stat)
+            {
+                Statistics actualStat = (Statistics)stat.Content;
+
+                if (specialClassName.ToLower() == StatisticBuilder.SPECIAL_CLASS_NORMAL)
+                {
+                    return String.IsNullOrEmpty(actualStat.SpecialClass) || actualStat.SpecialClass.ToLower() == specialClassName.ToLower();
+                }
+                else
+                {
+                    return !String.IsNullOrEmpty(actualStat.SpecialClass) && actualStat.SpecialClass.ToLower() == specialClassName.ToLower();
+                }
+            });
+        }
+
+        private List<ComboBoxItem> RemoveStatsOfHigherChapter(List<ComboBoxItem> stats, int chapter)
+        {
+            return stats.FindAll(delegate (ComboBoxItem stat)
+            {
+                Statistics actualStat = (Statistics)stat.Content;
+                return actualStat.Chapter <= chapter;
             });
         }
 
