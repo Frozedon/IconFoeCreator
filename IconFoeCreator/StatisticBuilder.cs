@@ -6,25 +6,12 @@ using System.Linq;
 
 namespace IconFoeCreator
 {
-    public class Group
-    {
-        public string Name;
-        public bool OnlyHomebrew;
-
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
-
     public class StatisticBuilder
     {
-        public List<Group> Factions;
-        public List<Statistics> Templates;
-        public List<Group> Classes;
-        public List<Statistics> Jobs;
-        public List<Statistics> UniqueFoes;
-        public List<Statistics> Specials;
+        public List<Statistics> Stats;
+        public List<string> Factions;
+        public List<string> Classes;
+        public List<Trait> Traits;
 
         public static readonly string MOB = "mob";
         public static readonly string ELITE = "elite";
@@ -36,62 +23,94 @@ namespace IconFoeCreator
         public static readonly string[] CORE_CLASSES = { HEAVY_CLASS, SKIRMISHER_CLASS, LEADER_CLASS, ARTILLERY_CLASS };
 
         private static readonly string DATA_FOLDER_PATH = "data/";
-        private static readonly string BASE_FOLDER_PATH = "base/";
-        private static readonly string HOMEBREW_FOLDER_PATH = "homebrew/";
-
-        public static readonly string TYPE_TEMPLATE = "template";
-        public static readonly string TYPE_JOB = "job";
-        public static readonly string TYPE_UNIQUEFOE = "uniquefoe";
-        public static readonly string TYPE_SPECIAL = "special";
+        private static readonly string BASE_FOLDER_PATH = DATA_FOLDER_PATH + "base/";
+        private static readonly string HOMEBREW_FOLDER_PATH = DATA_FOLDER_PATH + "homebrew/";
+        private static readonly string TRAITS_FILE_PATH = DATA_FOLDER_PATH + "traits.json";
 
         public StatisticBuilder()
         {
-            Factions = new List<Group>();
-            Templates = new List<Statistics>();
-            Classes = new List<Group>();
-            Jobs = new List<Statistics>();
-            UniqueFoes = new List<Statistics>();
-            Specials = new List<Statistics>();
+            Stats = new List<Statistics>();
+            Factions = new List<string>();
+            Classes = new List<string>();
+            Traits = new List<Trait>();
         }
 
-        public void BuildStatistics()
+        public void BuildStatistics(bool useHomebrew)
         {
+            Stats.Clear();
             Factions.Clear();
-            Templates.Clear();
             Classes.Clear();
-            Jobs.Clear();
-            UniqueFoes.Clear();
-            Specials.Clear();
-
-            List<Statistics> allStats = new List<Statistics>();
+            Traits.Clear();
 
             // Collect stats from files
-            if (Directory.Exists(DATA_FOLDER_PATH + BASE_FOLDER_PATH))
+            if (Directory.Exists(BASE_FOLDER_PATH))
             {
-                ReadJsonFilesInDirectory(DATA_FOLDER_PATH + BASE_FOLDER_PATH, allStats);
+                ReadJsonFilesInDirectory(BASE_FOLDER_PATH, Stats);
             }
-            if (Directory.Exists(DATA_FOLDER_PATH + HOMEBREW_FOLDER_PATH))
+            if (useHomebrew && Directory.Exists(HOMEBREW_FOLDER_PATH))
             {
-                ReadJsonFilesInDirectory(DATA_FOLDER_PATH + HOMEBREW_FOLDER_PATH, allStats, true);
+                ReadJsonFilesInDirectory(HOMEBREW_FOLDER_PATH, Stats);
             }
 
             // Handle inheritance
+            HandleInheritance(Stats);
+
+            // Organize into Lists
+            foreach (Statistics stat in Stats)
+            {
+                if (!String.IsNullOrEmpty(stat.Faction))
+                {
+                    Factions.Add(stat.Faction);
+                }
+                if (!String.IsNullOrEmpty(stat.Class))
+                {
+                    Classes.Add(stat.Class);
+                }
+            }
+
+            // Read traits
+            ReadTraitsJsonFile(TRAITS_FILE_PATH, Traits);
+
+            // Sort lists
+            Stats.Sort(delegate (Statistics x, Statistics y)
+            {
+                if (x.IsBasicTemplate && !y.IsBasicTemplate)
+                    return -1;
+                if (!x.IsBasicTemplate && y.IsBasicTemplate)
+                    return 1;
+
+                return x.Name.CompareTo(y.Name);
+            });
+
+            Factions.Sort(delegate (string x, string y)
+            {
+                return x.CompareTo(y);
+            });
+
+            Classes.Sort(delegate (string x, string y)
+            {
+                return x.CompareTo(y);
+            });
+        }
+
+        private void HandleInheritance(List<Statistics> stats)
+        {
             bool changed = true;
             while (changed)
             {
                 changed = false;
-                for (int i = 0; i < allStats.Count(); ++i)
+                for (int i = 0; i < stats.Count(); ++i)
                 {
-                    Statistics stat = allStats[i];
+                    Statistics stat = stats[i];
                     for (int j = 0; j < stat.Inherits.Count();)
                     {
                         string inherits = stat.Inherits[j];
-                        Statistics match = allStats.FirstOrDefault(otherStat => otherStat.Name == inherits);
+                        Statistics match = stats.FirstOrDefault(otherStat => otherStat.Name == inherits);
                         if (match != null)
                         {
                             if (match.Inherits.Count() == 0)
                             {
-                                allStats[i] = stat = stat.InheritFrom(match);
+                                stats[i] = stat = stat.InheritFrom(match);
                                 stat.Inherits.Remove(inherits);
                                 changed = true;
                             }
@@ -107,114 +126,9 @@ namespace IconFoeCreator
                     }
                 }
             }
-
-            // Organize into Lists
-            foreach (Statistics stat in allStats)
-            {
-                string typeLowercase = stat.Type.ToLower();
-                if (typeLowercase == TYPE_JOB)
-                {
-                    Jobs.Add(stat);
-
-                    if (!String.IsNullOrEmpty(stat.Group))
-                    {
-                        var group = Classes.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
-                        if (group == null)
-                        {
-                            Classes.Add(new Group { Name = stat.Group, OnlyHomebrew = stat.IsHomebrew });
-                        }
-                        else if (!stat.IsHomebrew)
-                        {
-                            group.OnlyHomebrew = false;
-                        }
-                    }
-                }
-                else if (typeLowercase == TYPE_TEMPLATE)
-                {
-                    Templates.Add(stat);
-
-                    if (!String.IsNullOrEmpty(stat.Group))
-                    {
-                        var group = Factions.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
-                        if (group == null)
-                        {
-                            Factions.Add(new Group { Name = stat.Group, OnlyHomebrew = stat.IsHomebrew });
-                        }
-                        else if (!stat.IsHomebrew)
-                        {
-                            group.OnlyHomebrew = false;
-                        }
-                    }
-                }
-                else if (typeLowercase == TYPE_UNIQUEFOE)
-                {
-                    UniqueFoes.Add(stat);
-
-                    if (!String.IsNullOrEmpty(stat.Group))
-                    {
-                        var group = Factions.FirstOrDefault(otherGroup => otherGroup.Name == stat.Group);
-                        if (group == null)
-                        {
-                            Factions.Add(new Group { Name = stat.Group, OnlyHomebrew = stat.IsHomebrew });
-                        }
-                        else if (!stat.IsHomebrew)
-                        {
-                            group.OnlyHomebrew = false;
-                        }
-                    }
-                }
-                else if (typeLowercase == TYPE_SPECIAL)
-                {
-                    Specials.Add(stat);
-                }
-            }
-
-            // Sort lists
-            Jobs.Sort(delegate (Statistics x, Statistics y)
-            {
-                return x.Name.CompareTo(y.Name);
-            });
-
-            Templates.Sort(delegate (Statistics x, Statistics y)
-            {
-                if (x.IsBasicTemplate && !y.IsBasicTemplate)
-                    return -1;
-                if (!x.IsBasicTemplate && y.IsBasicTemplate)
-                    return 1;
-
-                return x.Name.CompareTo(y.Name);
-            });
-
-            UniqueFoes.Sort(delegate (Statistics x, Statistics y)
-            {
-                return x.Name.CompareTo(y.Name);
-            });
-
-            Specials.Sort(delegate (Statistics x, Statistics y)
-            {
-                return x.Name.CompareTo(y.Name);
-            });
-
-            Classes.Sort(delegate (Group x, Group y)
-            {
-                string xResult = Array.Find(CORE_CLASSES, element => element == x.Name.ToLower());
-                string yResult = Array.Find(CORE_CLASSES, element => element == y.Name.ToLower());
-
-                if (xResult == null && yResult != null)
-                    return 1;
-                if (xResult != null && yResult == null)
-                    return -1;
-
-                return x.Name.CompareTo(y.Name);
-            });
-
-            Factions.Sort(delegate (Group x, Group y)
-            {
-                return x.Name.CompareTo(y.Name);
-            });
         }
 
-        private void ReadJsonFilesInDirectory(string dirPath, List<Statistics> statsOutput, bool isHomebrew = false)
+        private void ReadJsonFilesInDirectory(string dirPath, List<Statistics> statsOutput)
         {
             // Iterate through folder looking for json files
             foreach (string path in Directory.GetFiles(dirPath))
@@ -235,7 +149,6 @@ namespace IconFoeCreator
 
                             if (readStat != null)
                             {
-                                readStat.IsHomebrew = isHomebrew;
                                 statsOutput.Add(readStat);
                             }
                         }
@@ -245,7 +158,32 @@ namespace IconFoeCreator
 
             foreach (string path in Directory.GetDirectories(dirPath))
             {
-                ReadJsonFilesInDirectory(path, statsOutput, isHomebrew);
+                ReadJsonFilesInDirectory(path, statsOutput);
+            }
+        }
+
+        private void ReadTraitsJsonFile(string path, List<Trait> traitsOutput)
+        {
+            if (File.Exists(path) && path.EndsWith(".json"))
+            {
+                using (StreamReader r = new StreamReader(path))
+                {
+                    string json = r.ReadToEnd();
+                    if (json != null && json.Length > 0)
+                    {
+                        List<Trait> readTraits = null;
+                        try
+                        {
+                            readTraits = JsonConvert.DeserializeObject<List<Trait>>(json);
+                        }
+                        catch { }
+
+                        if (readTraits != null)
+                        {
+                            traitsOutput.AddRange(readTraits);
+                        }
+                    }
+                }
             }
         }
     }
