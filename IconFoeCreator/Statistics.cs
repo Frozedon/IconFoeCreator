@@ -16,6 +16,7 @@ namespace IconFoeCreator
         public List<string> Inherits { get; set; } 
 
         public int Chapter { get; set; }
+        public bool UsesTemplate { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveTraits { get; set; }
@@ -82,6 +83,7 @@ namespace IconFoeCreator
             Type = String.Empty;
             Inherits = new List<string>();
             Chapter = 0;
+            UsesTemplate = false;
             Faction = String.Empty;
             Class = String.Empty;
             SpecialClass = String.Empty;

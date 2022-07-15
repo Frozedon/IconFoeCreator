@@ -9,21 +9,6 @@ using System.Windows.Media;
 
 namespace IconFoeCreator
 {
-    public static class Constants
-    {
-        public const int ChapterCount = 3;
-    }
-
-    public class ChapterItem
-    {
-        public int Value { get; set; }
-
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
-    }
-
     public partial class MainWindow : Window
     {
         public static readonly string EMPTY_STAT = "...";
@@ -47,12 +32,16 @@ namespace IconFoeCreator
             UpdateClassOptions();
             UpdateSpecialClassOptions();
             UpdateFoeOptions();
+            UpdateTemplateOptions();
+
+            UpdateTemplateDropdownState();
 
             Chapter_comboBox.SelectionChanged += OnChapterChanged;
             Faction_comboBox.SelectionChanged += OnFactionChanged;
             Class_comboBox.SelectionChanged += OnClassChanged;
             SpecialClass_comboBox.SelectionChanged += OnSpecialClassChanged;
             Foe_comboBox.SelectionChanged += OnFoeChanged;
+            Template_comboBox.SelectionChanged += OnTemplateChanged;
 
             UpdateDescription();
         }
@@ -66,6 +55,7 @@ namespace IconFoeCreator
         private void OnFactionChanged(object sender, EventArgs e)
         {
             UpdateFoeOptions();
+            UpdateTemplateOptions();
         }
 
         private void OnClassChanged(object sender, EventArgs e)
@@ -79,6 +69,12 @@ namespace IconFoeCreator
         }
 
         private void OnFoeChanged(object sender, EventArgs e)
+        {
+            UpdateTemplateDropdownState();
+            UpdateDescription();
+        }
+
+        private void OnTemplateChanged(object sender, EventArgs e)
         {
             UpdateDescription();
         }
@@ -162,6 +158,11 @@ namespace IconFoeCreator
             UpdateDropdownOptions(Foe_comboBox, GetAvailableFoes);
         }
 
+        private void UpdateTemplateOptions()
+        {
+            UpdateDropdownOptions(Template_comboBox, GetAvailableTemplates);
+        }
+
         private void UpdateDropdownOptions<T>(System.Windows.Controls.ComboBox comboBox, Func<List<T>> getStats)
         {
             string selectedItem = String.Empty;
@@ -185,6 +186,32 @@ namespace IconFoeCreator
                 }
             }
             comboBox.SelectedIndex = index;
+        }
+
+        private void UpdateTemplateDropdownState()
+        {
+            // Disable if the unique foe has been chosen
+            Statistics selectedFoe = GetComboBoxStats(Foe_comboBox.SelectedItem);
+            if (selectedFoe != null && selectedFoe.ToString() != EMPTY_STAT && selectedFoe.UsesTemplate)
+            {
+                Template_comboBox.IsEnabled = true;
+            }
+            else
+            {
+                Template_comboBox.SelectedIndex = 0;
+                Template_comboBox.IsEnabled = false;
+            }
+        }
+
+        private List<ComboBoxItem> GetAvailableChapters()
+        {
+            List<ComboBoxItem> availableChapters = new List<ComboBoxItem>();
+
+            availableChapters.Add(new ComboBoxItem() { Content = 1 });
+            availableChapters.Add(new ComboBoxItem() { Content = 2 });
+            availableChapters.Add(new ComboBoxItem() { Content = 3 });
+
+            return availableChapters;
         }
 
         private List<ComboBoxItem> GetAvailableFactions()
@@ -216,7 +243,40 @@ namespace IconFoeCreator
 
         private List<ComboBoxItem> GetAvailableFoes()
         {
-            List<ComboBoxItem> availableTemplates = new List<ComboBoxItem>(dropdownOptions.Foes);
+            List<ComboBoxItem> availableFoes = new List<ComboBoxItem>(dropdownOptions.Foes);
+
+            string selectedFaction = GetComboBoxString(Faction_comboBox.SelectedItem);
+            if (selectedFaction != null && !String.IsNullOrEmpty(selectedFaction) && selectedFaction.ToLower() != ANY_GROUP.ToLower())
+            {
+                availableFoes = RemoveStatsOfOtherFactions(availableFoes, selectedFaction);
+            }
+
+            string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
+            if (selectedClass != null && !String.IsNullOrEmpty(selectedClass) && selectedClass.ToLower() != ANY_GROUP.ToLower())
+            {
+                availableFoes = RemoveStatsOfOtherClasses(availableFoes, selectedClass);
+            }
+
+            string selectedSpecialClass = GetComboBoxString(SpecialClass_comboBox.SelectedItem);
+            if (selectedSpecialClass != null && !String.IsNullOrEmpty(selectedSpecialClass) && selectedSpecialClass.ToLower() != ANY_GROUP.ToLower())
+            {
+                availableFoes = RemoveStatsOfOtherSpecialClasses(availableFoes, selectedSpecialClass);
+            }
+
+            int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
+            if (chapter > 0)
+            {
+                availableFoes = RemoveStatsOfHigherChapter(availableFoes, chapter);
+            }
+
+            availableFoes.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
+
+            return availableFoes;
+        }
+
+        private List<ComboBoxItem> GetAvailableTemplates()
+        {
+            List<ComboBoxItem> availableTemplates = new List<ComboBoxItem>(dropdownOptions.Templates);
 
             string selectedFaction = GetComboBoxString(Faction_comboBox.SelectedItem);
             if (selectedFaction != null && !String.IsNullOrEmpty(selectedFaction) && selectedFaction.ToLower() != ANY_GROUP.ToLower())
@@ -224,38 +284,9 @@ namespace IconFoeCreator
                 availableTemplates = RemoveStatsOfOtherFactions(availableTemplates, selectedFaction);
             }
 
-            string selectedClass = GetComboBoxString(Class_comboBox.SelectedItem);
-            if (selectedClass != null && !String.IsNullOrEmpty(selectedClass) && selectedClass.ToLower() != ANY_GROUP.ToLower())
-            {
-                availableTemplates = RemoveStatsOfOtherClasses(availableTemplates, selectedClass);
-            }
-
-            string selectedSpecialClass = GetComboBoxString(SpecialClass_comboBox.SelectedItem);
-            if (selectedSpecialClass != null && !String.IsNullOrEmpty(selectedSpecialClass) && selectedSpecialClass.ToLower() != ANY_GROUP.ToLower())
-            {
-                availableTemplates = RemoveStatsOfOtherSpecialClasses(availableTemplates, selectedSpecialClass);
-            }
-
-            int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
-            if (chapter > 0)
-            {
-                availableTemplates = RemoveStatsOfHigherChapter(availableTemplates, chapter);
-            }
-
             availableTemplates.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
 
             return availableTemplates;
-        }
-
-        private List<ComboBoxItem> GetAvailableChapters()
-        {
-            List<ComboBoxItem> availableChapters = new List<ComboBoxItem>();
-
-            availableChapters.Add(new ComboBoxItem() { Content = 1 });
-            availableChapters.Add(new ComboBoxItem() { Content = 2 });
-            availableChapters.Add(new ComboBoxItem() { Content = 3 });
-
-            return availableChapters;
         }
 
         private List<ComboBoxItem> RemoveStatsOfOtherFactions(List<ComboBoxItem> stats, string factionName)

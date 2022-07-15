@@ -18,6 +18,7 @@ namespace IconFoeCreator
         public List<ComboBoxItem> Classes;
         public List<ComboBoxItem> SpecialClasses;
         public List<ComboBoxItem> Foes;
+        public List<ComboBoxItem> Templates;
 
         public void ConvertToDropdownItems(StatisticBuilder statBuilder)
         {
@@ -25,11 +26,13 @@ namespace IconFoeCreator
             Classes = new List<ComboBoxItem>();
             SpecialClasses = new List<ComboBoxItem>();
             Foes = new List<ComboBoxItem>();
+            Templates = new List<ComboBoxItem>();
 
             ConvertStringsToComboBoxItems(statBuilder.Factions, Factions);
             ConvertStringsToComboBoxItems(statBuilder.Classes, Classes);
             ConvertStringsToComboBoxItems(statBuilder.SpecialClasses, SpecialClasses);
             ConvertStatisticsToComboBoxItems(statBuilder.Foes, Foes);
+            ConvertStatisticsToComboBoxItems(statBuilder.Templates, Templates);
         }
 
         private void ConvertStatisticsToComboBoxItems(List<Statistics> stats, List<ComboBoxItem> output)
