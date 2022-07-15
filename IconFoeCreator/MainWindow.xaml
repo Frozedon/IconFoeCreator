@@ -9,13 +9,10 @@
   <Grid>
     <Label x:Name="Faction_label" Content="Faction" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Faction_comboBox" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-    <Label x:Name="Template_label" Content="Template" HorizontalAlignment="Left" Margin="27,64,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Template_comboBox" HorizontalAlignment="Left" Margin="27,91,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
-    <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,238,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,265,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
-    <Label x:Name="Job_label" Content="Job" HorizontalAlignment="Left" Margin="27,292,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Job_comboBox" HorizontalAlignment="Left" Margin="27,320,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
-    <CheckBox x:Name="NonessentialTraits_checkBox" Content="Show Nonessential Traits" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="NonessentialTraits_checkBox_Checked" Unchecked="NonessentialTraits_checkBox_Checked"/>
+    <Label x:Name="Class_label" Content="Class" HorizontalAlignment="Left" Margin="6,66,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Class_comboBox" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
+    <Label x:Name="Foe_label" Content="Foe" HorizontalAlignment="Left" Margin="27,121,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="Foe_comboBox" HorizontalAlignment="Left" Margin="27,149,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
     <CheckBox x:Name="Homebrew_checkBox" Content="Show Homebrew" HorizontalAlignment="Left" Margin="10,0,0,37.667" VerticalAlignment="Bottom" FontSize="14" Checked="Homebrew_checkBox_Checked" Unchecked="Homebrew_checkBox_Checked"/>
     <Button x:Name="ExportJson_button" Content="Export to JSON" HorizontalAlignment="Left" Margin="10,0,0,9.667" VerticalAlignment="Bottom" Width="115" FontSize="14" Click="ExportJson_button_Click"/>
     <Grid Margin="215,10,10.333,9.667">
@@ -40,14 +37,7 @@
       </RichTextBox>
       <Button x:Name="CopySetup_button" Content="Copy to Clipboard" Margin="0,0,0,-0.333" VerticalAlignment="Bottom" FontSize="14" Width="140" Click="CopySetup_button_Click" HorizontalAlignment="Left" Grid.Column="1"/>
     </Grid>
-    <Label x:Name="UniqueFoe_Label" Content="Unique Foe" HorizontalAlignment="Left" Margin="27,118,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="UniqueFoe_comboBox" HorizontalAlignment="Left" Margin="27,145,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
-    <Label x:Name="Special_Label" Content="Special" HorizontalAlignment="Left" Margin="27,172,0,0" VerticalAlignment="Top" FontSize="16"/>
-    <ComboBox x:Name="Special_comboBox" HorizontalAlignment="Left" Margin="27,199,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
-    <CheckBox x:Name="Mob_checkBox" Content="Mob" HorizontalAlignment="Left" Margin="36,0,0,352.667" VerticalAlignment="Bottom" FontSize="14" Checked="Mob_checkBox_Checked" Unchecked="Mob_checkBox_Checked"/>
-    <CheckBox x:Name="Elite_checkBox" Content="Elite" HorizontalAlignment="Left" Margin="130,0,0,352.667" VerticalAlignment="Bottom" FontSize="14" Checked="Elite_checkBox_Checked" Unchecked="Elite_checkBox_Checked"/>
-    <CheckBox x:Name="DamageValues_checkBox" Content="Replace Damage Values" HorizontalAlignment="Left" Margin="10,0,0,81.667" VerticalAlignment="Bottom" FontSize="14" Checked="DamageValues_checkBox_Checked" Unchecked="DamageValues_checkBox_Checked" />
-    <CheckBox x:Name="RemoveRestrictionFiltering_checkBox" Content="Remove Restriction Filtering" HorizontalAlignment="Left" Margin="10,0,0,103.667" VerticalAlignment="Bottom" FontSize="14" Checked="RemoveRestrictionFiltering_checkBox_Checked" Unchecked="RemoveRestrictionFiltering_checkBox_Checked" />
+    <CheckBox x:Name="DamageValues_checkBox" Content="Replace Damage Values" HorizontalAlignment="Left" Margin="10,0,0,59.667" VerticalAlignment="Bottom" FontSize="14" Checked="DamageValues_checkBox_Checked" Unchecked="DamageValues_checkBox_Checked" />
 
   </Grid>
 </Window>
