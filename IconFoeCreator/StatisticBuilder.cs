@@ -13,16 +13,23 @@ namespace IconFoeCreator
         public List<Statistics> Jobs;
         public List<string> Factions;
         public List<string> Classes;
+        public List<string> SpecialClasses;
         public List<Trait> Traits;
 
-        public static readonly string MOB = "mob";
-        public static readonly string ELITE = "elite";
-        public static readonly string LEGEND = "legend";
         public static readonly string CLASS_HEAVY = "heavy";
         public static readonly string CLASS_SKIRMISHER = "skirmisher";
         public static readonly string CLASS_LEADER = "leader";
         public static readonly string CLASS_ARTILLERY = "artillery";
-        public static readonly string[] CORE_CLASSES = { CLASS_HEAVY, CLASS_SKIRMISHER, CLASS_LEADER, CLASS_ARTILLERY };
+        public static readonly string CLASS_UNIQUE = "unique";
+        public static readonly string[] CLASSES_CORE = { CLASS_HEAVY, CLASS_SKIRMISHER, CLASS_LEADER, CLASS_ARTILLERY };
+        public static readonly string[] CLASSES_CORE_READABLE = { "Heavy", "Skirmisher", "Leader", "Artillery" };
+
+        public static readonly string SPECIAL_CLASS_NORMAL = "normal";
+        public static readonly string SPECIAL_CLASS_MOB = "mob";
+        public static readonly string SPECIAL_CLASS_ELITE = "elite";
+        public static readonly string SPECIAL_CLASS_LEGEND = "legend";
+        public static readonly string[] SPECIAL_CLASSES_CORE = { SPECIAL_CLASS_NORMAL, SPECIAL_CLASS_MOB, SPECIAL_CLASS_ELITE, SPECIAL_CLASS_LEGEND };
+        public static readonly string[] SPECIAL_CLASSES_CORE_READABLE = { "Normal", "Mob", "Elite", "Legend" };
 
         private static readonly string DATA_FOLDER_PATH = "data/";
         private static readonly string BASE_FOLDER_PATH = DATA_FOLDER_PATH + "base/";
@@ -40,6 +47,7 @@ namespace IconFoeCreator
             Jobs = new List<Statistics>();
             Factions = new List<string>();
             Classes = new List<string>();
+            SpecialClasses = new List<string>();
             Traits = new List<Trait>();
         }
 
@@ -50,6 +58,7 @@ namespace IconFoeCreator
             Jobs.Clear();
             Factions.Clear();
             Classes.Clear();
+            SpecialClasses.Clear();
             Traits.Clear();
 
             // Collect stats from files
@@ -79,6 +88,10 @@ namespace IconFoeCreator
                 if (!String.IsNullOrEmpty(stat.Class) && !Classes.Contains(stat.Class))
                 {
                     Classes.Add(stat.Class);
+                }
+                if (!String.IsNullOrEmpty(stat.SpecialClass) && !SpecialClasses.Contains(stat.SpecialClass))
+                {
+                    SpecialClasses.Add(stat.SpecialClass);
                 }
 
                 if (stat.Type.ToLower() == TYPE_FOE)
@@ -116,10 +129,19 @@ namespace IconFoeCreator
                 return x.CompareTo(y);
             });
 
+            Classes.RemoveAll(x => CLASSES_CORE.Contains(x.ToLower()));
             Classes.Sort(delegate (string x, string y)
             {
                 return x.CompareTo(y);
             });
+            Classes.InsertRange(0, CLASSES_CORE_READABLE);
+
+            SpecialClasses.RemoveAll(x => SPECIAL_CLASSES_CORE.Contains(x.ToLower()));
+            SpecialClasses.Sort(delegate (string x, string y)
+            {
+                return x.CompareTo(y);
+            });
+            SpecialClasses.InsertRange(0, SPECIAL_CLASSES_CORE_READABLE);
         }
 
         private void HandleInheritance(List<Statistics> stats)

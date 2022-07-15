@@ -16,16 +16,19 @@ namespace IconFoeCreator
 
         public List<ComboBoxItem> Factions;
         public List<ComboBoxItem> Classes;
+        public List<ComboBoxItem> SpecialClasses;
         public List<ComboBoxItem> Foes;
 
         public void ConvertToDropdownItems(StatisticBuilder statBuilder)
         {
             Factions = new List<ComboBoxItem>();
             Classes = new List<ComboBoxItem>();
+            SpecialClasses = new List<ComboBoxItem>();
             Foes = new List<ComboBoxItem>();
 
             ConvertStringsToComboBoxItems(statBuilder.Factions, Factions);
             ConvertStringsToComboBoxItems(statBuilder.Classes, Classes);
+            ConvertStringsToComboBoxItems(statBuilder.SpecialClasses, SpecialClasses);
             ConvertStatisticsToComboBoxItems(statBuilder.Foes, Foes);
         }
 
@@ -39,9 +42,9 @@ namespace IconFoeCreator
                 {
                     className = statConverted.Class;
                 }
-                else if (statConverted.IsMob.GetValueOrDefault(false))
+                else if (!String.IsNullOrEmpty(statConverted.SpecialClass) && statConverted.SpecialClass.ToLower() == StatisticBuilder.SPECIAL_CLASS_MOB)
                 {
-                    className = StatisticBuilder.MOB;
+                    className = StatisticBuilder.SPECIAL_CLASS_MOB;
                 }
 
                 // Change color based on class

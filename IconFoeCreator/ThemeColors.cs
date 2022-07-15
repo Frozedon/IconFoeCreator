@@ -112,11 +112,11 @@ namespace IconFoeCreator
             {
                 return ThemeColors.ARTILLERY_BRUSH;
             }
-            else if (nameLower == StatisticBuilder.MOB)
+            else if (nameLower == StatisticBuilder.SPECIAL_CLASS_MOB)
             {
                 return ThemeColors.MOB_BRUSH;
             }
-            else if (nameLower == MainWindow.UNIQUE_CLASS)
+            else if (nameLower == StatisticBuilder.CLASS_UNIQUE)
             {
                 return ThemeColors.UNIQUE_BRUSH;
             }
@@ -149,11 +149,11 @@ namespace IconFoeCreator
             {
                 return ThemeColors.ARTILLERY_BRUSH_GRADIENT;
             }
-            else if (nameLower == StatisticBuilder.MOB)
+            else if (nameLower == StatisticBuilder.SPECIAL_CLASS_MOB)
             {
                 return ThemeColors.MOB_BRUSH_GRADIENT;
             }
-            else if (nameLower == MainWindow.UNIQUE_CLASS)
+            else if (nameLower == StatisticBuilder.CLASS_UNIQUE)
             {
                 return ThemeColors.UNIQUE_BRUSH_GRADIENT;
             }

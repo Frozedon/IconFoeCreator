@@ -16,7 +16,7 @@ namespace IconFoeCreator
 
     public static class DescriptionCreator
     {
-        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, List<Trait> traitLib, List<Statistics> statsList, bool replaceDamageValues)
+        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, List<Trait> traitLib, List<Statistics> statsList, int chapter, bool replaceDamageValues)
         {
             descTextBox.Document.Blocks.Clear();
             setupTextBox.Document.Blocks.Clear();
@@ -34,7 +34,8 @@ namespace IconFoeCreator
                 name = statsToMerge.Name + " " + name;
             }
 
-            List<Trait> traits = stats.LoadActualTraits(traitLib);
+            stats.ProcessChapter(chapter);
+            stats.ProcessTraits(traitLib);
 
             // Traits can add armor, max armor, or alter hit points
             int vitality = stats.Vitality.GetValueOrDefault();
@@ -51,7 +52,7 @@ namespace IconFoeCreator
             int speed = stats.Speed.GetValueOrDefault();
             int dash = stats.GetDash();
             string dashText = dash <= 0 ? "No Dash" : ("Dash " + dash);
-            int defense = stats.GetDefense();
+            int defense = stats.Defense.GetValueOrDefault();
             int damageDie = stats.DamageDie.GetValueOrDefault();
             int frayDamage = stats.FrayDamage.GetValueOrDefault();
             DamageInfo damageInfo = new DamageInfo {
@@ -133,7 +134,7 @@ namespace IconFoeCreator
                 AddBold(paragraph, "Traits");
                 descTextBox.Document.Blocks.Add(paragraph);
 
-                AddTraits(descTextBox, traits, damageInfo);
+                AddTraits(descTextBox, stats.GetActualTraits(), damageInfo);
             }
 
             if (stats.Interrupts.Count > 0)
@@ -231,6 +232,11 @@ namespace IconFoeCreator
 
             foreach (Trait trait in traits)
             {
+                if (String.IsNullOrEmpty(trait.Description) && trait.Actions.Count > 0)
+                {
+                    continue;
+                }
+
                 Paragraph paragraph = MakeParagraph();
 
                 if (indent > 0)
@@ -519,7 +525,7 @@ namespace IconFoeCreator
 
                 if (phase.Traits.Count > 0)
                 {
-                    AddTraits(textBox, Statistics.GetActualTraits(phase.Traits, traitLib), dmgInfo);
+                    AddTraits(textBox, Statistics.BuildTraitList(phase.Traits, traitLib), dmgInfo);
                 }
 
                 if (phase.Actions.Count > 0)
@@ -550,7 +556,7 @@ namespace IconFoeCreator
 
                 if (abilitySet.Traits.Count > 0)
                 {
-                    AddTraits(textBox, Statistics.GetActualTraits(abilitySet.Traits, traitLib), dmgInfo);
+                    AddTraits(textBox, Statistics.BuildTraitList(abilitySet.Traits, traitLib), dmgInfo);
                 }
 
                 if (abilitySet.Actions.Count > 0)
