@@ -10,7 +10,6 @@ namespace IconFoeCreator
     {
         public List<Statistics> Foes;
         public List<Statistics> Templates;
-        public List<Statistics> Jobs;
         public List<string> Factions;
         public List<string> Classes;
         public List<string> SpecialClasses;
@@ -38,13 +37,11 @@ namespace IconFoeCreator
 
         private static readonly string TYPE_FOE = "foe";
         private static readonly string TYPE_TEMPLATE = "template";
-        private static readonly string TYPE_JOB = "job";
 
         public StatisticBuilder()
         {
             Foes = new List<Statistics>();
             Templates = new List<Statistics>();
-            Jobs = new List<Statistics>();
             Factions = new List<string>();
             Classes = new List<string>();
             SpecialClasses = new List<string>();
@@ -55,7 +52,6 @@ namespace IconFoeCreator
         {
             Foes.Clear();
             Templates.Clear();
-            Jobs.Clear();
             Factions.Clear();
             Classes.Clear();
             SpecialClasses.Clear();
@@ -102,10 +98,6 @@ namespace IconFoeCreator
                 {
                     Templates.Add(stat);
                 }
-                else if (stat.Type.ToLower() == TYPE_JOB)
-                {
-                    Jobs.Add(stat);
-                }
             }
 
             // Sort lists
@@ -115,11 +107,6 @@ namespace IconFoeCreator
             });
 
             Templates.Sort(delegate (Statistics x, Statistics y)
-            {
-                return x.Name.CompareTo(y.Name);
-            });
-
-            Jobs.Sort(delegate (Statistics x, Statistics y)
             {
                 return x.Name.CompareTo(y.Name);
             });
