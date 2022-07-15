@@ -278,12 +278,6 @@ namespace IconFoeCreator
         {
             List<ComboBoxItem> availableTemplates = new List<ComboBoxItem>(dropdownOptions.Templates);
 
-            string selectedFaction = GetComboBoxString(Faction_comboBox.SelectedItem);
-            if (selectedFaction != null && !String.IsNullOrEmpty(selectedFaction) && selectedFaction.ToLower() != ANY_GROUP.ToLower())
-            {
-                availableTemplates = RemoveStatsOfOtherFactions(availableTemplates, selectedFaction);
-            }
-
             availableTemplates.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
 
             return availableTemplates;
@@ -294,7 +288,15 @@ namespace IconFoeCreator
             return stats.FindAll(delegate (ComboBoxItem stat)
             {
                 Statistics actualStat = (Statistics)stat.Content;
-                return !String.IsNullOrEmpty(actualStat.Faction) && actualStat.Faction.ToLower() == factionName.ToLower();
+
+                if (factionName.ToLower() == StatisticBuilder.FACTION_BASIC_READABLE.ToLower())
+                {
+                    return String.IsNullOrEmpty(actualStat.Faction) || actualStat.Faction.ToLower() == StatisticBuilder.FACTION_BASIC;
+                }
+                else
+                {
+                    return !String.IsNullOrEmpty(actualStat.Faction) && actualStat.Faction.ToLower() == factionName.ToLower();
+                }
             });
         }
 
@@ -315,7 +317,7 @@ namespace IconFoeCreator
 
                 if (specialClassName.ToLower() == StatisticBuilder.SPECIAL_CLASS_NORMAL)
                 {
-                    return String.IsNullOrEmpty(actualStat.SpecialClass) || actualStat.SpecialClass.ToLower() == specialClassName.ToLower();
+                    return String.IsNullOrEmpty(actualStat.SpecialClass) || actualStat.SpecialClass.ToLower() == StatisticBuilder.SPECIAL_CLASS_NORMAL;
                 }
                 else
                 {
