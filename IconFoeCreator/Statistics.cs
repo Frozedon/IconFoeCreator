@@ -336,7 +336,7 @@ namespace IconFoeCreator
                     Actions.Add(action);
                 }
 
-                if (String.IsNullOrEmpty(trait.Description))
+                if (String.IsNullOrEmpty(trait.Description) && trait.Summons.Count == 0)
                 {
                     mActualTraits.Remove(trait);
                 }
@@ -382,9 +382,13 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
+        public List<SummonData> Summons { get; set; }
+
         public Trait()
         {
             Actions = new List<Action>();
+            Summons = new List<SummonData>();
         }
 
         private static readonly string VALUE_TOKEN = "[X]";
@@ -426,7 +430,8 @@ namespace IconFoeCreator
                     DashMultiplier = DashMultiplier,
                     Defense = Defense,
                     EncounterBudget = EncounterBudget,
-                    Actions = Actions
+                    Actions = Actions,
+                    Summons = Summons
                 };
 
                 string strippedTraitName = (string)traitName.Clone();
@@ -494,7 +499,9 @@ namespace IconFoeCreator
         public string SpecialRecharge { get; set; }
         public string Delay { get; set; }
         public string DelayAreaEffect { get; set; }
-        public SummonData Summon { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
+        public List<SummonData> Summons { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
         public List<RollData> Rolls { get; set; }
@@ -508,6 +515,7 @@ namespace IconFoeCreator
         {
             Tags = new List<string>();
             Combos = new List<Action>();
+            Summons = new List<SummonData>();
             Rolls = new List<RollData>();
         }
     }

@@ -66,12 +66,10 @@ namespace IconFoeCreator
             if (Directory.Exists(BASE_FOLDER_PATH))
             {
                 ReadJsonFilesInDirectory(BASE_FOLDER_PATH, allStats);
-                ReadTraitsJsonFile(BASE_FOLDER_PATH + TRAITS_FILE_NAME, Traits);
             }
             if (useHomebrew && Directory.Exists(HOMEBREW_FOLDER_PATH))
             {
                 ReadJsonFilesInDirectory(HOMEBREW_FOLDER_PATH, allStats);
-                ReadTraitsJsonFile(HOMEBREW_FOLDER_PATH + TRAITS_FILE_NAME, Traits);
             }
 
             // Handle inheritance
@@ -176,7 +174,11 @@ namespace IconFoeCreator
             // Iterate through folder looking for json files
             foreach (string path in Directory.GetFiles(dirPath))
             {
-                if (path.EndsWith(".json") && !path.EndsWith("/example.json") && !path.EndsWith("/" + TRAITS_FILE_NAME))
+                if (path.EndsWith("/" + TRAITS_FILE_NAME))
+                {
+                    ReadTraitsJsonFile(path, Traits);
+                }
+                else if (path.EndsWith(".json") && !path.EndsWith("/example.json"))
                 {
                     using (StreamReader r = new StreamReader(path))
                     {

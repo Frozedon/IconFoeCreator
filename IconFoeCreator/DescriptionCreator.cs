@@ -255,6 +255,11 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
 
                 textBox.Document.Blocks.Add(paragraph);
+
+                foreach (SummonData summon in trait.Summons)
+                {
+                    AddSummon(textBox, summon, dmgInfo, indent + 1);
+                }
             }
         }
 
@@ -323,16 +328,18 @@ namespace IconFoeCreator
                     bool xHasAtk = x.Tags.Find(tag => tag.Contains("attack")) != null;
                     bool yHasAtk = y.Tags.Find(tag => tag.Contains("attack")) != null;
 
-                    if (xHasAtk && !yHasAtk)
+                    if (xHasAtk == yHasAtk)
+                    {
+                        return x.Name.CompareTo(y.Name);
+                    }
+                    else if (xHasAtk && !yHasAtk)
                     {
                         return -1;
                     }
-                    else if (yHasAtk && !xHasAtk)
+                    else
                     {
                         return 1;
                     }
-
-                    return x.Name.CompareTo(y.Name);
                 }
                 return x.ActionCost.CompareTo(y.ActionCost);
             });
@@ -494,9 +501,9 @@ namespace IconFoeCreator
                 AddRoll(textBox, roll, dmgInfo, indent);
             }
 
-            if (action.Summon != null && !action.Summon.IsEmpty())
+            foreach (SummonData summon in action.Summons)
             {
-                AddSummon(textBox, action.Summon, dmgInfo, indent + 1);
+                AddSummon(textBox, summon, dmgInfo, indent + 1);
             }
 
             foreach (Action comboAction in action.Combos)
