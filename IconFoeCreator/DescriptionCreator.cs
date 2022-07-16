@@ -16,26 +16,10 @@ namespace IconFoeCreator
 
     public static class DescriptionCreator
     {
-        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, List<Trait> traitLib, List<Statistics> statsList, int chapter, bool replaceDamageValues)
+        public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics stats, bool replaceDamageValues)
         {
             descTextBox.Document.Blocks.Clear();
             setupTextBox.Document.Blocks.Clear();
-
-            if (statsList.Count == 0)
-            {
-                return;
-            }
-
-            Statistics stats = new Statistics();
-            string name = String.Empty;
-            foreach (Statistics statsToMerge in statsList)
-            {
-                stats = statsToMerge.InheritFrom(stats);
-                name = statsToMerge.Name + " " + name;
-            }
-
-            stats.ProcessChapter(chapter);
-            stats.ProcessTraits(traitLib);
 
             // Traits can add armor, max armor, or alter hit points
             int vitality = stats.Vitality.GetValueOrDefault();
@@ -64,7 +48,7 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.TextDecorations = TextDecorations.Underline;
-                AddBold(paragraph, name);
+                AddBold(paragraph, stats.Name);
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
@@ -182,12 +166,12 @@ namespace IconFoeCreator
                 AddNormal(paragraph2, stats.PhasesDescription);
                 descTextBox.Document.Blocks.Add(paragraph2);
 
-                AddPhases(descTextBox, stats.Phases, damageInfo, traitLib);
+                AddPhases(descTextBox, stats.Phases, damageInfo);
             }
 
             if (stats.ExtraAbilitySets.Count > 0)
             {
-                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, damageInfo, traitLib);
+                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, damageInfo);
             }
 
             // Setup traits in other textbox
@@ -405,21 +389,24 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.Critical, dmgInfo));
             }
 
-            if (!String.IsNullOrEmpty(action.Miss))
+            if (!String.IsNullOrEmpty(action.Miss) && !String.IsNullOrEmpty(action.AreaEffect) && action.Miss == action.AreaEffect)
             {
-                AddItalic(paragraph, " Miss: ");
+                AddItalic(paragraph, " Miss or Area Effect: ");
                 AddNormal(paragraph, ReplaceDamageTokens(action.Miss, dmgInfo));
             }
-
-            if (!String.IsNullOrEmpty(action.PostAttack))
+            else
             {
-                AddNormal(paragraph, " " + ReplaceDamageTokens(action.PostAttack, dmgInfo));
-            }
-
-            if (!String.IsNullOrEmpty(action.AreaEffect))
-            {
-                AddItalic(paragraph, " Area Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.AreaEffect, dmgInfo));
+                if (!String.IsNullOrEmpty(action.Miss))
+                {
+                    AddItalic(paragraph, " Miss: ");
+                    AddNormal(paragraph, ReplaceDamageTokens(action.Miss, dmgInfo));
+                }
+                
+                if (!String.IsNullOrEmpty(action.AreaEffect))
+                {
+                    AddItalic(paragraph, " Area Effect: ");
+                    AddNormal(paragraph, ReplaceDamageTokens(action.AreaEffect, dmgInfo));
+                }
             }
 
             if (!String.IsNullOrEmpty(action.Effect))
@@ -472,6 +459,11 @@ namespace IconFoeCreator
 
             textBox.Document.Blocks.Add(paragraph);
 
+            if (action.Summon != null && !action.Summon.IsEmpty())
+            {
+                AddSummon(textBox, action.Summon);
+            }
+
             foreach (Action comboAction in action.Combos)
             {
                 AddAction(textBox, comboAction, dmgInfo, true);
@@ -480,6 +472,53 @@ namespace IconFoeCreator
             if (!String.IsNullOrEmpty(action.PostAction))
             {
                 AddNormal(paragraph, " " + ReplaceDamageTokens(action.PostAction, dmgInfo));
+            }
+        }
+
+        private static void AddSummon(RichTextBox textBox, SummonData summon)
+        {
+
+            if (!String.IsNullOrEmpty(summon.Name) || summon.Tags.Count > 0)
+            {
+                Paragraph paragraph = MakeParagraph();
+                paragraph.Margin = new Thickness() { Left = 10.0 };
+
+                if (!String.IsNullOrEmpty(summon.Name))
+                {
+                    AddBold(paragraph, summon.Name);
+                }
+
+                if (summon.Tags.Count > 0)
+                {
+                    AddBold(paragraph, " (");
+
+                    bool first = true;
+                    foreach (string tag in summon.Tags)
+                    {
+                        if (!first)
+                        {
+                            AddBold(paragraph, ", ");
+                        }
+                        else
+                        {
+                            first = false;
+                        }
+
+                        AddBold(paragraph, tag);
+                    }
+                    AddBold(paragraph, ")");
+                }
+
+                textBox.Document.Blocks.Add(paragraph);
+            }
+
+            if (!String.IsNullOrEmpty(summon.Effect))
+            {
+                Paragraph paragraph = MakeParagraph();
+                paragraph.Margin = new Thickness() { Left = 10.0 };
+                AddBold(paragraph, "Summon Effect: ");
+                AddNormal(paragraph, summon.Effect);
+                textBox.Document.Blocks.Add(paragraph);
             }
         }
 
@@ -506,7 +545,7 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddPhases(RichTextBox textBox, List<Phase> phases, DamageInfo dmgInfo, List<Trait> traitLib)
+        private static void AddPhases(RichTextBox textBox, List<Phase> phases, DamageInfo dmgInfo)
         {
             for (int i = 0; i < phases.Count; ++i)
             {
@@ -525,7 +564,7 @@ namespace IconFoeCreator
 
                 if (phase.Traits.Count > 0)
                 {
-                    AddTraits(textBox, Statistics.BuildTraitList(phase.Traits, traitLib), dmgInfo);
+                    AddTraits(textBox, phase.GetActualTraits(), dmgInfo);
                 }
 
                 if (phase.Actions.Count > 0)
@@ -535,7 +574,7 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySet> abilitySets, DamageInfo dmgInfo, List<Trait> traitLib)
+        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySet> abilitySets, DamageInfo dmgInfo)
         {
             for (int i = 0; i < abilitySets.Count; ++i)
             {
@@ -556,7 +595,7 @@ namespace IconFoeCreator
 
                 if (abilitySet.Traits.Count > 0)
                 {
-                    AddTraits(textBox, Statistics.BuildTraitList(abilitySet.Traits, traitLib), dmgInfo);
+                    AddTraits(textBox, abilitySet.GetActualTraits(), dmgInfo);
                 }
 
                 if (abilitySet.Actions.Count > 0)

@@ -114,23 +114,58 @@ namespace IconFoeCreator
 
         private void UpdateDescription()
         {
-            List<Statistics> statsToMerge = new List<Statistics>();
-
-            Statistics foe = GetComboBoxStats(Foe_comboBox.SelectedItem);
-            if (foe != null && Statistics.IsValid(foe))
-            {
-                statsToMerge.Add(foe);
-            }
-
-            int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
+            Statistics stats = MakeCompiledStats();
 
             DescriptionCreator.UpdateDescription(
                 Description_richTextBox,
                 Setup_richTextBox,
-                statBuilder.Traits,
-                statsToMerge,
-                chapter,
+                stats,
                 DamageValues_checkBox.IsChecked.GetValueOrDefault());
+        }
+
+        private Statistics MakeCompiledStats()
+        {
+            Statistics compiledStats = new Statistics();
+            string compiledName = String.Empty;
+
+            Statistics foe = GetComboBoxStats(Foe_comboBox.SelectedItem);
+            if (foe != null && Statistics.IsValid(foe))
+            {
+                compiledStats = foe.InheritFrom(compiledStats);
+
+                if (String.IsNullOrEmpty(compiledName))
+                {
+                    compiledName = foe.Name;
+                }
+                else
+                {
+                    compiledName = foe.Name + " " + compiledName;
+                }
+            }
+
+            Statistics template = GetComboBoxStats(Template_comboBox.SelectedItem);
+            if (template != null && Statistics.IsValid(template))
+            {
+                compiledStats = template.InheritFrom(compiledStats);
+
+                if (String.IsNullOrEmpty(compiledName))
+                {
+                    compiledName = template.Name;
+                }
+                else
+                {
+                    compiledName = template.Name + " " + compiledName;
+                }
+            }
+
+            int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
+
+            compiledStats.ProcessChapter(chapter);
+            compiledStats.ProcessTraits(statBuilder.Traits);
+
+            compiledStats.Name = compiledName;
+
+            return compiledStats;
         }
 
         private void UpdateChapterOptions()
@@ -364,6 +399,12 @@ namespace IconFoeCreator
             if (foe != null && Statistics.IsValid(foe))
             {
                 statsToMerge.Add(foe);
+            }
+
+            Statistics template = GetComboBoxStats(Template_comboBox.SelectedItem);
+            if (template != null && Statistics.IsValid(template))
+            {
+                statsToMerge.Add(template);
             }
 
             Statistics statsToExport = new Statistics();
