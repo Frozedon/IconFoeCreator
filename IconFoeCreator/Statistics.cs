@@ -328,6 +328,16 @@ namespace IconFoeCreator
             {
                 mEncounterBudget = encounterBudget;
             }
+
+            // Process phases and extra ability set traits
+            foreach (Phase phase in Phases)
+            {
+                phase.ProcessTraits(traitLib);
+            }
+            foreach (AbilitySet abilitySet in ExtraAbilitySets)
+            {
+                abilitySet.ProcessTraits(traitLib);
+            }
         }
 
         public List<Trait> GetActualTraits()
@@ -445,7 +455,6 @@ namespace IconFoeCreator
         public string AutoHit { get; set; }
         public string Critical { get; set; }
         public string Miss { get; set; }
-        public string PostAttack { get; set; }
         public string AreaEffect { get; set; }
         public string Effect { get; set; }
         public string Mark { get; set; }
@@ -455,6 +464,7 @@ namespace IconFoeCreator
         public string TerrainEffect { get; set; }
         public string SpecialInterrupt { get; set; }
         public string SpecialRecharge { get; set; }
+        public SummonData Summon { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Combos { get; set; }
@@ -518,10 +528,22 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
 
+        private List<Trait> mActualTraits;
+
         public Phase()
         {
             Traits = new List<string>();
             Actions = new List<Action>();
+        }
+
+        public void ProcessTraits(List<Trait> traitLib)
+        {
+            mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
+        }
+
+        public List<Trait> GetActualTraits()
+        {
+            return mActualTraits;
         }
     }
 
@@ -536,10 +558,42 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
 
+        private List<Trait> mActualTraits;
+
         public AbilitySet()
         {
             Traits = new List<string>();
             Actions = new List<Action>();
+        }
+
+        public void ProcessTraits(List<Trait> traitLib)
+        {
+            mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
+        }
+
+        public List<Trait> GetActualTraits()
+        {
+            return mActualTraits;
+        }
+    }
+
+    public class SummonData
+    {
+        public string Name { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Tags { get; set; }
+
+        public string Effect { get; set; }
+
+        public SummonData()
+        {
+            Tags = new List<string>();
+        }
+
+        public bool IsEmpty()
+        {
+            return String.IsNullOrEmpty(Name);
         }
     }
 }
