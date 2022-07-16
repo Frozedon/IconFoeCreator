@@ -382,7 +382,7 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Actions { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
+        [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
         public Trait()
@@ -500,7 +500,7 @@ namespace IconFoeCreator
         public string Delay { get; set; }
         public string DelayAreaEffect { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
+        [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
