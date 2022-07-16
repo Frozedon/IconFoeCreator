@@ -16,6 +16,8 @@ namespace IconFoeCreator
 
     public static class DescriptionCreator
     {
+        public static readonly double MARGIN_LEN = 16.0;
+
         public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics stats, bool replaceDamageValues)
         {
             descTextBox.Document.Blocks.Clear();
@@ -216,11 +218,6 @@ namespace IconFoeCreator
 
             foreach (Trait trait in traits)
             {
-                if (String.IsNullOrEmpty(trait.Description) && trait.Actions.Count > 0)
-                {
-                    continue;
-                }
-
                 Paragraph paragraph = MakeParagraph();
 
                 if (indent > 0)
@@ -326,9 +323,10 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddAction(RichTextBox textBox, Action action, DamageInfo dmgInfo, bool combo = false)
+        private static void AddAction(RichTextBox textBox, Action action, DamageInfo dmgInfo, int indent = 0, bool combo = false)
         {
             Paragraph paragraph = MakeParagraph();
+            paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
 
             if (combo)
             {
@@ -457,16 +455,33 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.SpecialRecharge, dmgInfo));
             }
 
+            if (!String.IsNullOrEmpty(action.Delay))
+            {
+                AddItalic(paragraph, " Delay: ");
+                AddNormal(paragraph, ReplaceDamageTokens(action.Delay, dmgInfo));
+            }
+
+            if (!String.IsNullOrEmpty(action.DelayAreaEffect))
+            {
+                AddItalic(paragraph, " Area Effect: ");
+                AddNormal(paragraph, ReplaceDamageTokens(action.DelayAreaEffect, dmgInfo));
+            }
+
             textBox.Document.Blocks.Add(paragraph);
+
+            foreach (RollData roll in action.Rolls)
+            {
+                AddRoll(textBox, roll, dmgInfo, indent);
+            }
 
             if (action.Summon != null && !action.Summon.IsEmpty())
             {
-                AddSummon(textBox, action.Summon);
+                AddSummon(textBox, action.Summon, dmgInfo, indent + 1);
             }
 
             foreach (Action comboAction in action.Combos)
             {
-                AddAction(textBox, comboAction, dmgInfo, true);
+                AddAction(textBox, comboAction, dmgInfo, indent + 1, true);
             }
 
             if (!String.IsNullOrEmpty(action.PostAction))
@@ -475,13 +490,83 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddSummon(RichTextBox textBox, SummonData summon)
+        private static void AddRoll(RichTextBox textBox, RollData roll, DamageInfo dmgInfo, int indent = 0)
         {
+            Paragraph paragraph = MakeParagraph();
+            paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
 
+            // Write values like "1." or "1-3." or "1-2, 4."
+            roll.Values.Sort();
+            int lastValue = int.MinValue;
+            int lastAddedValue = int.MinValue;
+            string valueStr = String.Empty;
+            foreach (int value in roll.Values)
+            {
+                if (String.IsNullOrEmpty(valueStr))
+                {
+                    valueStr += value;
+                    lastAddedValue = value;
+                }
+                else if (value - lastValue > 1)
+                {
+                    if (!String.IsNullOrEmpty(valueStr))
+                    {
+                        if (lastAddedValue != lastValue)
+                        {
+                            valueStr += "-" + lastValue;
+                        }
+                        valueStr +=  ",";
+                    }
+
+                    valueStr += value;
+                    lastAddedValue = value;
+                }
+
+                lastValue = value;
+            }
+
+            if (lastAddedValue != int.MinValue && lastAddedValue != lastValue)
+            {
+                if (!String.IsNullOrEmpty(valueStr))
+                {
+                    if (lastValue - lastAddedValue > 1)
+                    {
+                        valueStr += ",";
+                    }
+                    else
+                    {
+                        valueStr += "-";
+                    }
+
+                }
+
+                valueStr += lastValue;
+            }
+
+            if (!String.IsNullOrEmpty(valueStr))
+            {
+                AddBold(paragraph, valueStr + ". ");
+            }
+
+            if (!String.IsNullOrEmpty(roll.Name))
+            {
+                AddBold(paragraph, roll.Name + ": ");
+            }
+
+            if (!String.IsNullOrEmpty(roll.Description))
+            {
+                AddNormal(paragraph, ReplaceDamageTokens(roll.Description, dmgInfo));
+            }
+
+            textBox.Document.Blocks.Add(paragraph);
+        }
+
+        private static void AddSummon(RichTextBox textBox, SummonData summon, DamageInfo dmgInfo, int indent = 0)
+        {
             if (!String.IsNullOrEmpty(summon.Name) || summon.Tags.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness() { Left = 10.0 };
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
 
                 if (!String.IsNullOrEmpty(summon.Name))
                 {
@@ -515,10 +600,15 @@ namespace IconFoeCreator
             if (!String.IsNullOrEmpty(summon.Effect))
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness() { Left = 10.0 };
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
                 AddBold(paragraph, "Summon Effect: ");
                 AddNormal(paragraph, summon.Effect);
                 textBox.Document.Blocks.Add(paragraph);
+            }
+
+            foreach (Action action in summon.Actions)
+            {
+                AddAction(textBox, action, dmgInfo, indent + 1, false);
             }
         }
 
