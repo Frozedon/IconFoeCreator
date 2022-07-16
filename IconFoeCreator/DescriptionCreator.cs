@@ -371,7 +371,7 @@ namespace IconFoeCreator
             }
             else if (action.ActionCost == 0)
             {
-                AddBold(paragraph, "Free action");
+                AddBold(paragraph, "free action");
             }
 
             foreach (string tag in action.Tags)
