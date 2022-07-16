@@ -225,7 +225,15 @@ namespace IconFoeCreator
                     paragraph.TextIndent = (indent - 1) * 10.0;
                     AddBold(paragraph, "• ");
                 }
-                AddBold(paragraph, trait.Name);
+
+                if (!String.IsNullOrEmpty(trait.DisplayName))
+                {
+                    AddBold(paragraph, trait.DisplayName);
+                }
+                else
+                {
+                    AddBold(paragraph, trait.Name);
+                }
 
                 /*if (trait.Tags.Count > 0)
                 {
@@ -312,6 +320,18 @@ namespace IconFoeCreator
             {
                 if (x.ActionCost == y.ActionCost)
                 {
+                    bool xHasAtk = x.Tags.Find(tag => tag.Contains("attack")) != null;
+                    bool yHasAtk = y.Tags.Find(tag => tag.Contains("attack")) != null;
+
+                    if (xHasAtk && !yHasAtk)
+                    {
+                        return -1;
+                    }
+                    else if (yHasAtk && !xHasAtk)
+                    {
+                        return 1;
+                    }
+
                     return x.Name.CompareTo(y.Name);
                 }
                 return x.ActionCost.CompareTo(y.ActionCost);

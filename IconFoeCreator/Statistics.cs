@@ -372,6 +372,7 @@ namespace IconFoeCreator
     public class Trait
     {
         public string Name { get; set; }
+        public string DisplayName { get; set; }
         public string Description { get; set; }
 
         public float? DashMultiplier { get; set; }
@@ -420,6 +421,7 @@ namespace IconFoeCreator
                 Trait newTrait = new Trait()
                 {
                     Name = Name,
+                    DisplayName = DisplayName,
                     Description = Description,
                     DashMultiplier = DashMultiplier,
                     Defense = Defense,
