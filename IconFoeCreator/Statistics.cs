@@ -286,6 +286,22 @@ namespace IconFoeCreator
                 }
             }
 
+            // Remove duplicates
+            for (int i = 0; i < updatedTraits.Count; ++i)
+            {
+                for (int j = i + 1; j < updatedTraits.Count;)
+                {
+                    if (updatedTraits[i].GetOriginalName() == updatedTraits[j].GetOriginalName())
+                    {
+                        updatedTraits.RemoveAt(j);
+                    }
+                    else
+                    {
+                        ++j;
+                    }
+                }
+            }
+
             return updatedTraits;
         }
 
@@ -293,40 +309,37 @@ namespace IconFoeCreator
         {
             mActualTraits = BuildTraitList(Traits, traitLib);
 
-            int defense = int.MaxValue;
-            float dashMultiplier = float.MaxValue;
-            double encounterBudget = double.MaxValue;
-            foreach (Trait trait in mActualTraits)
+            // Get traits with specific values
+            Trait defenseTrait = mActualTraits.Find(x => x.Defense.HasValue);
+            if (defenseTrait != null)
             {
-                if (trait.Defense.HasValue && trait.Defense.Value < defense)
-                {
-                    defense = trait.Defense.Value;
-                }
-                if (trait.DashMultiplier.HasValue && trait.DashMultiplier.Value < dashMultiplier)
-                {
-                    dashMultiplier = trait.DashMultiplier.Value;
-                }
-                if (trait.EncounterBudget.HasValue && trait.EncounterBudget.Value < encounterBudget)
-                {
-                    encounterBudget = trait.EncounterBudget.Value;
-                }
+                Defense = defenseTrait.Defense.Value;
+            }
+
+            Trait dashMultiplierTrait = mActualTraits.Find(x => x.DashMultiplier.HasValue);
+            if (dashMultiplierTrait != null)
+            {
+                mDashMultiplier = dashMultiplierTrait.DashMultiplier.Value;
+            }
+
+            Trait encounterBudgetTrait = mActualTraits.Find(x => x.EncounterBudget.HasValue);
+            if (encounterBudgetTrait != null)
+            {
+                mEncounterBudget = encounterBudgetTrait.EncounterBudget.Value;
+            }
+
+            // Collect Actions
+            foreach (Trait trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
+            {
                 foreach (Action action in trait.Actions)
                 {
                     Actions.Add(action);
                 }
-            }
 
-            if (defense != int.MaxValue)
-            {
-                Defense = defense;
-            }
-            if (dashMultiplier != float.MaxValue)
-            {
-                mDashMultiplier = dashMultiplier;
-            }
-            if (encounterBudget != double.MaxValue)
-            {
-                mEncounterBudget = encounterBudget;
+                if (String.IsNullOrEmpty(trait.Description))
+                {
+                    mActualTraits.Remove(trait);
+                }
             }
 
             // Process phases and extra ability set traits
@@ -375,6 +388,8 @@ namespace IconFoeCreator
 
         private static readonly string VALUE_TOKEN = "[X]";
 
+        private string mOrigName;
+
         public bool Matches(string traitName)
         {
             if (Name.Contains(VALUE_TOKEN))
@@ -386,6 +401,16 @@ namespace IconFoeCreator
             {
                 return Name == traitName;
             }
+        }
+
+        public string GetOriginalName()
+        {
+            if (String.IsNullOrEmpty(mOrigName))
+            {
+                return Name;
+            }
+
+            return mOrigName;
         }
 
         public Trait MakeExpressedTrait(string traitName)
@@ -410,6 +435,7 @@ namespace IconFoeCreator
                 }
                 string valueStr = Regex.Match(strippedTraitName, @"\d+", RegexOptions.IgnoreCase).Value;
 
+                newTrait.mOrigName = Name;
                 newTrait.Name = Name.Replace(VALUE_TOKEN, valueStr);
                 newTrait.Description = Description.Replace(VALUE_TOKEN, valueStr);
 
@@ -464,7 +490,12 @@ namespace IconFoeCreator
         public string TerrainEffect { get; set; }
         public string SpecialInterrupt { get; set; }
         public string SpecialRecharge { get; set; }
+        public string Delay { get; set; }
+        public string DelayAreaEffect { get; set; }
         public SummonData Summon { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
+        public List<RollData> Rolls { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
         public List<Action> Combos { get; set; }
@@ -475,6 +506,7 @@ namespace IconFoeCreator
         {
             Tags = new List<string>();
             Combos = new List<Action>();
+            Rolls = new List<RollData>();
         }
     }
 
@@ -586,14 +618,32 @@ namespace IconFoeCreator
 
         public string Effect { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
+        public List<Action> Actions { get; set; }
+
         public SummonData()
         {
             Tags = new List<string>();
+            Actions = new List<Action>();
         }
 
         public bool IsEmpty()
         {
             return String.IsNullOrEmpty(Name);
+        }
+    }
+
+    public class RollData
+    {
+        [JsonConverter(typeof(SingleOrArrayConverter<int>))]
+        public List<int> Values { get; set; }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        public RollData()
+        {
+            Values = new List<int>();
         }
     }
 }
