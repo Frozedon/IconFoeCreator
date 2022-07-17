@@ -50,7 +50,7 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.TextDecorations = TextDecorations.Underline;
-                AddBold(paragraph, stats.Name);
+                AddBold(paragraph, stats.GetDisplayName());
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
@@ -226,14 +226,7 @@ namespace IconFoeCreator
                     AddBold(paragraph, "• ");
                 }
 
-                if (!String.IsNullOrEmpty(trait.DisplayName))
-                {
-                    AddBold(paragraph, trait.DisplayName);
-                }
-                else
-                {
-                    AddBold(paragraph, trait.Name);
-                }
+                AddBold(paragraph, trait.GetDisplayName());
 
                 /*if (trait.Tags.Count > 0)
                 {

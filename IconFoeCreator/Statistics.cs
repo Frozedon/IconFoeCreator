@@ -10,6 +10,7 @@ namespace IconFoeCreator
     {
         // Does Not Inherit
         public string Name { get; set; }
+        public string DisplayName { get; set; }
         public string Type { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
@@ -80,6 +81,7 @@ namespace IconFoeCreator
         public Statistics()
         {
             Name = String.Empty;
+            DisplayName = String.Empty;
             Type = String.Empty;
             Inherits = new List<string>();
             Chapter = 0;
@@ -110,11 +112,22 @@ namespace IconFoeCreator
             return Name;
         }
 
+        public string GetDisplayName()
+        {
+            if (!String.IsNullOrEmpty(DisplayName))
+            {
+                return DisplayName;
+            }
+
+            return Name;
+        }
+
         public Statistics InheritFrom(Statistics otherStats)
         {
             Statistics newStats = new Statistics
             {
                 Name = Name,
+                DisplayName = DisplayName,
                 Type = Type,
                 Inherits = Inherits,
                 Chapter = Chapter,
@@ -291,7 +304,7 @@ namespace IconFoeCreator
             {
                 for (int j = i + 1; j < updatedTraits.Count;)
                 {
-                    if (updatedTraits[i].GetOriginalName() == updatedTraits[j].GetOriginalName())
+                    if (updatedTraits[i].Name == updatedTraits[j].Name)
                     {
                         updatedTraits.RemoveAt(j);
                     }
@@ -393,8 +406,6 @@ namespace IconFoeCreator
 
         private static readonly string VALUE_TOKEN = "[X]";
 
-        private string mOrigName;
-
         public bool Matches(string traitName)
         {
             if (Name.Contains(VALUE_TOKEN))
@@ -408,14 +419,14 @@ namespace IconFoeCreator
             }
         }
 
-        public string GetOriginalName()
+        public string GetDisplayName()
         {
-            if (String.IsNullOrEmpty(mOrigName))
+            if (!String.IsNullOrEmpty(DisplayName))
             {
-                return Name;
+                return DisplayName;
             }
 
-            return mOrigName;
+            return Name;
         }
 
         public Trait MakeExpressedTrait(string traitName)
@@ -442,8 +453,15 @@ namespace IconFoeCreator
                 }
                 string valueStr = Regex.Match(strippedTraitName, @"\d+", RegexOptions.IgnoreCase).Value;
 
-                newTrait.mOrigName = Name;
-                newTrait.Name = Name.Replace(VALUE_TOKEN, valueStr);
+                if (!String.IsNullOrEmpty(newTrait.DisplayName))
+                {
+                    newTrait.DisplayName = DisplayName.Replace(VALUE_TOKEN, valueStr);
+                }
+                else
+                {
+                    newTrait.DisplayName = Name.Replace(VALUE_TOKEN, valueStr);
+                }
+
                 newTrait.Description = Description.Replace(VALUE_TOKEN, valueStr);
 
                 return newTrait;
