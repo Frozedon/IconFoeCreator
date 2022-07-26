@@ -432,7 +432,7 @@ namespace IconFoeCreator
                 }
             }
 
-            foreach (string effect in action.Effect)
+            foreach (string effect in action.Effects)
             {
                 AddItalic(paragraph, " Effect: ");
                 AddNormal(paragraph, ReplaceDamageTokens(effect, dmgInfo));
@@ -622,21 +622,21 @@ namespace IconFoeCreator
                 textBox.Document.Blocks.Add(paragraph);
             }
 
-            if (!String.IsNullOrEmpty(summon.Effect))
+            foreach (string effect in summon.Effects)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
                 AddBold(paragraph, "Summon Effect: ");
-                AddNormal(paragraph, summon.Effect);
+                AddNormal(paragraph, effect);
                 textBox.Document.Blocks.Add(paragraph);
             }
 
-            if (!String.IsNullOrEmpty(summon.Action))
+            foreach (string action in summon.Actions)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
                 AddBold(paragraph, "Summon Action: ");
-                AddNormal(paragraph, summon.Action);
+                AddNormal(paragraph, action);
                 textBox.Document.Blocks.Add(paragraph);
             }
 

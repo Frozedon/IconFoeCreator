@@ -143,26 +143,18 @@ namespace IconFoeCreator
                 for (int i = 0; i < stats.Count(); ++i)
                 {
                     Statistics stat = stats[i];
-                    for (int j = 0; j < stat.Inherits.Count();)
+                    if (stat.Inherits.Count > 0)
                     {
-                        string inherits = stat.Inherits[j];
-                        Statistics match = stats.FirstOrDefault(otherStat => otherStat.Name == inherits);
-                        if (match != null)
+                        string inherits = stat.Inherits.Last();
+                        if (!String.IsNullOrEmpty(inherits))
                         {
-                            if (match.Inherits.Count() == 0)
+                            Statistics match = stats.FirstOrDefault(otherStat => otherStat.Name == inherits);
+                            if (match != null && match.Inherits.Count() == 0)
                             {
                                 stats[i] = stat = stat.InheritFrom(match);
                                 stat.Inherits.Remove(inherits);
                                 changed = true;
                             }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            ++j;
                         }
                     }
                 }

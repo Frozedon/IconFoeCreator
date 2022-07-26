@@ -535,7 +535,7 @@ namespace IconFoeCreator
         public string AreaEffect { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
-        public List<string> Effect { get; set; }
+        public List<string> Effects { get; set; }
 
         public string Mark { get; set; }
         public string Stance { get; set; }
@@ -561,7 +561,7 @@ namespace IconFoeCreator
         public ActionData()
         {
             Tags = new List<string>();
-            Effect = new List<string>();
+            Effects = new List<string>();
             Combos = new List<ActionData>();
             Summons = new List<SummonData>();
             Rolls = new List<RollData>();
@@ -696,8 +696,11 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
 
-        public string Effect { get; set; }
-        public string Action { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Effects { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Actions { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> SpecialActions { get; set; }
@@ -705,6 +708,8 @@ namespace IconFoeCreator
         public SummonData()
         {
             Tags = new List<string>();
+            Effects = new List<string>();
+            Actions = new List<string>();
             SpecialActions = new List<ActionData>();
         }
 
