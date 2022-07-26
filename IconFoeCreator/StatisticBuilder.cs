@@ -174,11 +174,11 @@ namespace IconFoeCreator
             // Iterate through folder looking for json files
             foreach (string path in Directory.GetFiles(dirPath))
             {
-                if (path.EndsWith("/" + TRAITS_FILE_NAME))
+                if (path.EndsWith("/" + TRAITS_FILE_NAME) || path.EndsWith("\\" + TRAITS_FILE_NAME))
                 {
                     ReadTraitsJsonFile(path, Traits);
                 }
-                else if (path.EndsWith(".json") && !path.EndsWith("/example.json"))
+                else if (path.EndsWith(".json") && !path.EndsWith("/example.json") && !path.EndsWith("\\example.json"))
                 {
                     using (StreamReader r = new StreamReader(path))
                     {

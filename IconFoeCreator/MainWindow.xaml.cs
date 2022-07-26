@@ -154,6 +154,7 @@ namespace IconFoeCreator
 
             compiledStats.ProcessChapter(chapter);
             compiledStats.ProcessTraits(statBuilder.Traits);
+            compiledStats.ProcessActions();
             compiledStats.DisplayName = compiledName;
 
             return compiledStats;

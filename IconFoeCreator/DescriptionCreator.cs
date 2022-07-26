@@ -97,6 +97,7 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
+            if (frayDamage > 0)
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "Fray Damage: ");
@@ -245,7 +246,11 @@ namespace IconFoeCreator
                 }*/
 
                 AddBold(paragraph, ". ");
-                AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
+                
+                if (!String.IsNullOrEmpty(trait.Description))
+                {
+                    AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
+                }
 
                 textBox.Document.Blocks.Add(paragraph);
 
@@ -312,9 +317,9 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddActions(RichTextBox textBox, List<Action> actions, DamageInfo dmgInfo)
+        private static void AddActions(RichTextBox textBox, List<ActionData> actions, DamageInfo dmgInfo)
         {
-            actions.Sort(delegate (Action x, Action y)
+            actions.Sort(delegate (ActionData x, ActionData y)
             {
                 if (x.ActionCost == y.ActionCost)
                 {
@@ -337,13 +342,13 @@ namespace IconFoeCreator
                 return x.ActionCost.CompareTo(y.ActionCost);
             });
 
-            foreach (Action action in actions)
+            foreach (ActionData action in actions)
             {
                 AddAction(textBox, action, dmgInfo);
             }
         }
 
-        private static void AddAction(RichTextBox textBox, Action action, DamageInfo dmgInfo, int indent = 0, bool combo = false)
+        private static void AddAction(RichTextBox textBox, ActionData action, DamageInfo dmgInfo, int indent = 0, bool combo = false)
         {
             Paragraph paragraph = MakeParagraph();
             paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
@@ -427,10 +432,10 @@ namespace IconFoeCreator
                 }
             }
 
-            if (!String.IsNullOrEmpty(action.Effect))
+            foreach (string effect in action.Effect)
             {
                 AddItalic(paragraph, " Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Effect, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(effect, dmgInfo));
             }
 
             if (!String.IsNullOrEmpty(action.Mark))
@@ -499,7 +504,7 @@ namespace IconFoeCreator
                 AddSummon(textBox, summon, dmgInfo, indent + 1);
             }
 
-            foreach (Action comboAction in action.Combos)
+            foreach (ActionData comboAction in action.Combos)
             {
                 AddAction(textBox, comboAction, dmgInfo, indent + 1, true);
             }
@@ -626,7 +631,16 @@ namespace IconFoeCreator
                 textBox.Document.Blocks.Add(paragraph);
             }
 
-            foreach (Action action in summon.Actions)
+            if (!String.IsNullOrEmpty(summon.Action))
+            {
+                Paragraph paragraph = MakeParagraph();
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
+                AddBold(paragraph, "Summon Action: ");
+                AddNormal(paragraph, summon.Action);
+                textBox.Document.Blocks.Add(paragraph);
+            }
+
+            foreach (ActionData action in summon.SpecialActions)
             {
                 AddAction(textBox, action, dmgInfo, indent + 1, false);
             }

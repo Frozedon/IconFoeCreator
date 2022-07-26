@@ -42,6 +42,7 @@ namespace IconFoeCreator
         public int? Defense { get; set; }
         public int? FrayDamage { get; set; }
         public int? DamageDie { get; set; }
+        public int? RechargeMin { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<BodyPart>))]
         public List<BodyPart> BodyParts { get; set; }
@@ -68,8 +69,8 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
         public List<Interrupt> Interrupts { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
-        public List<Action> Actions { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> Actions { get; set; }
 
 
         // Used by code
@@ -101,7 +102,7 @@ namespace IconFoeCreator
             RemoveActions = new List<string>();
             SetupTraits = new List<Trait>();
             Interrupts = new List<Interrupt>();
-            Actions = new List<Action>();
+            Actions = new List<ActionData>();
             mActualTraits = new List<Trait>();
             mDashMultiplier = 0.5f;
             mEncounterBudget = 1.0;
@@ -146,6 +147,7 @@ namespace IconFoeCreator
             if (Defense.HasValue) { newStats.Defense = Defense; } else { newStats.Defense = otherStats.Defense; }
             if (FrayDamage.HasValue) { newStats.FrayDamage = FrayDamage; } else { newStats.FrayDamage = otherStats.FrayDamage; }
             if (DamageDie.HasValue) { newStats.DamageDie = DamageDie; } else { newStats.DamageDie = otherStats.DamageDie; }
+            if (RechargeMin.HasValue) { newStats.RechargeMin = RechargeMin; } else { newStats.RechargeMin = otherStats.RechargeMin; }
             if (BodyParts.Count > 0) { newStats.BodyParts = BodyParts; } else { newStats.BodyParts = otherStats.BodyParts; }
             if (!String.IsNullOrEmpty(PhasesDescription)) { newStats.PhasesDescription = PhasesDescription; } else { newStats.PhasesDescription = otherStats.PhasesDescription; }
             if (Phases.Count() > 0) { newStats.Phases = Phases; } else { newStats.Phases = otherStats.Phases; }
@@ -223,9 +225,9 @@ namespace IconFoeCreator
             }
         }
 
-        public static void InheritActions(List<Action> outputActions, List<Action> inheritedActions, List<string> actionsToNotInherit)
+        public static void InheritActions(List<ActionData> outputActions, List<ActionData> inheritedActions, List<string> actionsToNotInherit)
         {
-            foreach (Action action in inheritedActions)
+            foreach (ActionData action in inheritedActions)
             {
                 if (!actionsToNotInherit.Exists(x => x == action.Name))
                 {
@@ -254,7 +256,7 @@ namespace IconFoeCreator
                 InheritInterrupts(newInterrupts, Interrupts, Chapter2.RemoveInterrupts);
                 Interrupts = newInterrupts;
 
-                List<Action> newActions = new List<Action>();
+                List<ActionData> newActions = new List<ActionData>();
                 newActions.AddRange(Chapter2.Actions);
                 InheritActions(newActions, Actions, Chapter2.RemoveActions);
                 Actions = newActions;
@@ -272,7 +274,7 @@ namespace IconFoeCreator
                 InheritInterrupts(newInterrupts, Interrupts, Chapter3.RemoveInterrupts);
                 Interrupts = newInterrupts;
 
-                List<Action> newActions = new List<Action>();
+                List<ActionData> newActions = new List<ActionData>();
                 newActions.AddRange(Chapter3.Actions);
                 InheritActions(newActions, Actions, Chapter3.RemoveActions);
                 Actions = newActions;
@@ -344,7 +346,7 @@ namespace IconFoeCreator
             // Collect Actions
             foreach (Trait trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
             {
-                foreach (Action action in trait.Actions)
+                foreach (ActionData action in trait.Actions)
                 {
                     Actions.Add(action);
                 }
@@ -380,6 +382,30 @@ namespace IconFoeCreator
         {
             return mEncounterBudget;
         }
+
+        public void ProcessActions()
+        {
+            if (RechargeMin.HasValue)
+            {
+                foreach (ActionData action in Actions)
+                {
+                    if (action.Recharge > 0 && action.Recharge < RechargeMin.Value)
+                    {
+                        action.Recharge = RechargeMin.Value;
+                    }
+                }
+
+                foreach (Phase phase in Phases)
+                {
+                    phase.ProcessActions(RechargeMin.Value);
+                }
+
+                foreach (AbilitySet abilitySet in ExtraAbilitySets)
+                {
+                    abilitySet.ProcessActions(RechargeMin.Value);
+                }
+            }
+        }
     }
 
     public class Trait
@@ -392,15 +418,15 @@ namespace IconFoeCreator
         public int? Defense { get; set; }
         public double? EncounterBudget { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
-        public List<Action> Actions { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> Actions { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
         public Trait()
         {
-            Actions = new List<Action>();
+            Actions = new List<ActionData>();
             Summons = new List<SummonData>();
         }
 
@@ -492,7 +518,7 @@ namespace IconFoeCreator
         }
     }
 
-    public class Action
+    public class ActionData
     {
         public string Name { get; set; }
         public int ActionCost { get; set; }
@@ -507,7 +533,10 @@ namespace IconFoeCreator
         public string Critical { get; set; }
         public string Miss { get; set; }
         public string AreaEffect { get; set; }
-        public string Effect { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Effect { get; set; }
+
         public string Mark { get; set; }
         public string Stance { get; set; }
         public string Collide { get; set; }
@@ -524,15 +553,16 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
         public List<RollData> Rolls { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
-        public List<Action> Combos { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> Combos { get; set; }
 
         public string PostAction { get; set; }
 
-        public Action()
+        public ActionData()
         {
             Tags = new List<string>();
-            Combos = new List<Action>();
+            Effect = new List<string>();
+            Combos = new List<ActionData>();
             Summons = new List<SummonData>();
             Rolls = new List<RollData>();
         }
@@ -555,8 +585,8 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveActions { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
-        public List<Action> Actions { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> Actions { get; set; }
 
         public ChapterData()
         {
@@ -565,7 +595,7 @@ namespace IconFoeCreator
             RemoveInterrupts = new List<string>();
             Interrupts = new List<Interrupt>();
             RemoveActions = new List<string>();
-            Actions = new List<Action>();
+            Actions = new List<ActionData>();
         }
     }
 
@@ -585,15 +615,15 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Traits { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
-        public List<Action> Actions { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> Actions { get; set; }
 
         private List<Trait> mActualTraits;
 
         public Phase()
         {
             Traits = new List<string>();
-            Actions = new List<Action>();
+            Actions = new List<ActionData>();
         }
 
         public void ProcessTraits(List<Trait> traitLib)
@@ -604,6 +634,17 @@ namespace IconFoeCreator
         public List<Trait> GetActualTraits()
         {
             return mActualTraits;
+        }
+
+        public void ProcessActions(int rechargeMin)
+        {
+            foreach (ActionData action in Actions)
+            {
+                if (action.Recharge > 0 && action.Recharge < rechargeMin)
+                {
+                    action.Recharge = rechargeMin;
+                }
+            }
         }
     }
 
@@ -615,15 +656,15 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Traits { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
-        public List<Action> Actions { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> Actions { get; set; }
 
         private List<Trait> mActualTraits;
 
         public AbilitySet()
         {
             Traits = new List<string>();
-            Actions = new List<Action>();
+            Actions = new List<ActionData>();
         }
 
         public void ProcessTraits(List<Trait> traitLib)
@@ -635,6 +676,17 @@ namespace IconFoeCreator
         {
             return mActualTraits;
         }
+
+        public void ProcessActions(int rechargeMin)
+        {
+            foreach (ActionData action in Actions)
+            {
+                if (action.Recharge > 0 && action.Recharge < rechargeMin)
+                {
+                    action.Recharge = rechargeMin;
+                }
+            }
+        }
     }
 
     public class SummonData
@@ -645,14 +697,15 @@ namespace IconFoeCreator
         public List<string> Tags { get; set; }
 
         public string Effect { get; set; }
+        public string Action { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Action>))]
-        public List<Action> Actions { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> SpecialActions { get; set; }
 
         public SummonData()
         {
             Tags = new List<string>();
-            Actions = new List<Action>();
+            SpecialActions = new List<ActionData>();
         }
 
         public bool IsEmpty()
