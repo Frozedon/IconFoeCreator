@@ -357,7 +357,15 @@ namespace IconFoeCreator
                 }
             }
 
-            // Process phases and extra ability set traits
+            // Process all the extra stuff that might have traits
+            foreach (ActionData action in Actions)
+            {
+                action.ProcessTraits(traitLib);
+            }
+            foreach (Trait trait in mActualTraits)
+            {
+                trait.ProcessTraits(traitLib);
+            }
             foreach (Phase phase in Phases)
             {
                 phase.ProcessTraits(traitLib);
@@ -497,6 +505,14 @@ namespace IconFoeCreator
                 return this;
             }
         }
+
+        public void ProcessTraits(List<Trait> traitLib)
+        {
+            foreach (SummonData summon in Summons)
+            {
+                summon.ProcessTraits(traitLib);
+            }
+        }
     }
 
     public class Interrupt
@@ -566,6 +582,14 @@ namespace IconFoeCreator
             Summons = new List<SummonData>();
             Rolls = new List<RollData>();
         }
+
+        public void ProcessTraits(List<Trait> traitLib)
+        {
+            foreach (SummonData summon in Summons)
+            {
+                summon.ProcessTraits(traitLib);
+            }
+        }
     }
 
     public class ChapterData
@@ -629,6 +653,15 @@ namespace IconFoeCreator
         public void ProcessTraits(List<Trait> traitLib)
         {
             mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
+
+            foreach (Trait trait in mActualTraits)
+            {
+                trait.ProcessTraits(traitLib);
+            }
+            foreach (ActionData action in Actions)
+            {
+                action.ProcessTraits(traitLib);
+            }
         }
 
         public List<Trait> GetActualTraits()
@@ -670,6 +703,15 @@ namespace IconFoeCreator
         public void ProcessTraits(List<Trait> traitLib)
         {
             mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
+
+            foreach (Trait trait in mActualTraits)
+            {
+                trait.ProcessTraits(traitLib);
+            }
+            foreach (ActionData action in Actions)
+            {
+                action.ProcessTraits(traitLib);
+            }
         }
 
         public List<Trait> GetActualTraits()
@@ -697,25 +739,63 @@ namespace IconFoeCreator
         public List<string> Tags { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Traits { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Effects { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Actions { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> ComplexActions { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> SpecialActions { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
+        public List<Interrupt> SpecialInterrupts { get; set; }
+
+        private List<Trait> mActualTraits;
 
         public SummonData()
         {
             Tags = new List<string>();
+            Traits = new List<string>();
             Effects = new List<string>();
             Actions = new List<string>();
+            ComplexActions = new List<ActionData>();
             SpecialActions = new List<ActionData>();
+            SpecialInterrupts = new List<Interrupt>();
+            mActualTraits = new List<Trait>();
         }
 
         public bool IsEmpty()
         {
             return String.IsNullOrEmpty(Name);
+        }
+
+        public void ProcessTraits(List<Trait> traitLib)
+        {
+            mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
+
+            foreach (Trait trait in mActualTraits)
+            {
+                trait.ProcessTraits(traitLib);
+            }
+            foreach (ActionData action in ComplexActions)
+            {
+                action.ProcessTraits(traitLib);
+            }
+            foreach (ActionData action in SpecialActions)
+            {
+                action.ProcessTraits(traitLib);
+            }
+        }
+
+        public List<Trait> GetActualTraits()
+        {
+            return mActualTraits;
         }
     }
 
