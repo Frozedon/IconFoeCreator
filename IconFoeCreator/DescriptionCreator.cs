@@ -297,10 +297,10 @@ namespace IconFoeCreator
                     AddNormal(paragraph, ReplaceDamageTokens(interrupt.Trigger, dmgInfo));
                 }
 
-                if (!String.IsNullOrEmpty(interrupt.Effect))
+                foreach (string effect in interrupt.Effects)
                 {
                     AddItalic(paragraph, " Effect: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(interrupt.Effect, dmgInfo));
+                    AddNormal(paragraph, ReplaceDamageTokens(effect, dmgInfo));
                 }
 
                 if (!String.IsNullOrEmpty(interrupt.Collide))
