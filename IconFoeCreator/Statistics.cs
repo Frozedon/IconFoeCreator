@@ -532,12 +532,16 @@ namespace IconFoeCreator
 
         public string Description { get; set; }
         public string Trigger { get; set; }
-        public string Effect { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Effects { get; set; }
+
         public string Collide { get; set; }
 
         public Interrupt()
         {
             Tags = new List<string>();
+            Effects = new List<string>();
         }
     }
 

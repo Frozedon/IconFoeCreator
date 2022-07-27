@@ -35,6 +35,7 @@ namespace IconFoeCreator
             UpdateTemplateOptions();
 
             UpdateTemplateDropdownState();
+            UpdateInvalidChapterLabelState();
 
             Chapter_comboBox.SelectionChanged += OnChapterChanged;
             Faction_comboBox.SelectionChanged += OnFactionChanged;
@@ -48,6 +49,7 @@ namespace IconFoeCreator
 
         private void OnChapterChanged(object sender, EventArgs e)
         {
+            UpdateInvalidChapterLabelState();
             UpdateFoeOptions();
             UpdateDescription();
         }
@@ -71,6 +73,7 @@ namespace IconFoeCreator
         private void OnFoeChanged(object sender, EventArgs e)
         {
             UpdateTemplateDropdownState();
+            UpdateInvalidChapterLabelState();
             UpdateDescription();
         }
 
@@ -230,6 +233,20 @@ namespace IconFoeCreator
             }
         }
 
+        private void UpdateInvalidChapterLabelState()
+        {
+            Statistics selectedFoe = GetComboBoxStats(Foe_comboBox.SelectedItem);
+            int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
+            if (selectedFoe != null && selectedFoe.ToString() != EMPTY_STAT && selectedFoe.Chapter > chapter)
+            {
+                InvalidChapter_label.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                InvalidChapter_label.Visibility = Visibility.Hidden;
+            }
+        }
+
         private List<ComboBoxItem> GetAvailableChapters()
         {
             List<ComboBoxItem> availableChapters = new List<ComboBoxItem>();
@@ -290,11 +307,11 @@ namespace IconFoeCreator
                 availableFoes = RemoveStatsOfOtherSpecialClasses(availableFoes, selectedSpecialClass);
             }
 
-            int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
+            /*int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
             if (chapter > 0)
             {
                 availableFoes = RemoveStatsOfHigherChapter(availableFoes, chapter);
-            }
+            }*/
 
             availableFoes.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
 
