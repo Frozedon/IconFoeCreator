@@ -151,7 +151,7 @@ namespace IconFoeCreator
                             Statistics match = stats.FirstOrDefault(otherStat => otherStat.Name == inherits);
                             if (match != null && match.Inherits.Count() == 0)
                             {
-                                stats[i] = stat = stat.InheritFrom(match);
+                                stats[i] = stat = stat.InheritFrom(match, stat.Inherits.Count > 1);
                                 stat.Inherits.Remove(inherits);
                                 changed = true;
                             }
