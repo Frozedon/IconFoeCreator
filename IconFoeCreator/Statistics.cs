@@ -123,7 +123,7 @@ namespace IconFoeCreator
             return Name;
         }
 
-        public Statistics InheritFrom(Statistics otherStats)
+        public Statistics InheritFrom(Statistics otherStats, bool saveRemoveLists = false)
         {
             Statistics newStats = new Statistics
             {
@@ -167,6 +167,13 @@ namespace IconFoeCreator
 
             newStats.Actions.AddRange(Actions);
             InheritActions(newStats.Actions, otherStats.Actions, RemoveActions);
+
+            if (saveRemoveLists)
+            {
+                newStats.RemoveTraits.AddRange(RemoveTraits);
+                newStats.RemoveInterrupts.AddRange(RemoveInterrupts);
+                newStats.RemoveActions.AddRange(RemoveActions);
+            }
 
             // Keep all the data for chapter 2 and 3
             newStats.Chapter2.Traits.AddRange(Chapter2.Traits);
@@ -563,6 +570,9 @@ namespace IconFoeCreator
         public string Delay { get; set; }
         public string DelayAreaEffect { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<ComponentData>))]
+        public List<ComponentData> CustomComponents { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
@@ -579,6 +589,7 @@ namespace IconFoeCreator
             Tags = new List<string>();
             Effects = new List<string>();
             Combos = new List<ActionData>();
+            CustomComponents = new List<ComponentData>();
             Summons = new List<SummonData>();
             Rolls = new List<RollData>();
         }
@@ -590,6 +601,12 @@ namespace IconFoeCreator
                 summon.ProcessTraits(traitLib);
             }
         }
+    }
+
+    public class ComponentData
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 
     public class ChapterData
@@ -803,6 +820,8 @@ namespace IconFoeCreator
     {
         [JsonConverter(typeof(SingleOrArrayConverter<int>))]
         public List<int> Values { get; set; }
+
+        public bool Plus { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }

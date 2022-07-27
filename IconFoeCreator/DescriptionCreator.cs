@@ -504,6 +504,18 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.DelayAreaEffect, dmgInfo));
             }
 
+            foreach (ComponentData component in action.CustomComponents)
+            {
+                if (!String.IsNullOrEmpty(component.Name))
+                {
+                    AddItalic(paragraph, " " + component.Name);
+                }
+                if (!String.IsNullOrEmpty(component.Description))
+                {
+                    AddNormal(paragraph, " " + ReplaceDamageTokens(action.Description, dmgInfo));
+                }
+            }
+
             textBox.Document.Blocks.Add(paragraph);
 
             foreach (RollData roll in action.Rolls)
@@ -582,7 +594,9 @@ namespace IconFoeCreator
 
             if (!String.IsNullOrEmpty(valueStr))
             {
-                AddBold(paragraph, valueStr + ". ");
+                AddBold(paragraph, valueStr);
+                if (roll.Plus) { AddBold(paragraph, "+"); }
+                AddBold(paragraph, ". ");
             }
 
             if (!String.IsNullOrEmpty(roll.Name))
