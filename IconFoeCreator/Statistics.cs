@@ -35,6 +35,7 @@ namespace IconFoeCreator
         public string SpecialClass { get; set; }
         public int? Vitality { get; set; }
         public int? HP { get; set; }
+        public string HPText { get; set; }
         public int? HPMultiplier { get; set; }
         public bool? HPMultiplyByPlayers { get; set; }
         public int? Speed { get; set; }
@@ -90,6 +91,7 @@ namespace IconFoeCreator
             Faction = String.Empty;
             Class = String.Empty;
             SpecialClass = String.Empty;
+            HPText = String.Empty;
             BodyParts = new List<BodyPart>();
             PhasesDescription = String.Empty;
             Phases = new List<Phase>();
@@ -132,7 +134,7 @@ namespace IconFoeCreator
                 Type = Type,
                 Inherits = Inherits,
                 Chapter = Chapter,
-                UsesTemplate = UsesTemplate
+                UsesTemplate = UsesTemplate,
             };
 
             // Inherited values
@@ -141,6 +143,7 @@ namespace IconFoeCreator
             if (!String.IsNullOrEmpty(SpecialClass)) { newStats.SpecialClass = SpecialClass; } else { newStats.SpecialClass = otherStats.SpecialClass; }
             if (Vitality.HasValue) { newStats.Vitality = Vitality; } else { newStats.Vitality = otherStats.Vitality; }
             if (HP.HasValue) { newStats.HP = HP; } else { newStats.HP = otherStats.HP; }
+            if (!String.IsNullOrEmpty(HPText)) { newStats.HPText = HPText; } else { newStats.HPText = otherStats.HPText; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
             if (HPMultiplyByPlayers.HasValue) { newStats.HPMultiplyByPlayers = HPMultiplyByPlayers; } else { newStats.HPMultiplyByPlayers = otherStats.HPMultiplyByPlayers; }
             if (Speed.HasValue) { newStats.Speed = Speed; } else { newStats.Speed = otherStats.Speed; }
@@ -527,6 +530,8 @@ namespace IconFoeCreator
         public string Name { get; set; }
         public int Count { get; set; }
 
+        public int Recharge { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
 
@@ -557,7 +562,7 @@ namespace IconFoeCreator
         public string Description { get; set; }
         public string Hit { get; set; }
         public string AutoHit { get; set; }
-        public string Critical { get; set; }
+        public string CriticalHit { get; set; }
         public string Miss { get; set; }
         public string AreaEffect { get; set; }
 
@@ -572,7 +577,7 @@ namespace IconFoeCreator
         public string SpecialInterrupt { get; set; }
         public string SpecialRecharge { get; set; }
         public string Delay { get; set; }
-        public string DelayAreaEffect { get; set; }
+        public string PostAreaEffect { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ComponentData>))]
         public List<ComponentData> CustomComponents { get; set; }
@@ -710,6 +715,9 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Traits { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
+        public List<Interrupt> Interrupts { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
 
@@ -718,6 +726,7 @@ namespace IconFoeCreator
         public AbilitySet()
         {
             Traits = new List<string>();
+            Interrupts = new List<Interrupt>();
             Actions = new List<ActionData>();
         }
 
@@ -732,6 +741,20 @@ namespace IconFoeCreator
             foreach (ActionData action in Actions)
             {
                 action.ProcessTraits(traitLib);
+            }
+
+            // Collect Actions
+            foreach (Trait trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
+            {
+                foreach (ActionData action in trait.Actions)
+                {
+                    Actions.Add(action);
+                }
+
+                if (String.IsNullOrEmpty(trait.Description) && trait.Summons.Count == 0)
+                {
+                    mActualTraits.Remove(trait);
+                }
             }
         }
 
@@ -811,6 +834,20 @@ namespace IconFoeCreator
             foreach (ActionData action in SpecialActions)
             {
                 action.ProcessTraits(traitLib);
+            }
+
+            // Collect Actions
+            foreach (Trait trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
+            {
+                foreach (ActionData action in trait.Actions)
+                {
+                    ComplexActions.Add(action);
+                }
+
+                if (String.IsNullOrEmpty(trait.Description) && trait.Summons.Count == 0)
+                {
+                    mActualTraits.Remove(trait);
+                }
             }
         }
 

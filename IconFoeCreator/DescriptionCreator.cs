@@ -67,12 +67,18 @@ namespace IconFoeCreator
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "HP: ");
 
-                if (hp > 0)
+                string minHPText = "(min " + (hp * 2) + ")";
+
+                if (!String.IsNullOrEmpty(stats.HPText))
+                {
+                    AddNormal(paragraph, stats.HPText.Replace("[HP]", hp.ToString()).Replace("[MIN]", minHPText));
+                }
+                else if (hp > 0)
                 {
                     AddNormal(paragraph, hp.ToString());
                     if (stats.HPMultiplyByPlayers.GetValueOrDefault(false))
                     {
-                        AddNormal(paragraph, " per player character");
+                        AddNormal(paragraph, " per player character " + minHPText);
                     }
                 }
                 else
@@ -165,9 +171,12 @@ namespace IconFoeCreator
                 AddBold(paragraph1, "Phases");
                 descTextBox.Document.Blocks.Add(paragraph1);
 
-                Paragraph paragraph2 = MakeParagraph();
-                AddNormal(paragraph2, stats.PhasesDescription);
-                descTextBox.Document.Blocks.Add(paragraph2);
+                if (!String.IsNullOrEmpty(stats.PhasesDescription))
+                {
+                    Paragraph paragraph2 = MakeParagraph();
+                    AddNormal(paragraph2, stats.PhasesDescription);
+                    descTextBox.Document.Blocks.Add(paragraph2);
+                }
 
                 AddPhases(descTextBox, stats.Phases, damageInfo);
             }
@@ -284,6 +293,11 @@ namespace IconFoeCreator
                     AddBold(paragraph, ", " + tag);
                 }
 
+                if (interrupt.Recharge > 1)
+                {
+                    AddBold(paragraph, ", recharge " + interrupt.Recharge.ToString());
+                }
+
                 AddBold(paragraph, "):");
 
                 if (!String.IsNullOrEmpty(interrupt.Description))
@@ -398,6 +412,14 @@ namespace IconFoeCreator
                     }
                 }
 
+                if (action.Combos.Count > 0)
+                {
+                    if (firstItem) { firstItem = false; }
+                    else { AddBold(paragraph, ", "); }
+
+                    AddBold(paragraph, "combo");
+                }
+
                 AddBold(paragraph, "):");
             }
 
@@ -418,10 +440,10 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.AutoHit, dmgInfo));
             }
 
-            if (!String.IsNullOrEmpty(action.Critical))
+            if (!String.IsNullOrEmpty(action.CriticalHit))
             {
                 AddItalic(paragraph, " Critical hit: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Critical, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.CriticalHit, dmgInfo));
             }
 
             if (!String.IsNullOrEmpty(action.Miss) && !String.IsNullOrEmpty(action.AreaEffect) && action.Miss == action.AreaEffect)
@@ -498,10 +520,10 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.Delay, dmgInfo));
             }
 
-            if (!String.IsNullOrEmpty(action.DelayAreaEffect))
+            if (!String.IsNullOrEmpty(action.PostAreaEffect))
             {
                 AddItalic(paragraph, " Area Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.DelayAreaEffect, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.PostAreaEffect, dmgInfo));
             }
 
             foreach (ComponentData component in action.CustomComponents)
@@ -520,7 +542,7 @@ namespace IconFoeCreator
 
             foreach (RollData roll in action.Rolls)
             {
-                AddRoll(textBox, roll, dmgInfo, indent);
+                AddRoll(textBox, roll, dmgInfo, indent + 1);
             }
 
             foreach (SummonData summon in action.Summons)
@@ -755,6 +777,11 @@ namespace IconFoeCreator
                 if (abilitySet.Traits.Count > 0)
                 {
                     AddTraits(textBox, abilitySet.GetActualTraits(), dmgInfo);
+                }
+
+                if (abilitySet.Interrupts.Count > 0)
+                {
+                    AddInterrupts(textBox, abilitySet.Interrupts, dmgInfo);
                 }
 
                 if (abilitySet.Actions.Count > 0)
