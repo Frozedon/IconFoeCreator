@@ -23,6 +23,9 @@ namespace IconFoeCreator
         public List<string> RemoveTraits { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> RemoveSetupTraits { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveInterrupts { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
@@ -100,6 +103,7 @@ namespace IconFoeCreator
             Chapter3 = new ChapterData();
             Traits = new List<string>();
             RemoveTraits = new List<string>();
+            RemoveSetupTraits = new List<string>();
             RemoveInterrupts = new List<string>();
             RemoveActions = new List<string>();
             SetupTraits = new List<Trait>();
@@ -156,14 +160,13 @@ namespace IconFoeCreator
             if (Phases.Count() > 0) { newStats.Phases = Phases; } else { newStats.Phases = otherStats.Phases; }
             if (ExtraAbilitySets.Count() > 0) { newStats.ExtraAbilitySets = ExtraAbilitySets; } else { newStats.ExtraAbilitySets = otherStats.ExtraAbilitySets; }
 
-            // Additive statistics
-            newStats.SetupTraits.AddRange(SetupTraits);
-            newStats.SetupTraits.AddRange(otherStats.SetupTraits);
-
             // Only add traits, interrupts, and actions from the inherited that are not on the current removal lists
             newStats.Traits.AddRange(Traits);
             InheritTraits(newStats.Traits, otherStats.Traits, RemoveTraits);
             newStats.Traits = newStats.Traits.Distinct().ToList();
+
+            newStats.SetupTraits.AddRange(SetupTraits);
+            InheritSetupTraits(newStats.SetupTraits, otherStats.SetupTraits, RemoveSetupTraits);
 
             newStats.Interrupts.AddRange(Interrupts);
             InheritInterrupts(newStats.Interrupts, otherStats.Interrupts, RemoveInterrupts);
@@ -174,6 +177,7 @@ namespace IconFoeCreator
             if (saveRemoveLists)
             {
                 newStats.RemoveTraits.AddRange(RemoveTraits);
+                newStats.RemoveSetupTraits.AddRange(RemoveSetupTraits);
                 newStats.RemoveInterrupts.AddRange(RemoveInterrupts);
                 newStats.RemoveActions.AddRange(RemoveActions);
             }
@@ -218,6 +222,17 @@ namespace IconFoeCreator
             foreach (string trait in inheritedTraits)
             {
                 if (!traitsToNotInherit.Exists(x => x == trait))
+                {
+                    outputTraits.Add(trait);
+                }
+            }
+        }
+
+        public static void InheritSetupTraits(List<Trait> outputTraits, List<Trait> inheritedTraits, List<string> traitsToNotInherit)
+        {
+            foreach (Trait trait in inheritedTraits)
+            {
+                if (!traitsToNotInherit.Exists(x => x == trait.Name))
                 {
                     outputTraits.Add(trait);
                 }
@@ -432,6 +447,9 @@ namespace IconFoeCreator
         public string DisplayName { get; set; }
         public string Description { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Tags { get; set; }
+
         public float? DashMultiplier { get; set; }
         public int? Defense { get; set; }
         public double? EncounterBudget { get; set; }
@@ -444,6 +462,7 @@ namespace IconFoeCreator
 
         public Trait()
         {
+            Tags = new List<string>();
             Actions = new List<ActionData>();
             Summons = new List<SummonData>();
         }
