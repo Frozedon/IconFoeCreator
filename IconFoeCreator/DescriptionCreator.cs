@@ -163,7 +163,7 @@ namespace IconFoeCreator
                 AddBodyParts(descTextBox, stats.BodyParts);
             }
 
-            if (stats.Phases.Count > 0)
+            if (!String.IsNullOrEmpty(stats.PhasesDescription) || stats.Phases.Count > 0)
             {
                 Paragraph paragraph1 = MakeParagraph();
                 paragraph1.Margin = new Thickness(0, 12, 0, 0);
@@ -178,7 +178,10 @@ namespace IconFoeCreator
                     descTextBox.Document.Blocks.Add(paragraph2);
                 }
 
-                AddPhases(descTextBox, stats.Phases, damageInfo);
+                if (stats.Phases.Count > 0)
+                {
+                    AddPhases(descTextBox, stats.Phases, damageInfo);
+                }
             }
 
             if (stats.ExtraAbilitySets.Count > 0)
@@ -233,7 +236,7 @@ namespace IconFoeCreator
 
                 AddBold(paragraph, trait.GetDisplayName());
 
-                /*if (trait.Tags.Count > 0)
+                if (trait.Tags.Count > 0)
                 {
                     AddBold(paragraph, " (");
 
@@ -247,7 +250,7 @@ namespace IconFoeCreator
                     }
 
                     AddBold(paragraph, ")");
-                }*/
+                }
 
                 AddBold(paragraph, ". ");
                 
@@ -440,12 +443,6 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.AutoHit, dmgInfo));
             }
 
-            if (!String.IsNullOrEmpty(action.CriticalHit))
-            {
-                AddItalic(paragraph, " Critical hit: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.CriticalHit, dmgInfo));
-            }
-
             if (!String.IsNullOrEmpty(action.Miss) && !String.IsNullOrEmpty(action.AreaEffect) && action.Miss == action.AreaEffect)
             {
                 AddItalic(paragraph, " Miss or Area Effect: ");
@@ -464,6 +461,12 @@ namespace IconFoeCreator
                     AddItalic(paragraph, " Area Effect: ");
                     AddNormal(paragraph, ReplaceDamageTokens(action.AreaEffect, dmgInfo));
                 }
+            }
+
+            if (!String.IsNullOrEmpty(action.CriticalHit))
+            {
+                AddItalic(paragraph, " Critical hit: ");
+                AddNormal(paragraph, ReplaceDamageTokens(action.CriticalHit, dmgInfo));
             }
 
             foreach (string effect in action.Effects)
