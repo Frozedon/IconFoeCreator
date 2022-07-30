@@ -261,6 +261,11 @@ namespace IconFoeCreator
 
                 textBox.Document.Blocks.Add(paragraph);
 
+                foreach (RollData roll in trait.Rolls)
+                {
+                    AddRoll(textBox, roll, dmgInfo, indent + 1);
+                }
+
                 foreach (SummonData summon in trait.Summons)
                 {
                     AddSummon(textBox, summon, dmgInfo, indent + 1);
