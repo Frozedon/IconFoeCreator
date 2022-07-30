@@ -13,7 +13,7 @@ namespace IconFoeCreator
         public List<string> Factions;
         public List<string> Classes;
         public List<string> SpecialClasses;
-        public List<Trait> Traits;
+        public List<TraitData> Traits;
 
         public static readonly string FACTION_BASIC = "basic";
         public static readonly string FACTION_BASIC_READABLE = "Basic Foes";
@@ -48,7 +48,7 @@ namespace IconFoeCreator
             Factions = new List<string>();
             Classes = new List<string>();
             SpecialClasses = new List<string>();
-            Traits = new List<Trait>();
+            Traits = new List<TraitData>();
         }
 
         public void BuildStatistics(bool useHomebrew)
@@ -199,7 +199,7 @@ namespace IconFoeCreator
             }
         }
 
-        private void ReadTraitsJsonFile(string path, List<Trait> traitsOutput)
+        private void ReadTraitsJsonFile(string path, List<TraitData> traitsOutput)
         {
             if (File.Exists(path) && path.EndsWith(".json"))
             {
@@ -208,10 +208,10 @@ namespace IconFoeCreator
                     string json = r.ReadToEnd();
                     if (json != null && json.Length > 0)
                     {
-                        List<Trait> readTraits = null;
+                        List<TraitData> readTraits = null;
                         try
                         {
-                            readTraits = JsonConvert.DeserializeObject<List<Trait>>(json);
+                            readTraits = JsonConvert.DeserializeObject<List<TraitData>>(json);
                         }
                         catch { }
 

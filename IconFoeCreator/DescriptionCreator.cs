@@ -222,14 +222,14 @@ namespace IconFoeCreator
             paragraph.Inlines.Add(new Italic(new Run(text)));
         }
 
-        private static void AddTraits(RichTextBox textBox, List<Trait> traits, DamageInfo dmgInfo, int indent = 0)
+        private static void AddTraits(RichTextBox textBox, List<TraitData> traits, DamageInfo dmgInfo, int indent = 0)
         {
-            traits.Sort(delegate (Trait x, Trait y)
+            traits.Sort(delegate (TraitData x, TraitData y)
             {
                 return x.Name.CompareTo(y.Name);
             });
 
-            foreach (Trait trait in traits)
+            foreach (TraitData trait in traits)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.TextIndent = MARGIN_LEN * indent;
@@ -268,9 +268,9 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddInterrupts(RichTextBox textBox, List<Interrupt> interrupts, DamageInfo dmgInfo, int indent = 0)
+        private static void AddInterrupts(RichTextBox textBox, List<InterruptData> interrupts, DamageInfo dmgInfo, int indent = 0)
         {
-            interrupts.Sort(delegate (Interrupt x, Interrupt y)
+            interrupts.Sort(delegate (InterruptData x, InterruptData y)
             {
                 if (x.Count == y.Count)
                 {
@@ -279,7 +279,7 @@ namespace IconFoeCreator
                 return x.Count.CompareTo(y.Count);
             });
 
-            foreach (Interrupt interrupt in interrupts)
+            foreach (InterruptData interrupt in interrupts)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.TextIndent = MARGIN_LEN * indent;
@@ -371,7 +371,10 @@ namespace IconFoeCreator
                 AddBold(paragraph, "• Combo: ");
             }
 
-            AddBold(paragraph, action.Name);
+            if (!String.IsNullOrEmpty(action.Name))
+            {
+                AddBold(paragraph, action.Name);
+            }
 
             if (action.ActionCost >= 0 || action.Tags.Count > 0 || action.Recharge > 1)
             {
@@ -706,9 +709,9 @@ namespace IconFoeCreator
             AddInterrupts(textBox, summon.SpecialInterrupts, dmgInfo, indent + 1);
         }
 
-        private static void AddBodyParts(RichTextBox textBox, List<BodyPart> bodyParts)
+        private static void AddBodyParts(RichTextBox textBox, List<BodyPartData> bodyParts)
         {
-            foreach (BodyPart bodyPart in bodyParts)
+            foreach (BodyPartData bodyPart in bodyParts)
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, bodyPart.Name);
@@ -729,14 +732,15 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddPhases(RichTextBox textBox, List<Phase> phases, DamageInfo dmgInfo)
+        private static void AddPhases(RichTextBox textBox, List<PhaseData> phases, DamageInfo dmgInfo)
         {
             for (int i = 0; i < phases.Count; ++i)
             {
-                Phase phase = phases[i];
+                PhaseData phase = phases[i];
                 Paragraph paragraph1 = MakeParagraph();
                 paragraph1.Margin = new Thickness(0, 12, 0, 0);
-                AddBold(paragraph1, "Phase " + ToRoman(i + 1) + ": " + phase.Name);
+                AddBold(paragraph1, "Phase " + ToRoman(i + 1));
+                if (!String.IsNullOrEmpty(phase.Name)) { AddBold(paragraph1, ": " + phase.Name); }
                 textBox.Document.Blocks.Add(paragraph1);
 
                 if (phase.Description != null && phase.Description != String.Empty)
@@ -751,6 +755,11 @@ namespace IconFoeCreator
                     AddTraits(textBox, phase.GetActualTraits(), dmgInfo);
                 }
 
+                if (phase.Interrupts.Count > 0)
+                {
+                    AddInterrupts(textBox, phase.Interrupts, dmgInfo);
+                }
+
                 if (phase.Actions.Count > 0)
                 {
                     AddActions(textBox, phase.Actions, dmgInfo);
@@ -758,11 +767,11 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySet> abilitySets, DamageInfo dmgInfo)
+        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySetData> abilitySets, DamageInfo dmgInfo)
         {
             for (int i = 0; i < abilitySets.Count; ++i)
             {
-                AbilitySet abilitySet = abilitySets[i];
+                AbilitySetData abilitySet = abilitySets[i];
 
                 Paragraph paragraph1 = MakeParagraph();
                 paragraph1.Margin = new Thickness(0, 12, 0, 0);
