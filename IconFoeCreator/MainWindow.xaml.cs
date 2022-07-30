@@ -155,9 +155,7 @@ namespace IconFoeCreator
 
             int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
 
-            compiledStats.ProcessChapter(chapter);
-            compiledStats.ProcessTraits(statBuilder.Traits);
-            compiledStats.ProcessActions();
+            compiledStats.ProcessData(statBuilder.Traits, chapter);
             compiledStats.DisplayName = compiledName;
 
             return compiledStats;

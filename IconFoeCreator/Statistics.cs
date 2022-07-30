@@ -48,16 +48,16 @@ namespace IconFoeCreator
         public int? DamageDie { get; set; }
         public int? RechargeMin { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<BodyPart>))]
-        public List<BodyPart> BodyParts { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<BodyPartData>))]
+        public List<BodyPartData> BodyParts { get; set; }
 
         public string PhasesDescription { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Phase>))]
-        public List<Phase> Phases { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<PhaseData>))]
+        public List<PhaseData> Phases { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<AbilitySet>))]
-        public List<AbilitySet> ExtraAbilitySets { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<AbilitySetData>))]
+        public List<AbilitySetData> ExtraAbilitySets { get; set; }
 
         public ChapterData Chapter2 { get; set; }
         public ChapterData Chapter3 { get; set; }
@@ -67,18 +67,18 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Traits { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Trait>))]
-        public List<Trait> SetupTraits { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<TraitData>))]
+        public List<TraitData> SetupTraits { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
-        public List<Interrupt> Interrupts { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
+        public List<InterruptData> Interrupts { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
 
 
         // Used by code
-        private List<Trait> mActualTraits;
+        private List<TraitData> mActualTraits;
         private float mDashMultiplier;
         private double mEncounterBudget;
 
@@ -95,10 +95,10 @@ namespace IconFoeCreator
             Class = String.Empty;
             SpecialClass = String.Empty;
             HPText = String.Empty;
-            BodyParts = new List<BodyPart>();
+            BodyParts = new List<BodyPartData>();
             PhasesDescription = String.Empty;
-            Phases = new List<Phase>();
-            ExtraAbilitySets = new List<AbilitySet>();
+            Phases = new List<PhaseData>();
+            ExtraAbilitySets = new List<AbilitySetData>();
             Chapter2 = new ChapterData();
             Chapter3 = new ChapterData();
             Traits = new List<string>();
@@ -106,10 +106,10 @@ namespace IconFoeCreator
             RemoveSetupTraits = new List<string>();
             RemoveInterrupts = new List<string>();
             RemoveActions = new List<string>();
-            SetupTraits = new List<Trait>();
-            Interrupts = new List<Interrupt>();
+            SetupTraits = new List<TraitData>();
+            Interrupts = new List<InterruptData>();
             Actions = new List<ActionData>();
-            mActualTraits = new List<Trait>();
+            mActualTraits = new List<TraitData>();
             mDashMultiplier = 0.5f;
             mEncounterBudget = 1.0;
         }
@@ -228,9 +228,9 @@ namespace IconFoeCreator
             }
         }
 
-        public static void InheritSetupTraits(List<Trait> outputTraits, List<Trait> inheritedTraits, List<string> traitsToNotInherit)
+        public static void InheritSetupTraits(List<TraitData> outputTraits, List<TraitData> inheritedTraits, List<string> traitsToNotInherit)
         {
-            foreach (Trait trait in inheritedTraits)
+            foreach (TraitData trait in inheritedTraits)
             {
                 if (!traitsToNotInherit.Exists(x => x == trait.Name))
                 {
@@ -239,9 +239,9 @@ namespace IconFoeCreator
             }
         }
 
-        public static void InheritInterrupts(List<Interrupt> outputInterrupts, List<Interrupt> inheritedInterrupts, List<string> interruptsToNotInherit)
+        public static void InheritInterrupts(List<InterruptData> outputInterrupts, List<InterruptData> inheritedInterrupts, List<string> interruptsToNotInherit)
         {
-            foreach (Interrupt interrupt in inheritedInterrupts)
+            foreach (InterruptData interrupt in inheritedInterrupts)
             {
                 if (!interruptsToNotInherit.Exists(x => x == interrupt.Name))
                 {
@@ -266,7 +266,99 @@ namespace IconFoeCreator
             return stats != null && stats.Name != null && stats.Name != "...";
         }
 
-        public void ProcessChapter(int chapter)
+        public List<TraitData> GetActualTraits()
+        {
+            return mActualTraits;
+        }
+
+        public int GetDash()
+        {
+            return (int)Math.Ceiling((float)Speed.GetValueOrDefault(0) * mDashMultiplier);
+        }
+
+        public double GetEncounterBudget()
+        {
+            return mEncounterBudget;
+        }
+
+        public void ProcessData(List<TraitData> traitLib, int chapter)
+        {
+            // Inherit chapter data
+            InheritChapterData(chapter);
+
+            // Build trait list from lib
+            mActualTraits = BuildTraitList(Traits, traitLib);
+
+            // Get traits with specific values
+            TraitData defenseTrait = mActualTraits.Find(x => x.Defense.HasValue);
+            if (defenseTrait != null)
+            {
+                Defense = defenseTrait.Defense.Value;
+            }
+
+            TraitData dashMultiplierTrait = mActualTraits.Find(x => x.DashMultiplier.HasValue);
+            if (dashMultiplierTrait != null)
+            {
+                mDashMultiplier = dashMultiplierTrait.DashMultiplier.Value;
+            }
+
+            TraitData encounterBudgetTrait = mActualTraits.Find(x => x.EncounterBudget.HasValue);
+            if (encounterBudgetTrait != null)
+            {
+                mEncounterBudget = encounterBudgetTrait.EncounterBudget.Value;
+            }
+
+            // Collect Actions from Traits
+            foreach (TraitData trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
+            {
+                foreach (ActionData action in trait.Actions)
+                {
+                    Actions.Add(action);
+                }
+
+                if (String.IsNullOrEmpty(trait.Description) && trait.Summons.Count == 0)
+                {
+                    mActualTraits.Remove(trait);
+                }
+            }
+
+            // Get recharge minimum
+            int rechargeMin = RechargeMin.GetValueOrDefault(0);
+            if (rechargeMin > 0)
+            {
+                foreach (ActionData action in Actions)
+                {
+                    if (action.Recharge > 0 && action.Recharge < RechargeMin.Value)
+                    {
+                        action.Recharge = RechargeMin.Value;
+                    }
+                }
+            }
+
+            // Process data on all the variables
+            foreach (ActionData action in Actions)
+            {
+                action.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (InterruptData interrupt in Interrupts)
+            {
+                interrupt.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (TraitData trait in mActualTraits)
+            {
+                trait.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (PhaseData phase in Phases)
+            {
+                phase.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (AbilitySetData abilitySet in ExtraAbilitySets)
+            {
+                abilitySet.ProcessData(traitLib, rechargeMin);
+            }
+        }
+
+        public void InheritChapterData(int chapter)
         {
             if (chapter >= 2)
             {
@@ -276,7 +368,7 @@ namespace IconFoeCreator
                 newTraits = newTraits.Distinct().ToList();
                 Traits = newTraits;
 
-                List<Interrupt> newInterrupts = new List<Interrupt>();
+                List<InterruptData> newInterrupts = new List<InterruptData>();
                 newInterrupts.AddRange(Chapter2.Interrupts);
                 InheritInterrupts(newInterrupts, Interrupts, Chapter2.RemoveInterrupts);
                 Interrupts = newInterrupts;
@@ -294,7 +386,7 @@ namespace IconFoeCreator
                 newTraits = newTraits.Distinct().ToList();
                 Traits = newTraits;
 
-                List<Interrupt> newInterrupts = new List<Interrupt>();
+                List<InterruptData> newInterrupts = new List<InterruptData>();
                 newInterrupts.AddRange(Chapter3.Interrupts);
                 InheritInterrupts(newInterrupts, Interrupts, Chapter3.RemoveInterrupts);
                 Interrupts = newInterrupts;
@@ -306,20 +398,20 @@ namespace IconFoeCreator
             }
         }
 
-        public static List<Trait> BuildTraitList(List<string> traits, List<Trait> traitLib)
+        public static List<TraitData> BuildTraitList(List<string> traits, List<TraitData> traitLib)
         {
-            List<Trait> updatedTraits = new List<Trait>();
+            List<TraitData> updatedTraits = new List<TraitData>();
 
             foreach (string traitName in traits)
             {
-                Trait traitFound = traitLib.Find(x => x.Matches(traitName));
+                TraitData traitFound = traitLib.Find(x => x.Matches(traitName));
                 if (traitFound != null)
                 {
                     updatedTraits.Add(traitFound.MakeExpressedTrait(traitName));
                 }
                 else
                 {
-                    updatedTraits.Add(new Trait()
+                    updatedTraits.Add(new TraitData()
                     {
                         Name = traitName
                     });
@@ -344,104 +436,9 @@ namespace IconFoeCreator
 
             return updatedTraits;
         }
-
-        public void ProcessTraits(List<Trait> traitLib)
-        {
-            mActualTraits = BuildTraitList(Traits, traitLib);
-
-            // Get traits with specific values
-            Trait defenseTrait = mActualTraits.Find(x => x.Defense.HasValue);
-            if (defenseTrait != null)
-            {
-                Defense = defenseTrait.Defense.Value;
-            }
-
-            Trait dashMultiplierTrait = mActualTraits.Find(x => x.DashMultiplier.HasValue);
-            if (dashMultiplierTrait != null)
-            {
-                mDashMultiplier = dashMultiplierTrait.DashMultiplier.Value;
-            }
-
-            Trait encounterBudgetTrait = mActualTraits.Find(x => x.EncounterBudget.HasValue);
-            if (encounterBudgetTrait != null)
-            {
-                mEncounterBudget = encounterBudgetTrait.EncounterBudget.Value;
-            }
-
-            // Collect Actions
-            foreach (Trait trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
-            {
-                foreach (ActionData action in trait.Actions)
-                {
-                    Actions.Add(action);
-                }
-
-                if (String.IsNullOrEmpty(trait.Description) && trait.Summons.Count == 0)
-                {
-                    mActualTraits.Remove(trait);
-                }
-            }
-
-            // Process all the extra stuff that might have traits
-            foreach (ActionData action in Actions)
-            {
-                action.ProcessTraits(traitLib);
-            }
-            foreach (Trait trait in mActualTraits)
-            {
-                trait.ProcessTraits(traitLib);
-            }
-            foreach (Phase phase in Phases)
-            {
-                phase.ProcessTraits(traitLib);
-            }
-            foreach (AbilitySet abilitySet in ExtraAbilitySets)
-            {
-                abilitySet.ProcessTraits(traitLib);
-            }
-        }
-
-        public List<Trait> GetActualTraits()
-        {
-            return mActualTraits;
-        }
-
-        public int GetDash()
-        {
-            return (int)Math.Ceiling((float)Speed.GetValueOrDefault(0) * mDashMultiplier);
-        }
-
-        public double GetEncounterBudget()
-        {
-            return mEncounterBudget;
-        }
-
-        public void ProcessActions()
-        {
-            if (RechargeMin.HasValue)
-            {
-                foreach (ActionData action in Actions)
-                {
-                    if (action.Recharge > 0 && action.Recharge < RechargeMin.Value)
-                    {
-                        action.Recharge = RechargeMin.Value;
-                    }
-                }
-
-                foreach (Phase phase in Phases)
-                {
-                    phase.ProcessActions(RechargeMin.Value);
-                }
-
-                foreach (AbilitySet abilitySet in ExtraAbilitySets)
-                {
-                    abilitySet.ProcessActions(RechargeMin.Value);
-                }
-            }
-        }
     }
 
-    public class Trait
+    public class TraitData
     {
         public string Name { get; set; }
         public string DisplayName { get; set; }
@@ -457,13 +454,17 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
+        public List<InterruptData> Interrupts { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
-        public Trait()
+        public TraitData()
         {
             Tags = new List<string>();
             Actions = new List<ActionData>();
+            Interrupts = new List<InterruptData>();
             Summons = new List<SummonData>();
         }
 
@@ -492,11 +493,11 @@ namespace IconFoeCreator
             return Name;
         }
 
-        public Trait MakeExpressedTrait(string traitName)
+        public TraitData MakeExpressedTrait(string traitName)
         {
             if (Name.Contains(VALUE_TOKEN))
             {
-                Trait newTrait = new Trait()
+                TraitData newTrait = new TraitData()
                 {
                     Name = Name,
                     DisplayName = DisplayName,
@@ -535,16 +536,24 @@ namespace IconFoeCreator
             }
         }
 
-        public void ProcessTraits(List<Trait> traitLib)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
         {
+            foreach (ActionData action in Actions)
+            {
+                action.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (InterruptData interrupt in Interrupts)
+            {
+                interrupt.ProcessData(traitLib, rechargeMin);
+            }
             foreach (SummonData summon in Summons)
             {
-                summon.ProcessTraits(traitLib);
+                summon.ProcessData(traitLib, rechargeMin);
             }
         }
     }
 
-    public class Interrupt
+    public class InterruptData
     {
         public string Name { get; set; }
         public int Count { get; set; }
@@ -562,10 +571,22 @@ namespace IconFoeCreator
 
         public string Collide { get; set; }
 
-        public Interrupt()
+        [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
+        public List<SummonData> Summons { get; set; }
+
+        public InterruptData()
         {
             Tags = new List<string>();
             Effects = new List<string>();
+            Summons = new List<SummonData>();
+        }
+
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
+        {
+            foreach (SummonData summon in Summons)
+            {
+                summon.ProcessData(traitLib, rechargeMin);
+            }
         }
     }
 
@@ -614,6 +635,8 @@ namespace IconFoeCreator
 
         public ActionData()
         {
+            ActionCost = -1;
+
             Tags = new List<string>();
             Effects = new List<string>();
             Combos = new List<ActionData>();
@@ -622,11 +645,16 @@ namespace IconFoeCreator
             Rolls = new List<RollData>();
         }
 
-        public void ProcessTraits(List<Trait> traitLib)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
         {
             foreach (SummonData summon in Summons)
             {
-                summon.ProcessTraits(traitLib);
+                summon.ProcessData(traitLib, rechargeMin);
+            }
+
+            if (Recharge > 0 && Recharge < rechargeMin)
+            {
+                Recharge = rechargeMin;
             }
         }
     }
@@ -648,8 +676,8 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveInterrupts { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
-        public List<Interrupt> Interrupts { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
+        public List<InterruptData> Interrupts { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveActions { get; set; }
@@ -662,13 +690,13 @@ namespace IconFoeCreator
             RemoveTraits = new List<string>();
             Traits = new List<string>();
             RemoveInterrupts = new List<string>();
-            Interrupts = new List<Interrupt>();
+            Interrupts = new List<InterruptData>();
             RemoveActions = new List<string>();
             Actions = new List<ActionData>();
         }
     }
 
-    public class BodyPart
+    public class BodyPartData
     {
         public string Name { get; set; }
         public int HP { get; set; }
@@ -676,7 +704,7 @@ namespace IconFoeCreator
         public string Description { get; set; }
     }
 
-    public class Phase
+    public class PhaseData
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -684,86 +712,27 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Traits { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
-        public List<ActionData> Actions { get; set; }
-
-        private List<Trait> mActualTraits;
-
-        public Phase()
-        {
-            Traits = new List<string>();
-            Actions = new List<ActionData>();
-        }
-
-        public void ProcessTraits(List<Trait> traitLib)
-        {
-            mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
-
-            foreach (Trait trait in mActualTraits)
-            {
-                trait.ProcessTraits(traitLib);
-            }
-            foreach (ActionData action in Actions)
-            {
-                action.ProcessTraits(traitLib);
-            }
-        }
-
-        public List<Trait> GetActualTraits()
-        {
-            return mActualTraits;
-        }
-
-        public void ProcessActions(int rechargeMin)
-        {
-            foreach (ActionData action in Actions)
-            {
-                if (action.Recharge > 0 && action.Recharge < rechargeMin)
-                {
-                    action.Recharge = rechargeMin;
-                }
-            }
-        }
-    }
-
-    public class AbilitySet
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
-        public List<string> Traits { get; set; }
-
-        [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
-        public List<Interrupt> Interrupts { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
+        public List<InterruptData> Interrupts { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
 
-        private List<Trait> mActualTraits;
+        private List<TraitData> mActualTraits;
 
-        public AbilitySet()
+        public PhaseData()
         {
             Traits = new List<string>();
-            Interrupts = new List<Interrupt>();
+            Interrupts = new List<InterruptData>();
             Actions = new List<ActionData>();
         }
 
-        public void ProcessTraits(List<Trait> traitLib)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
         {
             mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
 
-            foreach (Trait trait in mActualTraits)
-            {
-                trait.ProcessTraits(traitLib);
-            }
-            foreach (ActionData action in Actions)
-            {
-                action.ProcessTraits(traitLib);
-            }
-
-            // Collect Actions
-            foreach (Trait trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
+            // Collect Actions from Traits
+            foreach (TraitData trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
             {
                 foreach (ActionData action in trait.Actions)
                 {
@@ -775,22 +744,87 @@ namespace IconFoeCreator
                     mActualTraits.Remove(trait);
                 }
             }
+
+            // Continue to process data
+            foreach (TraitData trait in mActualTraits)
+            {
+                trait.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (InterruptData interrupt in Interrupts)
+            {
+                interrupt.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (ActionData action in Actions)
+            {
+                action.ProcessData(traitLib, rechargeMin);
+            }
         }
 
-        public List<Trait> GetActualTraits()
+        public List<TraitData> GetActualTraits()
         {
             return mActualTraits;
         }
+    }
 
-        public void ProcessActions(int rechargeMin)
+    public class AbilitySetData
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Traits { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
+        public List<InterruptData> Interrupts { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> Actions { get; set; }
+
+        private List<TraitData> mActualTraits;
+
+        public AbilitySetData()
         {
-            foreach (ActionData action in Actions)
+            Traits = new List<string>();
+            Interrupts = new List<InterruptData>();
+            Actions = new List<ActionData>();
+        }
+
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
+        {
+            mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
+
+            // Collect Actions from Traits
+            foreach (TraitData trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
             {
-                if (action.Recharge > 0 && action.Recharge < rechargeMin)
+                foreach (ActionData action in trait.Actions)
                 {
-                    action.Recharge = rechargeMin;
+                    Actions.Add(action);
+                }
+
+                if (String.IsNullOrEmpty(trait.Description) && trait.Summons.Count == 0)
+                {
+                    mActualTraits.Remove(trait);
                 }
             }
+
+            // Continue to process data
+            foreach (TraitData trait in mActualTraits)
+            {
+                trait.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (InterruptData interrupt in Interrupts)
+            {
+                interrupt.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (ActionData action in Actions)
+            {
+                action.ProcessData(traitLib, rechargeMin);
+            }
+        }
+
+        public List<TraitData> GetActualTraits()
+        {
+            return mActualTraits;
         }
     }
 
@@ -816,10 +850,10 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> SpecialActions { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<Interrupt>))]
-        public List<Interrupt> SpecialInterrupts { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
+        public List<InterruptData> SpecialInterrupts { get; set; }
 
-        private List<Trait> mActualTraits;
+        private List<TraitData> mActualTraits;
 
         public SummonData()
         {
@@ -829,8 +863,8 @@ namespace IconFoeCreator
             Actions = new List<string>();
             ComplexActions = new List<ActionData>();
             SpecialActions = new List<ActionData>();
-            SpecialInterrupts = new List<Interrupt>();
-            mActualTraits = new List<Trait>();
+            SpecialInterrupts = new List<InterruptData>();
+            mActualTraits = new List<TraitData>();
         }
 
         public bool IsEmpty()
@@ -838,25 +872,12 @@ namespace IconFoeCreator
             return String.IsNullOrEmpty(Name);
         }
 
-        public void ProcessTraits(List<Trait> traitLib)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
         {
             mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
 
-            foreach (Trait trait in mActualTraits)
-            {
-                trait.ProcessTraits(traitLib);
-            }
-            foreach (ActionData action in ComplexActions)
-            {
-                action.ProcessTraits(traitLib);
-            }
-            foreach (ActionData action in SpecialActions)
-            {
-                action.ProcessTraits(traitLib);
-            }
-
-            // Collect Actions
-            foreach (Trait trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
+            // Collect Actions from Traits
+            foreach (TraitData trait in mActualTraits.FindAll(x => x.Actions.Count > 0))
             {
                 foreach (ActionData action in trait.Actions)
                 {
@@ -868,9 +889,23 @@ namespace IconFoeCreator
                     mActualTraits.Remove(trait);
                 }
             }
+
+            // Continue to process data
+            foreach (TraitData trait in mActualTraits)
+            {
+                trait.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (ActionData action in ComplexActions)
+            {
+                action.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (ActionData action in SpecialActions)
+            {
+                action.ProcessData(traitLib, rechargeMin);
+            }
         }
 
-        public List<Trait> GetActualTraits()
+        public List<TraitData> GetActualTraits()
         {
             return mActualTraits;
         }
