@@ -457,6 +457,9 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
         public List<InterruptData> Interrupts { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
+        public List<RollData> Rolls { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
@@ -465,6 +468,7 @@ namespace IconFoeCreator
             Tags = new List<string>();
             Actions = new List<ActionData>();
             Interrupts = new List<InterruptData>();
+            Rolls = new List<RollData>();
             Summons = new List<SummonData>();
         }
 
@@ -852,6 +856,7 @@ namespace IconFoeCreator
 
         [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
         public List<InterruptData> SpecialInterrupts { get; set; }
+
 
         private List<TraitData> mActualTraits;
 
