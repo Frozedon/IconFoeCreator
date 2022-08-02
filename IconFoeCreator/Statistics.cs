@@ -482,6 +482,9 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> ExtraActions { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
         public List<InterruptData> Interrupts { get; set; }
 
@@ -496,6 +499,7 @@ namespace IconFoeCreator
             Tags = new List<string>();
             ExtraItems = new List<ItemData>();
             Actions = new List<ActionData>();
+            ExtraActions = new List<ActionData>();
             Interrupts = new List<InterruptData>();
             Rolls = new List<RollData>();
             Summons = new List<SummonData>();
@@ -661,7 +665,10 @@ namespace IconFoeCreator
 
         [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
         public List<RollData> Rolls { get; set; }
-        
+
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
+        public List<ActionData> ExtraActions { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
@@ -679,6 +686,7 @@ namespace IconFoeCreator
             CustomComponents = new List<ComponentData>();
             ExtraItems = new List<ItemData>();
             Rolls = new List<RollData>();
+            ExtraActions = new List<ActionData>();
             Summons = new List<SummonData>();
             Combos = new List<ActionData>();
         }
@@ -688,6 +696,10 @@ namespace IconFoeCreator
             foreach (SummonData summon in Summons)
             {
                 summon.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (ActionData action in ExtraActions)
+            {
+                action.ProcessData(traitLib, rechargeMin);
             }
             foreach (ActionData action in Combos)
             {
