@@ -31,6 +31,9 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveActions { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> RemoveUsesSpecialTemplates { get; set; }
+
 
         // Normal Inheritance
         public string Faction { get; set; }
@@ -61,6 +64,9 @@ namespace IconFoeCreator
 
         public ChapterData Chapter2 { get; set; }
         public ChapterData Chapter3 { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> UsesSpecialTemplates { get; set; }
 
 
         // Additive Inheritance
@@ -101,11 +107,13 @@ namespace IconFoeCreator
             ExtraAbilitySets = new List<AbilitySetData>();
             Chapter2 = new ChapterData();
             Chapter3 = new ChapterData();
+            UsesSpecialTemplates = new List<string>();
             Traits = new List<string>();
             RemoveTraits = new List<string>();
             RemoveSetupTraits = new List<string>();
             RemoveInterrupts = new List<string>();
             RemoveActions = new List<string>();
+            RemoveUsesSpecialTemplates = new List<string>();
             SetupTraits = new List<TraitData>();
             Interrupts = new List<InterruptData>();
             Actions = new List<ActionData>();
@@ -174,47 +182,45 @@ namespace IconFoeCreator
             newStats.Actions.AddRange(Actions);
             InheritActions(newStats.Actions, otherStats.Actions, RemoveActions);
 
+            newStats.UsesSpecialTemplates.AddRange(UsesSpecialTemplates);
+            InheritUsesSpecialTemplates(newStats.UsesSpecialTemplates, otherStats.UsesSpecialTemplates, RemoveUsesSpecialTemplates);
+
             if (saveRemoveLists)
             {
                 newStats.RemoveTraits.AddRange(RemoveTraits);
                 newStats.RemoveSetupTraits.AddRange(RemoveSetupTraits);
                 newStats.RemoveInterrupts.AddRange(RemoveInterrupts);
-                newStats.RemoveActions.AddRange(RemoveActions);
+                newStats.RemoveActions.AddRange(RemoveActions); ;
+                newStats.RemoveUsesSpecialTemplates.AddRange(RemoveUsesSpecialTemplates);
             }
 
             // Keep all the data for chapter 2 and 3
-            newStats.Chapter2.Traits.AddRange(Chapter2.Traits);
-            newStats.Chapter2.Traits.AddRange(otherStats.Chapter2.Traits);
-            newStats.Chapter3.Traits.AddRange(Chapter3.Traits);
-            newStats.Chapter3.Traits.AddRange(otherStats.Chapter3.Traits);
-
-            newStats.Chapter2.Interrupts.AddRange(Chapter2.Interrupts);
-            newStats.Chapter2.Interrupts.AddRange(otherStats.Chapter2.Interrupts);
-            newStats.Chapter3.Interrupts.AddRange(Chapter3.Interrupts);
-            newStats.Chapter3.Interrupts.AddRange(otherStats.Chapter3.Interrupts);
-
-            newStats.Chapter2.Actions.AddRange(Chapter2.Actions);
-            newStats.Chapter2.Actions.AddRange(otherStats.Chapter2.Actions);
-            newStats.Chapter3.Actions.AddRange(Chapter3.Actions);
-            newStats.Chapter3.Actions.AddRange(otherStats.Chapter3.Actions);
-
-            newStats.Chapter2.RemoveTraits.AddRange(Chapter2.RemoveTraits);
-            newStats.Chapter2.RemoveTraits.AddRange(otherStats.Chapter2.RemoveTraits);
-            newStats.Chapter3.RemoveTraits.AddRange(Chapter3.RemoveTraits);
-            newStats.Chapter3.RemoveTraits.AddRange(otherStats.Chapter3.RemoveTraits);
-
-            newStats.Chapter2.RemoveInterrupts.AddRange(Chapter2.RemoveInterrupts);
-            newStats.Chapter2.RemoveInterrupts.AddRange(otherStats.Chapter2.RemoveInterrupts);
-            newStats.Chapter3.RemoveInterrupts.AddRange(Chapter3.RemoveInterrupts);
-            newStats.Chapter3.RemoveInterrupts.AddRange(otherStats.Chapter3.RemoveInterrupts);
-
-            newStats.Chapter2.RemoveActions.AddRange(Chapter2.RemoveActions);
-            newStats.Chapter2.RemoveActions.AddRange(otherStats.Chapter2.RemoveActions);
-            newStats.Chapter3.RemoveActions.AddRange(Chapter3.RemoveActions);
-            newStats.Chapter3.RemoveActions.AddRange(otherStats.Chapter3.RemoveActions);
-
+            InheritChapter(newStats.Chapter2, Chapter2, otherStats.Chapter2, Chapter2.RemoveTraits, Chapter2.RemoveInterrupts, Chapter2.RemoveActions);
+            InheritChapter(newStats.Chapter3, Chapter3, otherStats.Chapter3, Chapter3.RemoveTraits, Chapter3.RemoveInterrupts, Chapter3.RemoveActions);
 
             return newStats;
+        }
+
+        public static void InheritChapter(ChapterData outputChapterData, ChapterData thisChapterData, ChapterData otherChapterData, List<string> traitsToNotInherit, List<string> interruptsToNotInherit, List<string> actionsToNotInherit)
+        {
+            outputChapterData.Traits.AddRange(thisChapterData.Traits);
+            InheritTraits(outputChapterData.Traits, otherChapterData.Traits, traitsToNotInherit);
+            outputChapterData.Traits = outputChapterData.Traits.Distinct().ToList();
+
+            outputChapterData.Interrupts.AddRange(thisChapterData.Interrupts);
+            InheritInterrupts(outputChapterData.Interrupts, otherChapterData.Interrupts, interruptsToNotInherit);
+
+            outputChapterData.Actions.AddRange(thisChapterData.Actions);
+            InheritActions(outputChapterData.Actions, otherChapterData.Actions, actionsToNotInherit);
+
+            outputChapterData.RemoveTraits.AddRange(thisChapterData.RemoveTraits);
+            outputChapterData.RemoveTraits.AddRange(otherChapterData.RemoveTraits);
+
+            outputChapterData.RemoveInterrupts.AddRange(thisChapterData.RemoveInterrupts);
+            outputChapterData.RemoveInterrupts.AddRange(otherChapterData.RemoveInterrupts);
+
+            outputChapterData.RemoveActions.AddRange(thisChapterData.RemoveActions);
+            outputChapterData.RemoveActions.AddRange(otherChapterData.RemoveActions);
         }
 
         public static void InheritTraits(List<string> outputTraits, List<string> inheritedTraits, List<string> traitsToNotInherit)
@@ -257,6 +263,17 @@ namespace IconFoeCreator
                 if (!actionsToNotInherit.Exists(x => x == action.Name))
                 {
                     outputActions.Add(action);
+                }
+            }
+        }
+
+        public static void InheritUsesSpecialTemplates(List<string> outputTemplates, List<string> inheritedTemplates, List<string> templatesToNotInherit)
+        {
+            foreach (string trait in inheritedTemplates)
+            {
+                if (!templatesToNotInherit.Exists(x => x == trait))
+                {
+                    outputTemplates.Add(trait);
                 }
             }
         }
@@ -306,6 +323,12 @@ namespace IconFoeCreator
             if (encounterBudgetTrait != null)
             {
                 mEncounterBudget = encounterBudgetTrait.EncounterBudget.Value;
+            }
+
+            List<TraitData> encounterBudgetAddTraits = mActualTraits.FindAll(x => x.EncounterBudgetAdd.HasValue);
+            foreach (TraitData trait in encounterBudgetAddTraits)
+            {
+                mEncounterBudget += trait.EncounterBudgetAdd.Value;
             }
 
             // Collect Actions from Traits
@@ -454,6 +477,7 @@ namespace IconFoeCreator
         public float? DashMultiplier { get; set; }
         public int? Defense { get; set; }
         public double? EncounterBudget { get; set; }
+        public double? EncounterBudgetAdd { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
@@ -514,6 +538,7 @@ namespace IconFoeCreator
                     DashMultiplier = DashMultiplier,
                     Defense = Defense,
                     EncounterBudget = EncounterBudget,
+                    EncounterBudgetAdd = EncounterBudgetAdd,
                     Actions = Actions,
                     Summons = Summons
                 };

@@ -10,6 +10,7 @@ namespace IconFoeCreator
     {
         public List<Statistics> Foes;
         public List<Statistics> Templates;
+        public List<Statistics> SpecialTemplates;
         public List<string> Factions;
         public List<string> Classes;
         public List<string> SpecialClasses;
@@ -40,11 +41,13 @@ namespace IconFoeCreator
 
         private static readonly string TYPE_FOE = "foe";
         private static readonly string TYPE_TEMPLATE = "template";
+        private static readonly string TYPE_SPECIAL_TEMPLATE = "specialtemplate";
 
         public StatisticBuilder()
         {
             Foes = new List<Statistics>();
             Templates = new List<Statistics>();
+            SpecialTemplates = new List<Statistics>();
             Factions = new List<string>();
             Classes = new List<string>();
             SpecialClasses = new List<string>();
@@ -91,13 +94,18 @@ namespace IconFoeCreator
                     SpecialClasses.Add(stat.SpecialClass);
                 }
 
-                if (stat.Type.ToLower() == TYPE_FOE)
+                string typeLower = stat.Type.ToLower();
+                if (typeLower == TYPE_FOE)
                 {
                     Foes.Add(stat);
                 }
-                else if (stat.Type.ToLower() == TYPE_TEMPLATE)
+                else if (typeLower == TYPE_TEMPLATE)
                 {
                     Templates.Add(stat);
+                }
+                else if (typeLower == TYPE_SPECIAL_TEMPLATE)
+                {
+                    SpecialTemplates.Add(stat);
                 }
             }
 
@@ -108,6 +116,11 @@ namespace IconFoeCreator
             });
 
             Templates.Sort(delegate (Statistics x, Statistics y)
+            {
+                return x.Name.CompareTo(y.Name);
+            });
+
+            SpecialTemplates.Sort(delegate (Statistics x, Statistics y)
             {
                 return x.Name.CompareTo(y.Name);
             });
