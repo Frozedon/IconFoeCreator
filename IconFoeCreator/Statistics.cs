@@ -76,6 +76,9 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
+        public List<SummonData> Characters { get; set; }
+
 
         // Used by code
         private List<TraitData> mActualTraits;
@@ -109,6 +112,7 @@ namespace IconFoeCreator
             SetupTraits = new List<TraitData>();
             Interrupts = new List<InterruptData>();
             Actions = new List<ActionData>();
+            Characters = new List<SummonData>();
             mActualTraits = new List<TraitData>();
             mDashMultiplier = 0.5f;
             mEncounterBudget = 1.0;
@@ -181,6 +185,10 @@ namespace IconFoeCreator
                 newStats.RemoveInterrupts.AddRange(RemoveInterrupts);
                 newStats.RemoveActions.AddRange(RemoveActions);
             }
+
+            // Keep all characters
+            newStats.Characters.AddRange(Characters);
+            newStats.Characters.AddRange(otherStats.Characters);
 
             // Keep all the data for chapter 2 and 3
             newStats.Chapter2.Traits.AddRange(Chapter2.Traits);
@@ -348,6 +356,10 @@ namespace IconFoeCreator
             {
                 trait.ProcessData(traitLib, rechargeMin);
             }
+            foreach (SummonData character in Characters)
+            {
+                character.ProcessData(traitLib, rechargeMin);
+            }
             foreach (PhaseData phase in Phases)
             {
                 phase.ProcessData(traitLib, rechargeMin);
@@ -442,10 +454,14 @@ namespace IconFoeCreator
     {
         public string Name { get; set; }
         public string DisplayName { get; set; }
-        public string Description { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
+
+        public string Description { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> ExtraItems { get; set; }
 
         public float? DashMultiplier { get; set; }
         public int? Defense { get; set; }
@@ -466,6 +482,7 @@ namespace IconFoeCreator
         public TraitData()
         {
             Tags = new List<string>();
+            ExtraItems = new List<ItemData>();
             Actions = new List<ActionData>();
             Interrupts = new List<InterruptData>();
             Rolls = new List<RollData>();
@@ -626,11 +643,14 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<ComponentData>))]
         public List<ComponentData> CustomComponents { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
-        public List<SummonData> Summons { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> ExtraItems { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
         public List<RollData> Rolls { get; set; }
+        
+        [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
+        public List<SummonData> Summons { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Combos { get; set; }
@@ -643,10 +663,11 @@ namespace IconFoeCreator
 
             Tags = new List<string>();
             Effects = new List<string>();
-            Combos = new List<ActionData>();
             CustomComponents = new List<ComponentData>();
-            Summons = new List<SummonData>();
+            ExtraItems = new List<ItemData>();
             Rolls = new List<RollData>();
+            Summons = new List<SummonData>();
+            Combos = new List<ActionData>();
         }
 
         public void ProcessData(List<TraitData> traitLib, int rechargeMin)
@@ -654,6 +675,10 @@ namespace IconFoeCreator
             foreach (SummonData summon in Summons)
             {
                 summon.ProcessData(traitLib, rechargeMin);
+            }
+            foreach (ActionData action in Combos)
+            {
+                action.ProcessData(traitLib, rechargeMin);
             }
 
             if (Recharge > 0 && Recharge < rechargeMin)
@@ -930,5 +955,11 @@ namespace IconFoeCreator
         {
             Values = new List<int>();
         }
+    }
+
+    public class ItemData
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }
