@@ -17,6 +17,7 @@ namespace IconFoeCreator
     public static class DescriptionCreator
     {
         public static readonly double MARGIN_LEN = 16.0;
+        public static readonly double MARGIN_BEFORE = 12.0;
 
         public static void UpdateDescription(RichTextBox descTextBox, RichTextBox setupTextBox, Statistics stats, bool replaceDamageValues)
         {
@@ -57,7 +58,6 @@ namespace IconFoeCreator
             if (vitality > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new System.Windows.Thickness(0);
                 AddBold(paragraph, "Vitality: ");
                 AddNormal(paragraph, vitality.ToString());
                 descTextBox.Document.Blocks.Add(paragraph);
@@ -122,7 +122,7 @@ namespace IconFoeCreator
             if (stats.Traits.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness(0, 12, 0, 0);
+                paragraph.Margin = new Thickness() { Top = MARGIN_BEFORE };
                 paragraph.TextDecorations = TextDecorations.Underline;
                 AddBold(paragraph, "Traits");
                 descTextBox.Document.Blocks.Add(paragraph);
@@ -133,7 +133,7 @@ namespace IconFoeCreator
             if (stats.Interrupts.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness(0, 12, 0, 0);
+                paragraph.Margin = new Thickness() { Top = MARGIN_BEFORE };
                 paragraph.TextDecorations = TextDecorations.Underline;
                 AddBold(paragraph, "Interrupts");
                 descTextBox.Document.Blocks.Add(paragraph);
@@ -144,7 +144,7 @@ namespace IconFoeCreator
             if (stats.Actions.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness(0, 12, 0, 0);
+                paragraph.Margin = new Thickness() { Top = MARGIN_BEFORE };
                 paragraph.TextDecorations = TextDecorations.Underline;
                 AddBold(paragraph, "Actions");
                 descTextBox.Document.Blocks.Add(paragraph);
@@ -152,10 +152,18 @@ namespace IconFoeCreator
                 AddActions(descTextBox, stats.Actions, damageInfo);
             }
 
+            if (stats.Characters.Count > 0)
+            {
+                foreach (SummonData character in stats.Characters)
+                {
+                    AddSummon(descTextBox, character, damageInfo, 0, 1);
+                }
+            }
+
             if (stats.BodyParts.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness(0, 12, 0, 0);
+                paragraph.Margin = new Thickness() { Top = MARGIN_BEFORE };
                 paragraph.TextDecorations = TextDecorations.Underline;
                 AddBold(paragraph, "Body Parts");
                 descTextBox.Document.Blocks.Add(paragraph);
@@ -166,7 +174,7 @@ namespace IconFoeCreator
             if (!String.IsNullOrEmpty(stats.PhasesDescription) || stats.Phases.Count > 0)
             {
                 Paragraph paragraph1 = MakeParagraph();
-                paragraph1.Margin = new Thickness(0, 12, 0, 0);
+                paragraph1.Margin = new Thickness() { Top = MARGIN_BEFORE };
                 paragraph1.TextDecorations = TextDecorations.Underline;
                 AddBold(paragraph1, "Phases");
                 descTextBox.Document.Blocks.Add(paragraph1);
@@ -232,7 +240,7 @@ namespace IconFoeCreator
             foreach (TraitData trait in traits)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.TextIndent = MARGIN_LEN * indent;
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
 
                 AddBold(paragraph, trait.GetDisplayName());
 
@@ -251,15 +259,32 @@ namespace IconFoeCreator
 
                     AddBold(paragraph, ")");
                 }
-
-                AddBold(paragraph, ". ");
                 
                 if (!String.IsNullOrEmpty(trait.Description))
                 {
+                    AddBold(paragraph, ": ");
                     AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
                 }
 
                 textBox.Document.Blocks.Add(paragraph);
+
+
+                foreach (ItemData item in trait.ExtraItems)
+                {
+                    Paragraph paragraph2 = MakeParagraph();
+                    paragraph2.Margin = new Thickness() { Left = MARGIN_LEN * indent };
+
+                    AddBold(paragraph2, "• ");
+
+                    if (!String.IsNullOrEmpty(item.Name))
+                    {
+                        AddBold(paragraph2, item.Name + ": ");
+                    }
+
+                    AddNormal(paragraph2, item.Description);
+
+                    textBox.Document.Blocks.Add(paragraph2);
+                }
 
                 foreach (RollData roll in trait.Rolls)
                 {
@@ -287,7 +312,7 @@ namespace IconFoeCreator
             foreach (InterruptData interrupt in interrupts)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.TextIndent = MARGIN_LEN * indent;
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
 
                 AddBold(paragraph, interrupt.Name + " (Interrupt");
 
@@ -551,6 +576,23 @@ namespace IconFoeCreator
 
             textBox.Document.Blocks.Add(paragraph);
 
+            foreach (ItemData item in action.ExtraItems)
+            {
+                Paragraph paragraph2 = MakeParagraph();
+                paragraph2.Margin = new Thickness() { Left = MARGIN_LEN * indent };
+
+                AddBold(paragraph2, "• ");
+                
+                if (!String.IsNullOrEmpty(item.Name))
+                {
+                    AddBold(paragraph2, item.Name + ": ");
+                }
+
+                AddNormal(paragraph2, item.Description);
+
+                textBox.Document.Blocks.Add(paragraph2);
+            }
+
             foreach (RollData roll in action.Rolls)
             {
                 AddRoll(textBox, roll, dmgInfo, indent + 1);
@@ -645,12 +687,12 @@ namespace IconFoeCreator
             textBox.Document.Blocks.Add(paragraph);
         }
 
-        private static void AddSummon(RichTextBox textBox, SummonData summon, DamageInfo dmgInfo, int indent = 0)
+        private static void AddSummon(RichTextBox textBox, SummonData summon, DamageInfo dmgInfo, int indent = 0, int beforeParagraph = 0)
         {
             if (!String.IsNullOrEmpty(summon.Name) || summon.Tags.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent, Top = MARGIN_BEFORE * beforeParagraph };
                 paragraph.TextDecorations = TextDecorations.Underline;
 
                 AddBold(paragraph, summon.Name);
