@@ -45,6 +45,8 @@
     <Label x:Name="Template_label" Content="Template" HorizontalAlignment="Left" Margin="23,286,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Template_comboBox" HorizontalAlignment="Left" Margin="27,315,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
     <Label x:Name="InvalidChapter_label" Content="Invalid Chapter!" HorizontalAlignment="Left" Margin="59,33,0,0" VerticalAlignment="Top" FontSize="16" RenderTransformOrigin="0.066,0.489" Background="#00000000" Foreground="Red"/>
+    <Label x:Name="SpecialTemplate_label" Content="Special Template" HorizontalAlignment="Left" Margin="23,343,0,0" VerticalAlignment="Top" FontSize="16"/>
+    <ComboBox x:Name="SpecialTemplate_comboBox" HorizontalAlignment="Left" Margin="27,372,0,0" VerticalAlignment="Top" Width="183" FontSize="16"/>
 
   </Grid>
 </Window>

@@ -383,10 +383,15 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddAction(RichTextBox textBox, ActionData action, DamageInfo dmgInfo, int indent = 0, bool combo = false)
+        private static void AddAction(RichTextBox textBox, ActionData action, DamageInfo dmgInfo, int indent = 0, bool combo = false, bool dot = false)
         {
             Paragraph paragraph = MakeParagraph();
             paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
+
+            if (dot)
+            {
+                AddBold(paragraph, "• ");
+            }
 
             if (combo)
             {
@@ -742,7 +747,7 @@ namespace IconFoeCreator
 
             foreach (ActionData action in summon.SpecialActions)
             {
-                AddAction(textBox, action, dmgInfo, indent + 1, false);
+                AddAction(textBox, action, dmgInfo, indent + 1, false, true);
             }
 
             AddInterrupts(textBox, summon.SpecialInterrupts, dmgInfo, indent + 1);

@@ -33,8 +33,10 @@ namespace IconFoeCreator
             UpdateSpecialClassOptions();
             UpdateFoeOptions();
             UpdateTemplateOptions();
+            UpdateSpecialTemplateOptions();
 
             UpdateTemplateDropdownState();
+            UpdateSpecialTemplateDropdownState();
             UpdateInvalidChapterLabelState();
 
             Chapter_comboBox.SelectionChanged += OnChapterChanged;
@@ -43,6 +45,7 @@ namespace IconFoeCreator
             SpecialClass_comboBox.SelectionChanged += OnSpecialClassChanged;
             Foe_comboBox.SelectionChanged += OnFoeChanged;
             Template_comboBox.SelectionChanged += OnTemplateChanged;
+            SpecialTemplate_comboBox.SelectionChanged += OnSpecialTemplateChanged;
 
             UpdateDescription();
         }
@@ -74,10 +77,20 @@ namespace IconFoeCreator
         {
             UpdateTemplateDropdownState();
             UpdateInvalidChapterLabelState();
+            UpdateSpecialTemplateDropdownState();
+            UpdateSpecialTemplateOptions();
             UpdateDescription();
         }
 
         private void OnTemplateChanged(object sender, EventArgs e)
+        {
+            UpdateInvalidChapterLabelState();
+            UpdateSpecialTemplateDropdownState();
+            UpdateSpecialTemplateOptions();
+            UpdateDescription();
+        }
+
+        private void OnSpecialTemplateChanged(object sender, EventArgs e)
         {
             UpdateDescription();
         }
@@ -126,13 +139,19 @@ namespace IconFoeCreator
                 DamageValues_checkBox.IsChecked.GetValueOrDefault());
         }
 
-        private Statistics MakeCompiledStats()
+        private Statistics MakeCompiledStats(bool includeSpecialTemplate = true)
         {
             List<Statistics> statsToMerge = new List<Statistics>()
             {
                 GetComboBoxStats(Foe_comboBox.SelectedItem),
                 GetComboBoxStats(Template_comboBox.SelectedItem)
             };
+            
+            if (includeSpecialTemplate)
+            {
+                statsToMerge.Add(GetComboBoxStats(SpecialTemplate_comboBox.SelectedItem));
+            }
+
             Statistics compiledStats = new Statistics();
             string compiledName = String.Empty;
 
@@ -191,6 +210,11 @@ namespace IconFoeCreator
             UpdateDropdownOptions(Template_comboBox, GetAvailableTemplates);
         }
 
+        private void UpdateSpecialTemplateOptions()
+        {
+            UpdateDropdownOptions(SpecialTemplate_comboBox, GetAvailableSpecialTemplates);
+        }
+
         private void UpdateDropdownOptions<T>(System.Windows.Controls.ComboBox comboBox, Func<List<T>> getStats)
         {
             string selectedItem = String.Empty;
@@ -220,7 +244,7 @@ namespace IconFoeCreator
         {
             // Disable if the unique foe has been chosen
             Statistics selectedFoe = GetComboBoxStats(Foe_comboBox.SelectedItem);
-            if (selectedFoe != null && selectedFoe.ToString() != EMPTY_STAT && selectedFoe.UsesTemplate)
+            if (Statistics.IsValid(selectedFoe) && selectedFoe.UsesTemplate)
             {
                 Template_comboBox.IsEnabled = true;
             }
@@ -228,6 +252,21 @@ namespace IconFoeCreator
             {
                 Template_comboBox.SelectedIndex = 0;
                 Template_comboBox.IsEnabled = false;
+            }
+        }
+
+        private void UpdateSpecialTemplateDropdownState()
+        {
+            // Disable if the unique foe has been chosen
+            Statistics selectedFoe = MakeCompiledStats(false);
+            if (Statistics.IsValid(selectedFoe) && selectedFoe.UsesSpecialTemplates.Count > 0)
+            {
+                SpecialTemplate_comboBox.IsEnabled = true;
+            }
+            else
+            {
+                SpecialTemplate_comboBox.SelectedIndex = 0;
+                SpecialTemplate_comboBox.IsEnabled = false;
             }
         }
 
@@ -325,6 +364,21 @@ namespace IconFoeCreator
             return availableTemplates;
         }
 
+        private List<ComboBoxItem> GetAvailableSpecialTemplates()
+        {
+            List<ComboBoxItem> availableSpecialTemplates = new List<ComboBoxItem>(dropdownOptions.SpecialTemplates);
+
+            Statistics compiledStats = MakeCompiledStats(false);
+            if (Statistics.IsValid(compiledStats))
+            {
+                availableSpecialTemplates = RemoveStatsOfInvalidSpecialTemplates(availableSpecialTemplates, compiledStats.UsesSpecialTemplates);
+            }
+
+            availableSpecialTemplates.Insert(0, new ComboBoxItem() { Content = new Statistics() { Name = EMPTY_STAT } });
+
+            return availableSpecialTemplates;
+        }
+
         private List<ComboBoxItem> RemoveStatsOfOtherFactions(List<ComboBoxItem> stats, string factionName)
         {
             return stats.FindAll(delegate (ComboBoxItem stat)
@@ -374,6 +428,21 @@ namespace IconFoeCreator
             {
                 Statistics actualStat = (Statistics)stat.Content;
                 return actualStat.Chapter <= chapter;
+            });
+        }
+
+        private List<ComboBoxItem> RemoveStatsOfInvalidSpecialTemplates(List<ComboBoxItem> stats, List<string> specialTemplates)
+        {
+            return stats.FindAll(delegate (ComboBoxItem stat)
+            {
+                Statistics actualStat = (Statistics)stat.Content;
+
+                foreach (string validSpecial in specialTemplates)
+                {
+                    return validSpecial.ToLower() == actualStat.Name.ToLower();
+                }
+
+                return false;
             });
         }
 
