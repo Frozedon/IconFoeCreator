@@ -76,9 +76,6 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
-        public List<SummonData> Characters { get; set; }
-
 
         // Used by code
         private List<TraitData> mActualTraits;
@@ -112,7 +109,6 @@ namespace IconFoeCreator
             SetupTraits = new List<TraitData>();
             Interrupts = new List<InterruptData>();
             Actions = new List<ActionData>();
-            Characters = new List<SummonData>();
             mActualTraits = new List<TraitData>();
             mDashMultiplier = 0.5f;
             mEncounterBudget = 1.0;
@@ -185,10 +181,6 @@ namespace IconFoeCreator
                 newStats.RemoveInterrupts.AddRange(RemoveInterrupts);
                 newStats.RemoveActions.AddRange(RemoveActions);
             }
-
-            // Keep all characters
-            newStats.Characters.AddRange(Characters);
-            newStats.Characters.AddRange(otherStats.Characters);
 
             // Keep all the data for chapter 2 and 3
             newStats.Chapter2.Traits.AddRange(Chapter2.Traits);
@@ -355,10 +347,6 @@ namespace IconFoeCreator
             foreach (TraitData trait in mActualTraits)
             {
                 trait.ProcessData(traitLib, rechargeMin);
-            }
-            foreach (SummonData character in Characters)
-            {
-                character.ProcessData(traitLib, rechargeMin);
             }
             foreach (PhaseData phase in Phases)
             {

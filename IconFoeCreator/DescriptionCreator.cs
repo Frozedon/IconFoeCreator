@@ -152,14 +152,6 @@ namespace IconFoeCreator
                 AddActions(descTextBox, stats.Actions, damageInfo);
             }
 
-            if (stats.Characters.Count > 0)
-            {
-                foreach (SummonData character in stats.Characters)
-                {
-                    AddSummon(descTextBox, character, damageInfo, 0, 1);
-                }
-            }
-
             if (stats.BodyParts.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
@@ -687,12 +679,12 @@ namespace IconFoeCreator
             textBox.Document.Blocks.Add(paragraph);
         }
 
-        private static void AddSummon(RichTextBox textBox, SummonData summon, DamageInfo dmgInfo, int indent = 0, int beforeParagraph = 0)
+        private static void AddSummon(RichTextBox textBox, SummonData summon, DamageInfo dmgInfo, int indent = 0)
         {
             if (!String.IsNullOrEmpty(summon.Name) || summon.Tags.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent, Top = MARGIN_BEFORE * beforeParagraph };
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
                 paragraph.TextDecorations = TextDecorations.Underline;
 
                 AddBold(paragraph, summon.Name);
