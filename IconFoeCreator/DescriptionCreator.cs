@@ -283,6 +283,11 @@ namespace IconFoeCreator
                     AddRoll(textBox, roll, dmgInfo, indent + 1);
                 }
 
+                foreach (ActionData extraAction in trait.ExtraActions)
+                {
+                    AddAction(textBox, extraAction, dmgInfo, indent + 1, false, true);
+                }
+
                 foreach (SummonData summon in trait.Summons)
                 {
                     AddSummon(textBox, summon, dmgInfo, indent + 1);
@@ -387,15 +392,14 @@ namespace IconFoeCreator
         {
             Paragraph paragraph = MakeParagraph();
             paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
-
-            if (dot)
-            {
-                AddBold(paragraph, "• ");
-            }
-
+            
             if (combo)
             {
                 AddBold(paragraph, "• Combo: ");
+            }
+            else if (dot)
+            {
+                AddBold(paragraph, "• ");
             }
 
             if (!String.IsNullOrEmpty(action.Name))
@@ -595,6 +599,11 @@ namespace IconFoeCreator
                 AddRoll(textBox, roll, dmgInfo, indent + 1);
             }
 
+            foreach (ActionData extraAction in action.ExtraActions)
+            {
+                AddAction(textBox, extraAction, dmgInfo, indent + 1, false, true);
+            }
+
             foreach (SummonData summon in action.Summons)
             {
                 AddSummon(textBox, summon, dmgInfo, indent + 1);
@@ -630,16 +639,11 @@ namespace IconFoeCreator
                 }
                 else if (value - lastValue > 1)
                 {
-                    if (!String.IsNullOrEmpty(valueStr))
+                    if (lastAddedValue != lastValue)
                     {
-                        if (lastAddedValue != lastValue)
-                        {
-                            valueStr += "-" + lastValue;
-                        }
-                        valueStr +=  ",";
+                        valueStr += "-" + lastValue;
                     }
-
-                    valueStr += value;
+                    valueStr += "," + value;
                     lastAddedValue = value;
                 }
 
@@ -652,11 +656,11 @@ namespace IconFoeCreator
                 {
                     if (lastValue - lastAddedValue > 1)
                     {
-                        valueStr += ",";
+                        valueStr += "-";
                     }
                     else
                     {
-                        valueStr += "-";
+                        valueStr += ",";
                     }
 
                 }
