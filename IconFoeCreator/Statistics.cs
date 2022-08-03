@@ -354,16 +354,6 @@ namespace IconFoeCreator
 
             // Get recharge minimum
             int rechargeMin = RechargeMin.GetValueOrDefault(0);
-            if (rechargeMin > 0)
-            {
-                foreach (ActionData action in Actions)
-                {
-                    if (action.Recharge > 0 && action.Recharge < RechargeMin.Value)
-                    {
-                        action.Recharge = RechargeMin.Value;
-                    }
-                }
-            }
 
             // Process data on all the variables
             foreach (ActionData action in Actions)
@@ -475,12 +465,10 @@ namespace IconFoeCreator
         public string Description { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
-        public List<ItemData> ExtraItems { get; set; }
+        public List<ItemData> CustomComponents { get; set; }
 
-        public float? DashMultiplier { get; set; }
-        public int? Defense { get; set; }
-        public double? EncounterBudget { get; set; }
-        public double? EncounterBudgetAdd { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> ExtraItems { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
@@ -497,9 +485,16 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
+        // Statistic adjustments
+        public float? DashMultiplier { get; set; }
+        public int? Defense { get; set; }
+        public double? EncounterBudget { get; set; }
+        public double? EncounterBudgetAdd { get; set; }
+
         public TraitData()
         {
             Tags = new List<string>();
+            CustomComponents = new List<ItemData>();
             ExtraItems = new List<ItemData>();
             Actions = new List<ActionData>();
             ExtraActions = new List<ActionData>();
@@ -612,6 +607,9 @@ namespace IconFoeCreator
 
         public string Collide { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> ExtraItems { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
@@ -619,6 +617,7 @@ namespace IconFoeCreator
         {
             Tags = new List<string>();
             Effects = new List<string>();
+            ExtraItems = new List<ItemData>();
             Summons = new List<SummonData>();
         }
 
@@ -627,6 +626,11 @@ namespace IconFoeCreator
             foreach (SummonData summon in Summons)
             {
                 summon.ProcessData(traitLib, rechargeMin);
+            }
+
+            if (Recharge > 0 && Recharge < rechargeMin)
+            {
+                Recharge = rechargeMin;
             }
         }
     }
@@ -657,11 +661,13 @@ namespace IconFoeCreator
         public string TerrainEffect { get; set; }
         public string SpecialInterrupt { get; set; }
         public string SpecialRecharge { get; set; }
+        public string Charge { get; set; }
         public string Delay { get; set; }
         public string PostAreaEffect { get; set; }
+        public string PostCollide { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<ComponentData>))]
-        public List<ComponentData> CustomComponents { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> CustomComponents { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
         public List<ItemData> ExtraItems { get; set; }
@@ -686,7 +692,7 @@ namespace IconFoeCreator
 
             Tags = new List<string>();
             Effects = new List<string>();
-            CustomComponents = new List<ComponentData>();
+            CustomComponents = new List<ItemData>();
             ExtraItems = new List<ItemData>();
             Rolls = new List<RollData>();
             ExtraActions = new List<ActionData>();
@@ -714,12 +720,6 @@ namespace IconFoeCreator
                 Recharge = rechargeMin;
             }
         }
-    }
-
-    public class ComponentData
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
     }
 
     public class ConditionalAbilityData
@@ -1008,9 +1008,13 @@ namespace IconFoeCreator
         public string Name { get; set; }
         public string Description { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> CustomComponents { get; set; }
+
         public RollData()
         {
             Values = new List<int>();
+            CustomComponents = new List<ItemData>();
         }
     }
 
@@ -1018,5 +1022,13 @@ namespace IconFoeCreator
     {
         public string Name { get; set; }
         public string Description { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> CustomComponents { get; set; }
+
+        public ItemData()
+        {
+            CustomComponents = new List<ItemData>();
+        }
     }
 }
