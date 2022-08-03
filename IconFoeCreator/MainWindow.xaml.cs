@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace IconFoeCreator
@@ -148,6 +149,24 @@ namespace IconFoeCreator
             {
                 Description_richTextBox.Document.Blocks.Clear();
                 Setup_richTextBox.Document.Blocks.Clear();
+
+                /*Paragraph paragraph = new Paragraph()
+                {
+                    Margin = new Thickness(0)
+                };
+                paragraph.Inlines.Add(new Bold(new Run("Traits Missing Entries")));
+                foreach (string trait in statBuilder.Debug_CheckForTraitsExisting())
+                {
+                    paragraph.Inlines.Add(new Run("\n" + trait));
+                }
+
+                paragraph.Inlines.Add(new Bold(new Run("\nTrait Entries Doubled")));
+                foreach (string trait in statBuilder.Debug_CheckForDoubleTraits())
+                {
+                    paragraph.Inlines.Add(new Run("\n" + trait));
+                }
+
+                Description_richTextBox.Document.Blocks.Add(paragraph);*/
             }
         }
 

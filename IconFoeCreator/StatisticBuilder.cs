@@ -236,5 +236,61 @@ namespace IconFoeCreator
                 }
             }
         }
+
+        public List<string> Debug_CheckForTraitsExisting()
+        {
+            List<string> missingTraits = new List<string>();
+
+            List<Statistics> allStats = new List<Statistics>();
+            allStats.AddRange(Foes);
+            allStats.AddRange(Templates);
+            allStats.AddRange(SpecialTemplates);
+
+            foreach (Statistics stat in allStats)
+            {
+                List<string> traitNames = new List<string>();
+                traitNames.AddRange(stat.Traits);
+                foreach (AbilitySetData abilityData in stat.ExtraAbilitySets) { traitNames.AddRange(abilityData.Traits); }
+                foreach (ConditionalAbilityData abilityData in stat.ConditionalAbilities) { traitNames.AddRange(abilityData.Traits); }
+                foreach (PhaseData phaseData in stat.Phases) { traitNames.AddRange(phaseData.Traits); }
+
+                foreach (string traitName in traitNames)
+                {
+                    bool found = false;
+                    foreach (TraitData trait in Traits)
+                    {
+                        if (trait.Matches(traitName))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        missingTraits.Add(traitName);
+                    }
+                }
+            }
+
+            return missingTraits.Distinct().ToList();
+        }
+
+        public List<string> Debug_CheckForDoubleTraits()
+        {
+            List<string> doubleTraits = new List<string>();
+
+            foreach (TraitData trait in Traits)
+            {
+                var traitsFound = Traits.FindAll(x => x.Name.ToLower() == trait.Name.ToLower());
+
+                if (traitsFound.Count > 1)
+                {
+                    doubleTraits.Add(trait.Name);
+                }
+            }
+
+            return doubleTraits.Distinct().ToList();
+        }
     }
 }
