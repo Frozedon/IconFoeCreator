@@ -258,24 +258,24 @@ namespace IconFoeCreator
                     AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
                 }
 
+                foreach (ItemData component in trait.CustomComponents)
+                {
+                    if (!String.IsNullOrEmpty(component.Name))
+                    {
+                        AddItalic(paragraph, " " + component.Name + ":");
+                    }
+                    if (!String.IsNullOrEmpty(component.Description))
+                    {
+                        AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, dmgInfo));
+                    }
+                }
+
                 textBox.Document.Blocks.Add(paragraph);
 
 
                 foreach (ItemData item in trait.ExtraItems)
                 {
-                    Paragraph paragraph2 = MakeParagraph();
-                    paragraph2.Margin = new Thickness() { Left = MARGIN_LEN * indent };
-
-                    AddBold(paragraph2, "• ");
-
-                    if (!String.IsNullOrEmpty(item.Name))
-                    {
-                        AddBold(paragraph2, item.Name + ": ");
-                    }
-
-                    AddNormal(paragraph2, item.Description);
-
-                    textBox.Document.Blocks.Add(paragraph2);
+                    AddItemData(textBox, item, dmgInfo, indent);
                 }
 
                 foreach (RollData roll in trait.Rolls)
@@ -354,6 +354,16 @@ namespace IconFoeCreator
                 }
 
                 textBox.Document.Blocks.Add(paragraph);
+
+                foreach (ItemData item in interrupt.ExtraItems)
+                {
+                    AddItemData(textBox, item, dmgInfo, indent);
+                }
+
+                foreach (SummonData summon in interrupt.Summons)
+                {
+                    AddSummon(textBox, summon, dmgInfo, indent + 1);
+                }
             }
         }
 
@@ -551,6 +561,12 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.SpecialRecharge, dmgInfo));
             }
 
+            if (!String.IsNullOrEmpty(action.Charge))
+            {
+                AddItalic(paragraph, " Charge: ");
+                AddNormal(paragraph, ReplaceDamageTokens(action.Charge, dmgInfo));
+            }
+
             if (!String.IsNullOrEmpty(action.Delay))
             {
                 AddItalic(paragraph, " Delay: ");
@@ -563,11 +579,17 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceDamageTokens(action.PostAreaEffect, dmgInfo));
             }
 
-            foreach (ComponentData component in action.CustomComponents)
+            if (!String.IsNullOrEmpty(action.PostCollide))
+            {
+                AddItalic(paragraph, " Collide: ");
+                AddNormal(paragraph, ReplaceDamageTokens(action.PostCollide, dmgInfo));
+            }
+
+            foreach (ItemData component in action.CustomComponents)
             {
                 if (!String.IsNullOrEmpty(component.Name))
                 {
-                    AddItalic(paragraph, " " + component.Name);
+                    AddItalic(paragraph, " " + component.Name + ":");
                 }
                 if (!String.IsNullOrEmpty(component.Description))
                 {
@@ -579,19 +601,7 @@ namespace IconFoeCreator
 
             foreach (ItemData item in action.ExtraItems)
             {
-                Paragraph paragraph2 = MakeParagraph();
-                paragraph2.Margin = new Thickness() { Left = MARGIN_LEN * indent };
-
-                AddBold(paragraph2, "• ");
-                
-                if (!String.IsNullOrEmpty(item.Name))
-                {
-                    AddBold(paragraph2, item.Name + ": ");
-                }
-
-                AddNormal(paragraph2, item.Description);
-
-                textBox.Document.Blocks.Add(paragraph2);
+                AddItemData(textBox, item, dmgInfo, indent);
             }
 
             foreach (RollData roll in action.Rolls)
@@ -683,6 +693,18 @@ namespace IconFoeCreator
             if (!String.IsNullOrEmpty(roll.Description))
             {
                 AddNormal(paragraph, ReplaceDamageTokens(roll.Description, dmgInfo));
+            }
+
+            foreach (ItemData component in roll.CustomComponents)
+            {
+                if (!String.IsNullOrEmpty(component.Name))
+                {
+                    AddItalic(paragraph, " " + component.Name + ":");
+                }
+                if (!String.IsNullOrEmpty(component.Description))
+                {
+                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, dmgInfo));
+                }
             }
 
             textBox.Document.Blocks.Add(paragraph);
@@ -872,6 +894,37 @@ namespace IconFoeCreator
             else
             {
                 AddNormal(paragraph, "This foe takes up " + (int)encounterBudget + " points in an encounter budget.");
+            }
+
+            textBox.Document.Blocks.Add(paragraph);
+        }
+
+        private static void AddItemData(RichTextBox textBox, ItemData item, DamageInfo dmgInfo, int indent = 0)
+        {
+            Paragraph paragraph = MakeParagraph();
+            paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
+
+            AddBold(paragraph, "•");
+
+            if (!String.IsNullOrEmpty(item.Name))
+            {
+                AddBold(paragraph, " " + item.Name + ":");
+            }
+            if (!String.IsNullOrEmpty(item.Description))
+            {
+                AddNormal(paragraph, " " + ReplaceDamageTokens(item.Description, dmgInfo));
+            }
+
+            foreach (ItemData component in item.CustomComponents)
+            {
+                if (!String.IsNullOrEmpty(component.Name))
+                {
+                    AddItalic(paragraph, " " + component.Name + ":");
+                }
+                if (!String.IsNullOrEmpty(component.Description))
+                {
+                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, dmgInfo));
+                }
             }
 
             textBox.Document.Blocks.Add(paragraph);
