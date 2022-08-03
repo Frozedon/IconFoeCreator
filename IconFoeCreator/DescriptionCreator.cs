@@ -817,6 +817,11 @@ namespace IconFoeCreator
             var interruptList = summon.GetInterrupts();
             AddInterrupts(textBox, interruptList, statData, indent, false);
 
+            foreach (ItemData itemData in summon.ListedItems)
+            {
+                AddItemData(textBox, itemData, statData, indent);
+            }
+
             AddActions(textBox, summon.ListedActions, statData, indent + 1, false, true);
 
             AddInterrupts(textBox, summon.ListedInterrupts, statData, indent + 1, true);
@@ -856,11 +861,16 @@ namespace IconFoeCreator
                 if (!String.IsNullOrEmpty(phase.Name)) { AddBold(paragraph1, ": " + phase.Name); }
                 textBox.Document.Blocks.Add(paragraph1);
 
-                if (phase.Description != null && phase.Description != String.Empty)
+                if (!String.IsNullOrEmpty(phase.Description))
                 {
                     Paragraph paragraph2 = MakeParagraph();
                     AddNormal(paragraph2, phase.Description);
                     textBox.Document.Blocks.Add(paragraph2);
+                }
+
+                foreach (ItemData itemData in phase.ListedItems)
+                {
+                    AddItemData(textBox, itemData, statData, indent);
                 }
 
                 if (phase.Traits.Count > 0)
@@ -1010,7 +1020,7 @@ namespace IconFoeCreator
 
             var tokens = new Dictionary<string, string>
             {
-                { "[D]", "d" + statData.damageDie.ToString() },
+                { "[D]", "D" + statData.damageDie.ToString() },
                 { "[fray]", statData.fray.ToString() }
             };
 

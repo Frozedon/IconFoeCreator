@@ -12,9 +12,9 @@ namespace IconFoeCreator
     {
         public static readonly Color UNIQUE_COLOR = Color.FromRgb(0xCA, 0x55, 0xEF);
         public static readonly Color MOB_COLOR = Color.FromRgb(0x92, 0x92, 0x92);
-        public static readonly Color NORMAL_COLOR = Color.FromRgb(0x7C, 0x7C, 0x7C);
-        public static readonly Color ELITE_COLOR = Color.FromRgb(0x55, 0x80, 0xED);
-        public static readonly Color LEGEND_COLOR = Color.FromRgb(0x69, 0x55, 0xED);
+        public static readonly Color NORMAL_COLOR = Color.FromRgb(0x92, 0x92, 0x92);
+        public static readonly Color ELITE_COLOR = Color.FromRgb(0x9D, 0x46, 0xFF);
+        public static readonly Color LEGEND_COLOR = Color.FromRgb(0x9D, 0x46, 0xFF);
         public static readonly Color HEAVY_COLOR = Color.FromRgb(0xEE, 0x22, 0x0C);
         public static readonly Color SKIRMISHER_COLOR = Color.FromRgb(0xFE, 0xAE, 0x00);
         public static readonly Color ARTILLERY_COLOR = Color.FromRgb(0x00, 0xA2, 0xFF);

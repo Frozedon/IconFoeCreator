@@ -841,6 +841,9 @@ namespace IconFoeCreator
         public string Name { get; set; }
         public string Description { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> ListedItems { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Traits { get; set; }
 
@@ -854,6 +857,7 @@ namespace IconFoeCreator
 
         public PhaseData()
         {
+            ListedItems = new List<ItemData>();
             Traits = new List<string>();
             Interrupts = new List<InterruptData>();
             Actions = new List<ActionData>();
@@ -1025,6 +1029,9 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
         public List<InterruptData> Interrupts { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> ListedItems { get; set; }
+
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> ListedActions { get; set; }
 
@@ -1042,6 +1049,7 @@ namespace IconFoeCreator
             SummonActions = new List<string>();
             Actions = new List<ActionData>();
             Interrupts = new List<InterruptData>();
+            ListedItems = new List<ItemData>();
             ListedActions = new List<ActionData>();
             ListedInterrupts = new List<InterruptData>();
             mActualTraits = new List<TraitData>();
