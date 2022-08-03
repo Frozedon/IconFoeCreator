@@ -500,7 +500,7 @@ namespace IconFoeCreator
         public List<ItemData> CustomComponents { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
-        public List<ItemData> ExtraItems { get; set; }
+        public List<ItemData> ListedItems { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
@@ -527,7 +527,7 @@ namespace IconFoeCreator
         {
             Tags = new List<string>();
             CustomComponents = new List<ItemData>();
-            ExtraItems = new List<ItemData>();
+            ListedItems = new List<ItemData>();
             Actions = new List<ActionData>();
             ExtraActions = new List<ActionData>();
             Interrupts = new List<InterruptData>();
@@ -544,7 +544,7 @@ namespace IconFoeCreator
                 return Tags.Count > 0
                     || !String.IsNullOrEmpty(Description)
                     || CustomComponents.Count > 0
-                    || ExtraItems.Count > 0
+                    || ListedItems.Count > 0
                     || ExtraActions.Count > 0
                     || Rolls.Count > 0
                     || Summons.Count > 0;
@@ -656,7 +656,7 @@ namespace IconFoeCreator
         public string Collide { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
-        public List<ItemData> ExtraItems { get; set; }
+        public List<ItemData> ListedItems { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
@@ -665,7 +665,7 @@ namespace IconFoeCreator
         {
             Tags = new List<string>();
             Effects = new List<string>();
-            ExtraItems = new List<ItemData>();
+            ListedItems = new List<ItemData>();
             Summons = new List<SummonData>();
         }
 
@@ -718,7 +718,7 @@ namespace IconFoeCreator
         public List<ItemData> CustomComponents { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
-        public List<ItemData> ExtraItems { get; set; }
+        public List<ItemData> ListedItems { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<RollData>))]
         public List<RollData> Rolls { get; set; }
@@ -740,7 +740,7 @@ namespace IconFoeCreator
             Tags = new List<string>();
             Effects = new List<string>();
             CustomComponents = new List<ItemData>();
-            ExtraItems = new List<ItemData>();
+            ListedItems = new List<ItemData>();
             Rolls = new List<RollData>();
             ExtraActions = new List<ActionData>();
             Summons = new List<SummonData>();

@@ -14,8 +14,8 @@ namespace IconFoeCreator
         public static readonly string EMPTY_STAT = "...";
         public static readonly string ANY_GROUP = "Any";
 
-        StatisticBuilder statBuilder;
-        DropdownOptions dropdownOptions;
+        private StatisticBuilder statBuilder;
+        private DropdownOptions dropdownOptions;
 
         public MainWindow()
         {
@@ -136,11 +136,19 @@ namespace IconFoeCreator
         {
             Statistics stats = MakeCompiledStats();
 
-            DescriptionCreator.UpdateDescription(
-                Description_richTextBox,
-                Setup_richTextBox,
-                stats,
-                DamageValues_checkBox.IsChecked.GetValueOrDefault());
+            if (Statistics.IsValid(stats))
+            {
+                DescriptionCreator.UpdateDescription(
+                    Description_richTextBox,
+                    Setup_richTextBox,
+                    stats,
+                    DamageValues_checkBox.IsChecked.GetValueOrDefault());
+            }
+            else
+            {
+                Description_richTextBox.Document.Blocks.Clear();
+                Setup_richTextBox.Document.Blocks.Clear();
+            }
         }
 
         private Statistics MakeCompiledStats(bool includeSpecialTemplate = true, bool includeMobEliteTemplate = true)
@@ -179,10 +187,13 @@ namespace IconFoeCreator
             Statistics compiledStats = new Statistics();
             string compiledName = String.Empty;
 
+            bool valid = false;
             foreach (Statistics stat in statsToMerge)
             {
                 if (stat != null && Statistics.IsValid(stat))
                 {
+                    valid = true;
+
                     compiledStats = stat.InheritFrom(compiledStats);
 
                     if (String.IsNullOrEmpty(compiledName))
@@ -194,6 +205,11 @@ namespace IconFoeCreator
                         compiledName = stat.GetDisplayName() + " " + compiledName;
                     }
                 }
+            }
+
+            if (!valid)
+            {
+                return null;
             }
 
             int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
@@ -495,14 +511,14 @@ namespace IconFoeCreator
             });
         }
 
-        private List<ComboBoxItem> RemoveStatsOfHigherChapter(List<ComboBoxItem> stats, int chapter)
+        /*private List<ComboBoxItem> RemoveStatsOfHigherChapter(List<ComboBoxItem> stats, int chapter)
         {
             return stats.FindAll(delegate (ComboBoxItem stat)
             {
                 Statistics actualStat = (Statistics)stat.Content;
                 return actualStat.Chapter <= chapter;
             });
-        }
+        }*/
 
         private List<ComboBoxItem> RemoveStatsOfInvalidSpecialTemplates(List<ComboBoxItem> stats, List<string> specialTemplates)
         {
@@ -558,13 +574,16 @@ namespace IconFoeCreator
         {
             Statistics stats = MakeCompiledStats();
 
-            if (!Directory.Exists("export"))
+            if (Statistics.IsValid(stats))
             {
-                Directory.CreateDirectory("export");
-            }
+                if (!Directory.Exists("export"))
+                {
+                    Directory.CreateDirectory("export");
+                }
 
-            string text = JsonConvert.SerializeObject(stats);
-            File.WriteAllText($"export/{stats.Name}.json", text);
+                string text = JsonConvert.SerializeObject(stats);
+                File.WriteAllText($"export/{stats.Name}.json", text);
+            }
         }
     }
 }

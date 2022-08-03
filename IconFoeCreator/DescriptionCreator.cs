@@ -198,6 +198,7 @@ namespace IconFoeCreator
             }
 
             // Setup traits in other textbox
+            AddChapter(setupTextBox, stats.Chapter);
             AddEncounterBudget(setupTextBox, stats.GetEncounterBudget());
 
             if (stats.SetupTraits.Count > 0)
@@ -295,7 +296,7 @@ namespace IconFoeCreator
                 textBox.Document.Blocks.Add(paragraph);
 
 
-                foreach (ItemData item in trait.ExtraItems)
+                foreach (ItemData item in trait.ListedItems)
                 {
                     AddItemData(textBox, item, statData, indent);
                 }
@@ -379,7 +380,7 @@ namespace IconFoeCreator
 
                 textBox.Document.Blocks.Add(paragraph);
 
-                foreach (ItemData item in interrupt.ExtraItems)
+                foreach (ItemData item in interrupt.ListedItems)
                 {
                     AddItemData(textBox, item, statData, indent);
                 }
@@ -620,7 +621,7 @@ namespace IconFoeCreator
 
             textBox.Document.Blocks.Add(paragraph);
 
-            foreach (ItemData item in action.ExtraItems)
+            foreach (ItemData item in action.ListedItems)
             {
                 AddItemData(textBox, item, statData, indent);
             }
@@ -948,6 +949,22 @@ namespace IconFoeCreator
             else
             {
                 AddNormal(paragraph, "This foe takes up " + (int)encounterBudget + " points in an encounter budget.");
+            }
+
+            textBox.Document.Blocks.Add(paragraph);
+        }
+
+        private static void AddChapter(RichTextBox textBox, int chapter)
+        {
+            Paragraph paragraph = MakeParagraph();
+            AddBold(paragraph, "Chapter. ");
+
+            int clampedChapter = Math.Min(Math.Max(chapter, 1), 3);
+            AddNormal(paragraph, clampedChapter.ToString());
+
+            if (clampedChapter < 3)
+            {
+                AddNormal(paragraph, "+");
             }
 
             textBox.Document.Blocks.Add(paragraph);
