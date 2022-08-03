@@ -79,6 +79,8 @@ namespace IconFoeCreator
             UpdateInvalidChapterLabelState();
             UpdateSpecialTemplateDropdownState();
             UpdateSpecialTemplateOptions();
+            UpdateMobCheckBoxState();
+            UpdateEliteCheckBoxState();
             UpdateDescription();
         }
 
@@ -87,6 +89,8 @@ namespace IconFoeCreator
             UpdateInvalidChapterLabelState();
             UpdateSpecialTemplateDropdownState();
             UpdateSpecialTemplateOptions();
+            UpdateMobCheckBoxState();
+            UpdateEliteCheckBoxState();
             UpdateDescription();
         }
 
@@ -139,7 +143,7 @@ namespace IconFoeCreator
                 DamageValues_checkBox.IsChecked.GetValueOrDefault());
         }
 
-        private Statistics MakeCompiledStats(bool includeSpecialTemplate = true)
+        private Statistics MakeCompiledStats(bool includeSpecialTemplate = true, bool includeMobEliteTemplate = true)
         {
             List<Statistics> statsToMerge = new List<Statistics>()
             {
@@ -150,6 +154,26 @@ namespace IconFoeCreator
             if (includeSpecialTemplate)
             {
                 statsToMerge.Add(GetComboBoxStats(SpecialTemplate_comboBox.SelectedItem));
+            }
+
+            if (includeMobEliteTemplate)
+            {
+                if (Mob_checkBox.IsChecked.GetValueOrDefault(false))
+                {
+                    Statistics mobTemplate = statBuilder.SpecialTemplates.Find(stat => stat.Name.ToLower() == "mob template");
+                    if (mobTemplate != null)
+                    {
+                        statsToMerge.Add(mobTemplate);
+                    }
+                }
+                else if (Elite_checkBox.IsChecked.GetValueOrDefault(false))
+                {
+                    Statistics eliteTemplate = statBuilder.SpecialTemplates.Find(stat => stat.Name.ToLower() == "elite template");
+                    if (eliteTemplate != null)
+                    {
+                        statsToMerge.Add(eliteTemplate);
+                    }
+                }
             }
 
             Statistics compiledStats = new Statistics();
@@ -258,7 +282,7 @@ namespace IconFoeCreator
         private void UpdateSpecialTemplateDropdownState()
         {
             // Disable if the unique foe has been chosen
-            Statistics selectedFoe = MakeCompiledStats(false);
+            Statistics selectedFoe = MakeCompiledStats(false, true);
             if (Statistics.IsValid(selectedFoe) && selectedFoe.UsesSpecialTemplates.Count > 0)
             {
                 SpecialTemplate_comboBox.IsEnabled = true;
@@ -281,6 +305,55 @@ namespace IconFoeCreator
             else
             {
                 InvalidChapter_label.Visibility = Visibility.Hidden;
+            }
+        }
+        private void UpdateMobCheckBoxState()
+        {
+            Statistics mobTemplate = statBuilder.SpecialTemplates.Find(stat => stat.Name.ToLower() == "mob template");
+
+            // Unchecked if the elite check box is checked
+            if (Elite_checkBox.IsChecked.GetValueOrDefault(false) || mobTemplate == null)
+            {
+                Mob_checkBox.IsChecked = false;
+                Mob_checkBox.IsEnabled = false;
+            }
+            else
+            {
+                // Disable if special class is not normal
+                Statistics selectedFoe = MakeCompiledStats(false, false);
+                if (Statistics.IsValid(selectedFoe) && (String.IsNullOrEmpty(selectedFoe.SpecialClass) || selectedFoe.SpecialClass.ToLower() == "normal"))
+                {
+                    Mob_checkBox.IsEnabled = true;
+                }
+                else
+                {
+                    Mob_checkBox.IsEnabled = false;
+                }
+            }
+        }
+
+        private void UpdateEliteCheckBoxState()
+        {
+            Statistics eliteTemplate = statBuilder.SpecialTemplates.Find(stat => stat.Name.ToLower() == "elite template");
+
+            // Unchecked if the mob check box is checked
+            if (Mob_checkBox.IsChecked.GetValueOrDefault(false) || eliteTemplate == null)
+            {
+                Elite_checkBox.IsChecked = false;
+                Elite_checkBox.IsEnabled = false;
+            }
+            else
+            {
+                // Disable if special class is not normal
+                Statistics selectedFoe = MakeCompiledStats(false, false);
+                if (Statistics.IsValid(selectedFoe) && (String.IsNullOrEmpty(selectedFoe.SpecialClass) || selectedFoe.SpecialClass.ToLower() == "normal"))
+                {
+                    Elite_checkBox.IsEnabled = true;
+                }
+                else
+                {
+                    Elite_checkBox.IsEnabled = false;
+                }
             }
         }
 
@@ -368,7 +441,7 @@ namespace IconFoeCreator
         {
             List<ComboBoxItem> availableSpecialTemplates = new List<ComboBoxItem>(dropdownOptions.SpecialTemplates);
 
-            Statistics compiledStats = MakeCompiledStats(false);
+            Statistics compiledStats = MakeCompiledStats(false, true);
             if (Statistics.IsValid(compiledStats))
             {
                 availableSpecialTemplates = RemoveStatsOfInvalidSpecialTemplates(availableSpecialTemplates, compiledStats.UsesSpecialTemplates);
@@ -456,6 +529,20 @@ namespace IconFoeCreator
         {
             Setup_richTextBox.SelectAll();
             Setup_richTextBox.Copy();
+        }
+
+        private void Mob_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateEliteCheckBoxState();
+            UpdateTemplateOptions();
+            UpdateDescription();
+        }
+
+        private void Elite_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateMobCheckBoxState();
+            UpdateTemplateOptions();
+            UpdateDescription();
         }
 
         private void DamageValues_checkBox_Checked(object sender, RoutedEventArgs e)

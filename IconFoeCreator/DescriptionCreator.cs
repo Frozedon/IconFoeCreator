@@ -295,7 +295,7 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddInterrupts(RichTextBox textBox, List<InterruptData> interrupts, DamageInfo dmgInfo, int indent = 0)
+        private static void AddInterrupts(RichTextBox textBox, List<InterruptData> interrupts, DamageInfo dmgInfo, int indent = 0, bool dot = false)
         {
             interrupts.Sort(delegate (InterruptData x, InterruptData y)
             {
@@ -310,6 +310,11 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
+
+                if (dot)
+                {
+                    AddBold(paragraph, "• ");
+                }
 
                 AddBold(paragraph, interrupt.Name + " (Interrupt");
 
@@ -459,7 +464,7 @@ namespace IconFoeCreator
                     }
                 }
 
-                if (action.Combos.Count > 0)
+                if (action.Combo != null)
                 {
                     if (firstItem) { firstItem = false; }
                     else { AddBold(paragraph, ", "); }
@@ -616,12 +621,12 @@ namespace IconFoeCreator
 
             foreach (SummonData summon in action.Summons)
             {
-                AddSummon(textBox, summon, dmgInfo, indent + 1);
+                AddSummon(textBox, summon, dmgInfo, (action.Combo != null) ? indent + 2 : indent + 1);
             }
 
-            foreach (ActionData comboAction in action.Combos)
+            if (action.Combo != null)
             {
-                AddAction(textBox, comboAction, dmgInfo, indent + 1, true);
+                AddAction(textBox, action.Combo, dmgInfo, indent + 1, true);
             }
 
             if (!String.IsNullOrEmpty(action.PostAction))
@@ -723,24 +728,25 @@ namespace IconFoeCreator
                 textBox.Document.Blocks.Add(paragraph);
             }
 
-            if (summon.Tags.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
 
-                bool first = true;
-                foreach (string tag in summon.Tags)
+                if (summon.IsObject)
                 {
-                    if (!first)
-                    {
-                        AddBold(paragraph, ", ");
-                    }
-                    else
-                    {
-                        first = false;
-                    }
+                    AddBold(paragraph, "Object");
+                }
+                else
+                {
+                    AddBold(paragraph, "Summon");
+                }
 
-                    AddBold(paragraph, tag);
+                if (summon.Tags.Count > 0)
+                {
+                    foreach (string tag in summon.Tags)
+                    {
+                        AddBold(paragraph, ", " + tag);
+                    }
                 }
 
                 textBox.Document.Blocks.Add(paragraph);
@@ -752,31 +758,35 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
-                AddBold(paragraph, "Summon Effect: ");
+                if (summon.IsObject) { AddBold(paragraph, "Object "); }
+                else { AddBold(paragraph, "Summon "); }
+                AddBold(paragraph, "Effect: ");
                 AddNormal(paragraph, effect);
                 textBox.Document.Blocks.Add(paragraph);
             }
 
-            foreach (string action in summon.Actions)
+            foreach (string action in summon.SummonActions)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
-                AddBold(paragraph, "Summon Action: ");
+                if (summon.IsObject) { AddBold(paragraph, "Object "); }
+                else { AddBold(paragraph, "Summon "); }
+                AddBold(paragraph, "Action: ");
                 AddNormal(paragraph, action);
                 textBox.Document.Blocks.Add(paragraph);
             }
-
-            foreach (ActionData action in summon.ComplexActions)
+             
+            foreach (ActionData action in summon.Actions)
             {
                 AddAction(textBox, action, dmgInfo, indent, false);
             }
 
-            foreach (ActionData action in summon.SpecialActions)
+            foreach (ActionData action in summon.ListedActions)
             {
                 AddAction(textBox, action, dmgInfo, indent + 1, false, true);
             }
 
-            AddInterrupts(textBox, summon.SpecialInterrupts, dmgInfo, indent + 1);
+            AddInterrupts(textBox, summon.ListedInterrupts, dmgInfo, indent + 1, true);
         }
 
         private static void AddBodyParts(RichTextBox textBox, List<BodyPartData> bodyParts)
