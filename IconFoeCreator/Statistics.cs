@@ -211,7 +211,9 @@ namespace IconFoeCreator
                     RemoveSetupTraits = otherData.RemoveSetupTraits,
                     RemoveInterrupts = otherData.RemoveInterrupts,
                     RemoveActions = otherData.RemoveActions,
-                    UsesSpecialTemplates = otherData.UsesSpecialTemplates
+                    UsesSpecialTemplates = otherData.UsesSpecialTemplates,
+                    HPMultiplier = otherData.HPMultiplier,
+                    SpecialClass = otherData.SpecialClass
                 };
 
                 InheritTraits(newData.Traits, otherData.Traits, traitsToNotInherit);
@@ -681,8 +683,7 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
-        [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
-        public List<ActionData> Combos { get; set; }
+        public ActionData Combo { get; set; }
 
         public string PostAction { get; set; }
 
@@ -697,7 +698,6 @@ namespace IconFoeCreator
             Rolls = new List<RollData>();
             ExtraActions = new List<ActionData>();
             Summons = new List<SummonData>();
-            Combos = new List<ActionData>();
         }
 
         public void ProcessData(List<TraitData> traitLib, int rechargeMin)
@@ -710,9 +710,9 @@ namespace IconFoeCreator
             {
                 action.ProcessData(traitLib, rechargeMin);
             }
-            foreach (ActionData action in Combos)
+            if (Combo != null)
             {
-                action.ProcessData(traitLib, rechargeMin);
+                Combo.ProcessData(traitLib, rechargeMin);
             }
 
             if (Recharge > 0 && Recharge < rechargeMin)
@@ -917,6 +917,7 @@ namespace IconFoeCreator
     public class SummonData
     {
         public string Name { get; set; }
+        public bool IsObject { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
@@ -928,16 +929,16 @@ namespace IconFoeCreator
         public List<string> Effects { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
-        public List<string> Actions { get; set; }
+        public List<string> SummonActions { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
-        public List<ActionData> ComplexActions { get; set; }
+        public List<ActionData> Actions { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
-        public List<ActionData> SpecialActions { get; set; }
+        public List<ActionData> ListedActions { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
-        public List<InterruptData> SpecialInterrupts { get; set; }
+        public List<InterruptData> ListedInterrupts { get; set; }
 
 
         private List<TraitData> mActualTraits;
@@ -947,10 +948,10 @@ namespace IconFoeCreator
             Tags = new List<string>();
             Traits = new List<string>();
             Effects = new List<string>();
-            Actions = new List<string>();
-            ComplexActions = new List<ActionData>();
-            SpecialActions = new List<ActionData>();
-            SpecialInterrupts = new List<InterruptData>();
+            SummonActions = new List<string>();
+            Actions = new List<ActionData>();
+            ListedActions = new List<ActionData>();
+            ListedInterrupts = new List<InterruptData>();
             mActualTraits = new List<TraitData>();
         }
 
@@ -968,7 +969,7 @@ namespace IconFoeCreator
             {
                 foreach (ActionData action in trait.Actions)
                 {
-                    ComplexActions.Add(action);
+                    Actions.Add(action);
                 }
 
                 if (String.IsNullOrEmpty(trait.Description) && trait.Summons.Count == 0)
@@ -982,11 +983,11 @@ namespace IconFoeCreator
             {
                 trait.ProcessData(traitLib, rechargeMin);
             }
-            foreach (ActionData action in ComplexActions)
+            foreach (ActionData action in Actions)
             {
                 action.ProcessData(traitLib, rechargeMin);
             }
-            foreach (ActionData action in SpecialActions)
+            foreach (ActionData action in ListedActions)
             {
                 action.ProcessData(traitLib, rechargeMin);
             }
