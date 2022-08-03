@@ -62,11 +62,11 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<AbilitySetData>))]
         public List<AbilitySetData> ExtraAbilitySets { get; set; }
 
-        public ChapterData Chapter2 { get; set; }
-        public ChapterData Chapter3 { get; set; }
-
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> UsesSpecialTemplates { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<ConditionalAbilityData>))]
+        public List<ConditionalAbilityData> ConditionalAbilities { get; set; }
 
 
         // Additive Inheritance
@@ -105,8 +105,7 @@ namespace IconFoeCreator
             PhasesDescription = String.Empty;
             Phases = new List<PhaseData>();
             ExtraAbilitySets = new List<AbilitySetData>();
-            Chapter2 = new ChapterData();
-            Chapter3 = new ChapterData();
+            ConditionalAbilities = new List<ConditionalAbilityData>();
             UsesSpecialTemplates = new List<string>();
             Traits = new List<string>();
             RemoveTraits = new List<string>();
@@ -185,6 +184,8 @@ namespace IconFoeCreator
             newStats.UsesSpecialTemplates.AddRange(UsesSpecialTemplates);
             InheritUsesSpecialTemplates(newStats.UsesSpecialTemplates, otherStats.UsesSpecialTemplates, RemoveUsesSpecialTemplates);
 
+            InheritConditionalAbilities(newStats.ConditionalAbilities, ConditionalAbilities, otherStats.ConditionalAbilities, RemoveTraits, RemoveSetupTraits, RemoveInterrupts, RemoveActions);
+
             if (saveRemoveLists)
             {
                 newStats.RemoveTraits.AddRange(RemoveTraits);
@@ -194,33 +195,34 @@ namespace IconFoeCreator
                 newStats.RemoveUsesSpecialTemplates.AddRange(RemoveUsesSpecialTemplates);
             }
 
-            // Keep all the data for chapter 2 and 3
-            InheritChapter(newStats.Chapter2, Chapter2, otherStats.Chapter2, Chapter2.RemoveTraits, Chapter2.RemoveInterrupts, Chapter2.RemoveActions);
-            InheritChapter(newStats.Chapter3, Chapter3, otherStats.Chapter3, Chapter3.RemoveTraits, Chapter3.RemoveInterrupts, Chapter3.RemoveActions);
-
             return newStats;
         }
 
-        public static void InheritChapter(ChapterData outputChapterData, ChapterData thisChapterData, ChapterData otherChapterData, List<string> traitsToNotInherit, List<string> interruptsToNotInherit, List<string> actionsToNotInherit)
+        public static void InheritConditionalAbilities(List<ConditionalAbilityData> outputAbilities, List<ConditionalAbilityData> thisAbilities, List<ConditionalAbilityData> otherAbilities, List<string> traitsToNotInherit, List<string> setupTraitsToNotInherit, List<string> interruptsToNotInherit, List<string> actionsToNotInherit)
         {
-            outputChapterData.Traits.AddRange(thisChapterData.Traits);
-            InheritTraits(outputChapterData.Traits, otherChapterData.Traits, traitsToNotInherit);
-            outputChapterData.Traits = outputChapterData.Traits.Distinct().ToList();
+            foreach (ConditionalAbilityData otherData in otherAbilities)
+            {
+                ConditionalAbilityData newData = new ConditionalAbilityData()
+                { 
+                    Chapter = otherData.Chapter,
+                    IsSpecialClasses = otherData.IsSpecialClasses,
+                    IsNotSpecialClasses = otherData.IsNotSpecialClasses,
+                    RemoveTraits = otherData.RemoveTraits,
+                    RemoveSetupTraits = otherData.RemoveSetupTraits,
+                    RemoveInterrupts = otherData.RemoveInterrupts,
+                    RemoveActions = otherData.RemoveActions,
+                    UsesSpecialTemplates = otherData.UsesSpecialTemplates
+                };
 
-            outputChapterData.Interrupts.AddRange(thisChapterData.Interrupts);
-            InheritInterrupts(outputChapterData.Interrupts, otherChapterData.Interrupts, interruptsToNotInherit);
+                InheritTraits(newData.Traits, otherData.Traits, traitsToNotInherit);
+                InheritSetupTraits(newData.SetupTraits, otherData.SetupTraits, setupTraitsToNotInherit);
+                InheritInterrupts(newData.Interrupts, otherData.Interrupts, interruptsToNotInherit);
+                InheritActions(newData.Actions, otherData.Actions, actionsToNotInherit);
 
-            outputChapterData.Actions.AddRange(thisChapterData.Actions);
-            InheritActions(outputChapterData.Actions, otherChapterData.Actions, actionsToNotInherit);
+                outputAbilities.Add(newData);
+            }
 
-            outputChapterData.RemoveTraits.AddRange(thisChapterData.RemoveTraits);
-            outputChapterData.RemoveTraits.AddRange(otherChapterData.RemoveTraits);
-
-            outputChapterData.RemoveInterrupts.AddRange(thisChapterData.RemoveInterrupts);
-            outputChapterData.RemoveInterrupts.AddRange(otherChapterData.RemoveInterrupts);
-
-            outputChapterData.RemoveActions.AddRange(thisChapterData.RemoveActions);
-            outputChapterData.RemoveActions.AddRange(otherChapterData.RemoveActions);
+            outputAbilities.AddRange(thisAbilities);
         }
 
         public static void InheritTraits(List<string> outputTraits, List<string> inheritedTraits, List<string> traitsToNotInherit)
@@ -298,10 +300,15 @@ namespace IconFoeCreator
             return mEncounterBudget;
         }
 
+        public string GetSpecialClass()
+        {
+            return String.IsNullOrEmpty(SpecialClass) ? "Normal" : SpecialClass;
+        }
+
         public void ProcessData(List<TraitData> traitLib, int chapter)
         {
             // Inherit chapter data
-            InheritChapterData(chapter);
+            ProcessConditionalAbilities(chapter, GetSpecialClass());
 
             // Build trait list from lib
             mActualTraits = BuildTraitList(Traits, traitLib);
@@ -381,43 +388,39 @@ namespace IconFoeCreator
             }
         }
 
-        public void InheritChapterData(int chapter)
+        public void ProcessConditionalAbilities(int chapter, string specialClass)
         {
-            if (chapter >= 2)
+            foreach (ConditionalAbilityData abilityData in ConditionalAbilities)
             {
-                List<string> newTraits = new List<string>();
-                newTraits.AddRange(Chapter2.Traits); 
-                InheritTraits(newTraits, Traits, Chapter2.RemoveTraits);
-                newTraits = newTraits.Distinct().ToList();
-                Traits = newTraits;
+                if (abilityData.Chapter <= chapter 
+                    && (abilityData.IsSpecialClasses.Count == 0 || abilityData.IsSpecialClasses.Find(x => x.ToLower() == specialClass.ToLower()) != null)
+                    && (abilityData.IsNotSpecialClasses.Count == 0 || abilityData.IsNotSpecialClasses.Find(x => x.ToLower() == specialClass.ToLower()) == null))
+                {
+                    List<string> newTraits = new List<string>();
+                    newTraits.AddRange(abilityData.Traits);
+                    InheritTraits(newTraits, Traits, abilityData.RemoveTraits);
+                    Traits = newTraits.Distinct().ToList();
 
-                List<InterruptData> newInterrupts = new List<InterruptData>();
-                newInterrupts.AddRange(Chapter2.Interrupts);
-                InheritInterrupts(newInterrupts, Interrupts, Chapter2.RemoveInterrupts);
-                Interrupts = newInterrupts;
+                    List<TraitData> newSetupTraits = new List<TraitData>();
+                    newSetupTraits.AddRange(abilityData.SetupTraits);
+                    InheritSetupTraits(newSetupTraits, SetupTraits, abilityData.RemoveSetupTraits);
+                    SetupTraits = newSetupTraits;
 
-                List<ActionData> newActions = new List<ActionData>();
-                newActions.AddRange(Chapter2.Actions);
-                InheritActions(newActions, Actions, Chapter2.RemoveActions);
-                Actions = newActions;
-            }
-            if (chapter >= 3)
-            {
-                List<string> newTraits = new List<string>();
-                newTraits.AddRange(Chapter3.Traits);
-                InheritTraits(newTraits, Traits, Chapter3.RemoveTraits);
-                newTraits = newTraits.Distinct().ToList();
-                Traits = newTraits;
+                    List<InterruptData> newInterrupts = new List<InterruptData>();
+                    newInterrupts.AddRange(abilityData.Interrupts);
+                    InheritInterrupts(newInterrupts, Interrupts, abilityData.RemoveInterrupts);
+                    Interrupts = newInterrupts;
 
-                List<InterruptData> newInterrupts = new List<InterruptData>();
-                newInterrupts.AddRange(Chapter3.Interrupts);
-                InheritInterrupts(newInterrupts, Interrupts, Chapter3.RemoveInterrupts);
-                Interrupts = newInterrupts;
+                    List<ActionData> newActions = new List<ActionData>();
+                    newActions.AddRange(abilityData.Actions);
+                    InheritActions(newActions, Actions, abilityData.RemoveActions);
+                    Actions = newActions;
 
-                List<ActionData> newActions = new List<ActionData>();
-                newActions.AddRange(Chapter3.Actions);
-                InheritActions(newActions, Actions, Chapter3.RemoveActions);
-                Actions = newActions;
+                    UsesSpecialTemplates.AddRange(abilityData.UsesSpecialTemplates);
+
+                    if (!String.IsNullOrEmpty(abilityData.SpecialClass)) { SpecialClass = abilityData.SpecialClass; }
+                    if (abilityData.HPMultiplier.HasValue) { HPMultiplier = abilityData.HPMultiplier; }
+                }
             }
         }
 
@@ -719,8 +722,18 @@ namespace IconFoeCreator
         public string Description { get; set; }
     }
 
-    public class ChapterData
+    public class ConditionalAbilityData
     {
+        // Conditionals
+        public int Chapter { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> IsSpecialClasses { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> IsNotSpecialClasses { get; set; }
+
+        // Data
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> RemoveTraits { get; set; }
 
@@ -739,14 +752,33 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<ActionData>))]
         public List<ActionData> Actions { get; set; }
 
-        public ChapterData()
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> RemoveSetupTraits { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<TraitData>))]
+        public List<TraitData> SetupTraits { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> UsesSpecialTemplates { get; set; }
+
+        public string SpecialClass { get; set; }
+        public int? HPMultiplier { get; set; }
+
+
+        public ConditionalAbilityData()
         {
+            IsSpecialClasses = new List<string>();
+            IsNotSpecialClasses = new List<string>();
             RemoveTraits = new List<string>();
             Traits = new List<string>();
             RemoveInterrupts = new List<string>();
             Interrupts = new List<InterruptData>();
             RemoveActions = new List<string>();
             Actions = new List<ActionData>();
+            RemoveSetupTraits = new List<string>();
+            SetupTraits = new List<TraitData>();
+            UsesSpecialTemplates = new List<string>();
+            SpecialClass = String.Empty;
         }
     }
 
