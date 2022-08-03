@@ -4,14 +4,16 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace IconFoeCreator
 {
-    public class DamageInfo
+    public class StatData
     {
         public bool replaceDesc;
         public int damageDie;
         public int fray;
+        public string className;
     }
 
     public static class DescriptionCreator
@@ -42,16 +44,20 @@ namespace IconFoeCreator
             int defense = stats.Defense.GetValueOrDefault();
             int damageDie = stats.DamageDie.GetValueOrDefault();
             int frayDamage = stats.FrayDamage.GetValueOrDefault();
-            DamageInfo damageInfo = new DamageInfo {
+            StatData statData = new StatData {
                 replaceDesc = replaceDamageValues,
                 damageDie = damageDie,
-                fray = frayDamage
+                fray = frayDamage,
+                className = stats.GetClass()
             };
 
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.TextDecorations = TextDecorations.Underline;
-                AddBold(paragraph, stats.GetDisplayName());
+
+                Brush backColor = ThemeColors.GetLinearClassColor(statData.className);
+                Brush foreColor = (backColor != null) ? Brushes.White : null;
+
+                AddBold(paragraph, stats.GetDisplayName(), foreColor, backColor);
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
@@ -127,10 +133,11 @@ namespace IconFoeCreator
                 AddBold(paragraph, "Traits");
                 descTextBox.Document.Blocks.Add(paragraph);
 
-                AddTraits(descTextBox, stats.GetActualTraits(), damageInfo);
+                AddTraits(descTextBox, stats.GetActualTraits(), statData);
             }
 
-            if (stats.Interrupts.Count > 0)
+            var interruptList = stats.GetInterrupts();
+            if (interruptList.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Top = MARGIN_BEFORE };
@@ -138,10 +145,11 @@ namespace IconFoeCreator
                 AddBold(paragraph, "Interrupts");
                 descTextBox.Document.Blocks.Add(paragraph);
 
-                AddInterrupts(descTextBox, stats.Interrupts, damageInfo);
+                AddInterrupts(descTextBox, interruptList, statData);
             }
 
-            if (stats.Actions.Count > 0)
+            var actionList = stats.GetActions();
+            if (actionList.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Top = MARGIN_BEFORE };
@@ -149,7 +157,7 @@ namespace IconFoeCreator
                 AddBold(paragraph, "Actions");
                 descTextBox.Document.Blocks.Add(paragraph);
 
-                AddActions(descTextBox, stats.Actions, damageInfo);
+                AddActions(descTextBox, actionList, statData);
             }
 
             if (stats.BodyParts.Count > 0)
@@ -180,13 +188,13 @@ namespace IconFoeCreator
 
                 if (stats.Phases.Count > 0)
                 {
-                    AddPhases(descTextBox, stats.Phases, damageInfo);
+                    AddPhases(descTextBox, stats.Phases, statData);
                 }
             }
 
             if (stats.ExtraAbilitySets.Count > 0)
             {
-                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, damageInfo);
+                AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, statData);
             }
 
             // Setup traits in other textbox
@@ -194,7 +202,7 @@ namespace IconFoeCreator
 
             if (stats.SetupTraits.Count > 0)
             {
-                AddTraits(setupTextBox, stats.SetupTraits, damageInfo);
+                AddTraits(setupTextBox, stats.SetupTraits, statData);
             }
         }
 
@@ -207,22 +215,31 @@ namespace IconFoeCreator
             return paragraph;
         }
 
-        private static void AddNormal(Paragraph paragraph, string text)
+        private static void AddNormal(Paragraph paragraph, string text, Brush foreBrush = null, Brush backBrush = null)
         {
-            paragraph.Inlines.Add(new Run(text));
+            Run formattedText = new Run(text);
+            if (foreBrush != null) { formattedText.Foreground = foreBrush; }
+            if (backBrush != null) { formattedText.Background = backBrush; }
+            paragraph.Inlines.Add(formattedText);
         }
 
-        private static void AddBold(Paragraph paragraph, string text)
+        private static void AddBold(Paragraph paragraph, string text, Brush foreBrush = null, Brush backBrush = null)
         {
-            paragraph.Inlines.Add(new Bold(new Run(text)));
+            Bold formattedText = new Bold(new Run(text));
+            if (foreBrush != null) { formattedText.Foreground = foreBrush; }
+            if (backBrush != null) { formattedText.Background = backBrush; }
+            paragraph.Inlines.Add(formattedText);
         }
 
-        private static void AddItalic(Paragraph paragraph, string text)
+        private static void AddItalic(Paragraph paragraph, string text, Brush foreBrush = null, Brush backBrush = null)
         {
-            paragraph.Inlines.Add(new Italic(new Run(text)));
+            Italic formattedText = new Italic(new Run(text));
+            if (foreBrush != null) { formattedText.Foreground = foreBrush; }
+            if (backBrush != null) { formattedText.Background = backBrush; }
+            paragraph.Inlines.Add(formattedText);
         }
 
-        private static void AddTraits(RichTextBox textBox, List<TraitData> traits, DamageInfo dmgInfo, int indent = 0)
+        private static void AddTraits(RichTextBox textBox, List<TraitData> traits, StatData statData, int indent = 0)
         {
             traits.Sort(delegate (TraitData x, TraitData y)
             {
@@ -231,6 +248,11 @@ namespace IconFoeCreator
 
             foreach (TraitData trait in traits)
             {
+                if (!trait.ShouldDisplay())
+                {
+                    continue;
+                }
+
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
 
@@ -255,7 +277,7 @@ namespace IconFoeCreator
                 if (!String.IsNullOrEmpty(trait.Description))
                 {
                     AddBold(paragraph, ": ");
-                    AddNormal(paragraph, ReplaceDamageTokens(trait.Description, dmgInfo));
+                    AddNormal(paragraph, ReplaceDamageTokens(trait.Description, statData));
                 }
 
                 foreach (ItemData component in trait.CustomComponents)
@@ -266,7 +288,7 @@ namespace IconFoeCreator
                     }
                     if (!String.IsNullOrEmpty(component.Description))
                     {
-                        AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, dmgInfo));
+                        AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, statData));
                     }
                 }
 
@@ -275,27 +297,24 @@ namespace IconFoeCreator
 
                 foreach (ItemData item in trait.ExtraItems)
                 {
-                    AddItemData(textBox, item, dmgInfo, indent);
+                    AddItemData(textBox, item, statData, indent);
                 }
 
                 foreach (RollData roll in trait.Rolls)
                 {
-                    AddRoll(textBox, roll, dmgInfo, indent + 1);
+                    AddRoll(textBox, roll, statData, indent + 1);
                 }
 
                 foreach (ActionData extraAction in trait.ExtraActions)
                 {
-                    AddAction(textBox, extraAction, dmgInfo, indent + 1, false, true);
+                    AddAction(textBox, extraAction, statData, indent + 1, false, true);
                 }
 
-                foreach (SummonData summon in trait.Summons)
-                {
-                    AddSummon(textBox, summon, dmgInfo, indent + 1);
-                }
+                AddSummons(textBox, trait.Summons, statData, indent + 1);
             }
         }
 
-        private static void AddInterrupts(RichTextBox textBox, List<InterruptData> interrupts, DamageInfo dmgInfo, int indent = 0, bool dot = false)
+        private static void AddInterrupts(RichTextBox textBox, List<InterruptData> interrupts, StatData statData, int indent = 0, bool dot = false)
         {
             interrupts.Sort(delegate (InterruptData x, InterruptData y)
             {
@@ -337,42 +356,39 @@ namespace IconFoeCreator
 
                 if (!String.IsNullOrEmpty(interrupt.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(interrupt.Description, dmgInfo));
+                    AddNormal(paragraph, " " + ReplaceDamageTokens(interrupt.Description, statData));
                 }
 
                 if (!String.IsNullOrEmpty(interrupt.Trigger))
                 {
                     AddItalic(paragraph, " Trigger: " );
-                    AddNormal(paragraph, ReplaceDamageTokens(interrupt.Trigger, dmgInfo));
+                    AddNormal(paragraph, ReplaceDamageTokens(interrupt.Trigger, statData));
                 }
 
                 foreach (string effect in interrupt.Effects)
                 {
                     AddItalic(paragraph, " Effect: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(effect, dmgInfo));
+                    AddNormal(paragraph, ReplaceDamageTokens(effect, statData));
                 }
 
                 if (!String.IsNullOrEmpty(interrupt.Collide))
                 {
                     AddItalic(paragraph, " Collide: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(interrupt.Collide, dmgInfo));
+                    AddNormal(paragraph, ReplaceDamageTokens(interrupt.Collide, statData));
                 }
 
                 textBox.Document.Blocks.Add(paragraph);
 
                 foreach (ItemData item in interrupt.ExtraItems)
                 {
-                    AddItemData(textBox, item, dmgInfo, indent);
+                    AddItemData(textBox, item, statData, indent);
                 }
 
-                foreach (SummonData summon in interrupt.Summons)
-                {
-                    AddSummon(textBox, summon, dmgInfo, indent + 1);
-                }
+                AddSummons(textBox, interrupt.Summons, statData, indent + 1);
             }
         }
 
-        private static void AddActions(RichTextBox textBox, List<ActionData> actions, DamageInfo dmgInfo)
+        private static void AddActions(RichTextBox textBox, List<ActionData> actions, StatData statData, int indent = 0, bool combo = false, bool dot = false)
         {
             actions.Sort(delegate (ActionData x, ActionData y)
             {
@@ -399,11 +415,11 @@ namespace IconFoeCreator
 
             foreach (ActionData action in actions)
             {
-                AddAction(textBox, action, dmgInfo);
+                AddAction(textBox, action, statData, indent, combo, dot);
             }
         }
 
-        private static void AddAction(RichTextBox textBox, ActionData action, DamageInfo dmgInfo, int indent = 0, bool combo = false, bool dot = false)
+        private static void AddAction(RichTextBox textBox, ActionData action, StatData statData, int indent = 0, bool combo = false, bool dot = false)
         {
             Paragraph paragraph = MakeParagraph();
             paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
@@ -477,117 +493,117 @@ namespace IconFoeCreator
 
             if (!String.IsNullOrEmpty(action.Description))
             {
-                AddNormal(paragraph, " " + ReplaceDamageTokens(action.Description, dmgInfo));
+                AddNormal(paragraph, " " + ReplaceDamageTokens(action.Description, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Hit))
             {
                 AddItalic(paragraph, " On hit: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Hit, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.Hit, statData));
             }
 
             if (!String.IsNullOrEmpty(action.AutoHit))
             {
                 AddItalic(paragraph, " Autohit: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.AutoHit, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.AutoHit, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Miss) && !String.IsNullOrEmpty(action.AreaEffect) && action.Miss == action.AreaEffect)
             {
                 AddItalic(paragraph, " Miss or Area Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Miss, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.Miss, statData));
             }
             else
             {
                 if (!String.IsNullOrEmpty(action.Miss))
                 {
                     AddItalic(paragraph, " Miss: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(action.Miss, dmgInfo));
+                    AddNormal(paragraph, ReplaceDamageTokens(action.Miss, statData));
                 }
                 
                 if (!String.IsNullOrEmpty(action.AreaEffect))
                 {
                     AddItalic(paragraph, " Area Effect: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(action.AreaEffect, dmgInfo));
+                    AddNormal(paragraph, ReplaceDamageTokens(action.AreaEffect, statData));
                 }
             }
 
             if (!String.IsNullOrEmpty(action.CriticalHit))
             {
                 AddItalic(paragraph, " Critical hit: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.CriticalHit, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.CriticalHit, statData));
             }
 
             foreach (string effect in action.Effects)
             {
                 AddItalic(paragraph, " Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(effect, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(effect, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Mark))
             {
                 AddItalic(paragraph, " Mark: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Mark, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.Mark, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Stance))
             {
                 AddItalic(paragraph, " Stance: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Stance, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.Stance, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Collide))
             {
                 AddItalic(paragraph, " Collide: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Collide, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.Collide, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Blightboost))
             {
                 AddItalic(paragraph, " Blightboost: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Blightboost, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.Blightboost, statData));
             }
 
             if (!String.IsNullOrEmpty(action.TerrainEffect))
             {
                 AddItalic(paragraph, " Terrain Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.TerrainEffect, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.TerrainEffect, statData));
             }
 
             if (!String.IsNullOrEmpty(action.SpecialInterrupt))
             {
                 AddItalic(paragraph, " Interrupt: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.SpecialInterrupt, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.SpecialInterrupt, statData));
             }
 
             if (!String.IsNullOrEmpty(action.SpecialRecharge))
             {
                 AddItalic(paragraph, " Recharge: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.SpecialRecharge, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.SpecialRecharge, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Charge))
             {
                 AddItalic(paragraph, " Charge: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Charge, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.Charge, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Delay))
             {
                 AddItalic(paragraph, " Delay: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Delay, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.Delay, statData));
             }
 
             if (!String.IsNullOrEmpty(action.PostAreaEffect))
             {
                 AddItalic(paragraph, " Area Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.PostAreaEffect, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.PostAreaEffect, statData));
             }
 
             if (!String.IsNullOrEmpty(action.PostCollide))
             {
                 AddItalic(paragraph, " Collide: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.PostCollide, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(action.PostCollide, statData));
             }
 
             foreach (ItemData component in action.CustomComponents)
@@ -598,7 +614,7 @@ namespace IconFoeCreator
                 }
                 if (!String.IsNullOrEmpty(component.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(action.Description, dmgInfo));
+                    AddNormal(paragraph, " " + ReplaceDamageTokens(action.Description, statData));
                 }
             }
 
@@ -606,36 +622,33 @@ namespace IconFoeCreator
 
             foreach (ItemData item in action.ExtraItems)
             {
-                AddItemData(textBox, item, dmgInfo, indent);
+                AddItemData(textBox, item, statData, indent);
             }
 
             foreach (RollData roll in action.Rolls)
             {
-                AddRoll(textBox, roll, dmgInfo, indent + 1);
+                AddRoll(textBox, roll, statData, indent + 1);
             }
 
             foreach (ActionData extraAction in action.ExtraActions)
             {
-                AddAction(textBox, extraAction, dmgInfo, indent + 1, false, true);
+                AddAction(textBox, extraAction, statData, indent + 1, false, true);
             }
 
-            foreach (SummonData summon in action.Summons)
-            {
-                AddSummon(textBox, summon, dmgInfo, (action.Combo != null) ? indent + 2 : indent + 1);
-            }
+            AddSummons(textBox, action.Summons, statData, (action.Combo != null) ? indent + 2 : indent + 1);
 
             if (action.Combo != null)
             {
-                AddAction(textBox, action.Combo, dmgInfo, indent + 1, true);
+                AddAction(textBox, action.Combo, statData, indent + 1, true);
             }
 
             if (!String.IsNullOrEmpty(action.PostAction))
             {
-                AddNormal(paragraph, " " + ReplaceDamageTokens(action.PostAction, dmgInfo));
+                AddNormal(paragraph, " " + ReplaceDamageTokens(action.PostAction, statData));
             }
         }
 
-        private static void AddRoll(RichTextBox textBox, RollData roll, DamageInfo dmgInfo, int indent = 0)
+        private static void AddRoll(RichTextBox textBox, RollData roll, StatData statData, int indent = 0)
         {
             Paragraph paragraph = MakeParagraph();
             paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
@@ -697,7 +710,7 @@ namespace IconFoeCreator
 
             if (!String.IsNullOrEmpty(roll.Description))
             {
-                AddNormal(paragraph, ReplaceDamageTokens(roll.Description, dmgInfo));
+                AddNormal(paragraph, ReplaceDamageTokens(roll.Description, statData));
             }
 
             foreach (ItemData component in roll.CustomComponents)
@@ -708,22 +721,43 @@ namespace IconFoeCreator
                 }
                 if (!String.IsNullOrEmpty(component.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, dmgInfo));
+                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, statData));
                 }
             }
 
             textBox.Document.Blocks.Add(paragraph);
         }
 
-        private static void AddSummon(RichTextBox textBox, SummonData summon, DamageInfo dmgInfo, int indent = 0)
+        private static void AddSummons(RichTextBox textBox, List<SummonData> summons, StatData statData, int indent = 0)
+        {
+            bool first = true;
+            foreach (SummonData summon in summons)
+            {
+                int spaceBefore = 0;
+                if (first) { first = false; }
+                else { spaceBefore = 1; }
+
+                AddSummon(textBox, summon, statData, indent, spaceBefore);
+            }
+        }
+
+        private static void AddSummon(RichTextBox textBox, SummonData summon, StatData statData, int indent = 0, int spaceBefore = 0)
         {
             if (!String.IsNullOrEmpty(summon.Name) || summon.Tags.Count > 0)
             {
                 Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
-                paragraph.TextDecorations = TextDecorations.Underline;
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent, Top = MARGIN_BEFORE * spaceBefore };
 
-                AddBold(paragraph, summon.Name);
+                string className = summon.Class;
+                if (String.IsNullOrEmpty(className))
+                {
+                    className = statData.className;
+                }
+
+                Brush backColor = ThemeColors.GetLinearClassColor(className);
+                Brush foreColor = (backColor != null) ? Brushes.White : null;
+
+                AddBold(paragraph, summon.Name, foreColor, backColor);
 
                 textBox.Document.Blocks.Add(paragraph);
             }
@@ -752,9 +786,9 @@ namespace IconFoeCreator
                 textBox.Document.Blocks.Add(paragraph);
             }
 
-            AddTraits(textBox, summon.GetActualTraits(), dmgInfo, indent);
+            AddTraits(textBox, summon.GetActualTraits(), statData, indent);
 
-            foreach (string effect in summon.Effects)
+            foreach (string effect in summon.SummonEffects)
             {
                 Paragraph paragraph = MakeParagraph();
                 paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
@@ -775,18 +809,16 @@ namespace IconFoeCreator
                 AddNormal(paragraph, action);
                 textBox.Document.Blocks.Add(paragraph);
             }
-             
-            foreach (ActionData action in summon.Actions)
-            {
-                AddAction(textBox, action, dmgInfo, indent, false);
-            }
 
-            foreach (ActionData action in summon.ListedActions)
-            {
-                AddAction(textBox, action, dmgInfo, indent + 1, false, true);
-            }
+            var actionList = summon.GetActions();
+            AddActions(textBox, actionList, statData, indent, false, false);
 
-            AddInterrupts(textBox, summon.ListedInterrupts, dmgInfo, indent + 1, true);
+            var interruptList = summon.GetInterrupts();
+            AddInterrupts(textBox, interruptList, statData, indent, false);
+
+            AddActions(textBox, summon.ListedActions, statData, indent + 1, false, true);
+
+            AddInterrupts(textBox, summon.ListedInterrupts, statData, indent + 1, true);
         }
 
         private static void AddBodyParts(RichTextBox textBox, List<BodyPartData> bodyParts)
@@ -812,13 +844,13 @@ namespace IconFoeCreator
             }
         }
 
-        private static void AddPhases(RichTextBox textBox, List<PhaseData> phases, DamageInfo dmgInfo)
+        private static void AddPhases(RichTextBox textBox, List<PhaseData> phases, StatData statData, int indent = 0)
         {
             for (int i = 0; i < phases.Count; ++i)
             {
                 PhaseData phase = phases[i];
                 Paragraph paragraph1 = MakeParagraph();
-                paragraph1.Margin = new Thickness(0, 12, 0, 0);
+                paragraph1.Margin = new Thickness() { Top = MARGIN_BEFORE };
                 AddBold(paragraph1, "Phase " + ToRoman(i + 1));
                 if (!String.IsNullOrEmpty(phase.Name)) { AddBold(paragraph1, ": " + phase.Name); }
                 textBox.Document.Blocks.Add(paragraph1);
@@ -832,31 +864,42 @@ namespace IconFoeCreator
 
                 if (phase.Traits.Count > 0)
                 {
-                    AddTraits(textBox, phase.GetActualTraits(), dmgInfo);
+                    AddTraits(textBox, phase.GetActualTraits(), statData);
                 }
 
                 if (phase.Interrupts.Count > 0)
                 {
-                    AddInterrupts(textBox, phase.Interrupts, dmgInfo);
+                    AddInterrupts(textBox, phase.Interrupts, statData);
                 }
 
-                if (phase.Actions.Count > 0)
-                {
-                    AddActions(textBox, phase.Actions, dmgInfo);
-                }
+                var actionList = phase.GetActions();
+                AddActions(textBox, actionList, statData, indent, false, false);
+
+                var interruptList = phase.GetInterrupts();
+                AddInterrupts(textBox, interruptList, statData, indent, false);
             }
         }
 
-        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySetData> abilitySets, DamageInfo dmgInfo)
+        private static void AddExtraAbilitySets(RichTextBox textBox, List<AbilitySetData> abilitySets, StatData statData, int indent = 0)
         {
             for (int i = 0; i < abilitySets.Count; ++i)
             {
                 AbilitySetData abilitySet = abilitySets[i];
 
                 Paragraph paragraph1 = MakeParagraph();
-                paragraph1.Margin = new Thickness(0, 12, 0, 0);
-                paragraph1.TextDecorations = TextDecorations.Underline;
-                AddBold(paragraph1, abilitySet.Name);
+                paragraph1.Margin = new Thickness() { Top = MARGIN_BEFORE };
+
+                string className = abilitySet.Class;
+                if (String.IsNullOrEmpty(className))
+                {
+                    className = statData.className;
+                }
+
+                Brush backColor = ThemeColors.GetLinearClassColor(className);
+                Brush foreColor = (backColor != null) ? Brushes.White : null;
+
+                AddBold(paragraph1, abilitySet.Name, foreColor, backColor);
+                
                 textBox.Document.Blocks.Add(paragraph1);
 
                 if (!String.IsNullOrEmpty(abilitySet.Description))
@@ -868,18 +911,19 @@ namespace IconFoeCreator
 
                 if (abilitySet.Traits.Count > 0)
                 {
-                    AddTraits(textBox, abilitySet.GetActualTraits(), dmgInfo);
+                    AddTraits(textBox, abilitySet.GetActualTraits(), statData);
                 }
 
                 if (abilitySet.Interrupts.Count > 0)
                 {
-                    AddInterrupts(textBox, abilitySet.Interrupts, dmgInfo);
+                    AddInterrupts(textBox, abilitySet.Interrupts, statData);
                 }
 
-                if (abilitySet.Actions.Count > 0)
-                {
-                    AddActions(textBox, abilitySet.Actions, dmgInfo);
-                }
+                var actionList = abilitySet.GetActions();
+                AddActions(textBox, actionList, statData, indent, false, false);
+
+                var interruptList = abilitySet.GetInterrupts();
+                AddInterrupts(textBox, interruptList, statData, indent, false);
             }
         }
 
@@ -909,7 +953,7 @@ namespace IconFoeCreator
             textBox.Document.Blocks.Add(paragraph);
         }
 
-        private static void AddItemData(RichTextBox textBox, ItemData item, DamageInfo dmgInfo, int indent = 0)
+        private static void AddItemData(RichTextBox textBox, ItemData item, StatData statData, int indent = 0)
         {
             Paragraph paragraph = MakeParagraph();
             paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
@@ -922,7 +966,7 @@ namespace IconFoeCreator
             }
             if (!String.IsNullOrEmpty(item.Description))
             {
-                AddNormal(paragraph, " " + ReplaceDamageTokens(item.Description, dmgInfo));
+                AddNormal(paragraph, " " + ReplaceDamageTokens(item.Description, statData));
             }
 
             foreach (ItemData component in item.CustomComponents)
@@ -933,24 +977,24 @@ namespace IconFoeCreator
                 }
                 if (!String.IsNullOrEmpty(component.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, dmgInfo));
+                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, statData));
                 }
             }
 
             textBox.Document.Blocks.Add(paragraph);
         }
 
-        private static string ReplaceDamageTokens(string text, DamageInfo dmgInfo)
+        private static string ReplaceDamageTokens(string text, StatData statData)
         {
-            if (!dmgInfo.replaceDesc)
+            if (!statData.replaceDesc)
             {
                 return text;
             }
 
             var tokens = new Dictionary<string, string>
             {
-                { "[D]", "d" + dmgInfo.damageDie.ToString() },
-                { "[fray]", dmgInfo.fray.ToString() }
+                { "[D]", "d" + statData.damageDie.ToString() },
+                { "[fray]", statData.fray.ToString() }
             };
 
             foreach (var key in tokens.Keys)
