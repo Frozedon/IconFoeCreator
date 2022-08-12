@@ -615,7 +615,7 @@ namespace IconFoeCreator
                 }
                 if (!String.IsNullOrEmpty(component.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(action.Description, statData));
+                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, statData));
                 }
             }
 
