@@ -109,7 +109,7 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
-            if (frayDamage > 0)
+            if (frayDamage > 0 && !replaceDamageValues)
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "Fray Damage: ");
@@ -117,7 +117,7 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
-            if (damageDie > 0)
+            if (damageDie > 0 && !replaceDamageValues)
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "[D]: ");
