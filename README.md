@@ -38,3 +38,5 @@ TODO List
 - [X] Remove Factions/Classes when no they are only in homebrew
 - [X] Add color coding
 - [ ] Button to reset current selections
+- [ ] Button to filter by chapter
+- [ ] Save button state
