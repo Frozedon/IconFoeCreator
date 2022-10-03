@@ -41,3 +41,4 @@ TODO List
 - [ ] Button to filter by chapter
 - [ ] Vars for actions to mark it as an attack, melee/ranged, and range
 - [ ] Traits that augment actions actually replacing its text
+- [ ] Save button state
