@@ -38,3 +38,6 @@ TODO List
 - [X] Remove Factions/Classes when no they are only in homebrew
 - [X] Add color coding
 - [ ] Button to reset current selections
+- [ ] Button to filter by chapter
+- [ ] Vars for actions to mark it as an attack, melee/ranged, and range
+- [ ] Traits that augment actions actually replacing its text
