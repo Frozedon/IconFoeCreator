@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace IconFoeCreator
 {
+    [Serializable]
     public class Statistics
     {
         // Does Not Inherit
@@ -384,29 +385,36 @@ namespace IconFoeCreator
                 mEncounterBudget += trait.EncounterBudgetAdd.Value;
             }
 
+            List<ActionAdditionData> actionAdds = new List<ActionAdditionData>();
+            List<TraitData> ActionAddTraits = mActualTraits.FindAll(x => x.ActionAdditions.Count > 0);
+            foreach (TraitData trait in ActionAddTraits)
+            {
+                actionAdds.AddRange(trait.ActionAdditions);
+            }
+
             // Get recharge minimum
             int rechargeMin = RechargeMin.GetValueOrDefault(0);
 
             // Process data on all the variables
             foreach (ActionData action in Actions)
             {
-                action.ProcessData(traitLib, rechargeMin);
+                action.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (InterruptData interrupt in Interrupts)
             {
-                interrupt.ProcessData(traitLib, rechargeMin);
+                interrupt.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (TraitData trait in mActualTraits)
             {
-                trait.ProcessData(traitLib, rechargeMin);
+                trait.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (PhaseData phase in Phases)
             {
-                phase.ProcessData(traitLib, rechargeMin);
+                phase.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (AbilitySetData abilitySet in ExtraAbilitySets)
             {
-                abilitySet.ProcessData(traitLib, rechargeMin);
+                abilitySet.ProcessData(traitLib, rechargeMin, actionAdds);
             }
         }
 
@@ -486,6 +494,7 @@ namespace IconFoeCreator
         }
     }
 
+    [Serializable]
     public class TraitData
     {
         public string Name { get; set; }
@@ -523,6 +532,9 @@ namespace IconFoeCreator
         public double? EncounterBudget { get; set; }
         public double? EncounterBudgetAdd { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<ActionAdditionData>))]
+        public List<ActionAdditionData> ActionAdditions { get; set; }
+
         public TraitData()
         {
             Tags = new List<string>();
@@ -533,6 +545,7 @@ namespace IconFoeCreator
             Interrupts = new List<InterruptData>();
             Rolls = new List<RollData>();
             Summons = new List<SummonData>();
+            ActionAdditions = new List<ActionAdditionData>();
         }
 
         private static readonly string VALUE_TOKEN = "[X]";
@@ -620,23 +633,24 @@ namespace IconFoeCreator
             }
         }
 
-        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin, List<ActionAdditionData> actionAdds)
         {
             foreach (ActionData action in Actions)
             {
-                action.ProcessData(traitLib, rechargeMin);
+                action.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (InterruptData interrupt in Interrupts)
             {
-                interrupt.ProcessData(traitLib, rechargeMin);
+                interrupt.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (SummonData summon in Summons)
             {
-                summon.ProcessData(traitLib, rechargeMin);
+                summon.ProcessData(traitLib, rechargeMin, actionAdds);
             }
         }
     }
 
+    [Serializable]
     public class InterruptData
     {
         public string Name { get; set; }
@@ -669,11 +683,11 @@ namespace IconFoeCreator
             Summons = new List<SummonData>();
         }
 
-        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin, List<ActionAdditionData> actionAdds)
         {
             foreach (SummonData summon in Summons)
             {
-                summon.ProcessData(traitLib, rechargeMin);
+                summon.ProcessData(traitLib, rechargeMin, actionAdds);
             }
 
             if (Recharge > 0 && Recharge < rechargeMin)
@@ -683,6 +697,7 @@ namespace IconFoeCreator
         }
     }
 
+    [Serializable]
     public class ActionData
     {
         public string Name { get; set; }
@@ -691,6 +706,10 @@ namespace IconFoeCreator
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
+
+        public int MeleeAttack { get; set; }
+        public int RangedAttack { get; set; }
+        public int Range { get; set; }
 
         public string Description { get; set; }
         public string Hit { get; set; }
@@ -736,6 +755,10 @@ namespace IconFoeCreator
         public ActionData()
         {
             ActionCost = -1;
+            Recharge = -1;
+            MeleeAttack = -1;
+            RangedAttack = -1;
+            Range = -1;
 
             Tags = new List<string>();
             Effects = new List<string>();
@@ -746,28 +769,79 @@ namespace IconFoeCreator
             Summons = new List<SummonData>();
         }
 
-        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin, List<ActionAdditionData> actionAdds)
         {
             foreach (SummonData summon in Summons)
             {
-                summon.ProcessData(traitLib, rechargeMin);
+                summon.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (ActionData action in ExtraActions)
             {
-                action.ProcessData(traitLib, rechargeMin);
+                action.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             if (Combo != null)
             {
-                Combo.ProcessData(traitLib, rechargeMin);
+                Combo.ProcessData(traitLib, rechargeMin, actionAdds);
             }
 
             if (Recharge > 0 && Recharge < rechargeMin)
             {
                 Recharge = rechargeMin;
             }
+
+            foreach (ActionAdditionData actionAdd in actionAdds)
+            {
+                actionAdd.AddToAction(this);
+            }
+        }
+
+        public bool IsAttack()
+        {
+            return IsMeleeAttack() || IsRangedAttack();
+        }
+
+        public bool IsMeleeAttack()
+        {
+            return MeleeAttack >= 0;
+        }
+
+        public bool IsRangedAttack()
+        {
+            return RangedAttack >= 0;
         }
     }
 
+    [Serializable]
+    public class ActionAdditionData
+    {
+        public bool ApplyToAttack { get; set; }
+        public bool ApplyToMeleeAttack { get; set; }
+        public bool ApplyToRangedAttack { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> Effects { get; set; }
+
+
+        public ActionAdditionData()
+        {
+            Effects = new List<string>();
+        }
+
+        public void AddToAction(ActionData action)
+        {
+            if ((ApplyToAttack && action.IsAttack())
+                || (ApplyToMeleeAttack && action.IsMeleeAttack())
+                || (ApplyToRangedAttack && action.IsRangedAttack()))
+            {
+                if (Effects.Count > 0)
+                {
+                    action.Effects.AddRange(Effects);
+                }
+            }
+        }
+    }
+
+    [Serializable]
     public class ConditionalAbilityData
     {
         // Conditionals
@@ -828,6 +902,7 @@ namespace IconFoeCreator
         }
     }
 
+    [Serializable]
     public class BodyPartData
     {
         public string Name { get; set; }
@@ -836,6 +911,7 @@ namespace IconFoeCreator
         public string Description { get; set; }
     }
 
+    [Serializable]
     public class PhaseData
     {
         public string Name { get; set; }
@@ -863,22 +939,22 @@ namespace IconFoeCreator
             Actions = new List<ActionData>();
         }
 
-        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin, List<ActionAdditionData> actionAdds)
         {
             mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
 
             // Continue to process data
             foreach (TraitData trait in mActualTraits)
             {
-                trait.ProcessData(traitLib, rechargeMin);
+                trait.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (InterruptData interrupt in Interrupts)
             {
-                interrupt.ProcessData(traitLib, rechargeMin);
+                interrupt.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (ActionData action in Actions)
             {
-                action.ProcessData(traitLib, rechargeMin);
+                action.ProcessData(traitLib, rechargeMin, actionAdds);
             }
         }
 
@@ -922,6 +998,7 @@ namespace IconFoeCreator
         }
     }
 
+    [Serializable]
     public class AbilitySetData
     {
         public string Name { get; set; }
@@ -946,22 +1023,22 @@ namespace IconFoeCreator
             Actions = new List<ActionData>();
         }
 
-        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin, List<ActionAdditionData> actionAdds)
         {
             mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
 
             // Continue to process data
             foreach (TraitData trait in mActualTraits)
             {
-                trait.ProcessData(traitLib, rechargeMin);
+                trait.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (InterruptData interrupt in Interrupts)
             {
-                interrupt.ProcessData(traitLib, rechargeMin);
+                interrupt.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (ActionData action in Actions)
             {
-                action.ProcessData(traitLib, rechargeMin);
+                action.ProcessData(traitLib, rechargeMin, actionAdds);
             }
         }
 
@@ -1005,6 +1082,7 @@ namespace IconFoeCreator
         }
     }
 
+    [Serializable]
     public class SummonData
     {
         public string Name { get; set; }
@@ -1060,22 +1138,22 @@ namespace IconFoeCreator
             return String.IsNullOrEmpty(Name);
         }
 
-        public void ProcessData(List<TraitData> traitLib, int rechargeMin)
+        public void ProcessData(List<TraitData> traitLib, int rechargeMin, List<ActionAdditionData> actionAdds)
         {
             mActualTraits = Statistics.BuildTraitList(Traits, traitLib);
 
             // Continue to process data
             foreach (TraitData trait in mActualTraits)
             {
-                trait.ProcessData(traitLib, rechargeMin);
+                trait.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (ActionData action in Actions)
             {
-                action.ProcessData(traitLib, rechargeMin);
+                action.ProcessData(traitLib, rechargeMin, actionAdds);
             }
             foreach (ActionData action in ListedActions)
             {
-                action.ProcessData(traitLib, rechargeMin);
+                action.ProcessData(traitLib, rechargeMin, actionAdds);
             }
         }
 
@@ -1119,6 +1197,7 @@ namespace IconFoeCreator
         }
     }
 
+    [Serializable]
     public class RollData
     {
         [JsonConverter(typeof(SingleOrArrayConverter<int>))]
@@ -1139,6 +1218,7 @@ namespace IconFoeCreator
         }
     }
 
+    [Serializable]
     public class ItemData
     {
         public string Name { get; set; }

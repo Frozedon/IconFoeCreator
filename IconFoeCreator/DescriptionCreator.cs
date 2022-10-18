@@ -460,6 +460,41 @@ namespace IconFoeCreator
                     firstItem = false;
                 }
 
+                if (action.MeleeAttack >= 0)
+                {
+                    if (firstItem) { firstItem = false; }
+                    else { AddBold(paragraph, ", "); }
+
+                    AddBold(paragraph, "melee attack");
+
+                    if (action.MeleeAttack > 1)
+                    {
+                        AddBold(paragraph, " " + action.MeleeAttack);
+                    }
+                }
+                    
+                if (action.RangedAttack >= 0)
+                {
+                    if (action.MeleeAttack >= 0) { AddBold(paragraph, " or "); }
+                    else if (firstItem) { firstItem = false; }
+                    else { AddBold(paragraph, ", "); }
+
+                    AddBold(paragraph, "ranged attack");
+
+                    if (action.RangedAttack > 1)
+                    {
+                        AddBold(paragraph, " " + action.RangedAttack);
+                    }
+                }
+
+                if (action.Range > 0 && action.MeleeAttack < 0 && action.RangedAttack < 0)
+                {
+                    if (firstItem) { firstItem = false; }
+                    else { AddBold(paragraph, ", "); }
+
+                    AddBold(paragraph, "range " + action.Range);
+                }
+
                 foreach (string tag in action.Tags)
                 {
                     if (firstItem) { firstItem = false; }

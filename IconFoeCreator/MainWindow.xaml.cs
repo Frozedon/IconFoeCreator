@@ -233,10 +233,11 @@ namespace IconFoeCreator
 
             int chapter = GetComboBoxInt(Chapter_comboBox.SelectedItem);
 
-            compiledStats.ProcessData(statBuilder.Traits, chapter);
-            compiledStats.DisplayName = compiledName;
+            Statistics deepCopiedStats = Utils.DeepCopy<Statistics>(compiledStats);
+            deepCopiedStats.ProcessData(statBuilder.Traits, chapter);
+            deepCopiedStats.DisplayName = compiledName;
 
-            return compiledStats;
+            return deepCopiedStats;
         }
 
         private void UpdateChapterOptions()
