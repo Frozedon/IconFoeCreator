@@ -44,12 +44,15 @@ namespace IconFoeCreator
         public string HPText { get; set; }
         public int? HPMultiplier { get; set; }
         public bool? HPMultiplyByPlayers { get; set; }
+        public int? Hits { get; set; }
         public int? Speed { get; set; }
         public float? DashMultiplier { get; set; }
         public int? Defense { get; set; }
         public int? FrayDamage { get; set; }
         public int? DamageDie { get; set; }
         public int? RechargeMin { get; set; }
+        public int? MembersPerPlayer { get; set; }
+        public string Tactics { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<BodyPartData>))]
         public List<BodyPartData> BodyParts { get; set; }
@@ -104,6 +107,7 @@ namespace IconFoeCreator
             BodyParts = new List<BodyPartData>();
             PhasesDescription = String.Empty;
             Phases = new List<PhaseData>();
+            Tactics = String.Empty;
             ExtraAbilitySets = new List<AbilitySetData>();
             ConditionalAbilities = new List<ConditionalAbilityData>();
             UsesSpecialTemplates = new List<string>();
@@ -157,14 +161,17 @@ namespace IconFoeCreator
             if (!String.IsNullOrEmpty(HPText)) { newStats.HPText = HPText; } else { newStats.HPText = otherStats.HPText; }
             if (HPMultiplier.HasValue) { newStats.HPMultiplier = HPMultiplier; } else { newStats.HPMultiplier = otherStats.HPMultiplier; }
             if (HPMultiplyByPlayers.HasValue) { newStats.HPMultiplyByPlayers = HPMultiplyByPlayers; } else { newStats.HPMultiplyByPlayers = otherStats.HPMultiplyByPlayers; }
+            if (Hits.HasValue) { newStats.Hits = Hits; } else { newStats.Hits = otherStats.Hits; }
             if (Speed.HasValue) { newStats.Speed = Speed; } else { newStats.Speed = otherStats.Speed; }
             if (Defense.HasValue) { newStats.Defense = Defense; } else { newStats.Defense = otherStats.Defense; }
             if (FrayDamage.HasValue) { newStats.FrayDamage = FrayDamage; } else { newStats.FrayDamage = otherStats.FrayDamage; }
             if (DamageDie.HasValue) { newStats.DamageDie = DamageDie; } else { newStats.DamageDie = otherStats.DamageDie; }
             if (RechargeMin.HasValue) { newStats.RechargeMin = RechargeMin; } else { newStats.RechargeMin = otherStats.RechargeMin; }
+            if (MembersPerPlayer.HasValue) { newStats.MembersPerPlayer = MembersPerPlayer; } else { newStats.MembersPerPlayer = otherStats.MembersPerPlayer; }
             if (BodyParts.Count > 0) { newStats.BodyParts = BodyParts; } else { newStats.BodyParts = otherStats.BodyParts; }
             if (!String.IsNullOrEmpty(PhasesDescription)) { newStats.PhasesDescription = PhasesDescription; } else { newStats.PhasesDescription = otherStats.PhasesDescription; }
             if (Phases.Count() > 0) { newStats.Phases = Phases; } else { newStats.Phases = otherStats.Phases; }
+            if (!String.IsNullOrEmpty(Tactics)) { newStats.Tactics = Tactics; } else { newStats.Tactics = otherStats.Tactics; }
             if (ExtraAbilitySets.Count() > 0) { newStats.ExtraAbilitySets = ExtraAbilitySets; } else { newStats.ExtraAbilitySets = otherStats.ExtraAbilitySets; }
 
             // Only add traits, interrupts, and actions from the inherited that are not on the current removal lists
@@ -687,6 +694,7 @@ namespace IconFoeCreator
     {
         public string Name { get; set; }
         public int ActionCost { get; set; }
+        public bool RoundAction { get; set; }
         public int Recharge { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
@@ -698,6 +706,9 @@ namespace IconFoeCreator
         public string CriticalHit { get; set; }
         public string Miss { get; set; }
         public string AreaEffect { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> PreEffects { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Effects { get; set; }
@@ -729,6 +740,9 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<SummonData>))]
         public List<SummonData> Summons { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<InterruptData>))]
+        public List<InterruptData> Interrupts { get; set; }
+
         public ActionData Combo { get; set; }
 
         public string PostAction { get; set; }
@@ -736,13 +750,16 @@ namespace IconFoeCreator
         public ActionData()
         {
             ActionCost = -1;
+            RoundAction = false;
 
             Tags = new List<string>();
+            PreEffects = new List<string>();
             Effects = new List<string>();
             CustomComponents = new List<ItemData>();
             ListedItems = new List<ItemData>();
             Rolls = new List<RollData>();
             ExtraActions = new List<ActionData>();
+            Interrupts = new List<InterruptData>();
             Summons = new List<SummonData>();
         }
 
@@ -756,6 +773,11 @@ namespace IconFoeCreator
             {
                 action.ProcessData(traitLib, rechargeMin);
             }
+            foreach (InterruptData interrupt in Interrupts)
+            {
+                interrupt.ProcessData(traitLib, rechargeMin);
+            }
+
             if (Combo != null)
             {
                 Combo.ProcessData(traitLib, rechargeMin);
@@ -1010,6 +1032,7 @@ namespace IconFoeCreator
         public string Name { get; set; }
         public string Class { get; set; }
         public bool IsObject { get; set; }
+        public string Description { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Tags { get; set; }
@@ -1043,6 +1066,9 @@ namespace IconFoeCreator
 
         public SummonData()
         {
+            Name = String.Empty;
+            Class = String.Empty;
+            Description = String.Empty;
             Tags = new List<string>();
             Traits = new List<string>();
             SummonEffects = new List<string>();

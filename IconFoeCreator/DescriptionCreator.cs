@@ -10,10 +10,11 @@ namespace IconFoeCreator
 {
     public class StatData
     {
-        public bool replaceDesc;
+        public bool replaceDmg;
         public int damageDie;
         public int fray;
         public string className;
+        public string foeName;
     }
 
     public static class DescriptionCreator
@@ -44,11 +45,14 @@ namespace IconFoeCreator
             int defense = stats.Defense.GetValueOrDefault();
             int damageDie = stats.DamageDie.GetValueOrDefault();
             int frayDamage = stats.FrayDamage.GetValueOrDefault();
+            int membersPerPlayer = stats.MembersPerPlayer.GetValueOrDefault(0);
+            int hits = stats.Hits.GetValueOrDefault(0);
             StatData statData = new StatData {
-                replaceDesc = replaceDamageValues,
+                replaceDmg = replaceDamageValues,
                 damageDie = damageDie,
                 fray = frayDamage,
-                className = stats.GetClass()
+                className = stats.GetClass(),
+                foeName = stats.GetDisplayName().ToLower()
             };
 
             {
@@ -61,6 +65,14 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
+            if (membersPerPlayer > 0)
+            {
+                Paragraph paragraph = MakeParagraph();
+                AddBold(paragraph, "Members: ");
+                AddNormal(paragraph, membersPerPlayer + "/player");
+                descTextBox.Document.Blocks.Add(paragraph);
+            }
+
             if (vitality > 0)
             {
                 Paragraph paragraph = MakeParagraph();
@@ -69,6 +81,14 @@ namespace IconFoeCreator
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
+            if (hits > 0)
+            {
+                Paragraph paragraph = MakeParagraph();
+                AddBold(paragraph, "Hits: ");
+                AddNormal(paragraph, hits.ToString());
+                descTextBox.Document.Blocks.Add(paragraph);
+            }
+            else
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "HP: ");
@@ -197,6 +217,19 @@ namespace IconFoeCreator
                 AddExtraAbilitySets(descTextBox, stats.ExtraAbilitySets, statData);
             }
 
+            if (!String.IsNullOrEmpty(stats.Tactics))
+            {
+                Paragraph paragraph1 = MakeParagraph();
+                paragraph1.Margin = new Thickness() { Top = MARGIN_BEFORE };
+                paragraph1.TextDecorations = TextDecorations.Underline;
+                AddBold(paragraph1, "Tactics");
+                descTextBox.Document.Blocks.Add(paragraph1);
+
+                Paragraph paragraph2 = MakeParagraph();
+                AddNormal(paragraph2, ReplaceTokens(stats.Tactics, statData));
+                descTextBox.Document.Blocks.Add(paragraph2);
+            }
+
             // Setup traits in other textbox
             AddChapter(setupTextBox, stats.Chapter);
             AddEncounterBudget(setupTextBox, stats.GetEncounterBudget());
@@ -278,7 +311,7 @@ namespace IconFoeCreator
                 if (!String.IsNullOrEmpty(trait.Description))
                 {
                     AddBold(paragraph, ": ");
-                    AddNormal(paragraph, ReplaceDamageTokens(trait.Description, statData));
+                    AddNormal(paragraph, ReplaceTokens(trait.Description, statData));
                 }
 
                 foreach (ItemData component in trait.CustomComponents)
@@ -289,7 +322,7 @@ namespace IconFoeCreator
                     }
                     if (!String.IsNullOrEmpty(component.Description))
                     {
-                        AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, statData));
+                        AddNormal(paragraph, " " + ReplaceTokens(component.Description, statData));
                     }
                 }
 
@@ -357,25 +390,25 @@ namespace IconFoeCreator
 
                 if (!String.IsNullOrEmpty(interrupt.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(interrupt.Description, statData));
+                    AddNormal(paragraph, " " + ReplaceTokens(interrupt.Description, statData));
                 }
 
                 if (!String.IsNullOrEmpty(interrupt.Trigger))
                 {
                     AddItalic(paragraph, " Trigger: " );
-                    AddNormal(paragraph, ReplaceDamageTokens(interrupt.Trigger, statData));
+                    AddNormal(paragraph, ReplaceTokens(interrupt.Trigger, statData));
                 }
 
                 foreach (string effect in interrupt.Effects)
                 {
                     AddItalic(paragraph, " Effect: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(effect, statData));
+                    AddNormal(paragraph, ReplaceTokens(effect, statData));
                 }
 
                 if (!String.IsNullOrEmpty(interrupt.Collide))
                 {
                     AddItalic(paragraph, " Collide: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(interrupt.Collide, statData));
+                    AddNormal(paragraph, ReplaceTokens(interrupt.Collide, statData));
                 }
 
                 textBox.Document.Blocks.Add(paragraph);
@@ -393,6 +426,11 @@ namespace IconFoeCreator
         {
             actions.Sort(delegate (ActionData x, ActionData y)
             {
+                if (x.RoundAction != y.RoundAction)
+                {
+                    return x.RoundAction ? -1 : 1;
+                }
+
                 if (x.ActionCost == y.ActionCost)
                 {
                     bool xHasAtk = x.Tags.Find(tag => tag.Contains("attack")) != null;
@@ -460,6 +498,14 @@ namespace IconFoeCreator
                     firstItem = false;
                 }
 
+                if (action.RoundAction == true)
+                {
+                    if (firstItem) { firstItem = false; }
+                    else { AddBold(paragraph, ", "); }
+
+                    AddBold(paragraph, "Round Action");
+                }
+
                 foreach (string tag in action.Tags)
                 {
                     if (firstItem) { firstItem = false; }
@@ -494,117 +540,123 @@ namespace IconFoeCreator
 
             if (!String.IsNullOrEmpty(action.Description))
             {
-                AddNormal(paragraph, " " + ReplaceDamageTokens(action.Description, statData));
+                AddNormal(paragraph, " " + ReplaceTokens(action.Description, statData));
+            }
+
+            foreach (string effect in action.PreEffects)
+            {
+                AddItalic(paragraph, " Effect: ");
+                AddNormal(paragraph, ReplaceTokens(effect, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Hit))
             {
                 AddItalic(paragraph, " On hit: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Hit, statData));
+                AddNormal(paragraph, ReplaceTokens(action.Hit, statData));
             }
 
             if (!String.IsNullOrEmpty(action.AutoHit))
             {
                 AddItalic(paragraph, " Autohit: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.AutoHit, statData));
+                AddNormal(paragraph, ReplaceTokens(action.AutoHit, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Miss) && !String.IsNullOrEmpty(action.AreaEffect) && action.Miss == action.AreaEffect)
             {
                 AddItalic(paragraph, " Miss or Area Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Miss, statData));
+                AddNormal(paragraph, ReplaceTokens(action.Miss, statData));
             }
             else
             {
                 if (!String.IsNullOrEmpty(action.Miss))
                 {
                     AddItalic(paragraph, " Miss: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(action.Miss, statData));
+                    AddNormal(paragraph, ReplaceTokens(action.Miss, statData));
                 }
                 
                 if (!String.IsNullOrEmpty(action.AreaEffect))
                 {
                     AddItalic(paragraph, " Area Effect: ");
-                    AddNormal(paragraph, ReplaceDamageTokens(action.AreaEffect, statData));
+                    AddNormal(paragraph, ReplaceTokens(action.AreaEffect, statData));
                 }
             }
 
             if (!String.IsNullOrEmpty(action.CriticalHit))
             {
                 AddItalic(paragraph, " Critical hit: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.CriticalHit, statData));
+                AddNormal(paragraph, ReplaceTokens(action.CriticalHit, statData));
             }
 
             foreach (string effect in action.Effects)
             {
                 AddItalic(paragraph, " Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(effect, statData));
+                AddNormal(paragraph, ReplaceTokens(effect, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Mark))
             {
                 AddItalic(paragraph, " Mark: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Mark, statData));
+                AddNormal(paragraph, ReplaceTokens(action.Mark, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Stance))
             {
                 AddItalic(paragraph, " Stance: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Stance, statData));
+                AddNormal(paragraph, ReplaceTokens(action.Stance, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Collide))
             {
                 AddItalic(paragraph, " Collide: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Collide, statData));
+                AddNormal(paragraph, ReplaceTokens(action.Collide, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Blightboost))
             {
                 AddItalic(paragraph, " Blightboost: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Blightboost, statData));
+                AddNormal(paragraph, ReplaceTokens(action.Blightboost, statData));
             }
 
             if (!String.IsNullOrEmpty(action.TerrainEffect))
             {
                 AddItalic(paragraph, " Terrain Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.TerrainEffect, statData));
+                AddNormal(paragraph, ReplaceTokens(action.TerrainEffect, statData));
             }
 
             if (!String.IsNullOrEmpty(action.SpecialInterrupt))
             {
                 AddItalic(paragraph, " Interrupt: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.SpecialInterrupt, statData));
+                AddNormal(paragraph, ReplaceTokens(action.SpecialInterrupt, statData));
             }
 
             if (!String.IsNullOrEmpty(action.SpecialRecharge))
             {
                 AddItalic(paragraph, " Recharge: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.SpecialRecharge, statData));
+                AddNormal(paragraph, ReplaceTokens(action.SpecialRecharge, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Charge))
             {
                 AddItalic(paragraph, " Charge: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Charge, statData));
+                AddNormal(paragraph, ReplaceTokens(action.Charge, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Delay))
             {
                 AddItalic(paragraph, " Delay: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.Delay, statData));
+                AddNormal(paragraph, ReplaceTokens(action.Delay, statData));
             }
 
             if (!String.IsNullOrEmpty(action.PostAreaEffect))
             {
                 AddItalic(paragraph, " Area Effect: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.PostAreaEffect, statData));
+                AddNormal(paragraph, ReplaceTokens(action.PostAreaEffect, statData));
             }
 
             if (!String.IsNullOrEmpty(action.PostCollide))
             {
                 AddItalic(paragraph, " Collide: ");
-                AddNormal(paragraph, ReplaceDamageTokens(action.PostCollide, statData));
+                AddNormal(paragraph, ReplaceTokens(action.PostCollide, statData));
             }
 
             foreach (ItemData component in action.CustomComponents)
@@ -615,7 +667,7 @@ namespace IconFoeCreator
                 }
                 if (!String.IsNullOrEmpty(component.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, statData));
+                    AddNormal(paragraph, " " + ReplaceTokens(component.Description, statData));
                 }
             }
 
@@ -638,6 +690,8 @@ namespace IconFoeCreator
 
             AddSummons(textBox, action.Summons, statData, (action.Combo != null) ? indent + 2 : indent + 1);
 
+            AddInterrupts(textBox, action.Interrupts, statData, indent + 1, false);
+
             if (action.Combo != null)
             {
                 AddAction(textBox, action.Combo, statData, indent + 1, true);
@@ -645,7 +699,7 @@ namespace IconFoeCreator
 
             if (!String.IsNullOrEmpty(action.PostAction))
             {
-                AddNormal(paragraph, " " + ReplaceDamageTokens(action.PostAction, statData));
+                AddNormal(paragraph, " " + ReplaceTokens(action.PostAction, statData));
             }
         }
 
@@ -711,7 +765,7 @@ namespace IconFoeCreator
 
             if (!String.IsNullOrEmpty(roll.Description))
             {
-                AddNormal(paragraph, ReplaceDamageTokens(roll.Description, statData));
+                AddNormal(paragraph, ReplaceTokens(roll.Description, statData));
             }
 
             foreach (ItemData component in roll.CustomComponents)
@@ -722,7 +776,7 @@ namespace IconFoeCreator
                 }
                 if (!String.IsNullOrEmpty(component.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, statData));
+                    AddNormal(paragraph, " " + ReplaceTokens(component.Description, statData));
                 }
             }
 
@@ -788,6 +842,14 @@ namespace IconFoeCreator
             }
 
             AddTraits(textBox, summon.GetActualTraits(), statData, indent);
+
+            if (!String.IsNullOrEmpty(summon.Description))
+            {
+                Paragraph paragraph = MakeParagraph();
+                paragraph.Margin = new Thickness() { Left = MARGIN_LEN * indent };
+                AddNormal(paragraph, summon.Description);
+                textBox.Document.Blocks.Add(paragraph);
+            }
 
             foreach (string effect in summon.SummonEffects)
             {
@@ -993,7 +1055,7 @@ namespace IconFoeCreator
             }
             if (!String.IsNullOrEmpty(item.Description))
             {
-                AddNormal(paragraph, " " + ReplaceDamageTokens(item.Description, statData));
+                AddNormal(paragraph, " " + ReplaceTokens(item.Description, statData));
             }
 
             foreach (ItemData component in item.CustomComponents)
@@ -1004,16 +1066,26 @@ namespace IconFoeCreator
                 }
                 if (!String.IsNullOrEmpty(component.Description))
                 {
-                    AddNormal(paragraph, " " + ReplaceDamageTokens(component.Description, statData));
+                    AddNormal(paragraph, " " + ReplaceTokens(component.Description, statData));
                 }
             }
 
             textBox.Document.Blocks.Add(paragraph);
         }
 
-        private static string ReplaceDamageTokens(string text, StatData statData)
+        private static string ReplaceTokens(string text, StatData statData)
         {
-            if (!statData.replaceDesc)
+            var tokensToAlwaysReplace = new Dictionary<string, string>
+            {
+                { "[name]", statData.foeName }
+            };
+
+            foreach (var key in tokensToAlwaysReplace.Keys)
+            {
+                text = text.Replace(key, tokensToAlwaysReplace[key]);
+            }
+
+            if (!statData.replaceDmg)
             {
                 return text;
             }
@@ -1021,7 +1093,8 @@ namespace IconFoeCreator
             var tokens = new Dictionary<string, string>
             {
                 { "[D]", "D" + statData.damageDie.ToString() },
-                { "[fray]", statData.fray.ToString() }
+                { "[fray]", statData.fray.ToString() },
+                { "[name]", statData.foeName }
             };
 
             foreach (var key in tokens.Keys)
