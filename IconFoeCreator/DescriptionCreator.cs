@@ -858,7 +858,7 @@ namespace IconFoeCreator
                 if (summon.IsObject) { AddBold(paragraph, "Object "); }
                 else { AddBold(paragraph, "Summon "); }
                 AddBold(paragraph, "Effect: ");
-                AddNormal(paragraph, effect);
+                AddNormal(paragraph, ReplaceTokens(effect, statData));
                 textBox.Document.Blocks.Add(paragraph);
             }
 
@@ -869,7 +869,7 @@ namespace IconFoeCreator
                 if (summon.IsObject) { AddBold(paragraph, "Object "); }
                 else { AddBold(paragraph, "Summon "); }
                 AddBold(paragraph, "Action: ");
-                AddNormal(paragraph, action);
+                AddNormal(paragraph, ReplaceTokens(action, statData));
                 textBox.Document.Blocks.Add(paragraph);
             }
 
@@ -1068,6 +1068,11 @@ namespace IconFoeCreator
                 {
                     AddNormal(paragraph, " " + ReplaceTokens(component.Description, statData));
                 }
+            }
+
+            foreach (ItemData listedItem in item.ListedItems)
+            {
+                AddItemData(textBox, listedItem, statData, indent + 1);
             }
 
             textBox.Document.Blocks.Add(paragraph);

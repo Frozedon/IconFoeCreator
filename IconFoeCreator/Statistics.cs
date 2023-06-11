@@ -1173,9 +1173,13 @@ namespace IconFoeCreator
         [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
         public List<ItemData> CustomComponents { get; set; }
 
+        [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
+        public List<ItemData> ListedItems { get; set; }
+
         public ItemData()
         {
             CustomComponents = new List<ItemData>();
+            ListedItems = new List<ItemData>();
         }
     }
 }
