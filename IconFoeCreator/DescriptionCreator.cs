@@ -477,7 +477,7 @@ namespace IconFoeCreator
                 AddBold(paragraph, action.Name);
             }
 
-            if (action.ActionCost >= 0 || action.Tags.Count > 0 || action.Recharge > 1)
+            if (action.ActionCost >= 0 || action.RoundAction == true || action.Tags.Count > 0 || action.Recharge > 1)
             {
                 AddBold(paragraph, " (");
 
