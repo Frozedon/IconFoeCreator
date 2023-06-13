@@ -52,7 +52,7 @@ namespace IconFoeCreator
                 damageDie = damageDie,
                 fray = frayDamage,
                 className = stats.GetClass(),
-                foeName = stats.GetDisplayName().ToLower()
+                foeName = stats.GetDisplayName()
             };
 
             {
@@ -1098,8 +1098,7 @@ namespace IconFoeCreator
             var tokens = new Dictionary<string, string>
             {
                 { "[D]", "D" + statData.damageDie.ToString() },
-                { "[fray]", statData.fray.ToString() },
-                { "[name]", statData.foeName }
+                { "[fray]", statData.fray.ToString() }
             };
 
             foreach (var key in tokens.Keys)
