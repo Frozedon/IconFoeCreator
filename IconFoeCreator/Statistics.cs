@@ -715,18 +715,25 @@ namespace IconFoeCreator
 
         public string Mark { get; set; }
         public string Stance { get; set; }
-        public string Collide { get; set; }
-        public string Blightboost { get; set; }
         public string TerrainEffect { get; set; }
+        public string Collide { get; set; }
+        public string Slay { get; set; }
+        public string Exceed { get; set; }
+        public string Special { get; set; }
         public string SpecialInterrupt { get; set; }
         public string SpecialRecharge { get; set; }
         public string Charge { get; set; }
         public string Delay { get; set; }
-        public string PostAreaEffect { get; set; }
-        public string PostCollide { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
         public List<ItemData> CustomComponents { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        public List<string> PostEffects { get; set; }
+
+        public string PostAreaEffect { get; set; }
+        public string PostCollide { get; set; }
+        public string PostAction { get; set; }
 
         [JsonConverter(typeof(SingleOrArrayConverter<ItemData>))]
         public List<ItemData> ListedItems { get; set; }
@@ -745,8 +752,6 @@ namespace IconFoeCreator
 
         public ActionData Combo { get; set; }
 
-        public string PostAction { get; set; }
-
         public ActionData()
         {
             ActionCost = -1;
@@ -756,6 +761,7 @@ namespace IconFoeCreator
             PreEffects = new List<string>();
             Effects = new List<string>();
             CustomComponents = new List<ItemData>();
+            PostEffects = new List<string>();
             ListedItems = new List<ItemData>();
             Rolls = new List<RollData>();
             ExtraActions = new List<ActionData>();

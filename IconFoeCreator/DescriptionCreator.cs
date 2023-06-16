@@ -118,7 +118,14 @@ namespace IconFoeCreator
             {
                 Paragraph paragraph = MakeParagraph();
                 AddBold(paragraph, "Speed: ");
-                AddNormal(paragraph, speed + " (" + dashText + ")");
+                if (speed == 0)
+                {
+                    AddNormal(paragraph, "-");
+                }
+                else
+                {
+                    AddNormal(paragraph, speed + " (" + dashText + ")");
+                }
                 descTextBox.Document.Blocks.Add(paragraph);
             }
 
@@ -605,22 +612,34 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceTokens(action.Stance, statData));
             }
 
+            if (!String.IsNullOrEmpty(action.TerrainEffect))
+            {
+                AddItalic(paragraph, " Terrain Effect: ");
+                AddNormal(paragraph, ReplaceTokens(action.TerrainEffect, statData));
+            }
+
             if (!String.IsNullOrEmpty(action.Collide))
             {
                 AddItalic(paragraph, " Collide: ");
                 AddNormal(paragraph, ReplaceTokens(action.Collide, statData));
             }
 
-            if (!String.IsNullOrEmpty(action.Blightboost))
+            if (!String.IsNullOrEmpty(action.Slay))
             {
-                AddItalic(paragraph, " Blightboost: ");
-                AddNormal(paragraph, ReplaceTokens(action.Blightboost, statData));
+                AddItalic(paragraph, " Slay: ");
+                AddNormal(paragraph, ReplaceTokens(action.Slay, statData));
             }
 
-            if (!String.IsNullOrEmpty(action.TerrainEffect))
+            if (!String.IsNullOrEmpty(action.Exceed))
             {
-                AddItalic(paragraph, " Terrain Effect: ");
-                AddNormal(paragraph, ReplaceTokens(action.TerrainEffect, statData));
+                AddItalic(paragraph, " Exceed: ");
+                AddNormal(paragraph, ReplaceTokens(action.Exceed, statData));
+            }
+
+            if (!String.IsNullOrEmpty(action.Special))
+            {
+                AddItalic(paragraph, " Special: ");
+                AddNormal(paragraph, ReplaceTokens(action.Special, statData));
             }
 
             if (!String.IsNullOrEmpty(action.SpecialInterrupt))
@@ -647,18 +666,6 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceTokens(action.Delay, statData));
             }
 
-            if (!String.IsNullOrEmpty(action.PostAreaEffect))
-            {
-                AddItalic(paragraph, " Area Effect: ");
-                AddNormal(paragraph, ReplaceTokens(action.PostAreaEffect, statData));
-            }
-
-            if (!String.IsNullOrEmpty(action.PostCollide))
-            {
-                AddItalic(paragraph, " Collide: ");
-                AddNormal(paragraph, ReplaceTokens(action.PostCollide, statData));
-            }
-
             foreach (ItemData component in action.CustomComponents)
             {
                 if (!String.IsNullOrEmpty(component.Name))
@@ -669,6 +676,24 @@ namespace IconFoeCreator
                 {
                     AddNormal(paragraph, " " + ReplaceTokens(component.Description, statData));
                 }
+            }
+
+            foreach (string effect in action.PostEffects)
+            {
+                AddItalic(paragraph, " Effect: ");
+                AddNormal(paragraph, ReplaceTokens(effect, statData));
+            }
+
+            if (!String.IsNullOrEmpty(action.PostAreaEffect))
+            {
+                AddItalic(paragraph, " Area Effect: ");
+                AddNormal(paragraph, ReplaceTokens(action.PostAreaEffect, statData));
+            }
+
+            if (!String.IsNullOrEmpty(action.PostCollide))
+            {
+                AddItalic(paragraph, " Collide: ");
+                AddNormal(paragraph, ReplaceTokens(action.PostCollide, statData));
             }
 
             textBox.Document.Blocks.Add(paragraph);
