@@ -37,6 +37,7 @@ TODO List
 - [X] Add checkbox to remove restriction filtering
 - [X] Remove Factions/Classes when no they are only in homebrew
 - [X] Add color coding
+- [ ] 1.5 Update (In Progress)
 - [ ] Button to reset current selections
 - [ ] Button to filter by chapter
 - [ ] Vars for actions to mark it as an attack, melee/ranged, and range
