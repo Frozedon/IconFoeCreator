@@ -187,17 +187,6 @@ namespace IconFoeCreator
                 AddActions(descTextBox, actionList, statData);
             }
 
-            if (stats.BodyParts.Count > 0)
-            {
-                Paragraph paragraph = MakeParagraph();
-                paragraph.Margin = new Thickness() { Top = MARGIN_BEFORE };
-                paragraph.TextDecorations = TextDecorations.Underline;
-                AddBold(paragraph, "Body Parts");
-                descTextBox.Document.Blocks.Add(paragraph);
-
-                AddBodyParts(descTextBox, stats.BodyParts);
-            }
-
             if (!String.IsNullOrEmpty(stats.PhasesDescription) || stats.Phases.Count > 0)
             {
                 Paragraph paragraph1 = MakeParagraph();
@@ -388,11 +377,6 @@ namespace IconFoeCreator
                     AddBold(paragraph, ", " + tag);
                 }
 
-                if (interrupt.Recharge > 1)
-                {
-                    AddBold(paragraph, ", recharge " + interrupt.Recharge.ToString());
-                }
-
                 AddBold(paragraph, "):");
 
                 if (!String.IsNullOrEmpty(interrupt.Description))
@@ -484,7 +468,7 @@ namespace IconFoeCreator
                 AddBold(paragraph, action.Name);
             }
 
-            if (action.ActionCost >= 0 || action.RoundAction == true || action.Tags.Count > 0 || action.Recharge > 1)
+            if (action.ActionCost >= 0 || action.RoundAction == true || action.Tags.Count > 0)
             {
                 AddBold(paragraph, " (");
 
@@ -519,19 +503,6 @@ namespace IconFoeCreator
                     else { AddBold(paragraph, ", "); }
 
                     AddBold(paragraph, tag);
-                }
-
-                if (action.Recharge > 1)
-                {
-                    if (firstItem) { firstItem = false; }
-                    else { AddBold(paragraph, ", "); }
-
-                    AddBold(paragraph, "recharge " + action.Recharge);
-
-                    if (action.Recharge < 6)
-                    {
-                        AddBold(paragraph, "+");
-                    }
                 }
 
                 if (action.Combo != null)
@@ -588,16 +559,16 @@ namespace IconFoeCreator
                 }
             }
 
-            if (!String.IsNullOrEmpty(action.CriticalHit))
-            {
-                AddItalic(paragraph, " Critical hit: ");
-                AddNormal(paragraph, ReplaceTokens(action.CriticalHit, statData));
-            }
-
             foreach (string effect in action.Effects)
             {
                 AddItalic(paragraph, " Effect: ");
                 AddNormal(paragraph, ReplaceTokens(effect, statData));
+            }
+
+            if (!String.IsNullOrEmpty(action.Delay))
+            {
+                AddItalic(paragraph, " Delay: ");
+                AddNormal(paragraph, ReplaceTokens(action.Delay, statData));
             }
 
             if (!String.IsNullOrEmpty(action.Mark))
@@ -636,34 +607,16 @@ namespace IconFoeCreator
                 AddNormal(paragraph, ReplaceTokens(action.Exceed, statData));
             }
 
-            if (!String.IsNullOrEmpty(action.Special))
-            {
-                AddItalic(paragraph, " Special: ");
-                AddNormal(paragraph, ReplaceTokens(action.Special, statData));
-            }
-
-            if (!String.IsNullOrEmpty(action.SpecialInterrupt))
-            {
-                AddItalic(paragraph, " Interrupt: ");
-                AddNormal(paragraph, ReplaceTokens(action.SpecialInterrupt, statData));
-            }
-
-            if (!String.IsNullOrEmpty(action.SpecialRecharge))
-            {
-                AddItalic(paragraph, " Recharge: ");
-                AddNormal(paragraph, ReplaceTokens(action.SpecialRecharge, statData));
-            }
-
             if (!String.IsNullOrEmpty(action.Charge))
             {
                 AddItalic(paragraph, " Charge: ");
                 AddNormal(paragraph, ReplaceTokens(action.Charge, statData));
             }
 
-            if (!String.IsNullOrEmpty(action.Delay))
+            if (!String.IsNullOrEmpty(action.Special))
             {
-                AddItalic(paragraph, " Delay: ");
-                AddNormal(paragraph, ReplaceTokens(action.Delay, statData));
+                AddItalic(paragraph, " Special: ");
+                AddNormal(paragraph, ReplaceTokens(action.Special, statData));
             }
 
             foreach (ItemData component in action.CustomComponents)
@@ -720,11 +673,6 @@ namespace IconFoeCreator
             if (action.Combo != null)
             {
                 AddAction(textBox, action.Combo, statData, indent + 1, true);
-            }
-
-            if (!String.IsNullOrEmpty(action.PostAction))
-            {
-                AddNormal(paragraph, " " + ReplaceTokens(action.PostAction, statData));
             }
         }
 
