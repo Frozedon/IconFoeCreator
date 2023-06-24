@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -145,6 +146,12 @@ namespace IconFoeCreator
                 return x.CompareTo(y);
             });
             SpecialClasses.InsertRange(0, SPECIAL_CLASSES_CORE_READABLE);
+
+
+            // Debug
+            //List<string> missingTraits = Debug_CheckForMissingTraits();
+            //List<string> unusedTraits = Debug_CheckForUnusedTraits();
+            //List<string> doubleTraits = Debug_CheckForDoubleTraits();
         }
 
         private void HandleInheritance(List<Statistics> stats)
@@ -237,7 +244,7 @@ namespace IconFoeCreator
             }
         }
 
-        public List<string> Debug_CheckForTraitsExisting()
+        public List<string> Debug_CheckForMissingTraits()
         {
             List<string> missingTraits = new List<string>();
 
@@ -274,6 +281,223 @@ namespace IconFoeCreator
             }
 
             return missingTraits.Distinct().ToList();
+        }
+
+        public List<string> Debug_CheckForUnusedTraits()
+        {
+            List<string> unusedTraits = new List<string>();
+
+            List<Statistics> allStats = new List<Statistics>();
+            allStats.AddRange(Foes);
+            allStats.AddRange(Templates);
+            allStats.AddRange(SpecialTemplates);
+
+            foreach (TraitData trait in Traits)
+            {
+                bool found = false;
+                foreach (Statistics stat in allStats)
+                {
+                    foreach (string traitName in stat.Traits)
+                    {
+                        if (trait.Matches(traitName))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found == true)
+                    {
+                        break;
+                    }
+
+                    foreach (AbilitySetData abilityData in stat.ExtraAbilitySets)
+                    {
+                        foreach (string traitName in abilityData.Traits)
+                        {
+                            if (trait.Matches(traitName))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (found == true)
+                        {
+                            break;
+                        }
+
+                        foreach (ActionData action in abilityData.Actions)
+                        {
+                            foreach (SummonData summon in action.Summons)
+                            {
+                                foreach (string traitName in summon.Traits)
+                                {
+                                    if (trait.Matches(traitName))
+                                    {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+
+                                if (found == true)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (found == true)
+                            {
+                                break;
+                            }
+                        }
+
+                        if (found == true)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (found == true)
+                    {
+                        break;
+                    }
+
+                    foreach (ConditionalAbilityData abilityData in stat.ConditionalAbilities)
+                    {
+                        foreach (string traitName in abilityData.Traits)
+                        {
+                            if (trait.Matches(traitName))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (found == true)
+                        {
+                            break;
+                        }
+
+                        foreach (ActionData action in abilityData.Actions)
+                        {
+                            foreach (SummonData summon in action.Summons)
+                            {
+                                foreach (string traitName in summon.Traits)
+                                {
+                                    if (trait.Matches(traitName))
+                                    {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+
+                                if (found == true)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (found == true)
+                            {
+                                break;
+                            }
+                        }
+
+                        if (found == true)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (found == true)
+                    {
+                        break;
+                    }
+
+                    foreach (PhaseData phaseData in stat.Phases)
+                    {
+                        foreach (string traitName in phaseData.Traits)
+                        {
+                            if (trait.Matches(traitName))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (found == true)
+                        {
+                            break;
+                        }
+
+                        foreach (ActionData action in phaseData.Actions)
+                        {
+                            foreach (SummonData summon in action.Summons)
+                            {
+                                foreach (string traitName in summon.Traits)
+                                {
+                                    if (trait.Matches(traitName))
+                                    {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+
+                                if (found == true)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (found == true)
+                            {
+                                break;
+                            }
+                        }
+
+                        if (found == true)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (found == false)
+                {
+                    foreach (TraitData secondTrait in Traits)
+                    {
+                        foreach (SummonData summon in secondTrait.Summons)
+                        {
+                            foreach (string traitName in summon.Traits)
+                            {
+                                if (trait.Matches(traitName))
+                                {
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (found == true)
+                            {
+                                break;
+                            }
+                        }
+
+                        if (found == true)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (found == false)
+                {
+                    unusedTraits.Add(trait.Name);
+                }
+            }
+
+            return unusedTraits.Distinct().ToList();
         }
 
         public List<string> Debug_CheckForDoubleTraits()
