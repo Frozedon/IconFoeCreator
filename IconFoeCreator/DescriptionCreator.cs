@@ -1043,12 +1043,12 @@ namespace IconFoeCreator
                 }
             }
 
+            textBox.Document.Blocks.Add(paragraph);
+
             foreach (ItemData listedItem in item.ListedItems)
             {
                 AddItemData(textBox, listedItem, statData, indent + 1);
             }
-
-            textBox.Document.Blocks.Add(paragraph);
         }
 
         private static string ReplaceTokens(string text, StatData statData)
