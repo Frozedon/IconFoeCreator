@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IconFoeCreator"
         mc:Ignorable="d"
-        Title="Icon Foe Creator" Height="760" Width="1024">
+        Title="Icon Foe Creator 1.5 (v1)" Height="760" Width="1024">
   <Grid>
     <Label x:Name="Faction_label" Content="Faction" HorizontalAlignment="Left" Margin="6,64,0,0" VerticalAlignment="Top" FontSize="16"/>
     <ComboBox x:Name="Faction_comboBox" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Width="200" FontSize="16"/>
