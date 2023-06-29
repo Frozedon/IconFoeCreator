@@ -913,16 +913,11 @@ namespace IconFoeCreator
                     AddTraits(textBox, phase.GetActualTraits(), statData);
                 }
 
-                if (phase.Interrupts.Count > 0)
-                {
-                    AddInterrupts(textBox, phase.Interrupts, statData);
-                }
+                var interruptList = phase.GetInterrupts();
+                AddInterrupts(textBox, interruptList, statData, indent, false);
 
                 var actionList = phase.GetActions();
                 AddActions(textBox, actionList, statData, indent, false, false);
-
-                var interruptList = phase.GetInterrupts();
-                AddInterrupts(textBox, interruptList, statData, indent, false);
             }
         }
 
